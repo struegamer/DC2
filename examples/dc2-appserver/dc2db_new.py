@@ -38,9 +38,9 @@ except ImportError:
 
 
 try:
-    from dc2.apps import DC2DB
-    from dc2.apps import IPXEBoot
-    from dc2.apps import BootServer
+    from dc2.appserver.apps import DC2DB
+    from dc2.appserver.apps import IPXEBoot
+    from dc2.appserver.apps import BootServer
 except ImportError:
     print "You didn't install DC² correctly"
     sys.exit(1)
