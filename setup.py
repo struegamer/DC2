@@ -49,7 +49,10 @@ setup(name="dc2.client",
             'dc2.client.api.dc2.objects.interfaces',
             'dc2.client.api.cs2',
             'dc2.client.api.cs2.objects'],
-        scripts=['scripts/dc2-client']
+        scripts=[
+            'scripts/dc2-client',
+            'scripts/dc2-ssl-client'
+        ]
 )
 
 setup(name="dc2.appserver",
