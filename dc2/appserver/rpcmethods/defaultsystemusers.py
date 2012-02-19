@@ -36,10 +36,10 @@ except ImportError:
 
 
 try:
-    from dc2.mongodb import Database
-    from dc2.mongodb import Table
-    from dc2.helpers import check_record
-    from dc2.rpc import rpcmethod
+    from dc2.appserver.mongodb import Database
+    from dc2.appserver.mongodb import Table
+    from dc2.appserver.helpers import check_record
+    from dc2.appserver.rpc import rpcmethod
 except ImportError:
     print "You don't have DC² correctly installed"
     sys.exit(1)
