@@ -22,6 +22,7 @@
 # Std. Python Libs
 #
 
+import sys
 import types
 import xmlrpclib
 import re

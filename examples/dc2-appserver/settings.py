@@ -60,9 +60,9 @@ MONGOS = {
 CS2_ENABLED=False
 XEN_ENABLED=False
 
-RPCMODULES = ['dc2.rpcmethods']
+RPCMODULES = ['dc2.appserver.rpcmethods']
 if CS2_ENABLED:
-    RPCMODULES.append('cs2rpcmethods')
+    RPCMODULES.append('cs2.rpcmethods')
 if XEN_ENABLED:
     RPCMODULES.append("xenrpcmethods")
 
