@@ -11,10 +11,13 @@ def do_mirror(config=None,dist_type=None):
         return None
     if config.has_key("distributions") and config["distributions"] is not None:
         distributions=config["distributions"]
-        if dist_type is not None and dist_type=="all":
-            for distro in SUPPORTED_DISTROS:
-                if distributions.has_key(distro):
-                    do_mirror_job(config["config"],distributions[distro],distro)
+        if dist_type is not None:
+            if dist_type=="all":
+                for distro in SUPPORTED_DISTROS:
+                    if distributions.has_key(distro):
+                        do_mirror_job(config["config"],distributions[distro],distro)
+            else:
+                do_mirror_job(config["config"],distributions[dist_type],dist_type)
 
 def do_mirror_job(default_config=None, distributions=None,distro_type=None):
     if default_config is None or distributions is None and distro_type is None:
@@ -78,8 +81,7 @@ def do_debian_mirror_job(default_config=None, distributions=None, distro_type=No
                 call_args.append(distributions["defaults"]["mirror_directory"])
             else:
                 call_args.append(default_config["mirror_directory"])
-            print call_args
-            # subprocess.call(call_args)
+            subprocess.call(call_args)
 
 
 
