@@ -16,18 +16,18 @@ except ImportError,e:
 
 SUPPORTED_DISTROS=["ubuntu","debian"]
 
-def read_yaml_file(filename=None):
-    if filename is not None and filename != "" and os.path.exists(filename):
+def read_yaml_file(filename=None,action_type=None):
+    if filename is not None and filename != "" and os.path.exists(filename) and action_type is not None:
         fp=open(filename,"rb")
         yaml_file=fp.read()
         fp.close()
         config_space=yaml.load(yaml_file)
-        if check_config(config_space,filename) is True:
+        if check_config(config_space,filename,action_type) is True:
             return config_space
     return None
 
-def check_config(config_space=None,filename=None):
-    if config_space is None or filename is None:
+def check_config(config_space=None,filename=None,check_type=None):
+    if config_space is None or filename is None or check_type is None:
         return None
     if not config_space.has_key("config"):
         raise ConfigurationException("Your YAML configuration in '%s' doesn't have a default config section" % filename)
