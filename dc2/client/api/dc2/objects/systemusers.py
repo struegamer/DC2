@@ -26,12 +26,52 @@ class SystemUser(object):
     def __init__(self,rpcurl=None):
         self._rpcurl=rpcurl
         self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)
-    
+
+    def _check_user(self,user=None):
+        if user is not None:
+            call_args=[]
+            if os.environ.has_key("ROOTCMD"):
+                call_args.append(os.environ["ROOTCMD"].split(" ")[0])
+                call_args.append(os.environ["ROOTCMD"].split(" ")[1])
+
+            call_args.append("id")
+            if user.has_key("username"):
+                call_args.append(user["username"])
+            if subprocess.call(call_args)==0:
+                return True
+            else:
+                return False
+        return None
+
+    def _change_user_password(self,user=None):
+        if user is not None:
+            call_args=[]
+            if os.environ.has_key("ROOTCMD"):
+                call_args.append(os.environ["ROOTCMD"].split(" ")[0])
+                call_args.append(os.environ["ROOTCMD"].split(" ")[1])
+            if os.path.exists("/usr/sbin/usermod"):
+                call_args.append("/usr/sbin/usermod")
+                if user.has_key("cryptpw") and user.has_key("username"):
+                    call_args.append("-p")
+                    call_args.append(user["cryptpw"])
+                    call_args.append(user["username"])
+                    if subprocess.call(call_args) == 0:
+                        return True
+                    else:
+                        return False
+        return None
+                
+
     def create_all_users(self):
         userlist=[]
         userlist=self._proxy.dc2.configuration.systemusers.list()
         for user in userlist:
-            self._create_user(user)
+            user_check=self._check_user(user)
+            if user_check is not None: 
+                if user_check is not True:
+                    self._create_user(user)
+                else:
+                    self._change_user_password(user)
             
     def _create_user(self,user=None):
         if user is not None:
@@ -39,7 +79,7 @@ class SystemUser(object):
             if os.environ.has_key("ROOTCMD"):            
                 call_args.append(os.environ["ROOTCMD"].split(" ")[0])
                 call_args.append(os.environ["ROOTCMD"].split(" ")[1])
-                
+
             if os.path.exists("/usr/sbin/useradd"):
                 call_args.append("/usr/sbin/useradd")
                 if user.has_key("username"):
