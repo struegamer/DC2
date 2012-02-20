@@ -119,6 +119,10 @@ class BootServer:
                         result="DEFAULT generated\n"
                         result+="LABEL generated\n"
                         result+="LOCALBOOT 0\n"
+                    if bootmethod=="localboot-1":
+                        result="DEFAULT generated\n"
+                        result+="LABEL generated\n"
+                        result+="LOCALBOOT -1\n"
                 return result
             if action=="inventory":
                 result="DEFAULT generated\n"
