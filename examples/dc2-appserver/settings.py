@@ -54,6 +54,15 @@ MONGOS = {
              }
 }
 
+#LIBVIRT_SERVER= {
+#        "xenserver01": {
+#            "host":"xenserver01",
+#            "method":"tls",
+#            "conn":None
+#        }
+#}
+
+
 #
 # HTTP Access Headers
 #
