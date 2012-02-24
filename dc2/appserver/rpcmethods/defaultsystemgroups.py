@@ -50,54 +50,50 @@ except ImportError:
     print "You don't have a settings file"
     sys.exit(1)    
 
-tbl_systemusers=Table(MONGOS["dc2db"]["database"].get_table("defaultsystemusers"))
+tbl_systemgroups=Table(MONGOS["dc2db"]["database"].get_table("defaultsystemgroups"))
 
-SYSUSERS_RECORD = {
-   'username':True,
-   'realname':True,
-   'uid':False,
-   'gid':False,
-   'cryptpw':True,
-   'ssh_pubkey':False,
-   'is_admin':True,
+SYSGROUP_RECORD={
+        'groupname':True,
+        'gid':True,
+        'is_system_group':True
 }
 
-@rpcmethod(name="dc2.configuration.systemusers.list",returns={},params={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_configuration_systemusers_list(search=None):
+@rpcmethod(name="dc2.configuration.systemgroups.list",params={}, returns={}, is_xmlrpc=True,is_jsonrpc=True)
+def dc2_configuration_systemgroups_list(search=None):
     result=[]
     if search is not None and type(search) is types.DictType:
         for k in search.keys():
             a=re.compile('%s' % search[k],re.IGNORECASE)
             search[k]=a
-        result=tbl_systemusers.find(search)
+        result=tbl_systemgroups.find(search)
     else:
-        result=tbl_systemusers.find()
+        result=tbl_systemgroups.find()
     return result
 
-@rpcmethod(name="dc2.configuration.systemusers.add",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_configuration_systemusers_add(rec=None):
+@rpcmethod(name="dc2.configuration.systemgroups.add",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_configuration_systemgroups_add(rec=None):
     if rec is not None and type(rec) is types.DictType:
-        if check_record(rec,SYSUSERS_RECORD) and rec.has_key('username') and tbl_systemusers.find_one({'username':rec["username"]}) is None:
-            doc_id=tbl_systemusers.save(rec)
+        if check_record(rec,SYSGROUP_RECORD) and rec.has_key("groupname") and tbl_systemgroups.find_one({'groupname':rec["groupname"]}) is None:
+            doc_id=tbl_systemgroups.save(rec)
             return doc_id
-    return xmlrpclib.Fault(-32501,'Record could not be added')
+    return xmlrpclib.fault(-32501,"Record could not be added")
 
 
-@rpcmethod(name="dc2.configuration.systemusers.update",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_configuration_systemusers_update(rec=None):
+@rpcmethod(name="dc2.configuration.systemgroups.update",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_configuration_systemgroups_update(rec=None):
     if rec is not None and type(rec) is types.DictType:
-        if check_record(rec,SYSUSERS_RECORD) and rec.has_key('username') and tbl_systemusers.find_one({'username':rec["username"]}) is not None:
-            doc_id=tbl_systemusers.save(rec)
+        if check_record(rec,SYSGROUP_RECORD) and rec.has_key("_id") and tbl_systemgroups.find_one({"_id":rec["_id"]}) is not None:
+            doc_id=tbl_systemgroups.save(rec)
             return doc_id
-    return xmlrpclib.Fault(-32501,"Record could not be updated")
+    return xmlrpclib.fault(-32501,"Record could not be updated")
 
-@rpcmethod(name="dc2.configuration.systemusers.delete",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+@rpcmethod(name="dc2.configuration.systemgroups.delete",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_configuration_systemusers_delete(rec=None):
     if rec is not None and type(rec) is types.DictType:
         if rec.has_key('_id'):
-            response=tbl_systemusers.remove(rec)
+            response=tbl_systemgroups.remove(rec)
             if response is False:
-                return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
+                return xmlrpclib.Fault(-32501,"Record(s) couldn't be deleted")
             return True
-    return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")           
-        
+    return xmlrpclib.Fault(-32501,"Record(s) couldn't be deleted")
+
