@@ -52,6 +52,8 @@ try:
     from settings import XMLRPC_BACKEND_SERVER_URL
     from settings import XMLRPC_BACKEND_SERVER_IP
     from settings import TEMPLATE_DIR
+    from settings import ACCESS_CONTROL_ALLOW_ORIGIN
+    from settings import ACCESS_CONTROL_ALLOW_METHODS
 except ImportError:
     print "You don't have a settings file in your Python path"
     sys.exit(1)
@@ -63,6 +65,8 @@ class DC2DB:
         web.debug(methodlist)
         result=listmethods(requestdispatcher.list_rpc_methods())
         web.header("Content-Type","text/html")
+        web.header("Access-Control-Allow-Origin",ACCESS_CONTROL_ALLOW_ORIGIN)
+        web.header("Access-Control-Allow-Methods",ACCESS_CONTROL_ALLOW_METHODS)
         return result
     def POST(self):
         content_type = web.ctx.env.get("CONTENT_TYPE")
@@ -75,10 +79,14 @@ class DC2DB:
             content_type = "jsonrpc"
         return_data = requestdispatcher.handle_request(content_type, web.data())
         web.header("Content-Type", return_data[0])
+        web.header("Access-Control-Allow-Origin",ACCESS_CONTROL_ALLOW_ORIGIN)
+        web.header("Access-Control-Allow-Methods",ACCESS_CONTROL_ALLOW_METHODS)
         return return_data[1]
     def OPTIONS(self):
         web.header("Content-Type", "text/plain")
         web.header("Access-Control-Max-Age", "0")
+        web.header("Access-Control-Allow-Origin",ACCESS_CONTROL_ALLOW_ORIGIN)
+        web.header("Access-Control-Allow-Methods",ACCESS_CONTROL_ALLOW_METHODS)
         web.header("Access-Control-Allow-Headers", web.ctx.env.get("HTTP_ACCESS_CONTROL_REQUEST_HEADERS"))
         return "true"
 
