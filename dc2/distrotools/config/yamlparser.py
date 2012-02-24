@@ -14,7 +14,7 @@ except ImportError,e:
     print e
     sys.exit(1)
 
-SUPPORTED_DISTROS=["ubuntu","debian"]
+SUPPORTED_DISTROS=["ubuntu","debian","centos"]
 
 def read_yaml_file(filename=None,action_type=None):
     if filename is not None and filename != "" and os.path.exists(filename) and action_type is not None:

@@ -4,7 +4,7 @@ import os.path
 import subprocess
 import time
 
-SUPPORTED_DISTROS=["ubuntu","debian"]
+SUPPORTED_DISTROS=["ubuntu","debian","centos"]
 
 def do_mirror(config=None,dist_type=None):
     if config is None:
@@ -24,6 +24,27 @@ def do_mirror_job(default_config=None, distributions=None,distro_type=None):
         return None
     if distro_type in ["ubuntu","debian"]:
         do_debian_mirror_job(default_config,distributions,distro_type)
+    if distro_typE IN ["centos"]:
+        do_rsync_mirror_job(default_config,distributions,distro_type)
+
+
+def do_rsync_mirror_job(default_config=None, distributions=None, distro_type=None):
+    if default_config is None or distributions is None and distro_type is None:
+        return None
+    if distributions.has_key("releases") and distributions["releases"] is not None:
+        for key in distributions["releases"]:
+            call_args=[]
+            call_args.append("/usr/bin/rsync")
+            call_args.append("--progress")
+            call_args.append("--verbose")
+            call_args.append("-azH")
+            call_args.append("--delete")
+            release=distributions["releases"][key]
+            if release.has_key("with_source") and release["with_source"] is False:
+                call_args.append("--exclude 'SRPMS*'")
+            if release.has_key("host") and release["host"] is not None:
+                pass
+    return None
 
 def do_debian_mirror_job(default_config=None, distributions=None, distro_type=None):
     if default_config is None or distributions is None and distro_type is None:
