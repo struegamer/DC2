@@ -54,7 +54,8 @@ tbl_systemgroups=Table(MONGOS["dc2db"]["database"].get_table("defaultsystemgroup
 
 SYSGROUP_RECORD={
         'groupname':True,
-        'gid':True
+        'gid':True,
+        'is_system_group':True
 }
 
 @rpcmethod(name="dc2.configuration.systemgroups.list",params={}, returns={}, is_xmlrpc=True,is_jsonrpc=True)
@@ -81,7 +82,7 @@ def dc2_configuration_systemgroups_add(rec=None):
 @rpcmethod(name="dc2.configuration.systemgroups.update",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_configuration_systemgroups_update(rec=None):
     if rec is not None and type(rec) is types.DictType:
-        if check_record(rec,SYSGROUP_RECORD) and rec.has_key("groupname") and tbl_systemgroups.find_one({"groupname":rec["groupname"]}) is not None:
+        if check_record(rec,SYSGROUP_RECORD) and rec.has_key("_id") and tbl_systemgroups.find_one({"_id":rec["_id"]}) is not None:
             doc_id=tbl_systemgroups.save(rec)
             return doc_id
     return xmlrpclib.fault(-32501,"Record could not be updated")

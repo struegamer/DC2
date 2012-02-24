@@ -58,7 +58,8 @@ SYSUSERS_RECORD = {
    'uid':False,
    'gid':False,
    'cryptpw':True,
-   'ssh_pubkey':False
+   'ssh_pubkey':False,
+   'is_admin':True,
 }
 
 @rpcmethod(name="dc2.configuration.systemusers.list",returns={},params={},is_xmlrpc=True,is_jsonrpc=True)
