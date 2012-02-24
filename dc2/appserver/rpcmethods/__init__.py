@@ -29,6 +29,7 @@ from host import *
 from installstate import *
 from utils import *
 from defaultsystemusers import *
+from defaultsystemgroups import *
 from xenanswerfile import *
 from defaultbootmethods import *
 
