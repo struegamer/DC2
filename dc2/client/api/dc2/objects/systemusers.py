@@ -42,7 +42,7 @@ class SystemGroups(object):
             if self._has_rootcmd:
                 call_args=get_callargs_rootcmd(call_args)
 
-            call_args.append("/usr/sbin/getent")
+            call_args.append("/usr/bin/getent")
             call_args.append("group")
             if group.has_key("groupname"):
                 call_args.append(group["groupname"])
@@ -58,7 +58,7 @@ class SystemGroups(object):
             call_args=[]
             if self._has_rootcmd:
                 call_args=get_callargs_rootcmd(call_args)
-            call_args.append("/usr/sbin/getent")
+            call_args.append("/usr/bin/getent")
             call_args.append("group")
             if group.has_key("gid"):
                 call_args.append(group["gid"])
@@ -75,6 +75,8 @@ class SystemGroups(object):
                 if i.has_key("groupname"):
                     if not self._check_groupname(i):
                         call_args=[]
+                        if self._has_rootcmd:
+                            call_args=get_callargs_rootcmd(call_args)
                         call_args.append("/usr/sbin/addgroup")
                         if i.has_key("is_system_group") and i["is_system_group"]=="1":
                             call_args.append("--system")
@@ -88,13 +90,13 @@ class SystemUser(object):
     def __init__(self,rpcurl=None):
         self._rpcurl=rpcurl
         self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)
+        self._has_rootcmd=check_for_rootcmd()
 
     def _check_user(self,user=None):
         if user is not None:
             call_args=[]
-            if os.environ.has_key("ROOTCMD"):
-                call_args.append(os.environ["ROOTCMD"].split(" ")[0])
-                call_args.append(os.environ["ROOTCMD"].split(" ")[1])
+            if self._has_rootcmd:
+                call_args=get_callargs_rootcmd(call_args)
 
             call_args.append("id")
             if user.has_key("username"):
@@ -108,9 +110,8 @@ class SystemUser(object):
     def _change_user_password(self,user=None):
         if user is not None:
             call_args=[]
-            if os.environ.has_key("ROOTCMD"):
-                call_args.append(os.environ["ROOTCMD"].split(" ")[0])
-                call_args.append(os.environ["ROOTCMD"].split(" ")[1])
+            if self._has_rootcmd:
+                call_args=get_callargs_rootcmd(call_args)
             if os.path.exists("/usr/sbin/usermod"):
                 call_args.append("/usr/sbin/usermod")
                 if user.has_key("cryptpw") and user.has_key("username"):
@@ -138,10 +139,8 @@ class SystemUser(object):
     def _create_user(self,user=None):
         if user is not None:
             call_args=[]
-            if os.environ.has_key("ROOTCMD"):            
-                call_args.append(os.environ["ROOTCMD"].split(" ")[0])
-                call_args.append(os.environ["ROOTCMD"].split(" ")[1])
-
+            if self._has_rootcmd:
+                call_args=get_callargs_rootcmd(call_args)
             if os.path.exists("/usr/sbin/useradd"):
                 call_args.append("/usr/sbin/useradd")
                 if user.has_key("username"):
@@ -170,7 +169,9 @@ class SystemUser(object):
                         if len(admingroups)>0:
                             for i in admingroups:
                                 call_args=[]
-                                call_args.append("/usr/bin/adduser")
+                                if self._has_rootcmd:
+                                    call_args=get_callargs_rootcmd(call_args)
+                                call_args.append("/usr/sbin/adduser")
                                 call_args.append(user["username"])
                                 call_args.append(i["groupname"])
                                 subprocess.call(call_args)

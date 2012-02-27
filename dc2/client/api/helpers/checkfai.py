@@ -29,5 +29,5 @@ def get_callargs_rootcmd(call_args=None):
     if call_args is not None:
         call_args.append(os.environ["ROOTCMD"].split(" ")[0])
         call_args.append(os.environ["ROOTCMD"].split(" ")[1])
-        return 
+        return call_args
     return None
