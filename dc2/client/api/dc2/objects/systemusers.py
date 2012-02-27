@@ -164,9 +164,13 @@ class SystemUser(object):
                         call_args.append('%s' % user["cryptpw"])
                     call_args.append('%s' % user["username"])
                     subprocess.call(call_args)
-
-                                    
-                                
-                
-            
-        
+                    if user.has_key("is_admin") and user["is_admin"]=="1":
+                        admingroups=self._proxy.dc2.configuration.systemgroups.list({"is_admin_group":"1"})
+                        admingroupstr=""
+                        if len(admingroups)>0:
+                            for i in admingroups:
+                                call_args=[]
+                                call_args.append("/usr/bin/adduser")
+                                call_args.append(user["username"])
+                                call_args.append(i["groupname"])
+                                subprocess.call(call_args)
