@@ -73,7 +73,7 @@ class SystemGroups(object):
         if len(grouplist)>0:
             for i in grouplist:
                 if i.has_key("groupname"):
-                    if not self._check_groupname(i):
+                    if self._check_groupname(i):
                         call_args=[]
                         if self._has_rootcmd:
                             call_args=get_callargs_rootcmd(call_args)
