@@ -18,9 +18,71 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 import xmlrpclib
+import sys
 import os
 import os.path
 import subprocess
+
+try:
+    from dc2.client.api.helpers.checkfai import check_for_rootcmd
+    from dc2.client.api.helpers.checkfai import get_callargs_rootcmd
+except ImportError,e:
+    print e
+    sys.exit(1)
+
+class SystemGroups(object):
+    def __init__(self,rpcurl=None):
+        self._rpcurl=rpcurl
+        self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)
+        self._has_rootcmd=check_for_rootcmd()
+
+    def _check_groupname(self,group=None):
+        if group is not None:
+            call_args=[]
+            if self._has_rootcmd:
+                call_args=get_callargs_rootcmd(call_args)
+
+            call_args.append("/usr/sbin/getent")
+            call_args.append("group")
+            if group.has_key("groupname"):
+                call_args.append(group["groupname"])
+            return_code=subprocess.call(call_args,stdout=None)
+            if return_code > 0:
+                return True
+            else:
+                return False
+        return None
+
+    def _check_groupid(self,group=None):
+        if group is not None:
+            call_args=[]
+            if self._has_rootcmd:
+                call_args=get_callargs_rootcmd(call_args)
+            call_args.append("/usr/sbin/getent")
+            call_args.append("group")
+            if group.has_key("gid"):
+                call_args.append(group["gid"])
+                return_code=subprocess.call(call_args,stdout=None)
+                if return_code > 0:
+                    return True
+                else:
+                    return False
+        return None
+    def create_all_groups(self):
+        grouplist=self._proxy.dc2.configuration.systemgroups.list()
+        if len(grouplist)>0:
+            for i in grouplist:
+                if i.has_key("groupname"):
+                    if not self._check_groupname(i):
+                        call_args=[]
+                        call_args.append("/usr/sbin/addgroup")
+                        if i.has_key("is_system_group") and i["is_system_group"]=="1":
+                            call_args.append("--system")
+                        if i.has_key("gid") and i["gid"]!="-1":
+                            call_args.append("--gid")
+                            call_args.append(i["gid"])
+                        call_args.append(i["groupname"])
+                        subprocess.call(call_args)
 
 class SystemUser(object):
     def __init__(self,rpcurl=None):

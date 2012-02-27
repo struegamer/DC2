@@ -32,6 +32,7 @@ try:
     from dc2.client.api.dc2 import ServerInventory
     from dc2.client.api.dc2 import Utilities
     from dc2.client.api.dc2 import SystemUser
+    from dc2.client.api.dc2 import SystemGroups
 except ImportError:
     a=sys.path
     b=[]
@@ -44,6 +45,7 @@ except ImportError:
     from dc2.client.api.dc2 import ServerInventory
     from dc2.client.api.dc2 import Utilities
     from dc2.client.api.dc2 import SystemUser
+    from dc2.client.api.dc2 import SystemGroups
 
 def do_server_find(options):
     if options.server_find_argument is not None and options.server_find_value is not None and options.server_output_value is not None:
@@ -190,6 +192,9 @@ def do_systemuser(options):
         if options.systemusers_all:
             sysuser=SystemUser(options.dc2_backend_url)
             sysuser.create_all_users()
+        if options.systemgroups_all:
+            sysgroups=SystemGroups(options.dc2_backend_url)
+            sysgroups.create_all_groups()
             
             
 def main():
@@ -353,7 +358,12 @@ def main():
                                dest="systemusers_all",
                                help="Generate all system users",
                                default=False)
-    
+    systemuserGroup.add_option('','--add-all-groups',
+            action="store_true",
+            dest="systemgroups_all",
+            help="Generate all system groups",
+            default=False)
+
     
     parser.add_option_group(serverGroup)
     parser.add_option_group(hostGroup)

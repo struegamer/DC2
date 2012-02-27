@@ -17,10 +17,17 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
-from servers import Servers
-from hosts import Hosts
-from installstate import InstallState
-from macs import MACs
-from environments import Environments
-from utils import Utilities
-from systemusers import SystemUser, SystemGroups
+
+import os
+
+def check_for_rootcmd():
+    if os.environ.has_key("ROOTCMD"):
+        return True
+    return False
+
+def get_callargs_rootcmd(call_args=None):
+    if call_args is not None:
+        call_args.append(os.environ["ROOTCMD"].split(" ")[0])
+        call_args.append(os.environ["ROOTCMD"].split(" ")[1])
+        return 
+    return None
