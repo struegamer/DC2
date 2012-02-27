@@ -55,7 +55,8 @@ tbl_systemgroups=Table(MONGOS["dc2db"]["database"].get_table("defaultsystemgroup
 SYSGROUP_RECORD={
         'groupname':True,
         'gid':True,
-        'is_system_group':True
+        'is_system_group':True,
+        'is_admin_group':True,
 }
 
 @rpcmethod(name="dc2.configuration.systemgroups.list",params={}, returns={}, is_xmlrpc=True,is_jsonrpc=True)
