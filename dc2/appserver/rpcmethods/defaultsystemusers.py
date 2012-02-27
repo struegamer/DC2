@@ -91,6 +91,7 @@ def dc2_configuration_systemusers_update(rec=None):
             return doc_id
     return xmlrpclib.Fault(-32501,"Record could not be updated")
 
+
 @rpcmethod(name="dc2.configuration.systemusers.delete",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_configuration_systemusers_delete(rec=None):
     if rec is not None and type(rec) is types.DictType:

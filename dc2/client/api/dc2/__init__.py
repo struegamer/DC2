@@ -26,3 +26,4 @@ from objects import InstallState
 from objects import Environments
 from objects import Utilities
 from objects import SystemUser
+from objects import SystemGroups

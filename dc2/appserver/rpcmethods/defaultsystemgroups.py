@@ -55,7 +55,8 @@ tbl_systemgroups=Table(MONGOS["dc2db"]["database"].get_table("defaultsystemgroup
 SYSGROUP_RECORD={
         'groupname':True,
         'gid':True,
-        'is_system_group':True
+        'is_system_group':True,
+        'is_admin_group':True,
 }
 
 @rpcmethod(name="dc2.configuration.systemgroups.list",params={}, returns={}, is_xmlrpc=True,is_jsonrpc=True)
@@ -88,7 +89,7 @@ def dc2_configuration_systemgroups_update(rec=None):
     return xmlrpclib.fault(-32501,"Record could not be updated")
 
 @rpcmethod(name="dc2.configuration.systemgroups.delete",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_configuration_systemusers_delete(rec=None):
+def dc2_configuration_systemgroups_delete(rec=None):
     if rec is not None and type(rec) is types.DictType:
         if rec.has_key('_id'):
             response=tbl_systemgroups.remove(rec)
