@@ -19,26 +19,27 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
+
 import sys
 import os
 import os.path
 from argparse import ArgumentParser
+sys.path.append("../")
 try:
     from dc2.distrotools.config.yamlparser import *
-    from dc2.distrotools.actions.mirror import *
 except ImportError,e:
     print e
     sys.exit(1)
 
 if __name__=="__main__":
     arguments=ArgumentParser(description="Mirror Archives")
+    arguments.add_argument("-d","--distribution-type",metavar="<debian>", help="Distribution Type",dest="dist_type",default="debian")
+    arguments.add_argument("-s","--suite",metavar="<squeeze|lucid|all>",help="Which debian based suite",dest="suite",default="all")
     arguments.add_argument("-c",'--configfile',metavar="FILE",help="Configfilename",dest="cfg_file",default=None)
-    arguments.add_argument("-d","--distribution-type",metavar="[debian,ubuntu,all]", help="Distribution Type",dest="dist_type",default="all")
-    arguments.add_argument("-m",'--mirror',help="Start the mirror process",action="store_true",dest="mirroring",default=False)
     args=arguments.parse_args()
     if args.cfg_file is not None and args.cfg_file != "":
-        config_space=read_yaml_file(args.cfg_file,"mirror")
+        config_space=read_yaml_file(args.cfg_file,"nfsroot")
         if config_space is not None:
-            if args.mirroring is not False:
-                do_mirror(config_space,args.dist_type)
+            pass
+
 
