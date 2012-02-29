@@ -1,5 +1,5 @@
 config:
- basefiles_directory: /srv/fai/config/basefiles/
+ basefiles_directory: /srv/fai/config/basefiles
 suites:
  lucid:
   type: debian

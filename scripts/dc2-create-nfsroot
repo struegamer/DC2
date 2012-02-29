@@ -24,14 +24,17 @@ import sys
 import os
 import os.path
 from argparse import ArgumentParser
-sys.path.append("../")
+
 try:
     from dc2.distrotools.config.yamlparser import *
+    from dc2.distrotools.actions.nfsroot import *
 except ImportError,e:
     print e
     sys.exit(1)
 
 if __name__=="__main__":
+    if not os.geteuid()==0:
+        sys.exit("Only root can run this script\n")
     arguments=ArgumentParser(description="Mirror Archives")
     arguments.add_argument("-d","--distribution-type",metavar="<debian>", help="Distribution Type",dest="dist_type",default="debian")
     arguments.add_argument("-s","--suite",metavar="<squeeze|lucid|all>",help="Which debian based suite",dest="suite",default="all")
@@ -40,6 +43,6 @@ if __name__=="__main__":
     if args.cfg_file is not None and args.cfg_file != "":
         config_space=read_yaml_file(args.cfg_file,"nfsroot")
         if config_space is not None:
-            pass
+            do_nfsroot(config_space,args.suite)
 
 
