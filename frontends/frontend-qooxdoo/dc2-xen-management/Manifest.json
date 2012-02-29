@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "dc2-xen-management",
+
+    "summary" : "dc2-xen-management Module",
+    "description" : "This is the DC² Xen Module",
+    
+    "homepage" : "http://launchpad.net/dc2",
+
+    "license" : "LGPL",
+    "authors" : 
+    [
+      {
+        "name" : "Stephan Adig (sadig)",
+        "email" : "sh@sourcecode.de"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.5"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "dc2.xen",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "contribution"
+  }
+}
+

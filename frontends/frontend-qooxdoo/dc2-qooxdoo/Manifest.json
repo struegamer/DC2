@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "dc2-frontend-qooxdoo",
+
+    "summary" : "DC² Web Frontend",
+    "description" : "DC² Webfrontend written in Qooxdoo",
+    
+    "homepage" : "http://some.homepage.url/",
+
+    "license" : "GPL",
+    "authors" : 
+    [
+      {
+        "name" : "Stephan Adig (sadig)",
+        "email" : "sh@sourcecode.de"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.4.1"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "dc2",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+

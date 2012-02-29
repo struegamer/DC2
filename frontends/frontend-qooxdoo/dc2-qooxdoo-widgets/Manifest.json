@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "dc2-qooxdoo-widgets",
+
+    "summary" : "dc2-qooxdoo-widgets Library",
+    "description" : "DC² qooxdoo widgets library",
+    
+    "homepage" : "",
+
+    "license" : "LGPL/EPL",
+    "authors" : 
+    [
+      {
+        "name" : "Stephan Adig (sadig)",
+        "email" : "sh@sourcecode.de"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.5"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "dc2.widgets",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "contribution"
+  }
+}
+

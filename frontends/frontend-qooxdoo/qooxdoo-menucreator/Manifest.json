@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "menucreator",
+
+    "summary" : "MenuCreater Library",
+    "description" : "creates a qooxdoo menu from a js object/hash array",
+    
+    "homepage" : "http://some.homepage.url/",
+
+    "license" : "LGPLv2",
+    "authors" : 
+    [
+      {
+        "name" : "Stephan Adig (sadig)",
+        "email" : "sh@sourcecode.de"
+      }
+    ],
+
+    "version" : "0.1",
+    "qooxdoo-versions": ["1.3"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "menucreator",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+
