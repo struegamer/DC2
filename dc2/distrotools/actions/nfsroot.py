@@ -25,7 +25,41 @@ import subprocess
 import time
 import tempfile
 import shutil
+from threading import Thread
 
+class Debootstrap(Thread):
+    def __init__(self,thread_name=None,config=None, which_suite=None):
+        self._thread_name=thread_name
+        self._config=config
+        self._which_suite=which_suite
+        Thread.__init__(self,name=self._thread_name)
+    def run(self):
+        if config is None or which_suite is None:
+            return None
+        suite=config["suites"][which_suite]
+        # 
+        # Create temp directory which contains the chroot in step 1
+        #
+        if os.path.exists("/usr/sbin/debootstrap"):
+            for arch in suite["arch"]:
+                call_args=[]
+                call_args.append("/usr/sbin/debootstrap")
+                temppath=tempfile.mkdtemp("dc2-")
+                call_args.append("--arch=%s" % arch)
+                call_args.append(which_suite)
+                call_args.append(temppath)
+                call_args.append(suite["debootstrap_mirror_url"])
+                subprocess.call(call_args)
+                call1_args=[]
+                call1_args.append("/bin/tar")
+                call1_args.append("-C")
+                call1_args.append(temppath)
+                call1_args.append("--exclude=*.deb")
+                call1_args.append("-cvpzf")
+                call1_args.append("%s/%s.tgz" % (config["config"]["basefiles_directory"],suite["arch"][arch]["classname"])
+                call1_args.append(".")
+                subprocess.call(call1_args)
+                shutil.rmtree(temppath)
 
 def do_nfsroot(config=None,which_suite=None):
     if config is None:
