@@ -30,7 +30,10 @@ setup(name="dc2.distrotools",
       author_email="sh@sourcecode.de",
       url="http://launchpad.net/dc2",
       packages=['dc2','dc2.distrotools','dc2.distrotools.config','dc2.distrotools.actions'],
-      scripts=['scripts/dc2-mirror']
+      scripts=[
+          'scripts/dc2-mirror',
+          'scripts/dc2-create-nfsroot'
+          ]
 )
 
 setup(name="dc2.client",
