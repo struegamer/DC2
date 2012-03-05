@@ -1,1 +1,6 @@
-TBD
+Needed software:
+
+web.py
+pyopenssl
+python-dateutil
+
