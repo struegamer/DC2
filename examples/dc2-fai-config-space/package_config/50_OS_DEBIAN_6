@@ -1,0 +1,43 @@
+PACKAGES install 10_ARCH_x86_64
+linux-image-2.6-amd64
+firmware-bnx2
+linux-headers-2.6-amd64
+
+PACKAGES install 20_BOOT_GRUB_PC
+grub-pc grub-common
+
+PACKAGES install 50_OS_DEBIAN_6
+ifenslave-2.6
+vlan
+debconf-utils
+xfsprogs
+openssh-server
+openssh-client
+iputils-tracepath
+tcpdump
+strace
+mtr
+vim-nox
+netcat
+host
+dnsutils
+wget
+psmisc
+ethtool
+mc
+rsync
+nmap
+snmp
+irqbalance
+less
+rsync
+ftp
+wput
+parted
+lsof
+pciutils
+libdbd-mysql-perl
+console-setup
+
+PACKAGES install 60_PUPPET
+puppet

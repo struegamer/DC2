@@ -1,0 +1,12 @@
+#!/bin/bash
+
+release_id=`$ROOTCMD lsb_release -i`
+if [ "$release_id" = "Ubuntu" ]; then
+	
+	$ROOTCMD getent group admin > /dev/null 2>&1 || $ROOTCMD addgroup --system --quiet admin
+
+	grep "%admin" $target/etc/sudoers
+	if [ $? == 1 ]; then
+        	echo "%admin    ALL=(ALL) ALL" >> $target/etc/sudoers
+	fi
+fi

@@ -1,0 +1,24 @@
+#! /bin/bash                                                                                                                                                                                                                                 
+
+set -x
+error=0 ; trap "error=$((error|1))" ERR
+
+fcopy /etc/default/grub
+
+[ -r $LOGDIR/disk_var.sh ] && . $LOGDIR/disk_var.sh
+
+[ -z "$BOOT_DEVICE" ]    && exit 701
+$ROOTCMD grub-mkdevicemap -n -m /boot/grub/device.map
+
+GROOT=$($ROOTCMD grub-probe -tdrive -d $BOOT_DEVICE)
+# see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=606035
+GROOT=$(echo $GROOT | sed 's:md/:md:g')
+
+$ROOTCMD grub-mkconfig -o /boot/grub/grub.cfg
+$ROOTCMD grub-install --no-floppy "$GROOT"
+
+$ROOTCMD update-grub
+
+exit $error
+
+

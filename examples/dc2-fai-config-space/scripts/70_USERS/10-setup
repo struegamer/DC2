@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dc2-client --systemusers --add-all-groups --dc2-backend-url=$DC2_BACKEND_URL
+dc2-client --systemusers --add-all-users --dc2-backend-url=$DC2_BACKEND_URL

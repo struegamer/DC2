@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -x
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+
+# check for environments, get the default timezone and set them
+environment=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=environments --dc2-backend-url="${DC2_BACKEND_URL}"`
+default_timezone=`dc2-client -e --environment-find="${environment}" --environment-variable="DEFAULT_TIMEZONE" --dc2-backend-url="${DC2_BACKEND_URL}"`
+
+echo "${default_timezone}" > $target/etc/timezone
+
+cp -v $target/usr/share/zoneinfo/${default_timezone} $target/etc/localtime
+

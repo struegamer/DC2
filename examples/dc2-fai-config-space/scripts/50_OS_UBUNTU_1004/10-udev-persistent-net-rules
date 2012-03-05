@@ -1,0 +1,6 @@
+#!/bin/bash
+
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+
+dc2-client -u --write-udev-rules-file="${target}/etc/udev/rules.d/70-persistent-net.rules" --utils-find-mac="${REAL_MAC}" --dc2-backend-url="${DC2_BACKEND_URL}"
+
