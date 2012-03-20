@@ -1,0 +1,4 @@
+/usr/lib/python*/dist-packages/dc2/__init__.py
+/usr/lib/python*/dist-packages/dc2/client/*
+/usr/lib/python*/dist-packages/dc2.client-*.egg-info
+

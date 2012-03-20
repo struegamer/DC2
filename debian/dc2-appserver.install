@@ -1,0 +1,3 @@
+/usr/share/dc2-appserver
+/usr/bin/dc2-prepare_initial_data
+/etc/apache2/sites-available/dc2db.hosts

@@ -1,0 +1,43 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2 --buildsystem=python_distutils
+
+override_dh_auto_build:
+	cd $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/ ; \
+		./generate.py -m QOOXDOO_PATH:/usr/share/qooxdoo-framework1.5/ build
+	dh_auto_build
+
+override_dh_auto_install:
+	#
+	# dc2-distrotools config examples
+	# 
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/
+	cp $(CURDIR)/examples/dc2-distrotools/mirror-config.yaml $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/mirror-config.yaml
+	cp $(CURDIR)/examples/dc2-distrotools/nfsroot-config.yaml $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/nfsroot-config.yaml
+	# 
+	# dc2-webapp
+	#
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	cp $(CURDIR)/examples/dc2-appserver/dc2db_new.py $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	cp $(CURDIR)/examples/dc2-appserver/settings.py $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	cp -r $(CURDIR)/examples/dc2-appserver/templates $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	mkdir -p $(CURDIR)/debian/tmp/etc/apache2/sites-available
+	cp $(CURDIR)/debian/apache2.vhost/dc2db.hosts $(CURDIR)/debian/tmp/etc/apache2/sites-available/
+	#
+	# dc2-fai-config-space
+	#
+	mkdir -p $(CURDIR)/debian/tmp/srv/fai/dc2-config/
+	cp -r $(CURDIR)/examples/dc2-fai-config-space/* $(CURDIR)/debian/tmp/srv/fai/dc2-config/
+	#
+	# dc2-frontend-qooxdoo
+	#
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo
+	cp -r $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/build/* $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo/
+	#
+	# auto install everything
+	#
+	dh_auto_install 
+
+	
+	
