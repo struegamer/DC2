@@ -1,3 +1,9 @@
+dc2 (0.5-0ubuntu1~precise1) precise; urgency=low
+
+  * New upstream
+
+ -- Stephan Adig <sh@sourcecode.de>  Tue, 20 Mar 2012 15:01:11 +0100
+
 dc2 (0.2-1) UNRELEASED; urgency=low
 
   * New upstream release
