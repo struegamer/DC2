@@ -32,7 +32,7 @@ setup(name="dc2.distrotools",
       packages=['dc2','dc2.distrotools','dc2.distrotools.config','dc2.distrotools.actions'],
       scripts=[
           'scripts/dc2-mirror',
-          'scripts/dc2-create-nfsroot'
+          'scripts/dc2-create-chroot'
           ]
 )
 
