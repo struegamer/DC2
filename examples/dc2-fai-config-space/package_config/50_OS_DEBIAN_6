@@ -38,6 +38,7 @@ lsof
 pciutils
 libdbd-mysql-perl
 console-setup
+sudo 
 
 PACKAGES install 60_PUPPET
 puppet

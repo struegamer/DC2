@@ -27,7 +27,7 @@ from argparse import ArgumentParser
 
 try:
     from dc2.distrotools.config.yamlparser import *
-    from dc2.distrotools.actions.nfsroot import *
+    from dc2.distrotools.actions.chroot import *
 except ImportError,e:
     print e
     sys.exit(1)

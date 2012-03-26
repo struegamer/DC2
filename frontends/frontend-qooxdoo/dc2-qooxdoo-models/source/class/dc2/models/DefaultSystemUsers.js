@@ -61,7 +61,7 @@ qx.Class.define("dc2.models.DefaultSystemUsers",
       if (data != null) {
         try {
           var response=this._rpc.callSync("dc2.configuration.systemusers.update",data);
-          return(true)
+          return(true);
         } catch (exc) {
           return(false);
         }
