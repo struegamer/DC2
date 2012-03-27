@@ -38,7 +38,7 @@ Add the Personal Package Archive of DC²
 
 All the steps needed you can find on the `DC² Project PPA Page <https://launchpad.net/~dc2/+archive/releases>`_ on `Launchpad <https://launchpad.net/>`_, but to make easier here are the commands::
 
-    user@home: ~> sudo add-apt-repository ppa:dc2/releases
+    user@home: ~> sudo add-apt-repository ppa:dc2/backports
     user@home: -> sudo apt-get update
 
 in case you don't have add-apt-repository installed you should do install it first with::

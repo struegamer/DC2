@@ -5,6 +5,9 @@ Fully Automatic Installation (FAI)
 
 To get a full picture of `FAI <http://fai-project.org>`_, how it works, what are the features, advantages and disadvantages you should read the documentation on their project website.
 
+.. contents:: Table of Contents
+   :depth: 3
+
 Workflow of FAI
 ---------------
 
@@ -386,6 +389,83 @@ So the resulting file looks like this:
    # repository that may contain newer fai packages for squeeze
    #deb http://fai-project.org/download squeeze koeln
 
+
+NFS Server Configuration
+------------------------
+
+Now we need to configure the NFS Kernel Server on the DC² Deployment host. Especially we need to adjust the **/etc/exports** file.
+This file defines the exported shares, which can be mounted on remote hosts.
+
+When you don't know anything or a little about NFS Server on Linux please read the `Linux NFS Overview, FAQ and HowTo Page <http://nfs.sourceforge.net>`_.
+
+To get going just copy the following contents to **/etc/exports**:
+
+.. code-block:: text 
+   :linenos:
+
+
+   #
+   # Example for NFSv4:
+   # /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
+   # /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
+   #
+
+   /srv/fai/nfsroot	192.168.100.0/24(async,ro,no_subtree_check,no_root_squash)
+   /srv/fai/dc2-config	192.168.100.0/24(async,ro,no_subtree_check)
+
+
+TFTPD-HPA Configuration
+-----------------------
+
+We need for the initial PXE Booting a file which is being served by TFTP. As the default TFTP Server the package **tftpd-hpa** was installed.
+There is only one adjustment to be made the file **/etc/default/tftpd-hpa**:
+
+.. code-block:: bash
+   :linenos:
+
+   # /etc/default/tftpd-hpa
+
+   TFTP_USERNAME="tftp"
+   TFTP_DIRECTORY="/srv/tftp/fai/"
+   TFTP_ADDRESS="0.0.0.0:69"
+   TFTP_OPTIONS="--secure"
+
+
+Creating Missing Directories
+----------------------------
+
+We still have some directories to create, which are not existing at this stage.
+If you do a standard FAI installation these directories are being created during the intial "**make-fai-nfsroot**" call, but we create them
+a bit earlier, because we still have some steps to do.
+
+So, create the following directories like this:
+
+.. code-block:: bash
+   :linenos:
+
+   user@home: ~> sudo mkdir /srv/tftp/fai
+   user@home: ~> sudo mkdir /srv/fai/
+
+Copy some needed files
+----------------------
+
+We need some files in our TFTP Directory. These files are the bootloaders for PXE Booting. 
+
+The most important one, which is being loaded through the TFTP stage during PXE Booting is "**undionly.kpxe**" (Found in the **ipxe** package)
+Furthermore we need (later during the pxe boot process) some files named "**pxelinux.0**" and "**chain.c32**" (Found in the **syslinux** package)
+
+So copy those files like this:
+
+.. code-block:: bash
+   :linenos:
+
+   user@home: ~> sudo cp /usr/lib/ipxe/undionly.kpxe /srv/tftp/fai/
+   user@home: ~> sudo cp /usr/lib/syslinux/pxelinux.0 /srv/tftp/fai/
+   user@home: ~> sudo cp /usr/lib/syslinux/chain.c32 /srv/tftp/fai/
+
+
+Create the NFS Root filesystem
+------------------------------
 
 
 
