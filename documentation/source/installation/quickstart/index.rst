@@ -12,7 +12,9 @@ The DC² deployment host should have at least:
 
 * 2 Network Interfaces, the first one to reach the internet, the second one to have a single network without connection to the outside (this is needed for DHCP Requests)
 * Round about 100G storage (for a local package archive)
-* As Operating System you install Ubuntu 11.10 (Oneiric Ocelot)
+* As Operating System you install `Ubuntu <http://www.ubuntu.com/>`_ OS 11.10 64bit (Oneiric Ocelot) 
+
+  * `Download here <http://releases.ubuntu.com/11.10/ubuntu-11.10-server-amd64.iso>`_
 
 To ease the documentation we declare this:
 
@@ -58,10 +60,18 @@ To have a full fledged DC² Deployment Server you just install::
 
 You will get the full installation packages of DC² Application Server, FAI, NFS Server, TFTP Server, Syslinux PXE, iPXE and Apache.
 On the following pages we will show the installation and configuration of the standalone components.
-We will start with preparing the :doc:`package archive <package-archive/index>`.
+
+We will start with preparing the :doc:`Pacage Archive <package-archive/index>`.
+
+The next part would be a short introduction into :doc:`Fully Automatic Installation (FAI) <fai/index>`.
+
+The third part will be covering the installation and configuration of the DC² Application Server.
+
+Last but not least we will take a simple introduction of the DC² Frontend Browser Application.
 
 .. toctree::
    :maxdepth: 1
 
    Package Archive <package-archive/index>
    Fully Automatic Installation (FAI) <fai/index>
+   DC² Application Server Installation <dc2-appserver/index>

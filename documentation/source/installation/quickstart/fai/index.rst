@@ -467,6 +467,17 @@ So copy those files like this:
 Create the NFS Root filesystem
 ------------------------------
 
+Now we are ready to create the FAI Root Filesystem.
+
+Following the `FAI Documentation <http://fai-project.org/>`_ you do this with this command:
+
+.. code-block:: bash
+   :linenos:
+
+   user@host: ~> sudo make-fai-nfsroot -vvvvvvvv
+
+When everything is ok, you should have a new directory under **/srv/fai/nfsroot/live/filesystem.dir/**.
+If something is failing, you should see this on the output. Eventually you have to go through this documentation again, and try another time.
 
 
 .. rubric:: Footnotes
