@@ -1,3 +1,0 @@
-DC² Server Installation
-=========================
-
