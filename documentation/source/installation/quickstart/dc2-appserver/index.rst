@@ -229,4 +229,22 @@ This needs to be created manually. Just execute:
    user@home: ~> sudo mkdir -p /var/log/dc2
    user@home: ~> sudo chown www-data:www-data /var/log/dc2
 
+Starting the DC² Application
+----------------------------
+
+Now you are ready to start the application.
+When everything is correct, you can just restart the apache service:
+
+.. code-block:: bash
+   :linenos:
+
+   user@home: ~> sudo /etc/init.d/apache2 restart
+
+After you restarted the Apache Webservice, you can start your browser(e.g. **w3m** on the console) and point it to this url:
+
+.. code-block:: bash
+   :linenos:
+
+   user@home: ~> w3m http://dc2db/RPC
+
 
