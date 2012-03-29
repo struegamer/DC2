@@ -99,7 +99,7 @@ So use the contents below to add it to your created file:
 
      <VirtualHost 192.168.100.10:80>
         ServerAdmin user@archive
-        ServerName Archive
+        ServerName archive
         DocumentRoot /srv/archive/
      </VirtualHost>
 

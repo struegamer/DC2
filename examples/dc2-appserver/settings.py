@@ -34,10 +34,10 @@ MONGOS = {
         		"dbname":"dc2db",
                 "database":None
             },
-            "cs2broker": {
+            "cs2db": {
                 "host":"localhost",
                 "port":27017,
-                "dbname":"cs2broker",
+                "dbname":"cs2db",
                 "database":None
             },
             "xendb": {
@@ -88,7 +88,7 @@ if XEN_ENABLED:
     RPCMODULES.append("xenrpcmethods")
 
 # 
-# DC² Settings for XPE Boot
+# DC² Settings for PXE Boot
 #
 DOWNLOAD_SERVER_URL="http://172.20.0.101/"
 XMLRPC_BACKEND_SERVER_URL="http://dc2db.net/RPC"

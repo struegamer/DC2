@@ -46,7 +46,7 @@ master_doc = u'index'
 # General information about the project.
 project = u'dc2-documentation'
 
-copyright = u'2011, Stephan Adig'
+copyright = u'2011,2012 Stephan Adig'
 
 
 # The version info for the project you're documenting, acts as replacement for
@@ -54,7 +54,7 @@ copyright = u'2011, Stephan Adig'
 # built documents.
 #
 # The short X.Y version.
-version = u'0.1'
+version = u'1.0'
 
 # The full version, including alpha/beta/rc tags.
 release = u'1'
