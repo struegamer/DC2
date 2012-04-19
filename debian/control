@@ -55,7 +55,7 @@ Description: DC² is a bookkeeping tool for automatic deployments
 Package: dc2-distrotools
 Section: admin
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, debmirror
+Depends: ${python:Depends}, ${misc:Depends}, debmirror, python-dc2-distrotools
 Conflicts: python-dc2-client, fai-nfsroot
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
