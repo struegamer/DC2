@@ -60,7 +60,7 @@ def write_host_network_configuration(host=None):
                         pass
                     if interface["type"] == "bond_2" or interface["type"]=="bond_1":
                         if interface["type"]=="bond_1":
-                            print "\tbond-mode 2"
+                            print "\tbond-mode 1"
                         elif interface["type"]=="bond_2":
                             print "\tbond-mode 2"
                         print "\tbond-slaves none"
