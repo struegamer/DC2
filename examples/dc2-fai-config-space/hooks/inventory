@@ -1,4 +1,0 @@
-#!/bin/bash                                                                                                                                                                                                                                  
-dc2-client --do-inventory --dc2-backend-url=$DC2_BACKEND_URL
-# faireboot
-

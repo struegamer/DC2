@@ -1,5 +1,0 @@
-#!/bin/bash
-
-fcopy /etc/apt/sources.list
-
-skiptask prepareapt

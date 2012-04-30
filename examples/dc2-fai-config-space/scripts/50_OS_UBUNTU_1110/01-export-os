@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export OSYSTEM="debian"
-export RELEASE="squeeze"
-

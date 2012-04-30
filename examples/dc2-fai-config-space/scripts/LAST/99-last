@@ -1,8 +1,0 @@
-#!/bin/bash                                                                                                                                                      
-
-REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
-dc2-client -i --installstatus-find=mac --installstatus-find-value="${REAL_MAC}" --installstatus-update-progress="None" --installstatus-update-status="localboot" --dc2-backend-url="${DC2_BACKEND_URL}"
-
-#faireboot
-exit $error
-
