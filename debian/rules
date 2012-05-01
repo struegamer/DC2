@@ -5,7 +5,7 @@
 
 override_dh_auto_build:
 	cd $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/ ; \
-		QOOXDOO_PATH=/usr/share/qooxdoo-framwork1.5/ ./generate.py -m QOOXDOO_PATH:/usr/share/qooxdoo-framework1.5/ build
+		QOOXDOO_PATH=/usr/share/qooxdoo-framework1.5/ ./generate.py -m QOOXDOO_PATH:/usr/share/qooxdoo-framework1.5/ build
 	dh_auto_build
 
 override_dh_auto_install:
