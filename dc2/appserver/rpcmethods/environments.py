@@ -98,3 +98,13 @@ def dc2_deployment_environments_delete(env_rec=None):
             return True
     return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")                
 
+@rpcmethod(name="dc2.configuration.environments.copy",returns={},params={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_deployment_environments_copy(old_env=None,new_env=None):
+    if old_env is not None and new_env is not None:
+        if tbl_environments.find_one({"name":new_env}) is None:
+            old_env_rec=tbl_environments.find_one({"name":old_env})
+            old_env_rec["name"]=new_env
+            del old_env_rec["_id"]
+            tbl_environments.save(old_env_rec)
+            return true
+    return False
