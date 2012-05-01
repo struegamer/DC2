@@ -26,6 +26,18 @@ qx.Class.define("dc2.helpers.BrowserCheck",
           } else { 
             return  localStorage.getItem("DC2-RPCUrl");
           }
+        },
+        HTTPUsername:function() {
+          a=localStorage.getItem("DC2-Username");
+          if (a != null) {
+            return a;
+          }
+        },
+        HTTPPassword:function() {
+          a=localStorage.getItem("DC2-Password");
+          if (a != null) {
+            return a;
+          }
         }
       }
     });

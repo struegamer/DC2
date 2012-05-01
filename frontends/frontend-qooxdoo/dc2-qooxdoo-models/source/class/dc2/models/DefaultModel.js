@@ -24,6 +24,13 @@ qx.Class.define("dc2.models.DefaultModel",
         this._tableModel=new qx.ui.table.model.Simple();
         this._rpc_url=RPCUrl;
         this._rpc=new qx.io.remote.Rpc(this._rpc_url,"");
+        var username=dc2.helpers.BrowserCheck.HTTPUsername();
+        var password=dc2.helpers.BrowserCheck.HTTPPassword();
+        if (username != null) {
+          this._rpc.setUseBasicHttpAuth(true);
+          this._rpc.setPassword(password);
+          this._rpc.setUsername(username);
+        }
         this._rpc.setTimeout(10000);
         this._rpc.setCrossDomain(false);
       },
