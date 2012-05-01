@@ -39,8 +39,8 @@ def add_inventory_options(options=None,xmlrpc_server=None):
             xmlrpc_server.dc2.configuration.environments.copy("INVENTORY","EXAMPLE_ENVIRONMENT")
             example_env=xmlrpc_server.dc2.configuration.environments.list({"name":"EXAMPLE_ENVIRONMENT"})[0]
             example_env["description"]="Example Environment definition"
-            example_env["variables"].append({"DNSSERVERS":"8.8.8.8"})
-            example_env["variables"].append({"DEFAULT_TIMEZONE","Etc/UTC"})
+            example_env["variables"].append({"name":"DNSSERVERS","value":"8.8.8.8"})
+            example_env["variables"].append({"name":"DEFAULT_TIMEZONE","value":"Etc/UTC"})
             xmlrpc_server.dc2.configuration.environments.update(example_env)
 
 
