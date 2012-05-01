@@ -35,7 +35,26 @@ def add_inventory_options(options=None,xmlrpc_server=None):
             else:
                 env_inventory["variables"].append({"name":"DC2_BACKEND_URL","value":"http://localhost/RPC"})
             xmlrpc_server.dc2.configuration.environments.add(env_inventory)
+            add_default_classes(options,xmlrpc_server)
 
+
+def add_default_classes(options=None,xmlrpc_server=None):
+    if options is not None and xmlrpc_server is not None:
+        defclasses=[
+                "10_ARCH_x86_64",
+                "20_BOOT_GRUB_PC",
+                "30_DISK_SIMPLE_10G_EXT2",
+                "30_DISK_SIMPLE_10G_EXT3",
+                "30_DISK_SIMPLE_10G_EXT4",
+                "30_DISK_SIMPLE_10G_XFS",
+                "50_OS_UBUNTU_1004",
+                "50_OS_UBUNTU_1204",
+                "60_SW_KUBUNTU_DESKTOP",
+                "60_SW_UBUNTU_DESKTOP",
+                "70_USERS"
+                ]
+        for cl in defclasses:
+            xmlrpc_server.dc2.configuration.defaultclasses.add(cl)
 
 
 
