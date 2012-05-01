@@ -27,6 +27,7 @@ qx.Class.define("dc2.models.DefaultModel",
         var username=dc2.helpers.BrowserCheck.HTTPUsername();
         var password=dc2.helpers.BrowserCheck.HTTPPassword();
         if (username != null) {
+          console.log("Initialized");
           this._rpc.setUseBasicHttpAuth(true);
           this._rpc.setPassword(password);
           this._rpc.setUsername(username);
