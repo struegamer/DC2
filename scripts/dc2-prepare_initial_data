@@ -41,17 +41,15 @@ def add_inventory_options(options=None,xmlrpc_server=None):
 def add_default_classes(options=None,xmlrpc_server=None):
     if options is not None and xmlrpc_server is not None:
         defclasses=[
-                "10_ARCH_x86_64",
-                "20_BOOT_GRUB_PC",
-                "30_DISK_SIMPLE_10G_EXT2",
-                "30_DISK_SIMPLE_10G_EXT3",
-                "30_DISK_SIMPLE_10G_EXT4",
-                "30_DISK_SIMPLE_10G_XFS",
-                "50_OS_UBUNTU_1004",
-                "50_OS_UBUNTU_1204",
-                "60_SW_KUBUNTU_DESKTOP",
-                "60_SW_UBUNTU_DESKTOP",
-                "70_USERS"
+                {"classname":"10_ARCH_x86_64","description":"Default Class for X86_64 Architectures"},
+                {"classname":"20_BOOT_GRUB_PC","description":"Default Classes for GRUB2 Bootloader"},
+                {"classname":"30_DISK_SIMPLE_10G_EXT2","description":"Default Class for a 10G Disklayout with Ext2 as default filesystem"},
+                {"classname":"30_DISK_SIMPLE_10G_EXT3","description":"Default Class for a 10G Disklayout with Ext3 as default filesystem"},
+                {"classname":"30_DISK_SIMPLE_10G_EXT4","description":"Default Class for a 10G Disklayout with Ext4 as default filesystem"},
+                {"classname":"30_DISK_SIMPLE_10G_XFS","description":"Default Class for a 10G Disklayout with XFS as default filesystem"},
+                {"classname":"50_OS_UBUNTU_1004","description":"Default Class for OS Ubuntu 10.04 LTS"},
+                {"classname":"50_OS_UBUNTU_1204","description":"Default Class for OS Ubuntu 12.04 LTS"},
+                {"classname":"70_USERS","description":"Default Class to install default users"}
                 ]
         for cl in defclasses:
             xmlrpc_server.dc2.configuration.defaultclasses.add(cl)
