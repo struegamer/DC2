@@ -36,6 +36,12 @@ def add_inventory_options(options=None,xmlrpc_server=None):
                 env_inventory["variables"].append({"name":"DC2_BACKEND_URL","value":"http://localhost/RPC"})
             xmlrpc_server.dc2.configuration.environments.add(env_inventory)
             add_default_classes(options,xmlrpc_server)
+            xmlrpc_server.dc2.configuration.environments.copy("INVENTORY","EXAMPLE_ENVIRONMENT")
+            example_env=xmlrpc_server.dc2.configuration.environments.list({"name":"EXAMPLE_ENVIRONMENT"})[0]
+            example_env["description"]="Example Environment definition"
+            example_env["variables"].append({"DNSSERVERS":"8.8.8.8"})
+            example_env["variables"].append({"DEFAULT_TIMEZONE","Etc/UTC"})
+            xmlrpc_server.dc2.configuration.environments.update(example_env)
 
 
 def add_default_classes(options=None,xmlrpc_server=None):

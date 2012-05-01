@@ -106,5 +106,5 @@ def dc2_deployment_environments_copy(old_env=None,new_env=None):
             old_env_rec["name"]=new_env
             del old_env_rec["_id"]
             tbl_environments.save(old_env_rec)
-            return true
+            return True
     return False
