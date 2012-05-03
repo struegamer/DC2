@@ -49,11 +49,17 @@ def write_host_network_configuration(host=None):
             print "#"
             print "# This file is managed by DataCenter Deployment Control"
             print "#"
+            already_auto={}
             for interface in host["interfaces"]:
                 if interface.has_key("type"):
                     print
-                    print "auto %s" % interface["name"]
-                    print "iface %s inet %s" % (interface["name"],interface["inet"])
+                    if not already_auto.has_key(interface["name"]):
+                        print "auto %s" % interface["name"]
+                        already_auto[interface["name"]]=True
+                    if interface["is_ipv6"]:
+                        print "iface %s inet6 %s" % (interface["name"],interface["inet"])
+                    else:
+                        print "iface %s inet %s" % (interface["name"],interface["inet"])
                     if interface.has_key("inet") and interface["inet"]=="static":
                         write_standard_settings(interface)
                     if interface.has_key("inet") and interface["inet"]=="manual":
@@ -74,4 +80,6 @@ def write_host_network_configuration(host=None):
                                 print "iface %s inet manual" % slave
                                 print "\tbond-master %s" % interface["name"]
                                 print "\tbond-primary %s" % interface["slaves"].strip()
-
+                    if interface["type"]=="vlan":
+                        # TODO: Implement
+                        pass

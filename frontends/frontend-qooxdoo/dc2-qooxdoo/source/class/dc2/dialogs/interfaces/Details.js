@@ -441,6 +441,7 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       interfaces["name"]=this._edit_interface_name.getValue();
       interfaces["type"]=this._edit_interface_types.getSelection()[0].getModel();
       interfaces["inet"]=this._edit_interface_inet_types.getSelection()[0].getModel();
+      interfaces["is_ipv6"]=this._compInterfaceIsIpV6.getValid();
       if (interfaces["type"]=="loopback" && interfaces["inet"]=="loopback") {
         interfaces["ip"]=null;
         interfaces["netmask"]=null;
