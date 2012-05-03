@@ -52,6 +52,7 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
     _compInterfaceDetails:null,
     _compInterfaceSettings_interface_type:null,
     _compinterfaceSettings_interface_inet_type:null,
+    _compinterfaceSettings_interface_ipv6_type:null,
     _compInterfaceNames_name:null,
     _compInterfaceNames_hwdevices:null,
     _compInterfaceDetails_ip:null,
@@ -59,6 +60,7 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
     _compInterfaceDetails_gateway:null,
     _compInterfaceBondingSlaves:null,
     _compInterfaceVlanRawDevice:null,
+    _compInterfaceIsIpV6:null,
     _btnApply:null,
     _createLayout:function() {
       var layout=new qx.ui.layout.VBox(5);
@@ -85,6 +87,8 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._edit_interface_pre_down=new qx.ui.form.TextArea();
       this._edit_interface_post_up=new qx.ui.form.TextArea();
       this._edit_interface_post_down=new qx.ui.form.TextArea();
+      this._compInterfaceIsIpV6=new qx.ui.form.CheckBox();
+      this._compInterfaceIsIpV6.setValid(false);
       
       var tabView=new qx.ui.tabview.TabView();
       var interfacePage=new qx.ui.tabview.Page("Interfaces");
@@ -149,9 +153,15 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._compinterfaceSettings_interface_inet_type=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compinterfaceSettings_interface_inet_type.add(new qx.ui.basic.Label("Inet Type"));
       this._compinterfaceSettings_interface_inet_type.add(this._edit_interface_inet_types);
+
+      this._compinterfaceSettings_interface_ipv6_type=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+      this._compinterfaceSettings_interface_ipv6_type.add(new qx.ui.basic.Label("IPv6?"));
+      this._compinterfaceSettings_interface_ipv6_type.add(this._compInterfaceIsIpV6);
+
       
       this._compInterfaceSettings.add(this._compInterfaceSettings_interface_type,{flex:1});
       this._compInterfaceSettings.add(this._compinterfaceSettings_interface_inet_type,{flex:1});
+      this._compInterfaceSettings.add(this._compinterfaceSettings_interface_ipv6_type,{flex:1});
       
     },
     _initialize_compInterfaceNames:function() {
