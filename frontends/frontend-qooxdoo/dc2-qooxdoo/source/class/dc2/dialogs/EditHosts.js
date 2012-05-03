@@ -459,7 +459,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
               item.setModel(e.getData());
             }
           } else {
-            if (item != null and !item["is_ipv6"]) {
+            if (item != null && !item["is_ipv6"]) {
               var dialog=new dc2.widgets.MessageBox("error","Error adding new interface","You already have an interface with the name of "+e.getData()["name"]);
               dialog.addListener("close",function(e) { delete dialog; },this);
             }
