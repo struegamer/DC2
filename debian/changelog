@@ -1,3 +1,9 @@
+dc2 (0.8-0ubuntu1~precise3) precise; urgency=low
+
+  * IPv6 Funcs
+
+ -- Stephan Adig <sh@sourcecode.de>  Thu, 03 May 2012 19:58:11 +0200
+
 dc2 (0.8-0ubuntu1~precise2) precise; urgency=low
 
   * Bugfix
