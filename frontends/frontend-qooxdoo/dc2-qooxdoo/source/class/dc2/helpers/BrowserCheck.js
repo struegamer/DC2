@@ -28,13 +28,13 @@ qx.Class.define("dc2.helpers.BrowserCheck",
           }
         },
         HTTPUsername:function() {
-          a=localStorage.getItem("DC2-Username");
+          var a=localStorage.getItem("DC2-Username");
           if (a != null) {
             return a;
           }
         },
         HTTPPassword:function() {
-          a=localStorage.getItem("DC2-Password");
+          var a=localStorage.getItem("DC2-Password");
           if (a != null) {
             return a;
           }

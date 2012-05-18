@@ -377,7 +377,8 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         //
         if (this._interface_data != null) {
           if (this._interface_data["slaves"]!=null) {
-            var iarray=this._interface_data["slaves"].split(" ");
+            // var iarray=this._interface_data["slaves"].split(" ");
+            var iarray=this._interface_data["slaves"]
             this._edit_interface_slaves.setModelSelection(iarray);
           }
 
@@ -452,8 +453,10 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       if (interfaces["type"]=="bond_1" || interfaces["type"]=="bond_2") {
         interfaces["slaves"]="";
         var slaves=this._edit_interface_slaves.getSelection();
+        interfaces["slaves"]=[]
         for (var i=0;i<slaves.length;i++) {
-          interfaces["slaves"]=interfaces["slaves"]+" "+slaves[i].getModel();
+          interfaces["slaves"].push(slaves[i].getModel());
+          //  interfaces["slaves"]+" "+slaves[i].getModel();
         }
       } else {
         interfaces["slaves"]=null;
