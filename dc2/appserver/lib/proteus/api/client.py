@@ -44,13 +44,12 @@ TYPE_IP4BLOCK='IP4Block'
 TYPES=(TYPE_CONFIGURATION,TYPE_VIEW,TYPE_ZONE,TYPE_HOSTRECORD,TYPE_IP4BLOCK)
 
 
-class ProteusClient(object):
+class ProteusClientApi(object):
     def __init__(self,api_url=None,api_user=None,api_password=None):
         self._api_url=api_url
         self._api_user=api_user
         self._api_password=api_password
         self._client=None
-        self._configuration=None
         self._is_connected=None
         self._is_authenticated=None
     def _connect(self):
@@ -104,4 +103,37 @@ class ProteusClient(object):
                 print e
                 return False
         return None
+
+    def is_valid_connection(self):
+        if self._is_connected and self._is_authenticated:
+            return True
+        return False
 	
+class ProteusClient(ProteusClientApi):
+    def __init__(self,api_url=None,api_user=None,api_password=None,config_name=None):
+        super(ProteusClientApi).__init__(self,api_url,api_user,api_password)
+        self._config_name=config_name
+        self._configuration=None
+
+    def _get_configuration(self):
+        if self.is_valid_connection():
+            try:
+                # parent_id is 0 for configuratioin objects
+                self._configuration=self._get_entity_by_name(0,config_name,TYPE_CONFIGURATION)
+                return True
+            except Exception,e:
+                print e
+                return False
+        return False
+
+    def get_view(self,view_name):
+        if self._configuration is None:
+            self._get_configuration()
+        if self.is_valid_connection():
+            view=self._get_entity_by_name(self._configuration['id'],view_name,TYPE_VIEW)
+            return view
+        return None
+
+    def get_zone(self,zone_name):
+        if self._configuration is None:
+            self._get_configuration()
