@@ -134,6 +134,37 @@ class ProteusClient(ProteusClientApi):
             return view
         return None
 
-    def get_zone(self,zone_name):
+    def get_zone(self,zone_name=None,view_id=None,view_name=None):
         if self._configuration is None:
             self._get_configuration()
+        if self._is_valid_connection():
+            if zone_name is not None and zone_name !="":
+                if view_id is not None and view_id >= 0:
+                    zone=self._get_entity_by_name(view_id,zone_name,TYPE_ZONE)
+                    return zone
+                elif view_id is None and view_name is not None and view_name != '':
+                    view=get_view(view_name)
+                    zone=self._get_entity_by_name(view['id'],zone_name,TYPE_ZONE)
+                    return zone
+        return False
+
+    def get_host_record(self,hostname,view):
+        if self._configuration is None:
+            self._get_configuration()
+        if self._is_valid_connection():
+            host_arr=hostname.split(".")
+            count=len(host_arr)
+            parent_id=view['id']
+            for i in reversed(host_arr):
+                if count != 1:
+                    zone=self.get_zone(i,parent_id)
+                    parent_id=zone['id']
+                if count == 1:
+                    record=self._get_entity_by_name(parent_id,i,TYPE_HOSTRECORD)
+                    if record != '':
+                        return record
+                    else:
+                        return None
+                count=count-1
+        return None
+        
