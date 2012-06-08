@@ -1,0 +1,107 @@
+# -*- coding: utf-8 -*-
+#################################################################################
+#
+#    (DC)² - DataCenter Deployment Control
+#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#################################################################################
+
+#################################################################################
+# 
+# Additional Copyright and Trademark Information
+# 
+# Proteus (tm) IP Addess Management (IPAM) 
+# is a product of BLUECAT Networks (tm) and is not OpenSource.
+# 
+#################################################################################
+
+import sys
+
+try:
+    from suds.client import Client
+except ImportError,e:
+    print "You don't have the python suds library installed."
+    sys.exit(1)
+
+TYPE_CONFIGURATION='Configuration'
+TYPE_VIEW='View'
+TYPE_ZONE='Zone'
+TYPE_HOSTRECORD='HostRecord'
+TYPE_IP4BLOCK='IP4Block'
+
+TYPES=(TYPE_CONFIGURATION,TYPE_VIEW,TYPE_ZONE,TYPE_HOSTRECORD,TYPE_IP4BLOCK)
+
+
+class ProteusClient(object):
+    def __init__(self,api_url=None,api_user=None,api_password=None):
+        self._api_url=api_url
+        self._api_user=api_user
+        self._api_password=api_password
+        self._client=None
+        self._configuration=None
+        self._is_connected=None
+        self._is_authenticated=None
+    def _connect(self):
+        if self.client is not None:
+            raise Exception('Disconnect first')
+        self._client=Client('%s?wsdl' % self._api_url)
+        self._client.set_options(location=self._api_url)
+        self._is_connected=True
+
+    def _disconnect(self):
+        self._client=None
+        self._is_connected=False
+
+    def login(self):
+        try:
+            self._connect()
+            self._client.service.login(self._api_user,self._api_password)
+            self._is_authenticated=True
+            return True
+        except Exception,e:
+            print e
+            return False
+
+    def logout(self):
+        try:
+            self._client.service.logout()
+            self._is_authenticated=False
+            self._disconnect()
+            return True
+        except Exception,e:
+            print e
+
+    def _get_entity_by_name(self,parent_id,entity_name,entity_type):
+        if entity_type not in TYPES:
+            raise Exception("Unknown Entity Type")
+        if self._is_connected:
+            try:
+                entity=self._client.service.getEntityByName(parent_id,entity_name,entity_type)
+                return entity
+            except Exception,e:
+                print e
+                return False
+        return None
+
+    def _get_entities(self,parent_id,entity_type,start=1,count=1):
+        if self._is_connected:
+            try:
+                entity=self._client.service.getEntities(parent_id,entity_type,start,count)
+                return entity
+            except Exception,e:
+                print e
+                return False
+        return None
+	
