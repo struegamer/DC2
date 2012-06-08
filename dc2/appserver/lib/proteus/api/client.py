@@ -152,19 +152,20 @@ class ProteusClient(ProteusClientApi):
         if self._configuration is None:
             self._get_configuration()
         if self._is_valid_connection():
-            host_arr=hostname.split(".")
-            count=len(host_arr)
-            parent_id=view['id']
-            for i in reversed(host_arr):
-                if count != 1:
-                    zone=self.get_zone(i,parent_id)
-                    parent_id=zone['id']
-                if count == 1:
-                    record=self._get_entity_by_name(parent_id,i,TYPE_HOSTRECORD)
-                    if record != '':
-                        return record
-                    else:
-                        return None
-                count=count-1
+            if view is not None:
+                host_arr=hostname.split(".")
+                count=len(host_arr)
+                parent_id=view['id']
+                for i in reversed(host_arr):
+                    if count != 1:
+                        zone=self.get_zone(i,parent_id)
+                        parent_id=zone['id']
+                    if count == 1:
+                        record=self._get_entity_by_name(parent_id,i,TYPE_HOSTRECORD)
+                        if record != '':
+                            return record
+                        else:
+                            return None
+                    count=count-1
         return None
         
