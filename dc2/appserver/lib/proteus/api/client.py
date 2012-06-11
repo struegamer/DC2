@@ -134,6 +134,14 @@ class ProteusClient(ProteusClientApi):
             return view
         return None
 
+    def get_views(self):
+        if self._configuration is None:
+            self._get_configuration()
+        if self.is_valid_connection():
+            views=self._get_entities(self._configuration['id'],TYPE_VIEW,1,99999)
+            return views
+        return None
+
     def get_zone(self,zone_name=None,view_id=None,view_name=None):
         if self._configuration is None:
             self._get_configuration()
@@ -168,4 +176,4 @@ class ProteusClient(ProteusClientApi):
                             return None
                     count=count-1
         return None
-        
+
