@@ -18,4 +18,5 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
+__import__('pkg_resources').declare_namespace(__name__)
 
