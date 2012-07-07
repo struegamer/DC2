@@ -28,7 +28,7 @@ Depends: ${python:Depends}, ${misc:Depends},
 	python-webpy (>= 1:0.34), 
 	python-pymongo (>= 1.11), 
 	python-openssl (>= 0.12),
-	python-dateutil (>= 1.4.1-4)
+	python-dateutil (>= 1.4.1-4),
 	python-dc2
 Conflicts: fai-nfsroot
 Description: DC² is a bookkeeping tool for automatic deployments
