@@ -31,7 +31,10 @@ def write_standard_settings(interface=None):
         if interface.has_key("ip") and interface["ip"] is not None and interface["ip"] != "":
             print "\taddress %s" % interface["ip"]
         if interface.has_key("netmask") and interface["netmask"] is not None and interface["netmask"]!="":
-            print "\tnetmask %s" % interface["netmask"]
+            if interface['is_ipv6']:
+                print "\tprefix %s" % interface["netmask"]
+            else:
+                print "\tnetmask %s" % interface["netmask"]
         if interface.has_key("gateway") and interface["gateway"] is not None and interface["gateway"]!="":
             print "\tgateway %s" % interface["gateway"]
         if interface.has_key("pre_up") and interface["pre_up"] is not None and interface["pre_up"] != "":
