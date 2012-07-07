@@ -23,6 +23,15 @@ from distutils.core import setup
 from distutils.file_util import copy_file
 from distutils.command.install_scripts import install_scripts
 
+setup(name='dc2',
+        version='0.8',
+        description='DC² Namespace Package',
+        author='Stephan Adig',
+        author_email='sh@sourcecode.de',
+        url='http://launchpad.net/dc2',
+        packages=['dc2']
+)
+
 setup(name="dc2.distrotools",
       version="0.1",
       description="DC² Distrotools",
