@@ -33,7 +33,7 @@ setup(name='dc2',
 )
 
 setup(name="dc2.distrotools",
-      version="0.1",
+      version="0.8'",
       description="DC² Distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -47,7 +47,7 @@ setup(name="dc2.distrotools",
 )
 
 setup(name="dc2.client",
-        version="0.1",
+        version="0.8'",
         description="DC² Client",
         author="Stephan Adig",
         author_email="sh@sourcecode.de",
@@ -70,7 +70,7 @@ setup(name="dc2.client",
 )
 
 setup(name="dc2.appserver",
-        version="0.1",
+        version="0.8'",
         description="DC² Application Server",
         author="Stephan Adig",
         author_email="sh@sourcecode.de",
