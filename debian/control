@@ -7,6 +7,19 @@ X-Python-Version: >= 2.6
 Build-Depends: debhelper (>= 8), python-all (>= 2.6), qooxdoo-framework1.5
 Homepage: http://launchpad.net/dc2
 
+Package: python-dc2
+Section: python
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² main namespace package
+
+
 Package: python-dc2.appserver
 Section: python
 Architecture: all
@@ -16,6 +29,7 @@ Depends: ${python:Depends}, ${misc:Depends},
 	python-pymongo (>= 1.11), 
 	python-openssl (>= 0.12),
 	python-dateutil (>= 1.4.1-4)
+	python-dc2
 Conflicts: fai-nfsroot
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
@@ -29,7 +43,8 @@ Description: DC² is a bookkeeping tool for automatic deployments
 Package: python-dc2.client
 Section: python
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}
+Depends: ${python:Depends}, ${misc:Depends},
+	python-dc2
 Conflicts: python-dc2.appserver, fai
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
@@ -42,7 +57,7 @@ Description: DC² is a bookkeeping tool for automatic deployments
 Package: python-dc2.distrotools
 Section: python
 Architecture: all
-Depends: ${python:Depends},${misc:Depends}, python-yaml
+Depends: ${python:Depends},${misc:Depends}, python-yaml, python-dc2
 Conflicts: python-dc2.client, fai-nfsroot
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
