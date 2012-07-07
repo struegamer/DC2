@@ -1,3 +1,9 @@
+dc2 (0.8-0ubuntu1~precise6) precise; urgency=low
+
+  * Bumping
+
+ -- Stephan Adig <sh@sourcecode.de>  Sun, 08 Jul 2012 00:47:18 +0200
+
 dc2 (0.8-0ubuntu1~precise4) precise; urgency=low
 
   * New upstream 

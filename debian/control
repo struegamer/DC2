@@ -7,7 +7,7 @@ X-Python-Version: >= 2.6
 Build-Depends: debhelper (>= 8), python-all (>= 2.6), qooxdoo-framework1.5
 Homepage: http://launchpad.net/dc2
 
-Package: python-dc2-appserver
+Package: python-dc2.appserver
 Section: python
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends},
@@ -26,11 +26,11 @@ Description: DC² is a bookkeeping tool for automatic deployments
  This package includes the DC² backend framework.
 
 
-Package: python-dc2-client
+Package: python-dc2.client
 Section: python
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
-Conflicts: python-dc2-appserver, fai
+Conflicts: python-dc2.appserver, fai
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
  It helps System Administrators to have a clean way of deployment of
@@ -39,11 +39,11 @@ Description: DC² is a bookkeeping tool for automatic deployments
  .
  This package includes the DC² client library.
 
-Package: python-dc2-distrotools
+Package: python-dc2.distrotools
 Section: python
 Architecture: all
 Depends: ${python:Depends},${misc:Depends}, python-yaml
-Conflicts: python-dc2-client, fai-nfsroot
+Conflicts: python-dc2.client, fai-nfsroot
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
  It helps System Administrators to have a clean way of deployment of
@@ -55,8 +55,8 @@ Description: DC² is a bookkeeping tool for automatic deployments
 Package: dc2-distrotools
 Section: admin
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, debmirror, python-dc2-distrotools
-Conflicts: python-dc2-client, fai-nfsroot
+Depends: ${python:Depends}, ${misc:Depends}, debmirror, python-dc2.distrotools
+Conflicts: python-dc2.client, fai-nfsroot
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
  It helps System Administrators to have a clean way of deployment of
@@ -68,8 +68,8 @@ Description: DC² is a bookkeeping tool for automatic deployments
 Package: dc2-client
 Section: admin
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends},python-dc2-client
-Conflicts: python-dc2-appserver, fai
+Depends: ${python:Depends}, ${misc:Depends},python-dc2.client
+Conflicts: python-dc2.appserver, fai
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
  It helps System Administrators to have a clean way of deployment of
@@ -82,7 +82,7 @@ Package: dc2-appserver
 Section: admin
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends},
-	python-dc2-appserver (>= 0.1),
+	python-dc2.appserver (>= 0.1),
 	mongodb-server (>= 1:1.8.2), 
 	apache2,
 	libapache2-mod-wsgi
