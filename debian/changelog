@@ -1,3 +1,9 @@
+dc2 (0.8-0ubuntu1~precise4) precise; urgency=low
+
+  * New upstream 
+
+ -- Stephan Adig <sh@sourcecode.de>  Sat, 07 Jul 2012 23:56:59 +0200
+
 dc2 (0.8-0ubuntu1~precise3) precise; urgency=low
 
   * IPv6 Funcs
