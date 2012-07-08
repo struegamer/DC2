@@ -1,2 +1,3 @@
 /usr/bin/dc2-mirror
+/usr/bin/dc2-create-chroot
 /usr/share/doc/dc2-distrotools/
