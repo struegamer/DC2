@@ -65,7 +65,7 @@ def do_debian_chroot(config=None,which_suite=None):
             call1_args.append(temppath)
             call1_args.append("--exclude=*.deb")
             call1_args.append("-cvpzf")
-            call1_args.append("%s/%s.tgz" % (config["config"]["basefiles_directory"],suite["arch"][arch]["classname"])
+            call1_args.append("%s/%s.tgz" % (config["config"]["basefiles_directory"],suite["arch"][arch]["classname"]))
             call1_args.append(".")
             subprocess.call(call1_args)
             shutil.rmtree(temppath)
