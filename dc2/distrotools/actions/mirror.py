@@ -44,7 +44,7 @@ def do_mirror_job(default_config=None, distributions=None,distro_type=None):
         return None
     if distro_type in ["ubuntu","debian"]:
         do_debian_mirror_job(default_config,distributions,distro_type)
-    if distro_typE in ["centos"]:
+    if distro_type in ["centos"]:
         do_rsync_mirror_job(default_config,distributions,distro_type)
 
 
