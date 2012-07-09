@@ -31,7 +31,11 @@ class MACs(object):
             if mac_list is not None and len(mac_list)>0 and mac_list[0] is not None:
                 return mac_list[0]
         return None
-    
+    def find_by_device_name(self,server_id=None,device_name=None):
+      if server_id is not None and device_name is not None:
+        mac_list=self._proxy.dc2.inventory.servers.macaddr.find({'server_id':server_id,'device_name':device_name})
+        if mac_list is not None and len(mac_list)>0 and mac_list[0] is not None:
+          return mac_list[0]
     
 
    
