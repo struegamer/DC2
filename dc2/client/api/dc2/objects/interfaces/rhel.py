@@ -30,45 +30,75 @@ def running_in_fai():
 def write_interface_file(interface_name=None,contents=None):
     if running_in_fai():
         target_dir=os.environ['target']
-    fp=open('%s/etc/sysconfig/network-scripts/ifcfg-%s' % (target_dir,interface['name']),'wb')
+    fp=open('%s/etc/sysconfig/network-scripts/ifcfg-%s' % (target_dir,interface_name),'wb')
     fp.write('#\n')
     fp.write('# This file was created by (DC)²\n')
     fp.write('#\n\n')
     fp.write(contents)
     fp.close()
 
+def write_interface_route_file(interface_name=None, contents=None):
+    if running_in_fai():
+        target_dir=os.environ['target']
+    fp=open('%s/etc/sysconfig/network-scripts/route-%s' % (target_dir, interface_name),'wb')
+    fp.write('#\n')
+    fp.write('# This file was created by (DC)²\n')
+    fp.write('#\n\n')
+    fp.write(contents)
+    fp.close()
+	
+def write_interface_slave_file(interface_name=None):
+    pass
+
 def write_host_network_configuration(host=None):
     if host is not None:
         if host.has_key('interfaces'):
-        for interface in host['interfaces']:
-            contents=''
-            if interface['type']=='loopback':
-                if interface['inet']=='loopback':
-                    contents+='DEVICE=%s\n' % interface['name']
-                    contents+='IPADDR=127.0.0.1\n'
-                    contents+='NETMASK=255.0.0.0\n'
-                    contents+='NETWORK=127.0.0.0\n'
-                    contents+='BROADCAST=127.255.255.255\n'
-                    contents+='ONBOOT=yes\n'
-                    contents+='NAME=loopback\n'
-                if interface['inet']!='loopback':
-                    contents+='DEVICE=%s\n' % interface['name']
-                    contents+='IPADDR=%s\n' % interface['ip']
-                    contents+='NETMASK=%s\n' % interface['netmask']
+            for interface in host['interfaces']:
+                contents=''
+                contents+='DEVICE=%s\n' % interface['name']
+                if interface['type']=='loopback':
+                    if interface['inet']=='loopback':
+                        contents+='IPADDR=127.0.0.1\n'
+                        contents+='NETMASK=255.0.0.0\n'
+                        contents+='NETWORK=127.0.0.0\n'
+                        contents+='BROADCAST=127.255.255.255\n'
+                        contents+='ONBOOT=yes\n'
+                        contents+='NAME=loopback\n'
+                    if interface['inet']!='loopback':
+                        contents+='IPADDR=%s\n' % interface['ip']
+                        contents+='NETMASK=%s\n' % interface['netmask']
+                        contents+='ONBOOT=yes\n'
+                        contents+='NAME=%s\n' % interface['name']
+                    write_interface_file(interface['name'],contents)
+                if interface['type']=='ethernet':
                     contents+='ONBOOT=yes\n'
                     contents+='NAME=%s\n' % interface['name']
-                write_interface_file(interface['name'],contents)
-            if interface['type']=='ethernet':
-                contents+='DEVICE=%s\n' % interface['name']
-                contents+='ONBOOT=yes\n'
-                contents+='NAME=%s\n' % interface['name']
-                if interface['inet']=='static':
-                    contents+='IPADDR=%s\n' % interface['ip']
-                    contents+='NETMASK=%s\n' % interface['netmask']
-                    contents+='BOOTPROTO=none\n'
-                write_interface_file(interface['name'],contents)
-        if interface['type']=='bond_1' or interface['type']=='bond_2':
-          pass
-        if interface['type']=='vlan':
-          pass
-        fp.close()
+                    if interface['inet']=='static':
+                        contents+='IPADDR=%s\n' % interface['ip']
+                        contents+='NETMASK=%s\n' % interface['netmask']
+                        contents+='BOOTPROTO=none\n'
+                    if interface['inet']=='dhcp':
+                        contents+='BOOTPROTO=dhcp'					
+                    write_interface_file(interface['name'],contents)
+                if interface['type']=='bond_1' or interface['type']=='bond_2':
+                    contents+='ONBOOT=yes\n'
+                    contents+='NAME=%s\n' % interface['name']
+                    if interface['type']=='bond_1':
+                        contents+='BONDING_OPTS="mode=1 miimon=100 updelay=200"\n'
+                    if interface['type']=='bond_2':
+                        contents+='BONDING_OPTS="mode=2 miimon=100 xmit_hash_policy=2"\n'
+                    if interface['inet']=='static':
+                        contents+='IPADDR=%s\n' % interface['ip']
+                        contents+='NETMASK=%s\n' % interface['netmask']
+                        contents+='BOOTPROTO=none\n'
+                    write_interface_file(interface['name'],contents)
+                    if interface.has_key('slaves'):
+                        for slave in interface['slaves']:
+                            write_interface_slave_file(slave)
+                    if interface['inet']=='dhcp':
+                        contents+='BOOTPROTO=dhcp\n'
+
+                if interface['type']=='vlan':
+                  pass  
+                if interface.has_key('gateway') and interface['gateway'] is not None and interface['gateway']!='':
+                    write_interface_route_file(interface['name'],'default via %s dev %s\n' % (interface['gateway'],interface['name']))
