@@ -63,9 +63,10 @@ def write_interface_slave_file(interface_name=None,bond_name=None):
     fp.close()
 
 
-def write_host_network_configuration(host=None):
+def write_host_network_configuration(host=None,dc2_backend_url=None):
     if host is not None:
         if host.has_key('interfaces'):
+            macs=MACs(dc2_backend_url)
             for interface in host['interfaces']:
                 contents=''
                 contents+='DEVICE=%s\n' % interface['name']
@@ -90,6 +91,8 @@ def write_host_network_configuration(host=None):
                         contents+='IPADDR=%s\n' % interface['ip']
                         contents+='NETMASK=%s\n' % interface['netmask']
                         contents+='BOOTPROTO=none\n'
+                        iface_mac=macs.find_by_device_name(host['server_id'],interface['name'])
+                        contents+='HWADDR=%s\n' % iface_mac['mac_addr']
                     if interface['inet']=='dhcp':
                         contents+='BOOTPROTO=dhcp'					
                     write_interface_file(interface['name'],contents)
