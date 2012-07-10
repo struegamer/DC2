@@ -79,11 +79,11 @@ def write_ifup_local_file():
 DEVICE=$1
 if [ "`basename $0`" = "ifup-local" ]; then
 	if [ -e /etc/sysconfig/network-scripts/ifcfg-postup-${DEVICE} ]; then
-		./etc/sysconfig/network-scripts/ifcfg-postup-${DEVICE}
+		/bin/bash /etc/sysconfig/network-scripts/ifcfg-postup-${DEVICE}
 	fi
 else
 	if [ -e /etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} ]; then
-		./etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} 
+		/bin/bash /etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} 
 	fi
 fi
 
