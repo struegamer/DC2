@@ -18,15 +18,27 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
-
 import sys
 import os
 import os.path
 import argparse
 
+DEFAULT_CONFIG_FILE='~/.dc2/dc2-cli.yaml'
+
+try:
+    from dc2.helpers.config import Configuration
+
+def init_config(filename):
+    configuration=Configuration(filename)
+    return configuration
+
 def instances(args):
+    configuration=None
     if args.config_file is None:
-        pass
+        configuration=init_config(DEFAULT_CONFIG_FILE)
+    else:
+        configuration=init_config(args.config_file)
+
 
 
 def servers(args):

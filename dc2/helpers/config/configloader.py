@@ -28,17 +28,30 @@ except ImportError,e:
     print e
     sys.exit(e)
 
-def read_yaml_file(filename=None,check_config=None):
-    if filename is None or filename=='':
-        raise IOError('No filename given')
-    if not os.path.exists(filename):
-        raise IOError('File not found')
-    fp=open(filename,'rb')
-    yaml_file=fp.read()
-    fp.close()
-    config_space=yaml.load(yaml_file)
-    if check_config is not None:
-        if check_config(config_space,filename):
-            return config_space
-    return None
-    
+class Configuration(object):
+    def __init__(self,filename=None,check_config=None):
+        if filename is None or filename=='':
+            raise IOError('No filename given')
+        if not os.path.exists(filename):
+            raise IOError('File not found')
+        self._configfilename=filename
+        self._func_check_config=check_config
+        self._read_yaml_file()
+        
+    def _read_yaml_file(self):
+        fp=open(filename,'rb')
+        yaml_file=fp.read()
+        fp.close()
+        self._config_space=yaml.load(yaml_file)
+        if self._check_config():
+            return True
+        return False
+
+    def _check_config(self):
+        if self._func_check_config is not None:
+            if self._func_check_config(self._config_space,self._configfilename):
+                return True
+        return False
+
+    def get_config_space(self):
+        return self._config_space
