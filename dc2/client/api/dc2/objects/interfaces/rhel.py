@@ -20,7 +20,7 @@
 
 import sys
 import os
-from dc2.client.api.dc2 import Servers
+from dc2.client.api.dc2 import MACs
 
 def running_in_fai():
     if os.environ.has_key('FAI_VERSION'):
@@ -47,8 +47,21 @@ def write_interface_route_file(interface_name=None, contents=None):
     fp.write(contents)
     fp.close()
 	
-def write_interface_slave_file(interface_name=None):
-    pass
+def write_interface_slave_file(interface_name=None,bond_name=None):
+    if running_in_fai():
+        target_dir=os.environ['target']
+    fp=open('%s/etc/sysconfig/network-scripts/ifcfg-%s' % (target_dir,interface_name),'wb')
+    fp.write('#\n')
+    fp.write('# This file was created by (DC)²\n')
+    fp.write('#\n\n')
+    fp.write('DEVICE=%s\n' % interface_name)
+    fp.write('BOOTPROTO=none\n')
+    fp.write('ONBOOT=yes\n')
+    fp.write('MASTER=%s\n' % bond_name)
+    fp.write('SLAVE=yes\n')
+    fp.write('USERCTL=no\n')
+    fp.close()
+
 
 def write_host_network_configuration(host=None):
     if host is not None:
@@ -94,11 +107,14 @@ def write_host_network_configuration(host=None):
                     write_interface_file(interface['name'],contents)
                     if interface.has_key('slaves'):
                         for slave in interface['slaves']:
-                            write_interface_slave_file(slave)
+                            write_interface_slave_file(slave,interface['name'])
                     if interface['inet']=='dhcp':
                         contents+='BOOTPROTO=dhcp\n'
-
                 if interface['type']=='vlan':
-                  pass  
+                    contents+='VLAN=yes\n'
+                    contents+='VLAN_NAME_TYPE=VLAN_PLUS_VID_NO_PAD\n'
+                    contents+='BOOTPROTO=none\n'
+                    contents+='PHYSDEV=%s\n' % interface['vlan_raw_device']
+                    write_interface_file(interface['name'],contents)
                 if interface.has_key('gateway') and interface['gateway'] is not None and interface['gateway']!='':
                     write_interface_route_file(interface['name'],'default via %s dev %s\n' % (interface['gateway'],interface['name']))
