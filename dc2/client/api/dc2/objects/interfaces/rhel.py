@@ -99,6 +99,7 @@ def write_host_postupdates(interface_name=None,contents=None):
     fp=open('%s/etc/sysconfig/network-scripts/ifcfg-postup-%s' %(target_dir,interface_name),'wb')
     fp.write(contents)
     fp.close()
+    os.chmod('%s/etc/sysconfig/network-scripts/ifcfg-postup-%s' % (target_dir,interface_name),stat.S_IRWXU|stat.S_IRGRP|stat.S_IXGRP|stat.S_IROTH|stat.S_IXOTH)
 
 def write_host_network_configuration(host=None,dc2_backend_url=None):
     #
