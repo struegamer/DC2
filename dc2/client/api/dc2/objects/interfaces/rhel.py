@@ -20,6 +20,9 @@
 
 import sys
 import os
+import os.path
+import stat
+
 from dc2.client.api.dc2 import MACs
 
 def running_in_fai():
@@ -62,8 +65,40 @@ def write_interface_slave_file(interface_name=None,bond_name=None):
     fp.write('USERCTL=no\n')
     fp.close()
 
+def write_ifup_local_file():
+    if running_in_fai():
+        target_dir=os.environ['target']
+    fp=open('%s/sbin/ifup-local' % (target_dir),'wb')
+    contents="""
+#!/bin/bash
+#
+# this script was created by DC2
+# (C) 2010,2011,2012 Stephan Adig <sh@sourcecode.de>
+#
+
+DEVICE=$1
+if [ "`basename $0`" = "ifup-local" ]; then
+	if [ -e /etc/sysconfig/network-scripts/ifcfg-postup-${DEVICE} ]; then
+		./etc/sysconfig/network-scritps/ifcfg-postup-${DEVICE}
+	fi
+else
+	if [ -e /etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} ]; then
+		./etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} 
+	fi
+fi
+
+exit $?
+"""
+    fp.write(contents)
+    fp.close()
+    os.chmod('%s/sbin/ifup-local' % (target_dir),stat.S_IRWXU|stat.S_IRGRP|stat.S_IXGRP|stat.S_IROTH|stat.S_IXOTH)
 
 def write_host_network_configuration(host=None,dc2_backend_url=None):
+    #
+    # Create /sbin/ifup-local script
+    #
+    write_ifup_local_file()
+
     if host is not None:
         if host.has_key('interfaces'):
             macs=MACs(dc2_backend_url)
