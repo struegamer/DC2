@@ -93,6 +93,13 @@ exit $?
     fp.close()
     os.chmod('%s/sbin/ifup-local' % (target_dir),stat.S_IRWXU|stat.S_IRGRP|stat.S_IXGRP|stat.S_IROTH|stat.S_IXOTH)
 
+def write_host_postupdates(interface_name=None,contents=None):
+    if running_in_fai():
+        target_dir=os.environ['target']
+    fp=open('%s/etc/sysconfig/network-scripts/ifcfg-postup-%s' %(target_dir,interface_name),'wb')
+    fp.write(contents)
+    fp.close()
+
 def write_host_network_configuration(host=None,dc2_backend_url=None):
     #
     # Create /sbin/ifup-local script
@@ -156,3 +163,6 @@ def write_host_network_configuration(host=None,dc2_backend_url=None):
                     write_interface_file(interface['name'],contents)
                 if interface.has_key('gateway') and interface['gateway'] is not None and interface['gateway']!='':
                     write_interface_route_file(interface['name'],'default via %s dev %s\n' % (interface['gateway'],interface['name']))
+                if interface['post_up']:
+                    write_host_postup_file(interface['name'],interface['post_up'])
+
