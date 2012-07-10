@@ -165,5 +165,5 @@ def write_host_network_configuration(host=None,dc2_backend_url=None):
                 if interface.has_key('gateway') and interface['gateway'] is not None and interface['gateway']!='':
                     write_interface_route_file(interface['name'],'default via %s dev %s\n' % (interface['gateway'],interface['name']))
                 if interface['post_up']:
-                    write_host_postup_file(interface['name'],interface['post_up'])
+                    write_host_postupdates(interface['name'],interface['post_up'])
 
