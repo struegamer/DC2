@@ -85,7 +85,22 @@ setup(name="dc2.appserver",
             'dc2.appserver.globals',
             'dc2.appserver.helpers',
             'dc2.appserver.rpc',
-            'dc2.appserver.rpcmethods'
+            'dc2.appserver.rpcmethods',
         ],
         scripts=["scripts/dc2-prepare_initial_data"]
 )
+
+setup(name='dc2.lib',
+        version='0.9',
+        description='DC2 General Library',
+        author='Stephan Adig',
+        author_email='sh@sourcecode.de',
+        url='http://launchpad.net/dc2',
+        namespace_packages='dc2',
+        packages=[
+            'dc2.lib',
+            'dc2.lib.auth',
+            'dc2.lib.auth.kerberos'
+        ]
+    )
+
