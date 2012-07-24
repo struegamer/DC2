@@ -31,6 +31,12 @@ except ImportError,e:
     print "You don't have a settings file"
     sys.exit(1)
 
+try:
+    from dc2.lib.auth.kerberos import KerberosServerProxy
+except ImportError,e:
+    print "Your DC2 installation is not correct"
+    sys.exit(1)
+
 if not FREEIPA_ENABLED:
     print "You need to enable FREEIPA use"
     sys.exit(1)
@@ -38,77 +44,39 @@ if not KERBEROS_AUTH_ENABLED:
     print "You need to enable KERBEROS Authentication"
     sys.exit(1)
 
+iparpc=KerberosServerProxy(FREEIPA_SERVER_URL,FREEIPA_KERBEROS_SERVICE,allow_none=True)
+
 def host_add(host_dict=None):
+    """Needed input keys:
+        fqdn
+        description
+        locality
+        nshostlocation
+        nshardwareplatform
+        nsosversion
+        userpassword
+        random:True/false
+        usercertificate:base64
+        krbprincipalname
+        macaddress
+        ipasshpubkey:base64
+        sshpubkeyfp:ssh fingerprint
+    """
+    if host_dict is None or type(host_dict) is not types.DictType:
+        raise Exception('host_dict is none or not of type Dict')
     pass
 
- takes_params = (
-             Str('fqdn', _hostname_validator,
-                             cli_name='hostname',
-                                         label=_('Host name'),
-                                                     primary_key=True,
-                                                                 normalizer=normalize_hostname,
-                                                                         ),
-                     Str('description?',
-                                     cli_name='desc',
-                                                 label=_('Description'),
-                                                             doc=_('A description of this host'),
-                                                                     ),
-                             Str('l?',
-                                             cli_name='locality',
-                                                         label=_('Locality'),
-                                                                     doc=_('Host locality (e.g. "Baltimore, MD")'),
-                                                                             ),
-                                     Str('nshostlocation?',
-                                                     cli_name='location',
-                                                                 label=_('Location'),
-                                                                             doc=_('Host location (e.g. "Lab 2")'),
-                                                                                     ),
-                                             Str('nshardwareplatform?',
-                                                             cli_name='platform',
-                                                                         label=_('Platform'),
-                                                                                     doc=_('Host hardware platform (e.g. "Lenovo T61")'),
-                                                                                             ),
-                                                     Str('nsosversion?',
-                                                                     cli_name='os',
-                                                                                 label=_('Operating system'),
-                                                                                             doc=_('Host operating system and version (e.g. "Fedora 9")'),
-                                                                                                     ),
-                                                             Str('userpassword?',
-                                                                             cli_name='password',
-                                                                                         label=_('User password'),
-                                                                                                     doc=_('Password used in bulk enrollment'),
-                                                                                                             ),
-                                                                     Flag('random?',
-                                                                                     doc=_('Generate a random password to be used in bulk enrollment'),
-                                                                                                 flags=('no_search', 'virtual_attribute'),
-                                                                                                             default=False,
-                                                                                                                     ),
-                                                                             Str('randompassword?',
-                                                                                             label=_('Random ('usercertificate?', validate_certificate,
-                                                                                                             cli_name='certificate',
-                                                                                                                         label=_('Certificate'),
-                                                                                                                                     doc=_('Base-64 encoded server certificate'),
-                                                                                                                                             ),
-                                                                                                     Str('krbprincipalname?',
-                                                                                                                     label=_('Principal name'),
-                                                                                                                                 flags=['no_create', 'no_update', 'no_search'],
-                                                                                                                                         ),
-                                                                                                             Str('macaddress*',
-                                                                                                                             normalizer=lambda value: value.upper(),
-                                                                                                                                         pattern='^([a-fA-F0-9]{2}[:|\-]?){5}[a-fA-F0-9]{2}$',
-                                                                                                                                                     pattern_errmsg='Must be of the form HH:HH:HH:HH:HH:HH, where each H is a hexadecimal character.',
-                                                                                                                                                                 csv=True,
-                                                                                                                                                                             label=_('MAC address'),
-                                                                                                                                                                                         doc=_('Hardware MAC address(es) on this host'),
-                                                                                                                                                                                                 ),
-                                                                                                                     Bytes('ipasshpubkey*', validate_sshpubkey,
-                                                                                                                                     cli_name='sshpubkey',
-                                                                                                                                                 label=_('Base-64 encoded SSH public key'),
-                                                                                                                                                             flags=['no_search'],
-                                                                                                                                                                     ),
-                                                                                                                             Str('sshpubkeyfp*',
-                                                                                                                                             label=_('SSH public key fingerprint'),
-                                                                                                                                                         flags=['virtual_attribute', 'no_create', 'no_update', 'no_search'],
-                                                                                                                                                                 ),
-                                                                                                                             assword'),
+def host_find(host_dict=None):
+    if host_dict is None or type(host_dict) is not types.DictType:
+        raise Exception('host_dict is none or not of type Dict')
+    pass
 
+def host_del(host_dict=None):
+    if host_dict is None or type(host_dict) is not types.DictType:
+        raise Exception('host_dict is none or not of type Dict')
+    pass
+
+def host_mod(host_dict=None):
+    if host_dict is None or type(host_dict) is not types.DictType:
+        raise Exception('host_dict is none or not of type Dict')
+    pass
