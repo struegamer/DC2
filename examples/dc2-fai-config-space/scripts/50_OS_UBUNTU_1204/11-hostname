@@ -7,7 +7,7 @@ my_hostname=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --hos
 my_domainname=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=domainname --dc2-backend-url="${DC2_BACKEND_URL}"`
 
 # set hostname 
-echo "${my_hostname}" > $target/etc/hostname
+echo "${my_hostname}.${my_domainname}" > $target/etc/hostname
 
 # setup /etc/hosts
 cat <<EOF > $target/etc/hosts
