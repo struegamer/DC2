@@ -79,7 +79,6 @@ setup(name="dc2.appserver",
         packages=[
             'dc2.appserver',
             'dc2.appserver.apps',
-            'dc2.appserver.mongodb',
             'dc2.appserver.auth',
             'dc2.appserver.auth.rpcmethods',
             'dc2.appserver.globals',
@@ -101,6 +100,8 @@ setup(name='dc2.lib',
             'dc2.lib',
             'dc2.lib.auth',
             'dc2.lib.auth.kerberos'
+            'dc2.lib.db',
+            'dc2.lib.db.mongo'
         ]
     )
 

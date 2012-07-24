@@ -27,8 +27,8 @@ except ImportError:
     sys.exit(1)
 
 try:
-    from dc2.appserver.mongodb import ConnectionPool
-    from dc2.appserver.mongodb import Database
+    from dc2.lib.db.mongo import ConnectionPool
+    from dc2.lib.db.mongo import Database
 except ImportError:
     print "you don't have DC² correctly installed"
     sys.exit(1)
