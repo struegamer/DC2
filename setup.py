@@ -18,13 +18,13 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
-
+import setuptools
 from distutils.core import setup
 from distutils.file_util import copy_file
 from distutils.command.install_scripts import install_scripts
 
 setup(name='dc2',
-        version='0.8',
+        version='0.9',
         description='DC² Namespace Package',
         author='Stephan Adig',
         author_email='sh@sourcecode.de',
@@ -33,7 +33,7 @@ setup(name='dc2',
 )
 
 setup(name="dc2.distrotools",
-      version="0.8'",
+      version="0.9'",
       description="DC² Distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -47,7 +47,7 @@ setup(name="dc2.distrotools",
 )
 
 setup(name="dc2.client",
-        version="0.8'",
+        version="0.9'",
         description="DC² Client",
         author="Stephan Adig",
         author_email="sh@sourcecode.de",
@@ -70,7 +70,7 @@ setup(name="dc2.client",
 )
 
 setup(name="dc2.appserver",
-        version="0.8'",
+        version="0.9'",
         description="DC² Application Server",
         author="Stephan Adig",
         author_email="sh@sourcecode.de",
@@ -99,9 +99,28 @@ setup(name='dc2.lib',
         packages=[
             'dc2.lib',
             'dc2.lib.auth',
-            'dc2.lib.auth.kerberos'
+            'dc2.lib.auth.kerberos',
+            'dc2.lib.auth.kerberos.xmlrpc',
+            'dc2.lib.auth.kerberos.authentication',
             'dc2.lib.db',
-            'dc2.lib.db.mongo'
+            'dc2.lib.db.mongo',
+            'dc2.lib.web',
+            'dc2.lib.web.pages',
+            'dc2.lib.web.csrf',
         ]
     )
 
+setup(name='dc2.admincenter',
+        version='0.9',
+        description='DC2 AdminCenter',
+        author='Stephan Adig',
+        author_email='sh@sourcecode.de',
+        url='http://launchpad.net/dc2/',
+        namespace_packages='dc2',
+        packages=[
+            'dc2.admincenter',
+            'dc2.admincenter.apps',
+            'dc2.admincenter.globals',
+            'dc2.admincenter.lib'
+        ]
+)
