@@ -16,7 +16,7 @@ override_dh_auto_install:
 	cp $(CURDIR)/examples/dc2-distrotools/mirror-config.yaml $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/mirror-config.yaml
 	cp $(CURDIR)/examples/dc2-distrotools/nfsroot-config.yaml $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/nfsroot-config.yaml
 	# 
-	# dc2-webapp
+	# dc2-appserver
 	#
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
 	cp $(CURDIR)/examples/dc2-appserver/dc2db_new.py $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
@@ -24,6 +24,15 @@ override_dh_auto_install:
 	cp -r $(CURDIR)/examples/dc2-appserver/templates $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache2/sites-available
 	cp $(CURDIR)/debian/apache2.vhost/dc2db.hosts $(CURDIR)/debian/tmp/etc/apache2/sites-available/
+	#
+	# dc2-admincenter
+	#
+	mkdir -p $(CURDIR)/debian/tmp/user/share/dc2-admincenter/
+	cp $(CURDIR)/examples/dc2-admincenter/dc2-admincenter.py $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp $(CURDIR)/examples/dc2-admincenter/settings.py $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp -r $(CURDIR)/examples/dc2-admincenter/static $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp -r $(CURDIR)/examples/dc2-admincenter/templates $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+
 	#
 	# dc2-fai-config-space
 	#
