@@ -17,3 +17,25 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
+
+import os
+import os.path
+
+krbccache_dir ='/tmp/'
+krbccache_prefix = 'krbcc_'
+
+def krb5_format_principal_name(user,realm):
+        return '%s@%s' % (user,realm)
+
+def krb5_unparse_ccache(scheme, name):
+        return '%s:%s' % (scheme.upper(), name)
+
+def get_ccache_name(scheme='FILE'):
+        if scheme == 'FILE':
+                name = os.path.join(krbccache_dir, '%s%s' % (krbccache_prefix, os.getuid()))
+        else:
+                raise ValueError('ccache scheme "%s" unsupported', scheme)
+
+        ccache_name = krb5_unparse_ccache(scheme, name)
+        return ccache_name
+
