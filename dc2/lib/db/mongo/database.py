@@ -32,3 +32,6 @@ class Database(object):
     def get_table(self, tablename=None):
         if tablename is not None and tablename != "":
             return self._db[tablename]
+
+    def get_db(self):
+        return self._db

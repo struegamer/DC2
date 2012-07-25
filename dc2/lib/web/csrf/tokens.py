@@ -17,7 +17,21 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
-from connectionpool import ConnectionPool
-from database import Database
-from table import Table
-from web_sessions import MongoStore
+
+import sys
+from uuid import uuid4
+
+try:
+    import web
+except ImportError,e:
+    print "You didn't install web.py"
+    print e
+    sys.exit(1)
+
+
+def csrf_token():
+    if not web.ctx.session.has_key('sectoken'):
+        web.ctx.session.sectoken=uuid4().hex
+    return web.ctx.session.sectoken
+
+

@@ -18,6 +18,4 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from ticket import KerberosTicket
-from kerberostransport import KerberosAuthTransport
-from kerb_xmlrpc import KerberosServerProxy
+from xmlrpc import KerberosServerProxy
