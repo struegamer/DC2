@@ -80,3 +80,13 @@ def host_mod(host_dict=None):
     if host_dict is None or type(host_dict) is not types.DictType:
         raise Exception('host_dict is none or not of type Dict')
     pass
+
+def host_disable(hostname=None):
+    pass
+
+
+#
+# output of host-add
+#
+# {'result': {'dn': 'fqdn=ipa-6.intern.sourcecode.de,cn=computers,cn=accounts,dc=intern,dc=sourcecode,dc=de', 'has_keytab': False, 'randompassword': '3=k?&RV:^@(U', 'description': ['test'], 'objectclass': ['ipaobject', 'nshost', 'ipahost', 'pkiuser', 'ipaservice', 'ieee802device', 'ipasshhost', 'top', 'ipaSshGroupOfPubKeys'], 'fqdn': ['ipa-6.intern.sourcecode.de'], 'has_password': True, 'ipauniqueid': ['10b03c92-d5cb-11e1-81b7-5254005be295'], 'managedby_host': ['ipa-6.intern.sourcecode.de']}, 'value': 'ipa-6.intern.sourcecode.de', 'summary': 'Added host "ipa-6.intern.sourcecode.de"'}
+
