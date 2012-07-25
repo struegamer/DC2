@@ -27,7 +27,7 @@ override_dh_auto_install:
 	#
 	# dc2-admincenter
 	#
-	mkdir -p $(CURDIR)/debian/tmp/user/share/dc2-admincenter/
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
 	cp $(CURDIR)/examples/dc2-admincenter/dc2-admincenter.py $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
 	cp $(CURDIR)/examples/dc2-admincenter/settings.py $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
 	cp -r $(CURDIR)/examples/dc2-admincenter/static $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
