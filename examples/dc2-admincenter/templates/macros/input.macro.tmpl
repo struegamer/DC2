@@ -1,0 +1,16 @@
+{% macro input(name,type='text',value='',placeholder='',size='',class='', id='') -%}
+	<input name="{{name}}" type="{{type}}" value="{{value}}" placeholder="{{placeholder}}" size="{{size}}" class="input-medium {{class}}" id="{{id}}"/>
+{% endmacro %}
+
+
+{% macro form_navbar(method='GET',action="",class="",id="",remote=False,fields=[]) -%}
+<form method="{{method}}" action="{{action}}" data-remote="{{remote}}" class="navbar-form form-inline {{class}}" id="{{id}}">
+    <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+    {%- for field in fields %}
+    {{ input(field.name,type=field.type,value=field.value,placeholder=field.placeholder,size=field.size,class=field.class,id=field.id)}}
+    {%- endfor %}
+</form>
+{% endmacro %}
+
+
+
