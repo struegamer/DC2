@@ -80,4 +80,12 @@ JS_LIBS=[
         '/static/js/admincenter/admincenter.js',
         ]
 
+class Index(object):
+    def __init__(self):
+        self._page=Page('admin/index.tmpl',tmpl_env,web.ctx)
+        self._page.set_title('DC2-AdminCenter - Administration')
+        self._page.set_cssfiles(CSS_FILES)
+        self._page.set_jslibs(JS_LIBS)
 
+    def GET(self):
+        return self._page.render()
