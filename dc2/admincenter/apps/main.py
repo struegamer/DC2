@@ -56,6 +56,7 @@ except ImportError,e:
 try:
     from settings import TEMPLATE_DIR
     from settings import KERBEROS_AUTH_ENABLED
+    from settings import GRP_NAME_DC2ADMINS
 except ImportError,e:
     print "You don't have a settings file"
     print e
@@ -81,7 +82,7 @@ class Home(object):
             user_info={}
             user_info['username']=web.ctx.session.username
             user_info['realname']=get_realname(web.ctx.session.username)
-            user_info['is_dc2admin']=check_membership_in_group(web.ctx.session.username,GRP_DC2ADMINS)
+            user_info['is_dc2admin']=check_membership_in_group(web.ctx.session.username,GRP_NAME_DC2ADMINS)
             page.add_page_data({'user':user_info})
         return page.render()
             
