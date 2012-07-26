@@ -59,6 +59,7 @@ except ImportError,e:
 
 try:
     from dc2.admincenter.lib.auth import do_kinit
+    from dc2.admincenter.lib.auth import KerberosAuthError
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
