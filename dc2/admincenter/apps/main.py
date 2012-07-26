@@ -31,6 +31,8 @@ except ImportError,e:
 
 try:
     from dc2.admincenter.globals import connectionpool
+    from dc2.admincenter.globals import CSS_FILES
+    from dc2.admincenter.globals import JS_LIBS
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -45,6 +47,7 @@ try:
     from dc2.lib.web.pages import Page
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
+    from dc2.lib.auth.helpers import check_membership_in_group
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -68,17 +71,6 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-CSS_FILES=[
-        '/static/css/bootstrap/bootstrap.css',
-        '/static/css/bootstrap/bootstrap-responsive.css',
-        ]
-
-JS_LIBS=[
-        '/static/js/jquery/jquery.min.js',
-        '/static/js/bootstrap/bootstrap.min.js',
-        '/static/js/admincenter/admincenter.js',
-        ]
-
 class Home(object):
     def GET(self):
         page=Page('index.tmpl',tmpl_env,web.ctx)
@@ -89,13 +81,13 @@ class Home(object):
             user_info={}
             user_info['username']=web.ctx.session.username
             user_info['realname']=get_realname(web.ctx.session.username)
+            user_info['is_dc2admin']=check_membership_in_group(web.ctx.session.username,GRP_DC2ADMINS)
             page.add_page_data({'user':user_info})
         return page.render()
             
 class Login(object):
     @csrf_protected
     def POST(self):
-        # check auth
         params=web.input()
         if KERBEROS_AUTH_ENABLED:
             try:
@@ -105,6 +97,9 @@ class Login(object):
                 raise web.seeother('/')
             except KerberosAuthError,e:
                 web.ctx.session.authenticated=False
-                web.ctx.session.error=e
-                raise web.seeother('/error')
+                web.ctx.session.error=True
+                web.ctx.session.errorno=1020
+                web.ctx.session.errormsg=e
+                raise web.seeother('/')
+        # TODO: Standard Auth
 

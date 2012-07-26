@@ -18,6 +18,15 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from db import connectionpool
-from webconst import CSS_FILES
-from webconst import JS_LIBS
+CSS_FILES=[
+        '/static/css/bootstrap/bootstrap.css',
+        '/static/css/bootstrap/bootstrap-responsive.css',
+        ]
+
+JS_LIBS=[
+        '/static/js/jquery/jquery.min.js',
+        '/static/js/bootstrap/bootstrap.min.js',
+        '/static/js/admincenter/admincenter.js',
+        ]
+
+
