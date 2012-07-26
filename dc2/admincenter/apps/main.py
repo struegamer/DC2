@@ -44,6 +44,7 @@ except ImportError,e:
 try:
     from dc2.lib.web.pages import Page
     from dc2.lib.web.csrf import csrf_protected
+    from dc2.lib.auth.helpers import get_username
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -78,18 +79,19 @@ JS_LIBS=[
         '/static/js/admincenter/admincenter.js',
         ]
 
-
-
 class Home(object):
     def GET(self):
-        if not web.ctx.session.has_key('authenticated'):
-            page=Page('index.tmpl',tmpl_env,web.ctx)
-            page.set_title('DC2-AdminCenter - Index')
-            page.set_cssfiles(CSS_FILES)
-            page.set_jslibs(JS_LIBS)
-            return page.render()
-
-
+        page=Page('index.tmpl',tmpl_env,web.ctx)
+        page.set_title('DC2-AdminCenter - Index')
+        page.set_cssfiles(CSS_FILES)
+        page.set_jslibs(JS_LIBS)
+        if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
+            user_info={}
+            user_info['username']=web.ctx.session.username
+            user_info['realname']=get_username(web.ctx.session.username)
+            page.add_page_data({'user':user_info})
+        return page.render()
+            
 class Login(object):
     @csrf_protected
     def POST(self):
@@ -99,9 +101,9 @@ class Login(object):
             try:
                 do_kinit(params.username,params.password)
                 web.ctx.session.authenticated=True
+                web.ctx.session.username=username
                 raise web.seeother('/')
             except KerberosAuthError,e:
-                print e
                 web.ctx.session.authenticated=False
                 web.ctx.session.error=e
                 raise web.seeother('/error')
