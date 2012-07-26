@@ -38,4 +38,7 @@ class Servers(object):
                 raise Exception('The search argument is not a dictionary')
             serverlist=self._proxy.dc2.inventory.servers.find(rec)
             return serverlist
+    def list_servers(self):
+        serverlist=self._proxy.dc2.inventory.servers.list()
+        return serverlist
 
