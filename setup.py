@@ -99,6 +99,7 @@ setup(name='dc2.lib',
         packages=[
             'dc2.lib',
             'dc2.lib.auth',
+            'dc2.lib.auth.helpers',
             'dc2.lib.auth.kerberos',
             'dc2.lib.auth.kerberos.xmlrpc',
             'dc2.lib.auth.kerberos.authentication',
