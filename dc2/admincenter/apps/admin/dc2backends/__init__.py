@@ -27,14 +27,19 @@ except ImportError,e:
     print e
     sys.exit(1)
 
-print ADMIN_MODULES
+try:
+    from dc2.admincenter.globals import ADMIN_MODULES
+except ImportError,e:
+    print "You don't have this DC2 module.."
+    print e
+    sys.exit(1)
+
 ADMIN_MODULES.append({'title':'DC2 Backends','url':'/admin/backends'})
 
 from main import Index
 
 urls=(
     '','Index',
-
 )
 
 app_admin_dc2backends=web.application(urls,locals())

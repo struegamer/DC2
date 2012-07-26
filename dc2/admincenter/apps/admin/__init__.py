@@ -27,8 +27,6 @@ except ImportError,e:
     print e
     sys.exit(1)
 
-ADMIN_MODULES=[]
-
 from main import Index
 from dc2backends import app_admin_dc2backends
 
