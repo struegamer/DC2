@@ -44,7 +44,7 @@ except ImportError,e:
 try:
     from dc2.lib.web.pages import Page
     from dc2.lib.web.csrf import csrf_protected
-    from dc2.lib.auth.helpers import get_username
+    from dc2.lib.auth.helpers import get_realname
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -88,7 +88,7 @@ class Home(object):
         if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
             user_info={}
             user_info['username']=web.ctx.session.username
-            user_info['realname']=get_username(web.ctx.session.username)
+            user_info['realname']=get_realname(web.ctx.session.username)
             page.add_page_data({'user':user_info})
         return page.render()
             
