@@ -101,7 +101,7 @@ class Login(object):
             try:
                 do_kinit(params.username,params.password)
                 web.ctx.session.authenticated=True
-                web.ctx.session.username=username
+                web.ctx.session.username=params.username
                 raise web.seeother('/')
             except KerberosAuthError,e:
                 web.ctx.session.authenticated=False
