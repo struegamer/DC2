@@ -4,17 +4,17 @@ REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
 
 # Get hostname and domainname from backend
 my_hostname=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=hostname --dc2-backend-url="${DC2_BACKEND_URL}"`
-my_domainnanme=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=domainname --dc2-backend-url="${DC2_BACKEND_URL}"`
+my_domainname=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=domainname --dc2-backend-url="${DC2_BACKEND_URL}"`
 
 # set hostname 
-echo "${my_hostname}" > $target/etc/hostname
+echo "${my_hostname}.${my_domainname}" > $target/etc/hostname
 
 # setup /etc/hosts
 cat <<EOF > $target/etc/hosts
-127.0.0.1 ${my_hostname}        localhost.localdomain   localhost
+127.0.0.1 localhost.localdomain   localhost ${my_hostname}
 127.0.1.1 ${my_hostname}.${my_domainname}       ${my_hostname}
 EOF
 
-hostname ${my_hostname}
-$ROOTCMD hostname ${my_hostname}
+hostname ${my_hostname}.${my_domainname}
+$ROOTCMD hostname ${my_hostname}.${my_domainname}
 

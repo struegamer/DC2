@@ -46,7 +46,7 @@ def write_standard_settings(interface=None):
         if interface.has_key("post_down") and interface["post_down"] is not None and interface["post_down"] != "":
             write_pre_post_rules("post-down",interface["post_down"])
  
-def write_host_network_configuration(host=None):
+def write_host_network_configuration(host=None,rpcurl=None):
     if host is not None:
         if host.has_key("interfaces"):
             print "#"

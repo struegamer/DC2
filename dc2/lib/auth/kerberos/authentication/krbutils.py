@@ -18,17 +18,24 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from table import Table
+import os
+import os.path
 
-class Database(object):
-    def __init__(self, connection=None, dbname=None):
-        self._conn = connection
-        if dbname is not None and dbname != "":
-            self._dbname = dbname
-        else: 
-            self._dbname = "default"
-        self._db = self._conn[self._dbname]
+krbccache_dir ='/tmp/'
+krbccache_prefix = 'krbcc_'
 
-    def get_table(self, tablename=None):
-        if tablename is not None and tablename != "":
-            return self._db[tablename]
+def krb5_format_principal_name(user,realm):
+        return '%s@%s' % (user,realm)
+
+def krb5_unparse_ccache(scheme, name):
+        return '%s:%s' % (scheme.upper(), name)
+
+def get_ccache_name(scheme='FILE'):
+        if scheme == 'FILE':
+                name = os.path.join(krbccache_dir, '%s%s' % (krbccache_prefix, os.getpid()))
+        else:
+                raise ValueError('ccache scheme "%s" unsupported', scheme)
+
+        ccache_name = krb5_unparse_ccache(scheme, name)
+        return ccache_name
+

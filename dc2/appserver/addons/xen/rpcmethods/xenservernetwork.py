@@ -31,8 +31,8 @@ except ImportError:
     sys.exit(1)
 
 try:
-    from dc2.mongodb import Database
-    from dc2.mongodb import Table
+    from dc2.lib.db.mongo import Database
+    from dc2.lib.db.mongo import Table
     from dc2.helpers import check_record
     from dc2.rpc import rpcmethod
     from dc2.addons.xen.lib import *

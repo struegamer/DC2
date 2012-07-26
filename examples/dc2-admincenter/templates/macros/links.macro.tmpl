@@ -1,0 +1,3 @@
+{% macro href(pointer,text='No Text',title='No Title',class='',id='') -%}
+<a href="{{pointer}}" title="{{title}}"{%- if class != '' %} class="{{class}}"{%- endif %}{%- if id !='' %}id="{{id}}"{%- endif %}>{{text}}</a>
+{% endmacro %}

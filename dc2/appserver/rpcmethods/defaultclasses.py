@@ -34,8 +34,8 @@ except ImportError:
 
 
 try:
-    from dc2.appserver.mongodb import Database
-    from dc2.appserver.mongodb import Table
+    from dc2.lib.db.mongo import Database
+    from dc2.lib.db.mongo import Table
     from dc2.appserver.helpers import check_record
     from dc2.appserver.rpc import rpcmethod
 except ImportError:

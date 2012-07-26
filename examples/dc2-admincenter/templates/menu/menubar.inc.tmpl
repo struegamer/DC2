@@ -1,0 +1,41 @@
+{% import 'macros/links.macro.tmpl' as links -%}
+{% import 'macros/input.macro.tmpl' as forms with context -%}
+<div class="container-fluid">
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+    <a href="#" class="brand">DC² AdminCenter</a>
+    <div class="nav-collapse">
+        <UL class="nav">
+            <LI><a href="/">Home</a></LI>
+            {%- if page.context.session.authenticated %}
+            {%- if page.context.session.is_dc2admin %}
+            {%- endif %}
+            {%- endif %}
+        </UL>
+        <UL class="nav pull-right">
+            {% if not page.context.session.authenticated %}
+            <LI>
+                {{ forms.form_navbar(method='POST',action='/login',class='pull-right',id='loginform',remote=True,
+                    fields=[
+                        { 'name':'username','type':'text','placeholder':'Username','size':'','id':'','class':'' },
+                        { 'name':'password','type':'password','placeholder':'Password','size':'','id':'','class':''}
+                    ]
+                    ) 
+                }}
+            </LI>
+            {% endif %}
+            {% if page.context.session.authenticated %}
+            <LI class="dropdown-toggle">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.realname}} ({{user.username}})<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <LI>{{ links.href('/logout',text='Logout',title='Logout') }}</LI>
+                </UL>
+            </LI>
+            {% endif %}
+        </UL>
+    </div>
+	
+</div>

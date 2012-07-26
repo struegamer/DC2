@@ -57,7 +57,7 @@ class Hosts(object):
     def write_network_config(self,interface_type=None,host=None):
         try:
             exec "from interfaces.%s import write_host_network_configuration" % interface_type
-            write_host_network_configuration(host)
+            write_host_network_configuration(host,self._rpcurl)
         except ImportError:
             print "Can't find module for %s" % interface_type
                 
