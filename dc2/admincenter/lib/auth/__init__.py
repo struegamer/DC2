@@ -19,4 +19,4 @@
 #################################################################################
 
 from kerberos import do_kinit
-
+from exceptions import KerberosAuthError

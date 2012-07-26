@@ -99,8 +99,9 @@ class Login(object):
                 do_kinit(params.username,params.password)
                 web.ctx.session.authenticated=True
                 raise web.seeother('/')
-            except Exception,e:
+            except KerberosAuthError,e:
                 print e
                 web.ctx.session.authenticated=False
                 web.ctx.session.error=e
                 raise web.seeother('/error')
+
