@@ -19,4 +19,4 @@
 #################################################################################
 
 from user import get_realname
-
+from groups import check_membership_in_group
