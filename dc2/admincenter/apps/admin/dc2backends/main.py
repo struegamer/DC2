@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import ADMIN_MODULES
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -82,7 +83,17 @@ class Index(object):
             user_info['username']=web.ctx.session.username
             user_info['realname']=web.ctx.session.realname
             user_info['is_dc2admin']=web.ctx.session.is_dc2admin
-            page.add_page_data({'user':user_info})
- 
+            self._page.add_page_data({'user':user_info})
+        self.create_menu()
+    def create_menu(self):
+        if len(ADMIN_MODULES)>0:
+            self._page.add_page_data('admin_menu':ADMIN_MODULES)
+
     def GET(self):
-        return self._page.render()
+        if web.ctx.session.is_dc2admin:
+            return self._page.render()
+        else:
+            web.ctx.session.error=True
+            web.ctx.session.errorno=1020
+            web.ctx.session.errormsg='You are not a DC2 Admin'
+            raise web.seeother('/')

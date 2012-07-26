@@ -1,1 +1,12 @@
-{% extends 'layout.tmpl' %}
+{%- extends 'layout.tmpl' %}
+{%- import 'macros/links.macro.tmpl' %}
+{%- block menu_admin %}
+<LI class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration<b class="caret"></B></A>
+    <UL class="dropdown-menu">
+        {%- for item in admin_menu %}
+        <LI>{{ href(item.url,item.text,item.text) }}</LI>
+        {%- endfor %}
+    </UL>
+</LI>
+{% endblock %}

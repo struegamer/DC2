@@ -11,8 +11,9 @@
         <UL class="nav">
             <LI><a href="/">Home</a></LI>
             {%- if page.context.session.authenticated %}
-            {%- if page.context.session.is_dc2admin %}
-            {%- endif %}
+                {%- if page.context.session.is_dc2admin %}
+                    {% block menu_admin %}{% endblock %}
+                {%- endif %}
             {%- endif %}
         </UL>
         <UL class="nav pull-right">
