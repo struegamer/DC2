@@ -40,6 +40,8 @@ except ImportError:
 try:
     from dc2.admincenter.globals import connectionpool
     from dc2.lib.db.mongo import MongoStore
+    from dc2.lib.auth.helpers import get_realname
+    from dc2.lib.auth.helpers import check_membership_in_group
 except ImportError,e:
     print "Your DC2 installation is not correct"
     print e
