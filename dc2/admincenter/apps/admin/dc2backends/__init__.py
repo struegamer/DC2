@@ -27,15 +27,14 @@ except ImportError,e:
     print e
     sys.exit(1)
 
-ADMIN_MODULES=[]
+print ADMIN_MODULES
+ADMIN_MODULES.append({'title':'DC2 Backends','url':'/admin/backends'})
 
 from main import Index
-from dc2backends import app_admin_dc2backends
 
 urls=(
     '','Index',
-    '/backends',app_admin_dc2backends,
 
 )
 
-app_admin=web.application(urls,locals())
+app_admin_dc2backends=web.application(urls,locals())

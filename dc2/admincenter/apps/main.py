@@ -81,8 +81,8 @@ class Home(object):
         if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
             user_info={}
             user_info['username']=web.ctx.session.username
-            user_info['realname']=get_realname(web.ctx.session.username)
-            user_info['is_dc2admin']=check_membership_in_group(web.ctx.session.username,GRP_NAME_DC2ADMINS)
+            user_info['realname']=web.ctx.session.realname
+            user_info['is_dc2admin']=web.ctx.session.is_dc2admin
             page.add_page_data({'user':user_info})
         return page.render()
             
