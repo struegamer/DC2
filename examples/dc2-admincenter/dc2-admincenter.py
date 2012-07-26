@@ -58,6 +58,7 @@ except ImportError,e:
 
 try:
     from settings import MONGOS
+    from settings import GRP_NAME_DC2ADMINS
 except ImportError,e:
     print 'You do not have a settings file.'
     sys.exit(1)
@@ -76,7 +77,13 @@ sessions=web.session.Session(app,MongoStore(session_db,'sessions'))
 def session_hook():
     web.ctx.session=sessions
 
+def is_admin():
+    if 'authenticated' in web.ctx.session:
+        web.ctx.session.realname=get_realname(web.ctx.session.username)
+        web.ctx.session.is_dc2admin=check_membership_in_group(web.ctx.session.username,GRP_NAME_DC2ADMINS)
+
 app.add_processor(web.loadhook(session_hook))
+app.add_processor(web.loadhook(is_admin))
 
 application = app.wsgifunc()
 
