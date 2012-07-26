@@ -30,6 +30,7 @@ except ImportError,e:
 
 try:
     from dc2.lib.auth.kerberos.authentication import run
+    from dc2.lib.auth.kerberos.authentication import krb5_format_principal_name
 except ImportError,e:
     print "You didn't install dc2.lib"
     print e
