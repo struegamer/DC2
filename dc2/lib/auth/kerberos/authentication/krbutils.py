@@ -32,7 +32,7 @@ def krb5_unparse_ccache(scheme, name):
 
 def get_ccache_name(scheme='FILE'):
         if scheme == 'FILE':
-                name = os.path.join(krbccache_dir, '%s%s' % (krbccache_prefix, os.getuid()))
+                name = os.path.join(krbccache_dir, '%s%s' % (krbccache_prefix, os.getpid()))
         else:
                 raise ValueError('ccache scheme "%s" unsupported', scheme)
 
