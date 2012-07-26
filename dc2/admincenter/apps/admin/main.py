@@ -87,7 +87,7 @@ class Index(object):
         self.create_menu()
     def create_menu(self):
         if len(ADMIN_MODULES)>0:
-            self._page.add_page_data('admin_menu':ADMIN_MODULES)
+            self._page.add_page_data({'admin_menu':ADMIN_MODULES})
 
     def GET(self):
         if web.ctx.session.is_dc2admin:
