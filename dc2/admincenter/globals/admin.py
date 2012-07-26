@@ -18,7 +18,4 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from db import connectionpool
-from webconst import CSS_FILES
-from webconst import JS_LIBS
-from admin import ADMIN_MODULES
+ADMIN_MODULES=[]
