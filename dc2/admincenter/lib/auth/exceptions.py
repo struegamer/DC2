@@ -18,6 +18,12 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from procutils import run
-from krbutils import krb5_format_principal_name
-from krbutils import get_ccache_name
+import sys
+
+class KerberosError(Exception):
+    def __init__(self,principal="",message=""):
+        errorstring='Principal %s cannot be authenticated: %s' % (principal,message)
+        Exception.__init__(self,errorstring)
+
+class KerberosAuthError(KerberosError):
+    pass

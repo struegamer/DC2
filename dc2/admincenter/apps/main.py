@@ -57,6 +57,13 @@ except ImportError,e:
     print e
     sys.exit(1)
 
+try:
+    from dc2.admincenter.lib.auth import do_kinit
+except ImportError,e:
+    print "There are dc2.admincenter modules missing"
+    print e
+    sys.exit(1)
+
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 CSS_FILES=[
@@ -86,6 +93,14 @@ class Login(object):
     @csrf_protected
     def POST(self):
         # check auth
+        params=web.input()
         if KERBEROS_AUTH_ENABLED:
-            pass
-        raise web.seeother('/')
+            try:
+                do_kinit(params.username,params.password)
+                web.ctx.session.authenticated=True
+                raise web.seeother('/')
+            except Exception,e:
+                print e
+                web.ctx.session.authenticated=False
+                web.ctx.session.error=e
+                raise web.seeother('/error')
