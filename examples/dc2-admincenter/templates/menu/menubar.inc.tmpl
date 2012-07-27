@@ -12,7 +12,7 @@
             <LI><a href="/">Home</a></LI>
             {%- if page.context.session.authenticated %}
                 {%- if page.context.session.is_dc2admin %}
-                    {% block menu_admin %}{% endblock %}
+                    {% include 'menu/admin.inc.tmpl' %}
                 {%- endif %}
             {%- endif %}
         </UL>
