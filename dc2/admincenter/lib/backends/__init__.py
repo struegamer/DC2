@@ -49,6 +49,14 @@ def backend_list():
         return result
     return []
 
+def backend_new():
+    rec={}
+    rec['title']=''
+    rec['backend_url']=''
+    rec['location']=''
+    return rec
+
+
 def backend_add(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
@@ -56,3 +64,14 @@ def backend_add(rec=None):
         raise ValueError("no 'title' or 'backend_url' in rec")
     doc_id=tbl_backends.save(rec)
     return doc_id
+
+def backend_get(rec=None):
+    if rec is None or type(rec) is not types.DictType:
+        raise ValueError('rec is not a Dict type or rec is None')
+    if '_id' not in rec:
+        raise ValueError("no '_id'")
+    result=tbl_backends.find_one(rec)
+    if result is not None:
+        return result
+    return None
+ 
