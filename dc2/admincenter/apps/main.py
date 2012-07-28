@@ -103,4 +103,7 @@ class Login(object):
                 web.ctx.session.errormsg=e
                 raise web.seeother('/')
         # TODO: Standard Auth
-
+        else:
+            web.ctx.session.authenticated=True
+            web.ctx.session.username=params.username
+            raise web.seeother('/')
