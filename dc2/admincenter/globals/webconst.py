@@ -20,6 +20,7 @@
 
 CSS_FILES=[
         '/static/css/bootstrap/bootstrap.css',
+        '/static/css/admincenter/base.css',
         '/static/css/bootstrap/bootstrap-responsive.css',
         ]
 
