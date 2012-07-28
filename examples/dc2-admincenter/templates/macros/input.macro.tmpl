@@ -3,13 +3,34 @@
 {% endmacro %}
 
 
-{% macro form_navbar(method='GET',action="",class="",id="",remote=False,fields=[]) -%}
-<form method="{{method}}" action="{{action}}" data-remote="{{remote}}" class="navbar-form form-inline {{class}}" id="{{id}}">
-    <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
-    {%- for field in fields %}
-    {{ input(field.name,type=field.type,value=field.value,placeholder=field.placeholder,size=field.size,class=field.class,id=field.id)}}
-    {%- endfor %}
+{% macro form(method='GET',action="",class="",id="",remote=False,labels=False,fields=[]) -%}
+<form method="{{method}}" action="{{action}}"{%- if remote %} data-remote="{{remote}}"{%- endif %} class="form-horizontal {{class}}" id="{{id}}">
+        <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+        {%- for field in fields %}
+        {%- if not labels %}
+        {{ input(field.name,type=field.type,value=field.value,placeholder=field.placeholder,size=field.size,class=field.class,id=field.id)}}
+        {% else %}
+        <div class="control-group">
+            <label class='control-label' for='field_{{field.name}}'>{% if field.label %}{{field.label}}{%else%}{{ field.name|capitalize }}{%endif%}</label>
+            <div class='controls'>
+                {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_{{field.name}}') }}
+            </div>
+        </div>
+        {% endif %}
+        {%- endfor %}
+        {%- if not remote %}
+        <div class='form-action pull-right'>
+            <input type='submit' class='btn btn-primary' value='Save'/>
+            <input type='button' class='btn' value='Cancel'/>
+        </div>
+        {% endif %}
+ 
+
 </form>
+{% endmacro %}
+
+{% macro form_navbar(method='GET',action="",class="",id="",remote=False,fields=[]) -%}
+    {{ form(method=method,action=action,class='navbar-form form-inline {{class}}',id=id,remote=remote,labels=False,fields=fields) }}
 {% endmacro %}
 
 
