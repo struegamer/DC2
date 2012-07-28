@@ -126,5 +126,6 @@ setup(name='dc2.admincenter',
             'dc2.admincenter.globals',
             'dc2.admincenter.lib',
             'dc2.admincenter.lib.auth',
+            'dc2.admincenter.lib.backends',
         ]
 )
