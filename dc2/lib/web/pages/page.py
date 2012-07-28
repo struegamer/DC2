@@ -67,13 +67,56 @@ class Page(object):
     def set_title(self,title=''):
         self._page['title']=title
 
+    def set_action(self,action=''):
+        self._page['action']=action
+    
+    def create_controller_url(self,action='',id=None,query_string=None):
+        path_info=self._context.environ['PATH_INFO']
+        if path_info[-1]=='/':
+            path_info=path_info[:-1]
+        query=None
+        if query_string is not None and type(query_string) is types.ListType:
+            query=''
+            for item in query_string:
+                web.debug(item)
+                if type(item) is types.DictType:
+                    for (key,value) in item.iteritems():
+                        if query!='':
+                            query+='&'
+                        query+='%s=%s' % (key,value)
+            
+        if action=='index':
+            if query is not None and query != '':
+                return '%s?%s' % (path_info,query)
+            return path_info
+        if action=='new':
+            if query is not None and query != '':
+                return '%s/new?%s' % (path_info,query)
+            return '%s/new' % path_info
+        if action=='show':
+            if id is not None:
+                path='%s/%s' % (path_info,id)
+                return '%s/%s' % (path_info,kwargs['id'])
+            else:
+                return path_info
+        if action=='edit':
+            if 'id' in kwargs:
+                return '%s/%s/edit' % (path_info,kwargs['id'])
+            else:
+                return '%s/edit' % path_info
+
+    def create_action_url(self,action='',id=None,query_string=None):
+        pass
+
     def render(self):
         tmpl=self._tmpl_environ.get_template(self._template_name)
         self._page.update({'context':self._context})
         self._page.update({'sectoken':csrf_token})
-
         self._pagedata.update({'page':self._page})
-        web.header('Content-Type','text/html')
+        funcs={}
+        funcs['create_controller_url']=self.create_controller_url
+        self._pagedata.update({'controller':funcs})
+        web.header('Content-Type','text/html; charset=utf-8')
         return  tmpl.render(self._pagedata)
 
     
