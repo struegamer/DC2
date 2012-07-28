@@ -36,10 +36,13 @@ except ImportError,e:
 
 ADMIN_MODULES.append({'title':'DC2 Backends','url':'/admin/backends'})
 
-from main import Index
+from main import ActionIndex
+from main import ActionAdd
+from main import ActionDelete
+from main import ActionREST
 
 urls=(
-    '','Index',
+    '(.*)','ActionIndex',
 )
 
 app_admin_dc2backends=web.application(urls,locals())
