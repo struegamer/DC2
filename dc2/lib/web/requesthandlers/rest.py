@@ -33,7 +33,7 @@ except ImportError,e:
 class RESTRequestHandler(object):
     def __init__(self):
         self._controllers={}
-        self._controller_module=None
+        self._controller_modules=None
         self._ctrl_instances={}
         self._import_controllers()
     
@@ -55,12 +55,12 @@ class RESTRequestHandler(object):
     def _process_requests(self,path):
         web.debug('GET PATH: %s' % path)
         web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
-        if self._controller_module is not None:
+        if self._controller_modules is not None:
             for pat in reversed(sorted(self._controllers.iterkeys())):
                 if path.startswith(pat):
                     if self._controllers.get(pat,None) is not None:
                         web.debug('MATCHED PATH : %s' % path)
-                        ctrlclass=getattr(self._controller_module,self._controllers.get(pat,None))
+                        ctrlclass=getattr(self._controller_modules.get(pat,None),self._controllers.get(pat,None))
                         self._ctrl_instances[pat]=ctrlclass(controller_path=pat,request_context=web.ctx)
                         web.debug(self._ctrl_instances)
                         result=self._ctrl_instances[pat].process(path)
