@@ -38,7 +38,9 @@ class RESTRequestHandler(object):
         self._import_controllers()
     
     def GET(self,path):
-        return self._process_requests(path)
+        result=self._process_requests(path)
+        web.debug('RESTRequestHandler GET: %s' % result)
+        return result
 
     def POST(self,path):
         return self._process_requests(path)

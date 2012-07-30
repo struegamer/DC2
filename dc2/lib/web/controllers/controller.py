@@ -22,6 +22,7 @@ import sys
 import os
 import os.path
 import re
+import types
 
 try:
     import web
@@ -80,6 +81,7 @@ class WebController(object):
             return 'text/html; charset=utf-8'
         else:
             return content_type
+
     def process(self, path='/'):
         verb=self._process_request(path)
         if verb is not None:
@@ -104,12 +106,12 @@ class WebController(object):
                         verb['request_type']='ajax'
                 verb['request_content_type']=self._content_type()
                 if verb.get('template',None) is not None:
-                    verb['template']='%s/%s' % (path,verb['template'])
+                    verb['template']='%s/%s' % (path[:-1],verb['template'])
                 return verb
 
     def _prepare_output(self, format='html',content_type='text/html; charset=utf-8',output=None):
-        if type(output) is not types.DictType:
-            raise ValueError('output needs to be a dict')
+        if output is None or type(output) is not types.DictType:
+            output={'output':'No Output'}
         result={}
         result['format']=format
         result['content-type']=content_type
@@ -117,17 +119,18 @@ class WebController(object):
         return result
 
     def _index(self, *args, **kwargs):
-        pass
+        return self._prepare_output()
     def _new(self, *args, **kwargs):
-        pass
+        return self._prepare_output()
     def _show(self, *args, **kwargs):
-        pass
+        return self._prepare_output()
     def _edit(self, *args, **kwargs):
-        pass
+        return self._prepare_output()
     def _create(self, *args, **kwargs):
-        pass
+        return self._prepare_output(output={'redirect':{'url':'/error','absolute':True}})
     def _update(self, *args, **kwargs):
-        pass
+        return self._prepare_output(output={'redirect':{'url':'/error','absolute':True}})
     def _delete(self, *args, **kwargs):
-        pass
+        return self._prepare_output(output={'redirect':{'url':'/error','absolute':True}})
+
 
