@@ -1,0 +1,122 @@
+# -*- coding: utf-8 -*-
+#################################################################################
+#
+#    (DC)² - DataCenter Deployment Control
+#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#################################################################################
+
+import sys
+import os
+import os.path
+import re
+
+try:
+    import web
+except ImportError,e:
+    print "You need to install web.py"
+    sys.exit(1)
+
+try:
+    from jinja2 import Environment, FileSystemLoader
+except ImportError,e:
+    print "You didn't install jinja2 templating engine"
+    sys.exit(1)
+
+class WebController(object):
+
+    def __init__(self,*args,**kwargs):
+        self._request_context=kwargs.get('request_context',None)
+        self._controller_path=kwargs.get('controller_path',None)
+        self._define_process_methods()
+        self._initialize_verbs()
+
+    def _initialize_verbs(self):
+        self._verb_methods={
+            'GET':[
+                {'urlre':'^%s[/]{0,1}$' % self._controller_path,'action':'index','template':'index.tmpl'}, # index
+                {'urlre':'^%s/new$' % self._controller_path,'action':'new','template':'new.tmpl'}, # new
+                {'urlre':'^%s/(?P<id>[a-z,0-9,\-,\.A-Z]+)$' % self._controller_path,'action':'show','template':'show.tmpl'}, # show
+                {'urlre':'^%s/(?P<id>[a-z,0-9,\-,\.A-Z]+)/edit$' % self._controller_path,'action':'edit','template':'edit.tmpl'}, # edit
+            ],
+            'POST':[
+                {'urlre':'^%s[/]{0,1}$' % self.CTRL_PATH,'action':'create'}, # create
+            ],
+            'PUT':[
+                {'urlre':'^/(?P<id>[a-z,0-9,\-,\.A-Z]+)$','action':'update'}, # update
+            ],
+            'DELETE':[
+                {'urlre':'^(.*)$'},
+            ]
+        }
+
+    def _define_process_methods(self):
+        self._REQ_METHODS={
+            'index':self.index,
+            'new':self.new,
+            'show':self.show,
+            'edit':self.edit,
+            'create':self.create,
+            'update':self.update,
+            'delete':self.delete,
+        }
+
+    def _content_type(self):
+        content_type=self._request_context.env.get('CONTENT_TYPE',None)
+        web.debug('CONTENT_TYPE: %s' % content_type)
+        if content_type is None:
+            return 'text/html; charset=utf-8'
+        else:
+            return content_type
+    def process(self, path='/'):
+        verb=self._process_request(path)
+        if verb is not None:
+            func=self._REQ_METHODS[verb['action']]
+            return func(verb=verb)
+        return web.notfound()
+
+    def _process_request(self,path):
+        web.debug('GET PATH: %s' % path)
+        verbs=self._verb_methods[self._request_context.method.upper()]
+        web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
+        for verb in verbs:
+            found=re.search(verb['urlre'],path)
+            if found is not None:
+                web.debug(found.groupdict())
+                web.debug('match rule: %s' % verb['urlre'])
+                web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO',''))
+                verb['request_data']=found.groupdict()
+                verb['request_type']='html'
+                if self._request_context.env.get('X-Request-With',None) is not None:
+                    if self._request_context.env['X-Request-With']=='XMLHttpRequest':
+                        verb['request_type']='ajax'
+                verb['request_content_type']=self._content_type()
+                return verb
+
+    def index(self, *args, **kwargs):
+        pass
+    def new(self, *args, **kwargs):
+        pass
+    def show(self, *args, **kwargs):
+        pass
+    def edit(self, *args, **kwargs):
+        pass
+    def create(self, *args, **kwargs):
+        pass
+    def update(self, *args, **kwargs):
+        pass
+    def delete(self, *args, **kwargs):
+        pass
+

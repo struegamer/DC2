@@ -3,7 +3,7 @@
 {% endmacro %}
 
 
-{% macro form(method='GET',action="",class="",id="",remote=False,labels=False,fields=[]) -%}
+{% macro form(method='GET',action="",class="",id="",remote=False,enable_buttons=False,labels=False,fields=[]) -%}
 <form method="{{method}}" action="{{action}}"{%- if remote %} data-remote="{{remote}}"{%- endif %} class="form-horizontal {{class}}" id="{{id}}">
         <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
         {%- for field in fields %}
@@ -18,19 +18,19 @@
         </div>
         {% endif %}
         {%- endfor %}
-        {%- if not remote %}
+        {%- if enable_buttons %}
         <div class='form-action pull-right'>
-            <input type='submit' class='btn btn-primary' value='Save'/>
-            <input type='button' class='btn' value='Cancel'/>
+            <input type='button' class='btn btn-primary btn_save' value='Save'/>
+            <input type='button' class='btn btn_cancel' value='Cancel'/>
         </div>
-        {% endif %}
+        {%- endif %}
  
 
 </form>
 {% endmacro %}
 
-{% macro form_navbar(method='GET',action="",class="",id="",remote=False,fields=[]) -%}
-    {{ form(method=method,action=action,class='navbar-form form-inline {{class}}',id=id,remote=remote,labels=False,fields=fields) }}
+{% macro form_navbar(method='GET',action="",class="",id="",remote=True,fields=[]) -%}
+    {{ form(method=method,action=action,class='navbar-form form-inline %s' % class,enable_buttons=False,id=id,remote=remote,labels=False,fields=fields) }}
 {% endmacro %}
 
 

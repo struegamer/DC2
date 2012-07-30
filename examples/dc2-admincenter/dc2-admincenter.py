@@ -50,9 +50,7 @@ except ImportError,e:
 # Apps Import
 #
 try:
-    from dc2.admincenter.apps import Home
-    from dc2.admincenter.apps import Login
-    from dc2.admincenter.apps import admin
+    from dc2.admincenter.apps import MainAppHandler
 except ImportError,e:
     print "You didn't install DC² correctly"
     print e
@@ -65,10 +63,12 @@ except ImportError,e:
     print 'You do not have a settings file.'
     sys.exit(1)
 
+
 urls = (
-    "/", "Home",
-    "/login","Login",
-    '/admin',admin.app_admin)
+    "(.*)", 'MainAppHandler',
+    #"/login","Login",
+    #'/admin',admin.app_admin
+    )
 
 session_db=MONGOS["admincenter"]["database"].get_db()
 

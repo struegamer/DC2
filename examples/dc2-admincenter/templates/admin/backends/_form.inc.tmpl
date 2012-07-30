@@ -1,6 +1,6 @@
 {% import 'macros/input.macro.tmpl' as forms with context %}
 {% if page.action == 'new' %}
-    {{ forms.form('POST','/admin/backends/',id='backends_add',labels=True,
+    {{ forms.form('POST','/admin/backends/',id='backends_add',labels=True,class='data-form',remote=True,
                 fields=[
                 { 'name':'title','value':backend.title,'label':'Title','type':'text','placeholder':'Title','size':'','id':'','class':'span12' },
                 { 'name':'backend_url','value':backend.backend_url,'label':'Backend URL','type':'text','placeholder':'Backend URL','size':'','id':'','class':'span12' },

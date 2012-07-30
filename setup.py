@@ -108,6 +108,8 @@ setup(name='dc2.lib',
             'dc2.lib.web',
             'dc2.lib.web.pages',
             'dc2.lib.web.csrf',
+            'dc2.lib.web.requesthandlers',
+            'dc2.lib.web.controllers',
         ]
     )
 
@@ -121,6 +123,7 @@ setup(name='dc2.admincenter',
         packages=[
             'dc2.admincenter',
             'dc2.admincenter.apps',
+            'dc2.admincenter.apps.controllers',
             'dc2.admincenter.apps.admin',
             'dc2.admincenter.apps.admin.dc2backends',
             'dc2.admincenter.globals',

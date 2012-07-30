@@ -18,15 +18,39 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-CSS_FILES=[
-        '/static/css/bootstrap/bootstrap.css',
-        '/static/css/admincenter/base.css',
-        '/static/css/bootstrap/bootstrap-responsive.css',
-        ]
+import sys
+import os
+import os.path
+import re
 
-JS_LIBS=[
-        '/static/js/jquery/jquery.min.js',
-        '/static/js/bootstrap/bootstrap.min.js',
-        '/static/js/admincenter/admincenter.js',
-        ]
+try:
+    import web
+except ImportError,e:
+    print "You need to install web.py"
+    sys.exit(1)
+
+try:
+    from dc2.lib.web.requesthandlers import RESTRequestHandler
+except ImportError,e:
+    print 'errors in dc2'
+    print e
+    sys.exit(1)
+
+try:
+    from settings import CONTROLLER_MAPPINGS
+except ImportError,e:
+    print 'you do not have a settings file bla'
+    print e
+    sys.exit(1)
+
+class MainAppHandler(RESTRequestHandler):
+    def _import_controllers(self):
+        super(MainAppHandler,self)._import_controllers()
+        mod=__import__('dc2.admincenter.apps.controllers', fromlist='dc2.admincenter.apps')
+        self._controller_module=mod
+        self._controllers=CONTROLLER_MAPPINGS
+        self._controller_locations=[]
+        for loc in self._controllers.keys():
+            self._controller_locations.append(loc)
+
 

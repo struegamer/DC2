@@ -107,7 +107,7 @@ class ActionREST(object):
                 {'urlre':'^[/]{0,1}$','action':self.create,'action_name':'create','redirect':'/'}, # create
             ],
             'PUT':[
-                {'urlre':'^/(.*)$','redirect':'/'}, # update
+                {'urlre':'^/(?P<id>[a-z,0-9,\-,\.A-Z]+)$','action':self.update,'redirect':'/'}, # update
             ],
             'DELETE':[
                 {'urlre':'^(.*)$','redirect':'/'},
@@ -116,14 +116,7 @@ class ActionREST(object):
 
 
     def GET(self,path):
-        web.debug('GET PATH: %s' % path)
-        verbs=self._verb_methods['GET']
-        for verb in verbs:
-            found=re.search(verb['urlre'],path)
-            if found is not None:
-                web.debug('match rule: %s' % verb['urlre'])
-                self._prepare_page(verb['template'],verb['action_name'])
-                return verb['action'](**found.groupdict())
+        return self._process_requests(path)
 
     def POST(self,path):
         web.debug('POST PATH: %s' % path)
@@ -133,23 +126,60 @@ class ActionREST(object):
                 web.debug('POST match rule: %s' % verb['urlre'])
                 redirect,absolute=verb['action']()
                 raise web.seeother(redirect,absolute)
-                    
-                
 
     def PUT(self,path):
-        pass
+        web.debug('PUT PATH: %s' % path)
+        verbs=self._verb_methods['PUT']
+        for verb in verbs:
+            if re.search(verb['urlre'],path) is not None:
+                web.debug('PUT match rule: %s' % verb['urlre'])
+                redirect,absolute=verb['action']()
+                raise web.seeother(redirect,absolute)
     def DELETE(self,path):
         pass
+    
+    def _process_requests(self,path):
+        web.debug('GET PATH: %s' % path)
+        verbs=self._verb_methods[web.ctx.method.upper()]
+        web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
+        for verb in verbs:
+            found=re.search(verb['urlre'],path)
+            if found is not None:
+                web.debug('match rule: %s' % verb['urlre'])
+                web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO',''))
+                # Check if standard http request (like get/post)
+                requested_with=web.ctx.env.get('X-Requested-With',None)
+                request_format='html'
+                if requested_with is not None and requested_with == 'XMLHttpRequest':
+                    request_format='ajax'
+                else:
+                    request_format='html'
+                return verb['action'](request_verb=verb,request_format=request_format,request_data=found.groupdict())
 
     def index(self,*args,**kwargs):
-        pass
+        self._request_format=kwargs.get('request_format',None)
+        self._request_data=kwargs.get('request_data',None)
+        self._request_verb=kwargs.get('request_verb',None)
+        web.debug(self._request_verb)
+        if self._request_format=='html':
+            web.debug('HTML FORMAT')
+            self._prepare_page(self._request_verb['template'],self._request_verb['action_name'])
+        web.debug('REQUEST FORMAT: %s' % self._request_format)
     def new(self,*args,**kwargs):
+        self._request_format=kwargs.get('request_format',None)
+        self._request_data=kwargs.get('request_data',None)
         pass
     def show(self,*args,**kwargs):
+        self._request_format=kwargs.get('request_format',None)
+        self._request_data=kwargs.get('request_data',None)
         pass
     def edit(self,*args,**kwargs):
+        self._request_format=kwargs.get('request_format',None)
+        self._request_data=kwargs.get('request_data',None)
         pass
     def create(self,*args,**kwargs):
+        self._request_format=kwargs.get('request_format',None)
+        self._request_data=kwargs.get('request_data',None)
         pass
     def update(self,*args,**kwargs):
         pass
@@ -178,9 +208,12 @@ class ActionIndex(ActionREST):
             self._page.add_page_data({'admin_menu':ADMIN_MODULES})
 
     def index(self,*args,**kwargs):
+        web.debug('CLASS: %s' % self.__class__.__name__)
+        super(ActionIndex,self).index(*args,**kwargs)
         self._page.set_title('DC2 Admincenter - Backends - Index')
         backend_list=backends.backend_list()
         self._page.add_page_data({'backends':backend_list})
+        web.debug(self._page.render())
         return self._page.render()
 
     def new(self,*args,**kwargs):
@@ -199,23 +232,24 @@ class ActionIndex(ActionREST):
         return ('/',False)
 
     def edit(self,*args,**kwargs):
-        backend=backends.backend_get({'_id':kwargs.get('id',None)})
-        self._page.add_page_data({'backend':backend})
-        return self._page.render()
+        backend_id=kwargs.get('id',None)
+        if backend_id is not None:
+            backend=backends.backend_get({'_id':backend_id})
+            self._page.add_page_data({'backend':backend})
+            return self._page.render()
+        else:
+            # no backend id == error
+            return web.notfound()
 
-#    def GET(self,path):
-#        if web.ctx.session.is_dc2admin:
-#            if path == '/' or path == '':
-#                backend_list=backends.backend_list()
-#                self._page.add_page_data({'backends':backend_list})
-#                return self._page.render()
-#            elif path == '/add':
-#                pass
-#        else:
-#            web.ctx.session.error=True
-#            web.ctx.session.errorno=1020
-#            web.ctx.session.errormsg='You are not a DC2 Admin'
-#            raise web.seeother('/',absolute=True)
+    def update(self,*args,**kwargs):
+        backend_id=kwargs.get('id',None)
+        if backend_id is None:
+            return web.notfound()
+        backend=backends.backend_get({'_id':backend_id})
+        if backend is not None:
+            backends.backend_update(backend)
+        return ('/',False)
+        
 
 class ActionDelete(object):
     def DELETE(self,data):

@@ -4,13 +4,13 @@ window.DC2 = {
   Forms:{}
 };
 
-DC2.Widgets.FormSubmit = function(selector) {
+DC2.Widgets.StandardForms= function(selector) {
   this.container=$(selector);
   this.container.on('keypress',this.container,this.submitForm.bind(this));
 };
 
 
-DC2.Widgets.FormSubmit.prototype.submitForm = function (event) {
+DC2.Widgets.StandardForms.prototype.submitForm = function (event) {
   if (event && event.which == 13) {
     this.container.submit();
   }
@@ -48,7 +48,6 @@ DC2.Widgets.ButtonGroup.Index.prototype.action=function(event) {
   }
 };
 
-
 DC2.Widgets.DataList = function(selector) {
   this.container=$(selector);
   this.container.find('thead tr th input[type="checkbox"]').on('click',this.container,this.del_check.bind(this));
@@ -70,13 +69,40 @@ DC2.Widgets.DataList.prototype.edit = function(event) {
 
 
 
-$(document).ready(function() {
+DC2.Widgets.DataForms = function(selector) {
+  this.container=$(selector);
+  this.container.find('input[type="button"].btn_save').on('click',this.container,this.save.bind(this));
+//this.container.find('input[type="button"].btn_cancel').on('click',this.container,this.cancel.bind(this));
+};
 
-  $('form').each(function() {
-    if ($(this).attr('id') != null ) {
-      DC2.Forms[$(this).attr('id')]=new DC2.Widgets.FormSubmit("#"+$(this).attr('id'));
+DC2.Widgets.DataForms.prototype.save=function(event) {
+  _this=this;
+  var data={}
+  console.log(this.container.attr('method'));
+  this.container.find('input').each(function(){
+    if ($(this).attr('type') != 'button') {
+      data[$(this).attr('name')]=$(this).val();
     }
   });
+  console.log(this.container.attr('method'));
+
+  a=$.ajax({
+    url:this.container.attr('action'),
+    type:this.container.attr('method'),
+    data:data,
+    dataType:'application/json',
+    async:false
+  });
+};  
+
+
+$(document).ready(function() {
+
+  $('.std-form').each(function() {
+    if ($(this).attr('id') != null ) {
+      DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
+    }
+  }); */
   $('.btn-group').each(function() {
     if ($(this).attr('id') != null ) {
       new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
@@ -85,6 +111,12 @@ $(document).ready(function() {
   $('.data-list').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.DataList('#'+$(this).attr('id'));
+    }
+  });
+  $('.data-form').each(function() {
+    if ($(this).attr('id') != null && $(this).attr('data-remote')=='True') {
+      console.log('dataforms true')
+      new DC2.Widgets.DataForms('#'+$(this).attr('id'));
     }
   });
 });
