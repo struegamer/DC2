@@ -56,7 +56,7 @@ class RESTRequestHandler(object):
         web.debug('GET PATH: %s' % path)
         web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
         if self._controller_module is not None:
-            for pat in self._controller_locations:
+            for pat in reversed(sorted(self._controllers.iterkeys())):
                 if path.startswith(pat):
                     if self._controllers.get(pat,None) is not None:
                         web.debug('MATCHED PATH : %s' % path)

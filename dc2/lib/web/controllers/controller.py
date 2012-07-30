@@ -52,7 +52,7 @@ class WebController(object):
                 {'urlre':'^%s/(?P<id>[a-z,0-9,\-,\.A-Z]+)/edit$' % self._controller_path,'action':'edit','template':'edit.tmpl'}, # edit
             ],
             'POST':[
-                {'urlre':'^%s[/]{0,1}$' % self.CTRL_PATH,'action':'create'}, # create
+                {'urlre':'^%s[/]{0,1}$' % self._controller_path,'action':'create'}, # create
             ],
             'PUT':[
                 {'urlre':'^/(?P<id>[a-z,0-9,\-,\.A-Z]+)$','action':'update'}, # update
@@ -103,6 +103,7 @@ class WebController(object):
                     if self._request_context.env['X-Request-With']=='XMLHttpRequest':
                         verb['request_type']='ajax'
                 verb['request_content_type']=self._content_type()
+                verb['template']='%s/%s' % (path,verb['template'])
                 return verb
 
     def index(self, *args, **kwargs):

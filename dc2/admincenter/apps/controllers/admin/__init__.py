@@ -18,6 +18,4 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from main import MainController
-from session import SessionController
-from admin import *
+from backends import BackendsController
