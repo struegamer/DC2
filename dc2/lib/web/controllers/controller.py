@@ -107,6 +107,15 @@ class WebController(object):
                     verb['template']='%s/%s' % (path,verb['template'])
                 return verb
 
+    def _prepare_output(self, format='html',content_type='text/html; charset=utf-8',output=None):
+        if type(output) is not types.DictType:
+            raise ValueError('output needs to be a dict')
+        result={}
+        result['format']=format
+        result['content-type']=content_type
+        result['output']=output
+        return result
+
     def _index(self, *args, **kwargs):
         pass
     def _new(self, *args, **kwargs):

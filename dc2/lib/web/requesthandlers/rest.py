@@ -68,8 +68,10 @@ class RESTRequestHandler(object):
                         if output_format is not None:
                             if output_format=='html':
                                 web.header('Content-Type',result.get('content-type','text/html; charset=utf-8'))
-                                if result.get('output',None) is not None:
-                                    return result.get('output','No output available')
-                                if result.get('redirect',None) is not None:
-                                    redir=result.get('redirect',None)
-                                    raise web.seeother(redir['url'],absolute=redir['absolute'])
+                                output=result.get('output',None)
+                                if output is not None:
+                                    if output.get('content',None) is not None:
+                                        return output.get('content','No output available')
+                                    if output.get('redirect',None) is not None:
+                                        redir=output.get('redirect',None)
+                                        raise web.seeother(redir['url'],absolute=redir['absolute'])
