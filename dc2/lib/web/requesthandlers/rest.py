@@ -60,11 +60,10 @@ class RESTRequestHandler(object):
                 if path.startswith(pat):
                     if self._controllers.get(pat,None) is not None:
                         web.debug('MATCHED PATH : %s' % path)
-                        ctrlclass=getattr(self._controller_modules.get(pat,None),self._controllers.get(pat,None))
+                        ctrlclass=getattr(self._controller_modules.get(pat,None)['module'],self._controller_modules.get(pat,None)['classname'])
                         self._ctrl_instances[pat]=ctrlclass(controller_path=pat,request_context=web.ctx)
                         web.debug(self._ctrl_instances)
                         result=self._ctrl_instances[pat].process(path)
-                        web.debug(result)
                         output_format=result.get('format',None)
                         if output_format is not None:
                             if output_format=='html':

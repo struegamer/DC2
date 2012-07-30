@@ -55,5 +55,5 @@ class MainAppHandler(RESTRequestHandler):
             import_path='.'.join(temp_import_path.split('.')[:-1])
             web.debug('IMPORT_PATH: %s' % import_path)
             module=__import__(import_path,globals(),locals(),classname)
-            self._controller_modules[mod]=module
+            self._controller_modules[mod]={'module':module,'classname':classname}
         self._controllers=CONTROLLER_MAPPINGS
