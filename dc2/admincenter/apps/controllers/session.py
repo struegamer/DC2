@@ -73,9 +73,8 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class SessionController(WebController):
-    CTRL_PATH='/login'
     @csrf_protected
-    def create(self, *args, **kwargs):
+    def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         web.debug('SessionController: create')
         web.debug('SessionController.create: %s' % kwargs)

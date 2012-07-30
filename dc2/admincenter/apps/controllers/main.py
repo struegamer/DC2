@@ -73,7 +73,6 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class MainController(WebController):
-    CTRL_PATH='/'
     def _prepare_page(self,verb):
         page=Page(verb['template'],tmpl_env,self._request_context)
         page.set_title('DC2-AdminCenter - Index')
@@ -87,7 +86,7 @@ class MainController(WebController):
             page.add_page_data({'user':user_info})
         return page.render()
  
-    def index(self, *args, **kwargs):
+    def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         web.debug(verb)
         result={

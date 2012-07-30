@@ -32,6 +32,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import ADMIN_MODULES
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -63,8 +64,7 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.admincenter.lib.auth import do_kinit
-    from dc2.admincenter.lib.auth import KerberosAuthError
+    from dc2.admincenter.lib import backends
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -73,24 +73,35 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class BackendsController(WebController):
+    def __init__(self, *args, **kwargs):
+        super(BackendsController,self).__init__(self, *args, **kwargs)
+        ADMIN_MODULES.append({'title':'DC2 Backends','url':'/admin/backends'})
+
     def _prepare_page(self,verb):
-        page=Page(verb['template'],tmpl_env,self._request_context)
-        page.set_title('DC2-AdminCenter - Index')
-        page.set_cssfiles(CSS_FILES)
-        page.set_jslibs(JS_LIBS)
+        self._page=Page(verb['template'],tmpl_env,self._request_context)
+        self._page.set_cssfiles(CSS_FILES)
+        self._page.set_jslibs(JS_LIBS)
         if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
             user_info={}
             user_info['username']=self._request_context.session.username
             user_info['realname']=self._request_context.session.realname
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
-            page.add_page_data({'user':user_info})
-        return page.render()
- 
-    def index(self, *args, **kwargs):
+            self._page.add_page_data({'user':user_info})
+        self._create_menu()
+
+    def _create_menu(self):
+        if len(ADMIN_MODULES)>0:
+            self._page.add_page_data({'admin_menu':ADMIN_MODULES})
+
+    def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
+        self._prepare_page(verb)
+        backend_list=backends.backend_list()
+        self._page.set_title('DC2 Admincenter - Backends - Index')
+        self._page.add_page_data({'backends':backend_list})
         result={
                 'format':verb['request_type'],
                 'content-type':verb['request_content_type'],
-                'output':self._prepare_page(verb)
+                'output':self._page.render()
                 }
         return result
