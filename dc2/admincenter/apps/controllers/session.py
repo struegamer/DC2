@@ -84,29 +84,17 @@ class SessionController(WebController):
                 do_kinit(params.username,params.password)
                 web.ctx.session.authenticated=True
                 web.ctx.session.username=params.username
-                result={
-                    'format':verb['request_type'],
-                    'content-type':verb['request_content_type'],
-                    'redirect':{'url':'/','absolute':True}
-                }
+                result=self._prepare_output(verb['request_type'],verb['request_content_type'],{'redirect':{'url':'/','absolute':True}})
  
             except KerberosAuthError,e:
                 web.ctx.session.authenticated=False
                 web.ctx.session.error=True
                 web.ctx.session.errorno=1020
                 web.ctx.session.errormsg=e
-                result={
-                    'format':verb['request_type'],
-                    'content-type':verb['request_content_type'],
-                    'redirect':{'url':'/','absolute':True}
-                }
+                result=self._prepare_output(verb['request_type'],verb['request_content_type'],{'redirect':{'url':'/','absolute':True}})
         # TODO: Standard Auth
         else:
             web.ctx.session.authenticated=True
             web.ctx.session.username=params.username
-            result={
-                'format':verb['request_type'],
-                'content-type':verb['request_content_type'],
-                'redirect':{'url':'/','absolute':True}
-                }
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],{'redirect':{'url':'/','absolute':True}})
         return result

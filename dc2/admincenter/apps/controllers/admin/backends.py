@@ -99,9 +99,5 @@ class BackendsController(WebController):
         backend_list=backends.backend_list()
         self._page.set_title('DC2 Admincenter - Backends - Index')
         self._page.add_page_data({'backends':backend_list})
-        result={
-                'format':verb['request_type'],
-                'content-type':verb['request_content_type'],
-                'output':self._page.render()
-                }
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],{'content':self._page.render()})
         return result
