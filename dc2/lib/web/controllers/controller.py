@@ -64,13 +64,13 @@ class WebController(object):
 
     def _define_process_methods(self):
         self._REQ_METHODS={
-            'index':self.index,
-            'new':self.new,
-            'show':self.show,
-            'edit':self.edit,
-            'create':self.create,
-            'update':self.update,
-            'delete':self.delete,
+            'index':self._index,
+            'new':self._new,
+            'show':self._show,
+            'edit':self._edit,
+            'create':self._create,
+            'update':self._update,
+            'delete':self._delete,
         }
 
     def _content_type(self):
@@ -103,21 +103,22 @@ class WebController(object):
                     if self._request_context.env['X-Request-With']=='XMLHttpRequest':
                         verb['request_type']='ajax'
                 verb['request_content_type']=self._content_type()
-                verb['template']='%s/%s' % (path,verb['template'])
+                if verb.get('template',None) is not None:
+                    verb['template']='%s/%s' % (path,verb['template'])
                 return verb
 
-    def index(self, *args, **kwargs):
+    def _index(self, *args, **kwargs):
         pass
-    def new(self, *args, **kwargs):
+    def _new(self, *args, **kwargs):
         pass
-    def show(self, *args, **kwargs):
+    def _show(self, *args, **kwargs):
         pass
-    def edit(self, *args, **kwargs):
+    def _edit(self, *args, **kwargs):
         pass
-    def create(self, *args, **kwargs):
+    def _create(self, *args, **kwargs):
         pass
-    def update(self, *args, **kwargs):
+    def _update(self, *args, **kwargs):
         pass
-    def delete(self, *args, **kwargs):
+    def _delete(self, *args, **kwargs):
         pass
 
