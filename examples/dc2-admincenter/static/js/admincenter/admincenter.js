@@ -102,7 +102,7 @@ $(document).ready(function() {
     if ($(this).attr('id') != null ) {
       DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
     }
-  }); */
+  }); 
   $('.btn-group').each(function() {
     if ($(this).attr('id') != null ) {
       new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
