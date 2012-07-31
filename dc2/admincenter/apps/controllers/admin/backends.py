@@ -87,6 +87,7 @@ class BackendsController(WebController):
         page=Page(verb['template'],tmpl_env,self._request_context)
         page.set_cssfiles(CSS_FILES)
         page.set_jslibs(JS_LIBS)
+        page.set_index(self._controller_path)
         if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
             user_info={}
             user_info['username']=self._request_context.session.username
@@ -168,9 +169,12 @@ class BackendsController(WebController):
         verb=kwargs.get('verb',None)
         request_data=verb.get('request_data',None)
         if request_data is not None and request_data.get('id',None) is not None:
-            pass
-
-        if output_format.lower()=='json':
+            backend={'_id':request_data.get('id',None)}
+            backends.backend_delete(backend)
+        output_format=verb.get('request_output_format',None)
+        web.debug('DELETE: %s' % output_format)
+        if output_format is not None and output_format.lower()=='json':
+            web.debug('json')
             result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
         else:
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})

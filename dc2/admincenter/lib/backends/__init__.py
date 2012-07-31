@@ -90,4 +90,6 @@ def backend_delete(rec=None):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
- 
+    result=tbl_backends.remove(rec)
+    return result
+
