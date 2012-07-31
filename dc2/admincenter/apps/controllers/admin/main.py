@@ -75,7 +75,7 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class MainAdminController(AdminController):
-    CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin'}
+    CONTROLLER_IDENT={'title':'Admin Home','url':'/admin'}
     @Logger
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
