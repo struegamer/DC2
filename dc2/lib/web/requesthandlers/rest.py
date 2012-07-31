@@ -39,7 +39,6 @@ class RESTRequestHandler(object):
     
     def GET(self,path):
         result=self._process_requests(path)
-        web.debug('RESTRequestHandler GET: %s' % result)
         return result
 
     def POST(self,path):
@@ -55,25 +54,30 @@ class RESTRequestHandler(object):
         pass
 
     def _process_requests(self,path):
-        web.debug('GET PATH: %s' % path)
-        web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
         if self._controller_modules is not None:
             for pat in reversed(sorted(self._controllers.iterkeys())):
                 if path.startswith(pat):
                     if self._controllers.get(pat,None) is not None:
-                        web.debug('MATCHED PATH : %s' % path)
                         ctrlclass=getattr(self._controller_modules.get(pat,None)['module'],self._controller_modules.get(pat,None)['classname'])
-                        self._ctrl_instances[pat]=ctrlclass(controller_path=pat,request_context=web.ctx)
+                        if self._ctrl_instances.get(pat,None) is None:
+                            self._ctrl_instances[pat]=ctrlclass(controller_path=pat,request_context=web.ctx)
                         web.debug(self._ctrl_instances)
                         result=self._ctrl_instances[pat].process(path)
                         output_format=result.get('format',None)
-                        if output_format is not None:
-                            if output_format=='html':
-                                web.header('Content-Type',result.get('content-type','text/html; charset=utf-8'))
-                                output=result.get('output',None)
-                                if output is not None:
-                                    if output.get('content',None) is not None:
-                                        return output.get('content','No output available')
-                                    if output.get('redirect',None) is not None:
-                                        redir=output.get('redirect',None)
-                                        raise web.seeother(redir['url'],absolute=redir['absolute'])
+                        if output_format is None:
+                            output_format='html'
+                        if output_format.lower()=='html':
+                            web.header('Content-Type',result.get('content-type','text/html; charset=utf-8'))
+                            output=result.get('output',None)
+                            if output is not None:
+                                if output.get('content',None) is not None:
+                                    return output.get('content','No output available')
+                                if output.get('redirect',None) is not None:
+                                    redir=output.get('redirect',None)
+                                    raise web.seeother(redir['url'],absolute=redir['absolute'])
+                        if output_format.lower()=='json':
+                            web.header('Content-Type',result.get('content-type','text/html; charset=utf-8'))
+                            output=result.get('output',None)
+                            if output is not None:
+                                return output
+
