@@ -64,12 +64,14 @@ class Page(object):
             self._page.update({'css_files':css_array})
             return True
         raise ValueError('css_array is None or not an array')
+
     def set_title(self,title=''):
         self._page['title']=title
 
     def set_action(self,action=''):
         self._page['action']=action
-    
+    def set_index(self,index=''):
+        self._page['index']=index
     def create_controller_url(self,action='',id=None,query_string=None):
         path_info=self._context.environ['PATH_INFO']
         if path_info[-1]=='/':
