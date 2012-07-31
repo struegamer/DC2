@@ -79,7 +79,7 @@ DC2.Widgets.DataList.prototype.edit = function(event) {
 
 DC2.Widgets.DataForms = function(selector) {
   this.container=$(selector);
-  this.container.find('input[type="text"]').on('keypress',this.container,this.catch_enter.bind(this));
+  // this.container.find('input[type="text"]').on('keypress',this.container,this.catch_enter.bind(this));
   this.container.find('input[type="button"].btn_save').on('click',this.container,this.save.bind(this));
   this.container.find('input[type="button"].btn_cancel').on('click',this.container,this.cancel.bind(this));
 };
