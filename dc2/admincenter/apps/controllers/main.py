@@ -91,5 +91,4 @@ class MainController(WebController):
         web.debug(verb)
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 {'content':self._prepare_page(verb)})
-        web.debug(result)
         return result

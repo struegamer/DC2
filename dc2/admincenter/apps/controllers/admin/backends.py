@@ -49,6 +49,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import WebController
+    from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -73,31 +74,93 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class BackendsController(WebController):
+    CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin/backends'}
     def __init__(self, *args, **kwargs):
         super(BackendsController,self).__init__(self, *args, **kwargs)
-        ADMIN_MODULES.append({'title':'DC2 Backends','url':'/admin/backends'})
+        self._add_to_admin_modules()
+
+    def _add_to_admin_modules(self):
+        if self.CONTROLLER_IDENT not in ADMIN_MODULES:
+            ADMIN_MODULES.append(self.CONTROLLER_IDENT)
 
     def _prepare_page(self,verb):
-        self._page=Page(verb['template'],tmpl_env,self._request_context)
-        self._page.set_cssfiles(CSS_FILES)
-        self._page.set_jslibs(JS_LIBS)
+        page=Page(verb['template'],tmpl_env,self._request_context)
+        page.set_cssfiles(CSS_FILES)
+        page.set_jslibs(JS_LIBS)
         if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
             user_info={}
             user_info['username']=self._request_context.session.username
             user_info['realname']=self._request_context.session.realname
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
-            self._page.add_page_data({'user':user_info})
-        self._create_menu()
+            page.add_page_data({'user':user_info})
+        page=self._create_menu(page)
+        return page
 
-    def _create_menu(self):
+    def _create_menu(self,page):
         if len(ADMIN_MODULES)>0:
-            self._page.add_page_data({'admin_menu':ADMIN_MODULES})
-
+            page.add_page_data({'admin_menu':ADMIN_MODULES})
+        return page
+    @Logger
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
-        self._prepare_page(verb)
+        page=self._prepare_page(verb)
         backend_list=backends.backend_list()
-        self._page.set_title('DC2 Admincenter - Backends - Index')
-        self._page.add_page_data({'backends':backend_list})
-        result=self._prepare_output(verb['request_type'],verb['request_content_type'],{'content':self._page.render()})
+        page.set_title('DC2 Admincenter - Backends - Index')
+        page.add_page_data({'backends':backend_list})
+        page.set_action('index')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
+    @Logger
+    def _new(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backend=backends.backend_new()
+        page.set_title('DC2 Admincenter - Backends - Add')
+        page.add_page_data({'backend':backend})
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+    @Logger
+    def _edit(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backend=backends.backend_get({'_id':verb['request_data']['id']})
+        page.set_title('DC2 Admincenter - Backends - Edit')
+        page.set_action('edit')
+        page.add_page_data({'backend':backend})
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+    @Logger
+    def _create(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        backend={}
+        backend['title']=params.title
+        backend['backend_url']=params.backend_url
+        backend['location']=params.location
+        backends.backend_add(backend)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
+
+    @Logger
+    def _update(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        backend={}
+        backend['_id']=params._id
+        backend['title']=params.title
+        backend['backend_url']=params.backend_url
+        backend['location']=params.location
+        backends.backend_update(backend)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
+
+     
