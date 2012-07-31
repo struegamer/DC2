@@ -24,8 +24,8 @@
         {%- endfor %}
         {%- if enable_buttons %}
         <div class='form-action pull-right'>
-            <input type='button' class='btn btn-primary btn_save' value='Save'/>
-            <input type='button' class='btn btn_cancel' value='Cancel'/>
+            <input type='button' data-url='{{page.index}}' class='btn btn-primary btn_save' value='Save'/>
+            <input type='button' data-url='{{page.index}}' class='btn btn_cancel' value='Cancel'/>
         </div>
         {%- endif %}
  
