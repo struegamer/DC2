@@ -96,6 +96,13 @@ class WebController(object):
             if output_format is not None:
                 if output_format.lower() == 'json':
                     return 'application/json; charset=utf-8'
+                if output_format.lower() == 'html':
+                    return 'text/html; charset=utf-8'
+            else:
+                if content_type is None:
+                    return 'text/html; charset=utf-8'
+                else:
+                    return content_type
 
     def process(self, path='/'):
         verb=self._process_request(path)
