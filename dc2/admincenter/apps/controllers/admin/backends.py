@@ -66,6 +66,7 @@ except ImportError,e:
 
 try:
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib.controllers import AdminController
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -73,34 +74,8 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class BackendsController(WebController):
+class BackendsController(AdminController):
     CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin/backends'}
-    def __init__(self, *args, **kwargs):
-        super(BackendsController,self).__init__(self, *args, **kwargs)
-        self._add_to_admin_modules()
-
-    def _add_to_admin_modules(self):
-        if self.CONTROLLER_IDENT not in ADMIN_MODULES:
-            ADMIN_MODULES.append(self.CONTROLLER_IDENT)
-
-    def _prepare_page(self,verb):
-        page=Page(verb['template'],tmpl_env,self._request_context)
-        page.set_cssfiles(CSS_FILES)
-        page.set_jslibs(JS_LIBS)
-        page.set_index(self._controller_path)
-        if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
-            user_info={}
-            user_info['username']=self._request_context.session.username
-            user_info['realname']=self._request_context.session.realname
-            user_info['is_dc2admin']=self._request_context.session.is_dc2admin
-            page.add_page_data({'user':user_info})
-        page=self._create_menu(page)
-        return page
-
-    def _create_menu(self,page):
-        if len(ADMIN_MODULES)>0:
-            page.add_page_data({'admin_menu':ADMIN_MODULES})
-        return page
     @Logger
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
