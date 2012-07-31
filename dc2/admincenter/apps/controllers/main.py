@@ -90,5 +90,5 @@ class MainController(WebController):
         verb=kwargs.get('verb',None)
         web.debug(verb)
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],
-                {'content':self._prepare_page(verb)})
+                output={'content':self._prepare_page(verb)})
         return result
