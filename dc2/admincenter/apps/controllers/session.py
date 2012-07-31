@@ -47,7 +47,7 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
-    from dc2.lib.web.controllers import WebController
+    from dc2.lib.web.controllers import RESTController
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -72,7 +72,7 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class SessionController(WebController):
+class SessionController(RESTController):
     @csrf_protected
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)

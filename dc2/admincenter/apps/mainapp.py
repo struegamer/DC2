@@ -30,7 +30,7 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.lib.web.requesthandlers import RESTRequestHandler
+    from dc2.lib.web.requesthandlers import RequestHandler
 except ImportError,e:
     print 'errors in dc2'
     print e
@@ -43,7 +43,7 @@ except ImportError,e:
     print e
     sys.exit(1)
 
-class MainAppHandler(RESTRequestHandler):
+class MainAppHandler(RequestHandler):
     def _import_controllers(self):
         super(MainAppHandler,self)._import_controllers()
         self._controller_modules={}

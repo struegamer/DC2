@@ -30,7 +30,7 @@ except ImportError,e:
     sys.exit(1)
 
 
-class RESTRequestHandler(object):
+class RequestHandler(object):
     def __init__(self):
         self._controllers={}
         self._controller_modules=None

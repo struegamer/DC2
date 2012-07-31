@@ -44,7 +44,7 @@ except ImportError,e:
     print e
     sys.exit(1)
 
-class WebController(object):
+class RESTController(object):
 
     def __init__(self,*args,**kwargs):
         self._request_context=kwargs.get('request_context',None)

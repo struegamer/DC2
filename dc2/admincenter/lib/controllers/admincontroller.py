@@ -48,7 +48,7 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
-    from dc2.lib.web.controllers import WebController
+    from dc2.lib.web.controllers import RESTController
     from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
@@ -73,7 +73,7 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class AdminController(WebController):
+class AdminController(RESTController):
     CONTROLLER_IDENT={}
     def __init__(self, *args, **kwargs):
         super(AdminController,self).__init__(self, *args, **kwargs)
