@@ -88,7 +88,7 @@ class MainController(WebController):
             user_info['realname']=self._request_context.session.realname
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
             self._page.add_page_data({'user':user_info})
- 
+            self._page.add_page_data({'admin_is_link':True})
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
