@@ -19,3 +19,5 @@
 #################################################################################
 
 from backends import BackendsController
+from main import MainAdminController
+
