@@ -163,4 +163,17 @@ class BackendsController(WebController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
         return result
 
-     
+    @Logger
+    def _delete(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        request_data=verb.get('request_data',None)
+        if request_data is not None and request_data.get('id',None) is not None:
+            pass
+
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
+
+

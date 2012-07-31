@@ -85,3 +85,9 @@ def backend_get(rec=None):
         return result
     return None
  
+def backend_delete(rec=None):
+    if rec is None or type(rec) is not types.DictType:
+        raise ValueError('rec is not a Dict type or rec is None')
+    if '_id' not in rec:
+        raise ValueError("no '_id'")
+ 
