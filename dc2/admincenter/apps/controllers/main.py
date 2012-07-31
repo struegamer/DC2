@@ -65,6 +65,7 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
+    from dc2.admincenter.lib import backends
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -73,22 +74,31 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class MainController(WebController):
-    def _prepare_page(self,verb):
-        page=Page(verb['template'],tmpl_env,self._request_context)
-        page.set_title('DC2-AdminCenter - Index')
-        page.set_cssfiles(CSS_FILES)
-        page.set_jslibs(JS_LIBS)
+    def __init__(self, *args, **kwargs):
+        super(MainController,self).__init__(self, *args, **kwargs)
+        self._prepare_page()
+
+    def _prepare_page(self):
+        self._page=Page(None,tmpl_env,self._request_context)
+        self._page.set_cssfiles(CSS_FILES)
+        self._page.set_jslibs(JS_LIBS)
         if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
             user_info={}
             user_info['username']=self._request_context.session.username
             user_info['realname']=self._request_context.session.realname
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
-            page.add_page_data({'user':user_info})
-        return page.render()
+            self._page.add_page_data({'user':user_info})
  
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
-        web.debug(verb)
+        self._page.template_name=verb['template']
+        self._page.set_title('Dashboard')
+        self._page.set_action('index')
+        self._fill_backends()
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],
-                output={'content':self._prepare_page(verb)})
+                output={'content':self._page.render()})
         return result
+
+    def _fill_backends(self):
+        backend_list=backends.backend_list()
+        self._page.add_page_data({'backendlist':backend_list})

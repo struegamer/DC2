@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div id="dashboard_backends" class="span6">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>DC² Instance Name</th>
+                        <th>Location</th>
+                        <th>Servers</th>
+                        <th>Hosts</th>
+                        <th>Deployment State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for backend in backendlist %}
+                    <tr>
+                        <td>{{backend.title}}</td>
+                        <td>{{backend.location}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
