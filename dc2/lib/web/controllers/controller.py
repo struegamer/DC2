@@ -52,6 +52,9 @@ class WebController(object):
         self._define_process_methods()
         self._initialize_verbs()
 
+    def set_context(self,ctx):
+        self._request_context=ctx
+
     def _initialize_verbs(self):
         self._verb_methods={
             'GET':[
