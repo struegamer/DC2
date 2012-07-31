@@ -10,12 +10,16 @@
         {%- if not labels %}
         {{ input(field.name,type=field.type,value=field.value,placeholder=field.placeholder,size=field.size,class=field.class,id=field.id)}}
         {% else %}
+        {% if field.type != 'hidden' %}
         <div class="control-group">
             <label class='control-label' for='field_{{field.name}}'>{% if field.label %}{{field.label}}{%else%}{{ field.name|capitalize }}{%endif%}</label>
             <div class='controls'>
-                {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_{{field.name}}') }}
+                {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_%s' % field.name) }}
             </div>
         </div>
+        {% else %}
+        {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_%s' % field.name) }}
+        {% endif %}
         {% endif %}
         {%- endfor %}
         {%- if enable_buttons %}
