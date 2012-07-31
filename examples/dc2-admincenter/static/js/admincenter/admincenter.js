@@ -38,7 +38,8 @@ DC2.Widgets.ButtonGroup.Index.prototype.action=function(event) {
           $('table.data-list').find('input[type="checkbox"].del_check').each(function() {
             if ($(this).prop('checked')==true) {
               a=$.ajax({
-                url:$('table.data-list').attr('data-url-delete')+$(this).val(),
+                url:$('table.data-list').attr('data-url-delete')+$(this).val()+'?oformat=json',
+                dataType:'json',
                 type:'DELETE',
               });
               a.done(function(data) {
@@ -78,8 +79,9 @@ DC2.Widgets.DataList.prototype.edit = function(event) {
 
 DC2.Widgets.DataForms = function(selector) {
   this.container=$(selector);
+  this.container.find('input[type="text"]').on('keypress',this.container,this.catch_enter.bind(this));
   this.container.find('input[type="button"].btn_save').on('click',this.container,this.save.bind(this));
-//this.container.find('input[type="button"].btn_cancel').on('click',this.container,this.cancel.bind(this));
+  this.container.find('input[type="button"].btn_cancel').on('click',this.container,this.cancel.bind(this));
 };
 
 DC2.Widgets.DataForms.prototype.save=function(event) {
@@ -106,6 +108,16 @@ DC2.Widgets.DataForms.prototype.save=function(event) {
     }
   });
 };  
+
+DC2.Widgets.DataForms.prototype.cancel = function(event) {
+  window.location.href=$(event.target).attr('data-url');
+};
+
+DC2.Widgets.DataForms.prototype.catch_enter = function(event) {
+  if (event && event.which == 13) {
+    this.container.find('input[type="button"].btn_save').trigger('click');
+  }
+};
 
 
 $(document).ready(function() {
