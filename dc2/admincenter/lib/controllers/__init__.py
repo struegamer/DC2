@@ -19,3 +19,4 @@
 #################################################################################
 
 from admincontroller import AdminController
+from jsoncontroller import JSONController

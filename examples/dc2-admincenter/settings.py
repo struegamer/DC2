@@ -73,7 +73,8 @@ CONTROLLER_MAPPINGS={
         '/':'MainController',
         '/login':'SessionController',
         '/admin':'admin.MainAdminController',
-        '/admin/backends':'admin.BackendsController'
+        '/admin/backends':'admin.BackendsController',
+        '/json/backends':'json.JSONBackendController',
         }
 
 #
