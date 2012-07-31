@@ -36,11 +36,18 @@ DC2.Widgets.ButtonGroup.Index.prototype.action=function(event) {
       if ($(this).attr('data-list')=='true') {
         if ($(this).attr('data-action')=='delete') {
           $('table.data-list').find('input[type="checkbox"].del_check').each(function() {
-            a=$.ajax({
-              url:$('table.data-list').attr('data-url-delete')+$(this).val(),
-              type:'DELETE',
-              // complete:function() { window.location.href=$('table.data-list').attr('data-url-delete'); }
-            });
+            if ($(this).prop('checked')==true) {
+              a=$.ajax({
+                url:$('table.data-list').attr('data-url-delete')+$(this).val(),
+                type:'DELETE',
+              });
+              a.done(function(data) {
+                if ('redirect' in data) {
+                  window.location.href=data.redirect.url;
+                }
+              });
+
+            }
           });
         }
       }
@@ -90,8 +97,13 @@ DC2.Widgets.DataForms.prototype.save=function(event) {
     url:this.container.attr('action'),
     type:this.container.attr('method'),
     data:data,
-    dataType:'application/json',
+    dataType:'json',
     async:false
+  });
+  a.done(function(data) {
+    if ('redirect' in data) {
+      window.location.href=data.redirect.url;
+    }
   });
 };  
 
