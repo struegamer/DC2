@@ -23,6 +23,7 @@ import os
 import os.path
 import re
 import types
+import json
 
 try:
     import web
@@ -34,6 +35,13 @@ try:
     from jinja2 import Environment, FileSystemLoader
 except ImportError,e:
     print "You didn't install jinja2 templating engine"
+    sys.exit(1)
+
+try:
+    from dc2.lib.logging import Logger
+except ImportError,e:
+    print 'you do not have dc2.lib installed'
+    print e
     sys.exit(1)
 
 class WebController(object):
@@ -56,10 +64,10 @@ class WebController(object):
                 {'urlre':'^%s[/]{0,1}$' % self._controller_path,'action':'create'}, # create
             ],
             'PUT':[
-                {'urlre':'^/(?P<id>[a-z,0-9,\-,\.A-Z]+)$','action':'update'}, # update
+                {'urlre':'^%s/(?P<id>[a-z,0-9,\-,\.A-Z]+)$' % self._controller_path,'action':'update'}, # update
             ],
             'DELETE':[
-                {'urlre':'^(.*)$'},
+                {'urlre':'^%s/(?P<id>[a-z,0-9,\-,\.A-Z]+)$' % self._controller_path,'action':'delete' } # delete
             ]
         }
 
@@ -74,13 +82,19 @@ class WebController(object):
             'delete':self._delete,
         }
 
-    def _content_type(self):
+    def _content_type(self,formats=None):
         content_type=self._request_context.env.get('CONTENT_TYPE',None)
         web.debug('CONTENT_TYPE: %s' % content_type)
-        if content_type is None:
-            return 'text/html; charset=utf-8'
+        if formats is None:
+            if content_type is None:
+                return 'text/html; charset=utf-8'
+            else:
+                return content_type
         else:
-            return content_type
+            output_format=formats.get('oformat',None)
+            if output_format is not None:
+                if output_format.lower() == 'json':
+                    return 'application/json'
 
     def process(self, path='/'):
         verb=self._process_request(path)
@@ -93,6 +107,7 @@ class WebController(object):
         web.debug('GET PATH: %s' % path)
         verbs=self._verb_methods[self._request_context.method.upper()]
         web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
+        params=web.input()
         for verb in verbs:
             found=re.search(verb['urlre'],path)
             if found is not None:
@@ -104,20 +119,23 @@ class WebController(object):
                 if self._request_context.env.get('X-Request-With',None) is not None:
                     if self._request_context.env['X-Request-With']=='XMLHttpRequest':
                         verb['request_type']='ajax'
-                verb['request_content_type']=self._content_type()
+                verb['request_content_type']=self._content_type(params)
+                verb['request_output_format']=params.get('oformat',None)
                 if verb.get('template',None) is not None:
-                    verb['template']='%s/%s' % (path[:-1],verb['template'])
+                    verb['template']='%s/%s' % (self._controller_path,verb['template'])
                 return verb
 
-    def _prepare_output(self, format='html',content_type='text/html; charset=utf-8',output=None):
+    def _prepare_output(self, format='html',content_type='text/html; charset=utf-8',output_format='html',output=None):
         if output is None or type(output) is not types.DictType:
             output={'output':'No Output'}
         result={}
         result['format']=format
         result['content-type']=content_type
+        if output_format == 'json':
+            output=json.dumps(output)
         result['output']=output
         return result
-
+    @Logger
     def _index(self, *args, **kwargs):
         return self._prepare_output()
     def _new(self, *args, **kwargs):
