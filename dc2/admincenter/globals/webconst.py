@@ -25,7 +25,7 @@ CSS_FILES=[
         ]
 
 JS_LIBS=[
-        '/static/js/jquery/jquery.min.js',
+        '/static/js/jquery/jquery.js',
         '/static/js/bootstrap/bootstrap.min.js',
         '/static/js/admincenter/admincenter.js',
         ]
