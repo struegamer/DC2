@@ -1,7 +1,8 @@
 window.DC2 = {
   Widgets:{},
   Utilities:{},
-  Forms:{}
+  Forms:{},
+  JSONCalls:{}
 };
 
 DC2.Widgets.StandardForms= function(selector) {
@@ -120,6 +121,20 @@ DC2.Widgets.DataForms.prototype.catch_enter = function(event) {
 };
 
 
+
+DC2.JSONCalls.BackendStats = function(selector) {
+  this.container=$(selector);
+  url=this.container.attr('data-backend-type');
+  a=$.ajax({
+    url:'/json/backends/'+url,
+    dataType:'json',
+    context:this,
+  })
+  a.done(function(data) {
+    this.container.html(data.backend_count);
+  });
+};
+
 $(document).ready(function() {
 
   $('.std-form').each(function() {
@@ -141,6 +156,11 @@ $(document).ready(function() {
     if ($(this).attr('id') != null && $(this).attr('data-remote')=='True') {
       console.log('dataforms true')
       new DC2.Widgets.DataForms('#'+$(this).attr('id'));
+    }
+  });
+  $('.backendstats').each(function() {
+    if ($(this).attr('id') != null ) {
+      DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
     }
   });
 });
