@@ -33,6 +33,7 @@ except ImportError,e:
 
 try:
     from dc2.lib.logging import Logger
+    from dc2.lib.transports import get_xmlrpc_transport
 except ImportError,e:
     print 'you do not have dc2.lib installed'
     print e
@@ -46,6 +47,13 @@ except ImportError,e:
     print e
     sys.exit(1)
 
+try:
+    from dc2.api.dc2 import Servers
+except ImportError,e:
+    print 'you didn\'t have dc2.api installed'
+    print e
+    sys.exit(1)
+
 class JSONBackendController(JSONController):
     def __init__(self, *args, **kwargs):
         super(JSONBackendController,self).__init__(*args,**kwargs)
@@ -56,10 +64,10 @@ class JSONBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backendstats','backend_stats')
         self.add_process_method('backend_stats',self._backend_stats)
 
-        self.add_url_handler_to_verb('GET','backend_server_stats','backend_servers_stats')
+        self.add_url_handler_to_verb('GET','backend_servers_stats','backend_servers_stats')
         self.add_process_method('backend_servers_stats',self._backend_servers_stats)
 
-        self.add_url_handler_to_verb('GET','backend_host_stats','backend_hosts_stats')
+        self.add_url_handler_to_verb('GET','backend_hosts_stats','backend_hosts_stats')
         self.add_process_method('backend_hosts_stats',self._backend_hosts_stats)
 
     def _backend_stats(self,*args,**kwargs):
@@ -67,14 +75,26 @@ class JSONBackendController(JSONController):
         verb=kwargs.get('verb',None)
         web.debug('%s: %s' % (self.__class__.__name__,verb))
         if verb is not None:
-            params=web.input()
             backendlist=backends.backend_list()
             result=self._prepare_output(result={'backend_count':len(backendlist)})
             web.debug('_backend_stats: %s' % result)
             return result
 
     def _backend_servers_stats(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        if verb is not None:
+            params=web.input()
+            backend_id = params.get('backend_id',None)
+            if backend_id is not None:
+                backend=backends.backend_get({'_id':backend_id})
+                if backend is not None:
+                    transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+                    s=Servers(transport)
+                    count_servers=s.count_servers()
+                    result=self._prepare_output(result={'backend_id':backend_id,'server_count':count_servers})
+                    return result
+            result=self._prepare_output(result={'backend_id':backend_id,'server_count':0})
+            return result
 
     def _backend_hosts_stats(self,*args,**kwargs):
         pass
