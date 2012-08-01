@@ -112,6 +112,7 @@ setup(name='dc2.lib',
             'dc2.lib.web.controllers',
             'dc2.lib.web.helpers',
             'dc2.lib.logging',
+            'dc2.lib.transports',
         ]
     )
 
