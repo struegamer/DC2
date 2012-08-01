@@ -90,8 +90,15 @@ DC2.Widgets.DataForms.prototype.save=function(event) {
   var data={}
   console.log(this.container.attr('method'));
   this.container.find('input').each(function(){
-    if ($(this).attr('type') != 'button') {
+    input_type=$(this).attr('type')
+    if (input_type != 'button' && input_type != 'checkbox' && input_type != 'radio') {
       data[$(this).attr('name')]=$(this).val();
+    } else if (input_type == 'checkbox' || input_type == 'radio') {
+      if ($(this).prop('checked')) {
+        data[$(this).attr('name')]=$(this).val();
+      } else {
+        data[$(this).attr('name')]=null;
+      }
     }
   });
   console.log(this.container.attr('method'));
