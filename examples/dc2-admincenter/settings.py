@@ -69,7 +69,13 @@ GRP_NAME_DC2ADMINS='dc2admins'
 FREEIPA_SERVER_URL=''
 TEMPLATE_DIR="%s/templates" % os.path.dirname(__file__)
 
-print TEMPLATE_DIR
+CONTROLLER_MAPPINGS={
+        '/':'MainController',
+        '/login':'SessionController',
+        '/admin':'admin.MainAdminController',
+        '/admin/backends':'admin.BackendsController',
+        '/json/backends':'json.JSONBackendController',
+        }
 
 #
 # LOGFILE settings

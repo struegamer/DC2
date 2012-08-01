@@ -18,15 +18,4 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-CSS_FILES=[
-        '/static/css/bootstrap/bootstrap.css',
-        '/static/css/admincenter/base.css',
-        '/static/css/bootstrap/bootstrap-responsive.css',
-        ]
-
-JS_LIBS=[
-        '/static/js/jquery/jquery.min.js',
-        '/static/js/bootstrap/bootstrap.min.js',
-        '/static/js/admincenter/admincenter.js',
-        ]
-
+ADMIN_MODULES=[]

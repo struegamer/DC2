@@ -18,7 +18,6 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-
 import sys
 import os
 import os.path
@@ -48,6 +47,7 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
+    from dc2.lib.web.controllers import RESTController
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -56,6 +56,7 @@ except ImportError,e:
 try:
     from settings import TEMPLATE_DIR
     from settings import KERBEROS_AUTH_ENABLED
+    from settings import GRP_NAME_DC2ADMINS
 except ImportError,e:
     print "You don't have a settings file"
     print e
@@ -64,6 +65,7 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
+    from dc2.admincenter.lib import backends
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -71,18 +73,32 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class Index(object):
-    def __init__(self):
-        self._page=Page('admin/index.tmpl',tmpl_env,web.ctx)
-        self._page.set_title('DC2-AdminCenter - Administration')
+class MainController(RESTController):
+    def __init__(self, *args, **kwargs):
+        super(MainController,self).__init__(self, *args, **kwargs)
+        self._prepare_page()
+
+    def _prepare_page(self):
+        self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
         self._page.set_jslibs(JS_LIBS)
-        if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
+        if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
             user_info={}
-            user_info['username']=web.ctx.session.username
-            user_info['realname']=web.ctx.session.realname
-            user_info['is_dc2admin']=web.ctx.session.is_dc2admin
-            page.add_page_data({'user':user_info})
- 
-    def GET(self):
-        return self._page.render()
+            user_info['username']=self._request_context.session.username
+            user_info['realname']=self._request_context.session.realname
+            user_info['is_dc2admin']=self._request_context.session.is_dc2admin
+            self._page.add_page_data({'user':user_info})
+            self._page.add_page_data({'admin_is_link':True})
+    def _index(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._page.template_name=verb['template']
+        self._page.set_title('Dashboard')
+        self._page.set_action('index')
+        self._fill_backends()
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],
+                output={'content':self._page.render()})
+        return result
+
+    def _fill_backends(self):
+        backend_list=backends.backend_list()
+        self._page.add_page_data({'backendlist':backend_list})

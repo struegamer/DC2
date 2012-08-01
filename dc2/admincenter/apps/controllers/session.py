@@ -18,7 +18,6 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-
 import sys
 import os
 import os.path
@@ -48,6 +47,7 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
+    from dc2.lib.web.controllers import RESTController
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -56,6 +56,7 @@ except ImportError,e:
 try:
     from settings import TEMPLATE_DIR
     from settings import KERBEROS_AUTH_ENABLED
+    from settings import GRP_NAME_DC2ADMINS
 except ImportError,e:
     print "You don't have a settings file"
     print e
@@ -71,18 +72,29 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class Index(object):
-    def __init__(self):
-        self._page=Page('admin/index.tmpl',tmpl_env,web.ctx)
-        self._page.set_title('DC2-AdminCenter - Administration')
-        self._page.set_cssfiles(CSS_FILES)
-        self._page.set_jslibs(JS_LIBS)
-        if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
-            user_info={}
-            user_info['username']=web.ctx.session.username
-            user_info['realname']=web.ctx.session.realname
-            user_info['is_dc2admin']=web.ctx.session.is_dc2admin
-            page.add_page_data({'user':user_info})
+class SessionController(RESTController):
+    @csrf_protected
+    def _create(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        web.debug('SessionController: create')
+        web.debug('SessionController.create: %s' % kwargs)
+        params=web.input()
+        if KERBEROS_AUTH_ENABLED:
+            try:
+                do_kinit(params.username,params.password)
+                web.ctx.session.authenticated=True
+                web.ctx.session.username=params.username
+                result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'/','absolute':True}})
  
-    def GET(self):
-        return self._page.render()
+            except KerberosAuthError,e:
+                web.ctx.session.authenticated=False
+                web.ctx.session.error=True
+                web.ctx.session.errorno=1020
+                web.ctx.session.errormsg=e
+                result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'/','absolute':True}})
+        # TODO: Standard Auth
+        else:
+            web.ctx.session.authenticated=True
+            web.ctx.session.username=params.username
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'/','absolute':True}})
+        return result

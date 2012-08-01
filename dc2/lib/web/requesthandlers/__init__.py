@@ -18,23 +18,4 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-import sys
-
-try:
-    import web
-except ImportError,e:
-    print "You didn't install web.py"
-    print e
-    sys.exit(1)
-
-print ADMIN_MODULES
-ADMIN_MODULES.append({'title':'DC2 Backends','url':'/admin/backends'})
-
-from main import Index
-
-urls=(
-    '','Index',
-
-)
-
-app_admin_dc2backends=web.application(urls,locals())
+from handler import RequestHandler

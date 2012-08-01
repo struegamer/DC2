@@ -18,24 +18,6 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-import sys
+from backends import BackendsController
+from main import MainAdminController
 
-try:
-    import web
-except ImportError,e:
-    print "You didn't install web.py"
-    print e
-    sys.exit(1)
-
-ADMIN_MODULES=[]
-
-from main import Index
-from dc2backends import app_admin_dc2backends
-
-urls=(
-    '','Index',
-    '/backends',app_admin_dc2backends,
-
-)
-
-app_admin=web.application(urls,locals())

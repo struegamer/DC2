@@ -18,15 +18,22 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-CSS_FILES=[
-        '/static/css/bootstrap/bootstrap.css',
-        '/static/css/admincenter/base.css',
-        '/static/css/bootstrap/bootstrap-responsive.css',
-        ]
+import sys
 
-JS_LIBS=[
-        '/static/js/jquery/jquery.min.js',
-        '/static/js/bootstrap/bootstrap.min.js',
-        '/static/js/admincenter/admincenter.js',
-        ]
 
+try:
+    import web
+except ImportError,e:
+    print 'you do not have web.py instlled'
+    print e
+    sys.exit(1)
+
+
+class Logger(object):
+    def __init__(self, func):
+        self.func = func
+    def __get__(self, obj, type=None):
+        return self.__class__(self.func.__get__(obj, type))
+    def __call__(self, *args, **kw):
+        web.debug('Entering: %s' % self.func)
+        return self.func(*args, **kw)

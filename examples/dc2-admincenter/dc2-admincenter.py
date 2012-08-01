@@ -40,6 +40,8 @@ except ImportError:
 try:
     from dc2.admincenter.globals import connectionpool
     from dc2.lib.db.mongo import MongoStore
+    from dc2.lib.auth.helpers import get_realname
+    from dc2.lib.auth.helpers import check_membership_in_group
 except ImportError,e:
     print "Your DC2 installation is not correct"
     print e
@@ -48,9 +50,7 @@ except ImportError,e:
 # Apps Import
 #
 try:
-    from dc2.admincenter.apps import Home
-    from dc2.admincenter.apps import Login
-    from dc2.admincenter.apps import admin
+    from dc2.admincenter.apps import MainAppHandler
 except ImportError,e:
     print "You didn't install DC² correctly"
     print e
@@ -63,10 +63,12 @@ except ImportError,e:
     print 'You do not have a settings file.'
     sys.exit(1)
 
+
 urls = (
-    "/", "Home",
-    "/login","Login",
-    '/admin',admin.app_admin)
+    "(.*)", 'MainAppHandler',
+    #"/login","Login",
+    #'/admin',admin.app_admin
+    )
 
 session_db=MONGOS["admincenter"]["database"].get_db()
 

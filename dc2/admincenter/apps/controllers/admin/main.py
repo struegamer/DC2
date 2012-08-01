@@ -18,7 +18,6 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-
 import sys
 import os
 import os.path
@@ -33,6 +32,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import ADMIN_MODULES
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -48,6 +48,8 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
+    from dc2.lib.web.controllers import RESTController
+    from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -63,8 +65,8 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.admincenter.lib.auth import do_kinit
-    from dc2.admincenter.lib.auth import KerberosAuthError
+    from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib.controllers import AdminController
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -72,38 +74,15 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class Home(object):
-    def GET(self):
-        page=Page('index.tmpl',tmpl_env,web.ctx)
-        page.set_title('DC2-AdminCenter - Index')
-        page.set_cssfiles(CSS_FILES)
-        page.set_jslibs(JS_LIBS)
-        if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
-            user_info={}
-            user_info['username']=web.ctx.session.username
-            user_info['realname']=web.ctx.session.realname
-            user_info['is_dc2admin']=web.ctx.session.is_dc2admin
-            page.add_page_data({'user':user_info})
-        return page.render()
-            
-class Login(object):
-    @csrf_protected
-    def POST(self):
-        params=web.input()
-        if KERBEROS_AUTH_ENABLED:
-            try:
-                do_kinit(params.username,params.password)
-                web.ctx.session.authenticated=True
-                web.ctx.session.username=params.username
-                raise web.seeother('/')
-            except KerberosAuthError,e:
-                web.ctx.session.authenticated=False
-                web.ctx.session.error=True
-                web.ctx.session.errorno=1020
-                web.ctx.session.errormsg=e
-                raise web.seeother('/')
-        # TODO: Standard Auth
-        else:
-            web.ctx.session.authenticated=True
-            web.ctx.session.username=params.username
-            raise web.seeother('/')
+class MainAdminController(AdminController):
+    CONTROLLER_IDENT={'title':'Admin Home','url':'/admin'}
+    @Logger
+    def _index(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        page.set_title('Admin - Index')
+        page.set_action('index')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+
