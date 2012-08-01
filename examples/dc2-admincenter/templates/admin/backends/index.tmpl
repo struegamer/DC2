@@ -15,6 +15,7 @@
                         <th><input id="check_all" type="checkbox" name="check_all"/></tH>
                         <th>DC² Backend</th>
                         <th>Location</th>
+                        <th>Keberos Secured</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,6 +24,7 @@
                         <td><input class="del_check" type="checkbox" name="check" value="{{ items._id }}"/></td>
                         <td class="data-cell">{{ items.title }}</td>
                         <td class="data-cell">{{ items.location }}</td>
+                        <td class="data-cell">{{ items.is_kerberos }}</td>
                     </tr>
                     {%- endfor %}
                 </tbody>

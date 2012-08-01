@@ -54,6 +54,7 @@ def backend_new():
     rec['title']=''
     rec['backend_url']=''
     rec['location']=''
+    rec['is_kerberos']=False
     return rec
 
 

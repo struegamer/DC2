@@ -110,10 +110,15 @@ class BackendsController(AdminController):
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
+        web.debug('_create: %s' % params)
         backend={}
         backend['title']=params.title
         backend['backend_url']=params.backend_url
         backend['location']=params.location
+        if params.is_kerberos is None or params.is_kerberos == '' or params.is_kerberos=='null':
+            backend['is_kerberos']=False
+        else:
+            backend['is_kerberos']=True
         backends.backend_add(backend)
         output_format=verb.get('request_output_format')
         if output_format.lower()=='json':
@@ -131,6 +136,10 @@ class BackendsController(AdminController):
         backend['title']=params.title
         backend['backend_url']=params.backend_url
         backend['location']=params.location
+        if params.is_kerberos is None or params.is_kerberos == '' or params.is_kerberos=='null':
+            backend['is_kerberos']=False
+        else:
+            backend['is_kerberos']=True
         backends.backend_update(backend)
         output_format=verb.get('request_output_format')
         if output_format.lower()=='json':
