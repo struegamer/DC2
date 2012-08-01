@@ -21,12 +21,11 @@
 import xmlrpclib
 
 class Servers(object):
-    def __init__(self, rpcurl=None):
+    def __init__(self, xmlrpc_transport=None):
         if rpcurl is None:
             # TODO: Add Real Exception
             raise Exception('No RPCUrl given')
-        self._rpcurl=rpcurl
-        self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)
+        self._proxy=xmlrpc_transport
 
     def find_servers(self,rec=None):
         if rec is None:
@@ -41,4 +40,9 @@ class Servers(object):
     def list_servers(self):
         serverlist=self._proxy.dc2.inventory.servers.list()
         return serverlist
+    def count_servers(self):
+        # TODO: Add a rpc call to appserver for counting
+        serverlist=self._proxy.dc2.inventory.servers.list()
+        return len(serverlist)
+
 
