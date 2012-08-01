@@ -56,11 +56,11 @@ class JSONBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backendstats','backend_stats')
         self.add_process_method('backend_stats',self._backend_stats)
 
-        self.add_url_handler_to_verb('GET','backend_server_stats','backend_server_stats')
-        self.add_process_method('backend_server_stats',self._backend_server_stats)
+        self.add_url_handler_to_verb('GET','backend_server_stats','backend_servers_stats')
+        self.add_process_method('backend_servers_stats',self._backend_servers_stats)
 
-        self.add_url_handler_to_verb('GET','backend_host_stats','backend_host_stats')
-        self.add_process_method('backend_host_stats',self._backend_host_stats)
+        self.add_url_handler_to_verb('GET','backend_host_stats','backend_hosts_stats')
+        self.add_process_method('backend_hosts_stats',self._backend_hosts_stats)
 
     def _backend_stats(self,*args,**kwargs):
         web.debug('backend_stats')
@@ -73,7 +73,7 @@ class JSONBackendController(JSONController):
             web.debug('_backend_stats: %s' % result)
             return result
 
-    def _backend_server_stats(self, *args, **kwargs):
+    def _backend_servers_stats(self, *args, **kwargs):
         pass
 
     def _backend_hosts_stats(self,*args,**kwargs):
