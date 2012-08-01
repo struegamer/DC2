@@ -22,9 +22,9 @@ import xmlrpclib
 
 class Servers(object):
     def __init__(self, xmlrpc_transport=None):
-        if rpcurl is None:
+        if xmlrpc_transport is None:
             # TODO: Add Real Exception
-            raise Exception('No RPCUrl given')
+            raise Exception('No XMLRPC Transport given')
         self._proxy=xmlrpc_transport
 
     def find_servers(self,rec=None):
