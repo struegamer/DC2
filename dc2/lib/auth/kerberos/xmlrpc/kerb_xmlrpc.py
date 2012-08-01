@@ -22,7 +22,7 @@ import xmlrpclib
 
 try:
     from ticket import KerberosTicket
-    from kerb_xmlrpc import KerberosAuthTransport
+    from kerberostransport import KerberosAuthTransport
 except ImportError,e:
     print 'Your installation of DC2 is not correct'
     sys.exit(1)
