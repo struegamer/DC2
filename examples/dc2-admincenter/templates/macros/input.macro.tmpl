@@ -1,5 +1,5 @@
-{% macro input(name,type='text',value='',placeholder='',size='',class='', id='') -%}
-	<input name="{{name}}" type="{{type}}" value="{{value}}" placeholder="{{placeholder}}" size="{{size}}" class="input-medium {{class}}" id="{{id}}"/>
+{% macro input(name,type='text',value='',placeholder='',size='',class='', id='',adds={}) -%}
+<input name="{{name}}" type="{{type}}" value="{{value}}" placeholder="{{placeholder}}" size="{{size}}" class="input-medium {{class}}" id="{{id}}" {%- if adds %}{%- for key in adds.keys() %} {%- if adds[key]!='' %}{{key}}="{{adds[key]}}"{%-endif%}{%- endfor %}{%- endif%} />
 {% endmacro %}
 
 
@@ -8,17 +8,17 @@
         <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
         {%- for field in fields %}
         {%- if not labels %}
-        {{ input(field.name,type=field.type,value=field.value,placeholder=field.placeholder,size=field.size,class=field.class,id=field.id)}}
+        {{ input(field.name,type=field.type,value=field.value,placeholder=field.placeholder,size=field.size,class=field.class,id=field.id,adds=field.adds)}}
         {% else %}
         {% if field.type != 'hidden' %}
         <div class="control-group">
             <label class='control-label' for='field_{{field.name}}'>{% if field.label %}{{field.label}}{%else%}{{ field.name|capitalize }}{%endif%}</label>
             <div class='controls'>
-                {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_%s' % field.name) }}
+                {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_%s' % field.name,adds=field.adds) }}
             </div>
         </div>
         {% else %}
-        {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_%s' % field.name) }}
+        {{ input(field.name,field.type,field.value,field.placeholder,field.size,field.class,'field_%s' % field.name, adds=fields.adds) }}
         {% endif %}
         {% endif %}
         {%- endfor %}
