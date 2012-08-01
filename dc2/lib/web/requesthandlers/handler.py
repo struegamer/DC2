@@ -68,6 +68,7 @@ class RequestHandler(object):
                     self._ctrl_instances[pat].set_context(web.ctx)
                     result=self._ctrl_instances[pat].process(path)
                     output_format=result.get('format',None)
+                    web.debug('output_format: %s' % output_format)
                     if output_format is None:
                         output_format='html'
                     if output_format.lower()=='html':

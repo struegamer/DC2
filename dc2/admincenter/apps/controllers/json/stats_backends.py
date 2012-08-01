@@ -33,14 +33,13 @@ except ImportError,e:
 
 try:
     from dc2.lib.logging import Logger
-    from dc2.admincenter.lib.controller import JSONController
 except ImportError,e:
     print 'you do not have dc2.lib installed'
     print e
     sys.exit(1)
 
 try:
-    from dc2.admincenter.lib.controller import JSONController
+    from dc2.admincenter.lib.controllers import JSONController
     from dc2.admincenter.lib import backends
 except ImportError,e:
     print 'you have a problem with dc2.admincenter'
@@ -52,17 +51,32 @@ class JSONBackendController(JSONController):
         super(JSONBackendController,self).__init__(*args,**kwargs)
         self._prepare_urls()
     
-    def self._prepare_urls(self):
-        self.add_url_handler_to_verb('GET','/backendstats','backend_stats')
+    @Logger
+    def _prepare_urls(self):
+        self.add_url_handler_to_verb('GET','backendstats','backend_stats')
         self.add_process_method('backend_stats',self._backend_stats)
 
+        self.add_url_handler_to_verb('GET','backend_server_stats','backend_server_stats')
+        self.add_process_method('backend_server_stats',self._backend_server_stats)
+
+        self.add_url_handler_to_verb('GET','backend_host_stats','backend_host_stats')
+        self.add_process_method('backend_host_stats',self._backend_host_stats)
+
     def _backend_stats(self,*args,**kwargs):
+        web.debug('backend_stats')
         verb=kwargs.get('verb',None)
+        web.debug('%s: %s' % (self.__class__.__name__,verb))
         if verb is not None:
             params=web.input()
             backendlist=backends.backend_list()
             result=self._prepare_output(result={'backend_count':len(backendlist)})
+            web.debug('_backend_stats: %s' % result)
             return result
 
+    def _backend_server_stats(self, *args, **kwargs):
+        pass
+
+    def _backend_hosts_stats(self,*args,**kwargs):
+        pass
 
 

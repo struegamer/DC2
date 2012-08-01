@@ -33,7 +33,7 @@ except ImportError,e:
 
 try:
     from dc2.lib.logging import Logger
-    from dc2.lib.web.controller import Controller
+    from dc2.lib.web.controllers import Controller
 except ImportError,e:
     print 'you do not have dc2.lib installed'
     print e
@@ -41,67 +41,14 @@ except ImportError,e:
 
 class JSONController(Controller):
 
-    def __init__(self,*args,**kwargs):
-        self._request_context=kwargs.get('request_context',None)
-        self._controller_path=kwargs.get('controller_path',None)
-        self._initialize_verbs()
-        self._REQ_METHODS={}
-
-    def set_context(self,ctx):
-        self._request_context=ctx
-
-    def _initialize_verbs(self):
-        self._verb_methods={
-            'GET':[],
-            'POST':[],
-            'PUT':[],
-            'DELETE':[]
-        }
-
-    def add_process_method(self, action_name='',action_method=None):
-        if action_name is None or action_name == '':
-            raise ValueError('action_name can\'t be None or empty')
-        if action_name in self._REQ_METHODS:
-            raise ValueError('action_name \'%s\' is already defined' % action_name)
-        if action_method is None or 
-            type(action_method) is not types.FunctionTyppe or 
-            type(action_method) is not types.MethodType:
-            raise ValueError('action_method is neither a function nor a method')
-
-        self._REQ_METHODS[action_name]=action_method
-        
-    def add_url_handler_to_verb(self, verb='GET', urlre='^$',action_name='',**kwargs):
-        url_regexp='^%s/%s$' % (self._controller_path,urlre)
-        verb_method={'urlre':url_regexp,'action':action_name}
-        if len(kwargs)>0:
-            for key in kwargs.keys():
-                verb_method[key]=kwargs[key]
-        self._verb_methods[verb].append(verb_method)
-
     def _content_type(self,*args, **kwargs):
         return 'application/json; charset=utf-8'
-
-    def process(self, path='/'):
-        verb=self._process_request(path)
-        if verb is not None:
-            func=self._REQ_METHODS[verb['action']]
-            return func(verb=verb)
-        return web.notfound()
-
-    def _process_request(self,path):
-        verbs=self._verb_methods[self._request_context.method.upper()]
-        for verb in verbs:
-            found=re.search(verb['urlre'],path)
-            if found is not None:
-                web.debug('match rule: %s' % verb['urlre'])
-                web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO',''))
-                verb['request_data']=found.groupdict()
-                return verb
 
     def _prepare_output(self, *args, **kwargs):
         # Takes -> result
         content=kwargs.get('result',None)
-        return json.dumps(content)
+        result={'format':'json','content-type':self._content_type(),'output':json.dumps(content)}
+        return result
 
 
 

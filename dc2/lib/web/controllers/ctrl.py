@@ -62,10 +62,9 @@ class Controller(object):
             raise ValueError('action_name can\'t be None or empty')
         if action_name in self._REQ_METHODS:
             raise ValueError('action_name \'%s\' is already defined' % action_name)
-        if action_method is None or 
-            type(action_method) is not types.FunctionTyppe or 
-            type(action_method) is not types.MethodType:
-            raise ValueError('action_method is neither a function nor a method')
+        web.debug('ACTION_METHOD: %s' % type(action_method))
+        if action_method is None:
+            raise ValueError('action_method is none')
 
         self._REQ_METHODS[action_name]=action_method
         
@@ -80,17 +79,22 @@ class Controller(object):
     def _content_type(self,*args, **kwargs):
         return 'text/html; charset=utf-8'
 
+    @Logger
     def process(self, path='/'):
         verb=self._process_request(path)
+        web.debug('PROCESS: VERB: %s' % verb)
         if verb is not None:
+            web.debug('REQ_METHODS: %s' % self._REQ_METHODS)
             func=self._REQ_METHODS[verb['action']]
             return func(verb=verb)
         return web.notfound()
 
     def _process_request(self,path):
         verbs=self._verb_methods[self._request_context.method.upper()]
+        web.debug("VERBS %s" % verbs)
         for verb in verbs:
             found=re.search(verb['urlre'],path)
+            web.debug('FOUND: %s' % found )
             if found is not None:
                 web.debug('match rule: %s' % verb['urlre'])
                 web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO',''))
