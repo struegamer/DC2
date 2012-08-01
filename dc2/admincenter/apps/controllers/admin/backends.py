@@ -49,6 +49,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
+    from dc2.lib.web.helpers import convert_values
     from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
@@ -92,7 +93,7 @@ class BackendsController(AdminController):
         page=self._prepare_page(verb)
         backend=backends.backend_new()
         page.set_title('DC2 Admincenter - Backends - Add')
-        page.add_page_data({'backend':backend})
+        page.add_page_data({'backend':convert_values(backend)})
         page.set_action('new')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
@@ -103,7 +104,7 @@ class BackendsController(AdminController):
         backend=backends.backend_get({'_id':verb['request_data']['id']})
         page.set_title('DC2 Admincenter - Backends - Edit')
         page.set_action('edit')
-        page.add_page_data({'backend':backend})
+        page.add_page_data({'backend':convert_values(backend)})
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
     @Logger
