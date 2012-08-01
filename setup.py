@@ -116,6 +116,19 @@ setup(name='dc2.lib',
         ]
     )
 
+setup(name='dc2.api',
+        version='0.9',
+        description='DC2 API',
+        author='Stephan Adig',
+        author_email='sh@sourcecode.de',
+        url='http://launchpad.net/dc2',
+        namespace_packages=['dc2'],
+        packages=[
+            'dc2.api',
+            'dc2.api.dc2',
+            ]
+        )
+
 setup(name='dc2.admincenter',
         version='0.9',
         description='DC2 AdminCenter',
