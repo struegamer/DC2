@@ -131,15 +131,50 @@ DC2.Widgets.DataForms.prototype.catch_enter = function(event) {
 
 DC2.JSONCalls.BackendStats = function(selector) {
   this.container=$(selector);
-  url=this.container.attr('data-backend-type');
-  a=$.ajax({
-    url:'/json/backends/'+url,
-    dataType:'json',
-    context:this,
-  })
+  datatype=this.container.attr('data-backend-type');
+  backend_id=0;
+  if (this.container.attr('data-backend-id')) {
+    backend_id=this.container.attr('data-backend-id');
+  }
+  switch(datatype) {
+    case 'backendstats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backendstats.bind(this));
+      break;
+    case 'backend_servers_stats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_servers_stats(this,backend_id));
+      break;
+    case 'backend_hosts_stats':
+      break;
+  }
+  this.container.trigger('backendstats.'+datatype+'.update');
+};
+
+DC2.JSONCalls.BackendStats.prototype.backendstats=function(event) {
+  a=this.do_remote('backendstats',null);
   a.done(function(data) {
     this.container.html(data.backend_count);
   });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backend_id) {
+  a=this.do_remote('backend_servers_stats',{'backend_id':backend_id});
+  a.done(function(data) {
+    this.container.html(data.server_count);
+  });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.do_remote = function(datatype,data) {
+  console.log(data);
+  a=$.ajax({
+    url:'/json/backends/' + datatype,
+    type:'GET',
+    data:data,
+    dataType:'json',
+    context:this,
+  });
+  return(a);
 };
 
 $(document).ready(function() {
@@ -167,7 +202,9 @@ $(document).ready(function() {
   });
   $('.backendstats').each(function() {
     if ($(this).attr('id') != null ) {
-      DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
+      new DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
     }
   });
+
+
 });
