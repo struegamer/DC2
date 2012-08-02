@@ -20,6 +20,7 @@
 
 import sys
 import types
+import re
 
 def convert_values(rec=None):
     if rec is None and type(rec) is not types.DictType:
@@ -31,3 +32,5 @@ def convert_values(rec=None):
             if rec[field] is False:
                 rec[field]=''
     return rec
+
+
