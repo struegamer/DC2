@@ -48,6 +48,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
+    from dc2.lib.transports import get_xmlrpc_transport
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -71,11 +72,18 @@ except ImportError,e:
     print e
     sys.exit(1)
 
+try:
+    from dc2.api.dc2.inventory import Servers
+except ImportError,e:
+    print 'You did not install dc2.api'
+    print e
+    sys.exit(1)
+
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class BackendsController(RESTController):
+class BackendsCtrl(RESTController):
     def __init__(self, *args, **kwargs):
-        super(MainController,self).__init__(self, *args, **kwargs)
+        super(BackendsCtrl,self).__init__(self, *args, **kwargs)
         self._prepare_page()
 
     def _prepare_page(self):
@@ -89,16 +97,26 @@ class BackendsController(RESTController):
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
             self._page.add_page_data({'user':user_info})
             self._page.add_page_data({'admin_is_link':True})
+            self._fill_backends()
+
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
         self._page.set_title('Dashboard')
         self._page.set_action('index')
-        self._fill_backends()
-        result=self._prepare_output(verb['request_type'],verb['request_content_type'],
+        params=web.input()
+        backend_id=params.get('backend_id',None)
+        if backend_id is not None:
+            self._page.add_page_data({'backend_id':backend_id})
+            backend=backends.backend_get({'_id':backend_id})
+            transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+            s=Servers(transport)
+            serverlist=s.list()
+            self._page.add_page_data({'serverlist':serverlist})
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
-        return result
+            return result
 
     def _fill_backends(self):
         backend_list=backends.backend_list()
- 
+        self._page.add_page_data({'backendlist':backend_list})

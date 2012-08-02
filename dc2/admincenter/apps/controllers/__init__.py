@@ -20,5 +20,5 @@
 
 from main import MainController
 from session import SessionController
-from backends import BackendsController
+from backends import BackendsCtrl
 from admin import *
