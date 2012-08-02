@@ -17,6 +17,15 @@ DC2.Widgets.StandardForms.prototype.submitForm = function (event) {
   }
 };
 
+DC2.Widgets.Dashboard=function(selector) {
+  this.container=$(selector);
+  this.container.find('tbody td.data-cell').on('click',this.container,this.on_click.bind(this));
+};
+
+DC2.Widgets.Dashboard.prototype.on_click=function(event) {
+  window.location.href='/backends/?backend_id='+$(event.target).parent().attr('data-backend-id');
+};
+
 DC2.Widgets.ButtonGroup = {};
 
 DC2.Widgets.ButtonGroup.Index = function(selector) {
@@ -144,7 +153,10 @@ DC2.JSONCalls.BackendStats = function(selector) {
       this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_servers_stats(this,backend_id));
       break;
     case 'backend_hosts_stats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_hosts_stats(this,backend_id));
       break;
+    case 'backend_deployment_stats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_deployment_stats(this,backend_id,this.container.attr('data-deployment-status')));
   }
   this.container.trigger('backendstats.'+datatype+'.update');
 };
@@ -161,6 +173,33 @@ DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backen
   a=this.do_remote('backend_servers_stats',{'backend_id':backend_id});
   a.done(function(data) {
     this.container.html(data.server_count);
+  });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_id) {
+  a=this.do_remote('backend_hosts_stats',{'backend_id':backend_id});
+  a.done(function(data) {
+    this.container.html(data.host_count);
+  });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,backend_id,what) {
+  a=this.do_remote('backend_deployment_stats',{'backend_id':backend_id,'status':what});
+  a.done(function(data) {
+    if ('status' in data) {
+      switch(data.status) {
+        case 'all':
+          break;
+        case 'deploy':
+          this.container.html(data.count);
+          break;
+        case 'localboot':
+          this.container.html(data.count);
+          break;
+      }
+    }
   });
   return(false);
 };
@@ -203,6 +242,12 @@ $(document).ready(function() {
   $('.backendstats').each(function() {
     if ($(this).attr('id') != null ) {
       new DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
+    }
+  });
+
+  $('.dashboard').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.Dashboard('#'+$(this).attr('id'));
     }
   });
 
