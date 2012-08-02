@@ -63,8 +63,8 @@ INSTALLSTATUS_RECORD={
                       "status":True
 }
 
-@rpcmethod(name="dc2.deployment.installstate.list",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_deployment_installstate_list(search=None): 
+@rpcmethod(name="dc2.deployment.installstate.find",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_deployment_installstate_find(search=None): 
     if search is not None and type(search) is types.DictType:
         for k in search.keys():
             a = re.compile('%s' % search[k], re.IGNORECASE)
@@ -73,6 +73,11 @@ def dc2_deployment_installstate_list(search=None):
     else:
         result = tbl_installstatus.find();
     return result    
+
+@rpcmethod(name='dc2.deployment.installstate.list', params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_deployment_installstate_list():
+    result=dc2_deployment_installstate_find()
+    return result
 
 @rpcmethod(name="dc2.deployment.installstate.get",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_deployment_installstate_get(record=None):
