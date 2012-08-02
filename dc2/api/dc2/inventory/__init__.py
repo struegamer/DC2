@@ -18,5 +18,7 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from rpcclient import RPCClient
+
+from servers import Servers
+from hosts import Hosts
 

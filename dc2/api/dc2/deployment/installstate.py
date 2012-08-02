@@ -18,5 +18,31 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from rpcclient import RPCClient
+import types
+from dc2.api import RPCClient
+
+
+class InstallState(RPCClient):
+
+    def find(self,rec=None):
+        resultlist=[]
+        if rec is None:
+            resultlist=self._proxy.dc2.deployment.installstate.list()
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                # TODO: Add Real Exception
+                raise Exception('The search argument is not a dictionary')
+            resultlist=self._proxy.dc2.deployment.installstate.list(rec)
+        return resultlist
+
+    def list(self):
+        resultlist=[]
+        resultlist=self.find()
+        return resultlist
+
+    def count(self,status='localboot'):
+        # TODO: Add a rpc call to appserver for counting
+        resultlist=self.find({'status':status})
+        return len(resultlist)
+
 

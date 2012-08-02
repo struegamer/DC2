@@ -18,5 +18,29 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from rpcclient import RPCClient
+from dc2.api import RPCClient
+
+class Hosts(RPCClient):
+
+    def find(self,rec=None):
+        hostlist=[]
+        if rec is None:
+            hostlist=self._proxy.dc2.inventory.hosts.list()
+            return hostlist
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                # TODO: Add Real Exception
+                raise Exception('The search argument is not a dictionary')
+            hostlist=self._proxy.dc2.inventory.hosts.find(rec)
+        return hostlist
+
+    def list(self):
+        hostlist=self.find()
+        return hostlist
+
+    def count(self):
+        # TODO: Add a rpc call to appserver for counting
+        hostlist=self.find()
+        return len(hostlist)
+
 

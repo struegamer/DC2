@@ -18,5 +18,12 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from rpcclient import RPCClient
+import xmlrpclib
+
+class RPCClient(object):
+    def __init__(self, transport=None):
+        if transport is None:
+            # TODO: Add Real Exception
+            raise Exception('No Transport given')
+        self._proxy=transport
 
