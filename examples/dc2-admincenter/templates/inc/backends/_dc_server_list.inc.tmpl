@@ -1,0 +1,24 @@
+<table class='table table-bordered table-striped'>
+    <thead>
+        <tr>
+            <th>UUID</TH>
+            <th>Serial Number</th>
+            <th>Manufacturer</th>
+            <th>Product Name</th>
+            <th>Location</th>
+            <th>Asset Tags</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%- for server in serverlist %}
+        <tr>
+            <td>{{server.uuid}}</td>
+            <td>{{server.serial_no}}</td>
+            <td>{{server.manufacturer}}</td>
+            <td>{{server.product_name}}</td>
+            <td>{{server.location}}</td>
+            <td>{{server.asset_tags}}</td>
+        </tr>
+        {%- endfor %}
+    </tbody>
+</table>
