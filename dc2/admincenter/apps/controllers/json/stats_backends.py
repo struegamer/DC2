@@ -48,7 +48,9 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.api.dc2 import Servers
+    from dc2.api.dc2.inventory import Servers
+    from dc2.api.dc2.inventory import Hosts
+    from dc2.api.dc2.deployment import InstallState
 except ImportError,e:
     print 'you didn\'t have dc2.api installed'
     print e
@@ -70,6 +72,9 @@ class JSONBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backend_hosts_stats','backend_hosts_stats')
         self.add_process_method('backend_hosts_stats',self._backend_hosts_stats)
 
+        self.add_url_handler_to_verb('GET','backend_deployment_stats','backend_deployment_stats')
+        self.add_process_method('backend_deployment_stats',self._backend_deployment_stats)
+
     def _backend_stats(self,*args,**kwargs):
         web.debug('backend_stats')
         verb=kwargs.get('verb',None)
@@ -90,13 +95,59 @@ class JSONBackendController(JSONController):
                 if backend is not None:
                     transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
                     s=Servers(transport)
-                    count_servers=s.count_servers()
+                    count_servers=s.count()
                     result=self._prepare_output(result={'backend_id':backend_id,'server_count':count_servers})
                     return result
             result=self._prepare_output(result={'backend_id':backend_id,'server_count':0})
             return result
 
     def _backend_hosts_stats(self,*args,**kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        if verb is not None:
+            params=web.input()
+            backend_id=params.get('backend_id',None)
+            if backend_id is not None:
+                backend=backends.backend_get({'_id':backend_id})
+                if backend is not None:
+                    transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+                    s=Hosts(transport)
+                    count_hosts=s.count()
+                    result=self._prepare_output(result={'backend_id':backend_id,'host_count':count_hosts})
+                    return result
+            result=self._prepare_output(result={'backend_id':backend_id,'host_count':0})
+            return result
 
+    def _backend_deployment_stats(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        if verb is not None:
+            params=web.input()
+            backend_id=params.get('backend_id',None)
+            what=params.get('status',None)
+            if backend_id is not None:
+                backend=backends.backend_get({'_id':backend_id})
+                if backend is not None:
+                    transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+                    s=InstallState(transport)
+                    if what is not None and what=='all':
+                        count_deploy=s.count('deploy')
+                        count_localboot=s.count('localboot')
+                        result=self._prepare_output(result={
+                            'backend_id':backend_id,
+                            'status':'all',
+                            'count_localboot':count_localbooti,
+                            'count_deploy':count_deploy})
+                    elif what is not None and what in ('deploy','localboot'):
+                        count=s.count(what)
+                        result=self._prepare_output(result={
+                            'backend_id':backend_id,
+                            'status':what,
+                            'count':count})
+                    return result
+            if what is None:
+                result=self._prepare_output(result={'backend_id':backend_id,'status':'all','count_localboot':0,'count_deploy':0})
+            elif what is not None and what == 'all':
+                result=self._prepare_output(result={'backend_id':backend_id,'status':'all','count_localboot':0,'count_deploy':0})
+            elif what is not None and what in ('deploy','localboot'):
+                result=self._prepare_output(result={'backend_id':backend_id,'status':what,'count':0})
+            return result
 
