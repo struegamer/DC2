@@ -1,0 +1,18 @@
+<table class='table tabled-bordered table-striped datatable-lists' id='dc_hosts_list_{{backend_id}}'>
+    <thead>
+        <tr>
+            <th>Hostname</th>
+            <th>Domainname</th>
+            <th>Environment</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%- for host in hostlist %}
+        <tr>
+            <td>{{host.hostname}}</td>
+            <td>{{host.domainname}}</td>
+            <td>{{host.environment}}</td>
+        </tr>
+        {%- endfor %}
+    </tbody>
+</table>

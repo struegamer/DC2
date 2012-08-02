@@ -136,6 +136,56 @@ DC2.Widgets.DataForms.prototype.catch_enter = function(event) {
   }
 };
 
+DC2.Widgets.Datatables = function(selector) {
+  this.container=$(selector);
+  listtype=this.container.attr('data-list-type');
+  switch(listtype) {
+    case 'servers':
+      columns=[
+        {'mDataProp':'_id'},
+        {'mDataProp':'uuid'},
+        {'mDataProp':'serial_no'},
+        {'mDataProp':'manufacturer'},
+        {'mDataProp':'product_name'},
+        {'mDataProp':'location'},
+        {'mDataProp':'asset_tags'}
+      ];
+      break;
+    case 'hosts':
+      columns=[
+        {'mDataProp':'hostname'},
+        {'mDataProp':'domainname'},
+        {'mDataProp':'environment'}
+      ];
+      break;
+    case 'installstate':
+      break;
+  }
+  this.container.dataTable({
+    'bDestroy':true,
+    'sDom': "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    'sPaginationType': 'bootstrap',
+    'iDisplayLength':25,
+    'aoColumns':columns,
+  });
+  this.container.on('backend-update',this.container,this.backend_update.bind(this));
+  this.container.trigger('backend-update');
+};
+
+DC2.Widgets.Datatables.prototype.backend_update=function(event) {
+  url=this.container.attr('data-retrieval-url');
+  a=$.ajax({
+    url:url,
+    dataType:'json',
+    type:'GET',
+    context:this,
+  });
+  a.done(function(data) {
+    this.container.dataTable().fnClearTable();
+    this.container.dataTable().fnAddData(data.serverlist);
+  });
+};
+
 
 
 DC2.JSONCalls.BackendStats = function(selector) {
@@ -251,5 +301,9 @@ $(document).ready(function() {
     }
   });
 
-
+  $('.datatable-lists').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.Datatables('#'+$(this).attr('id'));
+    }
+  });
 });

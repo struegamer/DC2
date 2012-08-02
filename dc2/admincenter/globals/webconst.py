@@ -22,11 +22,14 @@ CSS_FILES=[
         '/static/css/bootstrap/bootstrap.css',
         '/static/css/admincenter/base.css',
         '/static/css/bootstrap/bootstrap-responsive.css',
+        '/static/css/datatable/jquery.dataTables.css',
         ]
 
 JS_LIBS=[
         '/static/js/jquery/jquery.js',
         '/static/js/bootstrap/bootstrap.min.js',
+        '/static/js/datatable/jquery.dataTables.js',
+        '/static/js/datatable/DT_bootstrap.js',
         '/static/js/admincenter/admincenter.js',
         ]
 

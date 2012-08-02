@@ -108,11 +108,11 @@ class BackendsCtrl(RESTController):
         backend_id=params.get('backend_id',None)
         if backend_id is not None:
             self._page.add_page_data({'backend_id':backend_id})
-            backend=backends.backend_get({'_id':backend_id})
-            transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
-            s=Servers(transport)
-            serverlist=s.list()
-            self._page.add_page_data({'serverlist':serverlist})
+            #backend=backends.backend_get({'_id':backend_id})
+            #transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+            #s=Servers(transport)
+            #serverlist=s.list()
+            #self._page.add_page_data({'serverlist':serverlist})
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
             return result
