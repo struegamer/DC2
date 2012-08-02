@@ -20,4 +20,5 @@
 
 from main import MainController
 from session import SessionController
+from backends import BackendsController
 from admin import *

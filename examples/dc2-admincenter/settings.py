@@ -72,6 +72,7 @@ TEMPLATE_DIR="%s/templates" % os.path.dirname(__file__)
 CONTROLLER_MAPPINGS={
         '/':'MainController',
         '/login':'SessionController',
+        '/backends':'BackendsController',
         '/admin':'admin.MainAdminController',
         '/admin/backends':'admin.BackendsController',
         '/json/backends':'json.JSONBackendController',
