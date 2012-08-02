@@ -76,7 +76,6 @@ class Page(object):
 
     def set_cssfiles(self,css_array=None):
         if css_array is not None and type(css_array) is types.ListType:
-            print 'hello'
             self._page.update({'css_files':css_array})
             return True
         raise ValueError('css_array is None or not an array')
