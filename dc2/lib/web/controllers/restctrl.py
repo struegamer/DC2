@@ -146,7 +146,7 @@ class RESTController(object):
             output=json.dumps(output)
         result['output']=output
         return result
-    @Logger
+
     def _index(self, *args, **kwargs):
         return self._prepare_output()
     def _new(self, *args, **kwargs):
