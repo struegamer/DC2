@@ -106,6 +106,7 @@ class RESTController(object):
                     return 'text/html; charset=utf-8'
                 else:
                     return content_type
+        return 'text/html; charset=utf-8'
 
     def process(self, path='/'):
         verb=self._process_request(path)
