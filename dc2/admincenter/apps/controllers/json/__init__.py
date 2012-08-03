@@ -19,3 +19,6 @@
 #################################################################################
 from stats_backends import JSONBackendController
 from backends_server import JSONServerBackendController
+from backends_hosts import JSONHostBackendController
+from backends_deployment import JSONDeploymentBackendController
+
