@@ -18,8 +18,36 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
+from dc2.api import RPCClient
 
-from servers import Servers
-from hosts import Hosts
-from macs import Macs
-from ribs import Ribs
+class Macs(RPCClient):
+
+    def find(self,rec=None):
+        if rec is None:
+            datalist=self._proxy.dc2.inventory.servers.macaddr.list()
+            return datalist
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                # TODO: Add Real Exception
+                raise Exception('The search argument is not a dictionary')
+            datalist=self._proxy.dc2.inventory.servers.macaddr.find(rec)
+            return datalist
+
+    def list(self):
+        datalist=self.find()
+        return datalist
+
+    def count(self):
+        # TODO: Add a rpc call to appserver for counting
+        datalist=self.find()
+        return len(datalist)
+
+    def get(self,*args,**kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        if 'server_id' in kwargs:
+            rec['server_id']=kwargs.get('server_id',None)
+        macs=self._proxy.dc2.inventory.servers.macaddr.find(rec)
+        return macs
+ 
