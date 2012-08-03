@@ -17,6 +17,18 @@ DC2.Widgets.StandardForms.prototype.submitForm = function (event) {
   }
 };
 
+
+DC2.Widgets.Tabs=function(selector) {
+  this.container=$(selector);
+  this.container.find('a[data-toggle="tab"]').on('click',this.container,this.on_tab_click.bind(this));
+};
+
+DC2.Widgets.Tabs.prototype.on_tab_click = function(event) {
+  // event.preventDefault();
+  console.log(event.target);
+  $(event.target).tab('show');
+};
+
 DC2.Widgets.Dashboard=function(selector) {
   this.container=$(selector);
   this.container.find('tbody td.data-cell').on('click',this.container,this.on_click.bind(this));
@@ -142,7 +154,7 @@ DC2.Widgets.Datatables = function(selector) {
   switch(listtype) {
     case 'servers':
       columns=[
-        {'mDataProp':'_id'},
+        {'mDataProp':'_id','bVisible':false},
         {'mDataProp':'uuid'},
         {'mDataProp':'serial_no'},
         {'mDataProp':'manufacturer'},
@@ -153,23 +165,40 @@ DC2.Widgets.Datatables = function(selector) {
       break;
     case 'hosts':
       columns=[
+        {'mDataProp':'_id','bVisible':false},
+        {'mDataProp':'server_id','bVisible':false},
         {'mDataProp':'hostname'},
         {'mDataProp':'domainname'},
-        {'mDataProp':'environment'}
+        {'mDataProp':'environments','sDefaultContent':'No Environment'}
       ];
       break;
-    case 'installstate':
+    case 'deployment':
+      columns=[
+      {'mDataProp':'_id','bVisible':false},
+      {'mDataProp':'hostname'},
+      {'mDataProp':'status'}
+      ];
       break;
   }
+  _this=this
   this.container.dataTable({
     'bDestroy':true,
     'sDom': "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
     'sPaginationType': 'bootstrap',
     'iDisplayLength':25,
     'aoColumns':columns,
+    'fnRowCallback':function(nRow,aData,iDisplayIndex,iDisplayIndexFull) {
+      _this.process_row(nRow,aData,iDisplayIndex,iDisplayIndexFull,listtype);
+    },
   });
   this.container.on('backend-update',this.container,this.backend_update.bind(this));
   this.container.trigger('backend-update');
+};
+
+DC2.Widgets.Datatables.prototype.process_row=function(nRow,aData,iDisplayIndex,iDisplayIndexFull,listType) {
+  $(nRow).attr('data-entry-id',$(nRow).find('td:eq(0)').text());
+  $(nRow).attr('data-entry-type',listType);
+  $(nRow).on('click',this.container,this.on_click.bind(this));
 };
 
 DC2.Widgets.Datatables.prototype.backend_update=function(event) {
@@ -182,8 +211,21 @@ DC2.Widgets.Datatables.prototype.backend_update=function(event) {
   });
   a.done(function(data) {
     this.container.dataTable().fnClearTable();
-    this.container.dataTable().fnAddData(data.serverlist);
+    this.container.dataTable().fnAddData(data.datalist);
   });
+  return(false);
+};
+
+DC2.Widgets.Datatables.prototype.on_click = function(event) {
+  dataEntryType=$(event.target).attr('data-entry-type');
+  switch(dataEntryType) {
+    case 'servers':
+      break;
+    case 'hosts':
+      break;
+    case 'installstate':
+      break;
+  }
 };
 
 
@@ -304,6 +346,12 @@ $(document).ready(function() {
   $('.datatable-lists').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.Datatables('#'+$(this).attr('id'));
+    }
+  });
+
+  $('.widget-tab').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.Tabs('#'+$(this).attr('id'));
     }
   });
 });
