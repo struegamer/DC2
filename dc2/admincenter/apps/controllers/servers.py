@@ -32,7 +32,6 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
-    from dc2.admincenter.globals import ADMIN_MODULES
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -49,6 +48,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
+    from dc2.lib.transports import get_xmlrpc_transport
     from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
@@ -65,42 +65,73 @@ except ImportError,e:
     sys.exit(1)
 
 try:
+    from dc2.admincenter.lib.auth import do_kinit
+    from dc2.admincenter.lib.auth import KerberosAuthError
     from dc2.admincenter.lib import backends
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
     sys.exit(1)
 
+try:
+    from dc2.api.dc2.inventory import Servers
+    from dc2.api.dc2.inventory import Macs
+    from dc2.api.dc2.inventory import Ribs
+except ImportError,e:
+    print 'You did not install dc2.api'
+    print e
+    sys.exit(1)
+
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class AdminController(RESTController):
-    CONTROLLER_IDENT={}
+class ServerController(RESTController):
     def __init__(self, *args, **kwargs):
-        super(AdminController,self).__init__(*args, **kwargs)
-        self._add_to_admin_modules()
-    @Logger
-    def _add_to_admin_modules(self):
-        if self.CONTROLLER_IDENT not in ADMIN_MODULES:
-            ADMIN_MODULES.append(self.CONTROLLER_IDENT)
-
-    def _prepare_page(self,verb):
-        page=Page(verb['template'],tmpl_env,self._request_context)
-        page.set_cssfiles(CSS_FILES)
-        page.set_jslibs(JS_LIBS)
-        page.set_index(self._controller_path)
+        super(ServerController,self).__init__(*args, **kwargs)
+        self._prepare_page()
+    def _prepare_page(self):
+        self._page=Page(None,tmpl_env,self._request_context)
+        self._page.set_cssfiles(CSS_FILES)
+        self._page.set_jslibs(JS_LIBS)
         if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
             user_info={}
             user_info['username']=self._request_context.session.username
             user_info['realname']=self._request_context.session.realname
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
-            page.add_page_data({'user':user_info})
-        page=self._create_menu(page)
-        return page
+            self._page.add_page_data({'user':user_info})
+            self._page.add_page_data({'admin_is_link':True})
+            self._fill_backends()
 
-    def _create_menu(self,page):
-        if len(ADMIN_MODULES)>0:
-            page.add_page_data({'admin_menu':ADMIN_MODULES})
-        return page
+    def _init_backend(self):
+        params=web.input()
+        self._backend_id=params.get('backend_id',None)
+        self._page.add_page_data({'backend_id':self._backend_id})
+        self._backend=backends.backend_get({'_id':self._backend_id})
+        self._transport=get_xmlrpc_transport(self._backend['backend_url'],self._backend['is_kerberos'])
+        self._servers=Servers(self._transport)
+        self._macs=Macs(self._transport)
+        self._ribs=Ribs(self._transport)
 
+    @Logger
+    def _show(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._init_backend()
+        self._page.template_name=verb['template']
+        self._page.set_action('show')
+        request_data=verb.get('request_data',None)
+        if request_data is not None:
+            server_id=request_data.get('id',None)
+        if server_id is not None:
+            server=self._servers.get(id=server_id)
+            macs=self._macs.get(server_id=server_id)
+            ribs=self._ribs.get(server_id=server_id)
+            self._page.set_title('Server %s (%s - %s)' % (server['serial_no'],server['manufacturer'],server['product_name']))
+            self._page.add_page_data({'server':server})
+            self._page.add_page_data({'macs':macs})
+            self._page.add_page_data({'ribs':ribs})
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],
+                output={'content':self._page.render()})
+            return result
 
-
+    def _fill_backends(self):
+        backend_list=backends.backend_list()
+        self._page.add_page_data({'backendlist':backend_list})

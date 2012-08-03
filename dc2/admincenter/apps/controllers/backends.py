@@ -49,6 +49,7 @@ try:
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
     from dc2.lib.transports import get_xmlrpc_transport
+    from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -83,7 +84,7 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class BackendsCtrl(RESTController):
     def __init__(self, *args, **kwargs):
-        super(BackendsCtrl,self).__init__(self, *args, **kwargs)
+        super(BackendsCtrl,self).__init__(*args, **kwargs)
         self._prepare_page()
 
     def _prepare_page(self):
@@ -105,6 +106,21 @@ class BackendsCtrl(RESTController):
         self._page.set_action('index')
         params=web.input()
         backend_id=params.get('backend_id',None)
+        if backend_id is not None:
+            backend=backends.backend_get({'_id':backend_id})
+            self._page.add_page_data({'backend_id':backend_id})
+            self._page.set_title('Backend %s (Loc: %s)' % (backend['title'],backend['location']))
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],
+                output={'content':self._page.render()})
+            return result
+
+    @Logger
+    def _show(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._page.template_name=verb['template']
+        self._page.set_action('show')
+        request_data=verb.get('request_data',None)
+        backend_id=request_data.get('id',None)
         if backend_id is not None:
             backend=backends.backend_get({'_id':backend_id})
             self._page.add_page_data({'backend_id':backend_id})
