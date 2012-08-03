@@ -42,4 +42,13 @@ class Servers(RPCClient):
         serverlist=self.find()
         return len(serverlist)
 
-
+    def get(self,*args,**kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        if 'serial_no' in kwargs:
+            rec['serial_no']=kwargs.get('serial_no',None)
+        server=self._proxy.dc2.inventory.servers.find(rec)
+        if len(server)==1:
+            return server[0]
+        return []
