@@ -1,0 +1,22 @@
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <UL class='nav nav-tabs widget-tab' id='server_informations'>
+                <LI class='active'><a href='#dc_server_general_{{backend_id}}_{{server._id}}' data-toggle='tab'>General Information</a></li>
+                <LI><a href='#dc_server_mac_{{backend_id}}_{{server._id}}' data-toggle='tab'>Network Interfaces</a></li>
+                <LI><a href='#dc_server_rib_{{backend_id}}_{{server._id}}' data-toggle='tab'>Remote Insight Boards</a></LI>
+            </UL>
+            <div class='tab-content'>
+                <div class='tab-pane active' id='dc_server_general_{{backend_id}}_{{server._id}}'>
+                    {%- include 'inc/backends/servers/_server_general.inc.tmpl' %}
+                </div>
+                <div class='tab-pane' id='dc_server_mac_{{backend_id}}_{{server._id}}'>
+                    {%- include 'inc/backends/servers/_mac_addr.inc.tmpl' %}
+                </div>
+                <div class='tab-pane' id='dc_server_rib_{{backend_id}}_{{server._id}}'>
+                    {%- include 'inc/backends/servers/_ribs.inc.tmpl' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

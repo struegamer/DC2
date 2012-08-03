@@ -1,0 +1,22 @@
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span8'>
+            <table class='table table-bordered tabled-striped'>
+                <thead>
+                    <tr>
+                        <th>MAC Address</th>
+                        <th>Device Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for mac in macs %}
+                    <tr>
+                        <td>{{mac.mac_addr}}</td>
+                        <td>{{mac.device_name}}</td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

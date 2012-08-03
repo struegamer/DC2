@@ -1,0 +1,22 @@
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span6'>
+            <table class='table table-bordered tabled-striped'>
+                <thead>
+                    <tr>
+                        <th>Type of RIB</th>
+                        <th>RIB IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for rib in ribs %}
+                    <tr>
+                        <td>{{rib.remote_type}}</td>
+                        <td>{{rib.remote_ip}} <button name='connect_ilo' class='btn'>Connect</button></td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
