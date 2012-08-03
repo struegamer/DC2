@@ -102,17 +102,13 @@ class BackendsCtrl(RESTController):
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
-        self._page.set_title('Dashboard')
         self._page.set_action('index')
         params=web.input()
         backend_id=params.get('backend_id',None)
         if backend_id is not None:
+            backend=backends.backend_get({'_id':backend_id})
             self._page.add_page_data({'backend_id':backend_id})
-            #backend=backends.backend_get({'_id':backend_id})
-            #transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
-            #s=Servers(transport)
-            #serverlist=s.list()
-            #self._page.add_page_data({'serverlist':serverlist})
+            self._page.set_title('Backend %s (Loc: %s)' % (backend['title'],backend['location']))
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
             return result
