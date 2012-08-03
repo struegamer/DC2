@@ -58,7 +58,7 @@ except ImportError,e:
 
 class JSONServerBackendController(JSONController):
     def __init__(self, *args, **kwargs):
-        super(JSONController,self).__init__(*args,**kwargs)
+        super(JSONServerBackendController,self).__init__(*args,**kwargs)
         self._prepare_urls()
 
     def _prepare_urls(self):
@@ -75,8 +75,8 @@ class JSONServerBackendController(JSONController):
                 transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
                 s=Servers(transport)
                 serverlist=s.list()
-                result=self._prepare_output(result={'backend_id':backend_id,'serverlist':serverlist})
+                result=self._prepare_output(result={'backend_id':backend_id,'datalist':serverlist})
                 return result
-        result=self._prepare_output(result={'backend_id':backend_id,'serverlist':[]})
+        result=self._prepare_output(result={'backend_id':backend_id,'datalist':[]})
         return result
 
