@@ -24,8 +24,7 @@ DC2.Widgets.Tabs=function(selector) {
 };
 
 DC2.Widgets.Tabs.prototype.on_tab_click = function(event) {
-  // event.preventDefault();
-  console.log(event.target);
+  event.preventDefault();
   $(event.target).tab('show');
 };
 
@@ -35,7 +34,7 @@ DC2.Widgets.Dashboard=function(selector) {
 };
 
 DC2.Widgets.Dashboard.prototype.on_click=function(event) {
-  window.location.href='/backends/?backend_id='+$(event.target).parent().attr('data-backend-id');
+  window.location.href='/backends/'+$(event.target).parent().attr('data-backend-id');
 };
 
 DC2.Widgets.ButtonGroup = {};
@@ -109,7 +108,6 @@ DC2.Widgets.DataForms = function(selector) {
 DC2.Widgets.DataForms.prototype.save=function(event) {
   _this=this;
   var data={}
-  console.log(this.container.attr('method'));
   this.container.find('input').each(function(){
     input_type=$(this).attr('type')
     if (input_type != 'button' && input_type != 'checkbox' && input_type != 'radio') {
@@ -122,7 +120,6 @@ DC2.Widgets.DataForms.prototype.save=function(event) {
       }
     }
   });
-  console.log(this.container.attr('method'));
 
   a=$.ajax({
     url:this.container.attr('action'),
@@ -150,7 +147,8 @@ DC2.Widgets.DataForms.prototype.catch_enter = function(event) {
 
 DC2.Widgets.Datatables = function(selector) {
   this.container=$(selector);
-  listtype=this.container.attr('data-list-type');
+  var listtype=this.container.attr('data-list-type');
+  this._listType=listtype;
   switch(listtype) {
     case 'servers':
       columns=[
@@ -180,27 +178,30 @@ DC2.Widgets.Datatables = function(selector) {
       ];
       break;
   }
-  _this=this
+  var _this=this;
   this.container.dataTable({
-    'bDestroy':true,
+    'bDestroy':false,
     'sDom': "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
     'sPaginationType': 'bootstrap',
     'iDisplayLength':25,
     'aoColumns':columns,
-    'fnRowCallback':function(nRow,aData,iDisplayIndex,iDisplayIndexFull) {
-      _this.process_row(nRow,aData,iDisplayIndex,iDisplayIndexFull,listtype);
+    'fnCreatedRow':function(nRow,aData) {
+      $(nRow).attr('data-entry-id',aData._id);
+      $(nRow).attr('data-entry-type',listtype);
+      $(nRow).attr('data-backend-id',_this.container.attr('data-backend-id'));
+      $(nRow).on('click',_this.container,_this.on_click);
+      $(nRow).rightClick(_this.on_right_click);
     },
   });
-  this.container.on('backend-update',this.container,this.backend_update.bind(this));
-  this.container.trigger('backend-update');
+  this.container.on('backend-update-'+listtype,this.container,this.backend_update.bind(this));
+  this.container.trigger('backend-update-'+listtype);
+  return(false);
 };
 
-DC2.Widgets.Datatables.prototype.process_row=function(nRow,aData,iDisplayIndex,iDisplayIndexFull,listType) {
-  $(nRow).attr('data-entry-id',$(nRow).find('td:eq(0)').text());
-  $(nRow).attr('data-entry-type',listType);
-  $(nRow).on('click',this.container,this.on_click.bind(this));
-};
 
+DC2.Widgets.Datatables.prototype.on_right_click = function (event) {
+  console.log($(event.target).parent().attr('data-entry-id'));
+};
 DC2.Widgets.Datatables.prototype.backend_update=function(event) {
   url=this.container.attr('data-retrieval-url');
   a=$.ajax({
@@ -210,6 +211,7 @@ DC2.Widgets.Datatables.prototype.backend_update=function(event) {
     context:this,
   });
   a.done(function(data) {
+    console.log(this._listType);
     this.container.dataTable().fnClearTable();
     this.container.dataTable().fnAddData(data.datalist);
   });
@@ -217,15 +219,17 @@ DC2.Widgets.Datatables.prototype.backend_update=function(event) {
 };
 
 DC2.Widgets.Datatables.prototype.on_click = function(event) {
-  dataEntryType=$(event.target).attr('data-entry-type');
+  dataEntryType=$(event.target).parent().attr('data-entry-type');
   switch(dataEntryType) {
     case 'servers':
+      window.location.href='/backends/servers/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
     case 'hosts':
       break;
     case 'installstate':
       break;
   }
+  return(false);
 };
 
 
@@ -297,7 +301,6 @@ DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,bac
 };
 
 DC2.JSONCalls.BackendStats.prototype.do_remote = function(datatype,data) {
-  console.log(data);
   a=$.ajax({
     url:'/json/backends/' + datatype,
     type:'GET',
@@ -327,7 +330,6 @@ $(document).ready(function() {
   });
   $('.data-form').each(function() {
     if ($(this).attr('id') != null && $(this).attr('data-remote')=='True') {
-      console.log('dataforms true')
       new DC2.Widgets.DataForms('#'+$(this).attr('id'));
     }
   });
@@ -345,7 +347,8 @@ $(document).ready(function() {
 
   $('.datatable-lists').each(function() {
     if ($(this).attr('id') != null) {
-      new DC2.Widgets.Datatables('#'+$(this).attr('id'));
+      datatables={};
+      datatables[$(this).attr('id')]=new DC2.Widgets.Datatables('#'+$(this).attr('id'));
     }
   });
 
