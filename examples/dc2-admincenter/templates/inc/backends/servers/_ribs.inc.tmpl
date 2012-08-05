@@ -12,7 +12,7 @@
                     {%- for rib in ribs %}
                     <tr>
                         <td>{{rib.remote_type}}</td>
-                        <td>{{rib.remote_ip}} <button name='connect_ilo' class='btn'>Connect</button></td>
+                        <td><a href='https://{{rib.remote_ip}}/' class='btn'><i class='icon-cog'></i> {{rib.remote_ip}}</a></td>
                     </tr>
                     {%- endfor %}
                 </tbody>
