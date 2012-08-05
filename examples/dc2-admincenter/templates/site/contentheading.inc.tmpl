@@ -1,7 +1,9 @@
 <div class='container-fluid'>
     <div class='row-fluid'>
         <div class='span12'>
-            <h2>{{page.title}}</h2>
+            <h2>
+                {%- if page.action =='show' %}<a href='{{page.context.env['PATH_INFO']}}/edit?{{page.context.env['QUERY_STRING']}}' class='btn'><i class='icon-edit'></i> Edit</a>{%- endif %}
+                {{page.title}}</h2>
             <hr/>
         </div>
     </div>
