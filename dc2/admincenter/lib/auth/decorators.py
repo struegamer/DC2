@@ -18,7 +18,36 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from kerberos import do_kinit
-from exceptions import KerberosAuthError
-from decorators import needs_auth
-from decorators import needs_admin
+import sys
+
+
+try:
+    import web
+except ImportError,e:
+    print "You don't have web.py installed"
+    print e
+    sys.exit(1)
+
+def needs_auth(func):
+    def wrapper(*args,**kwargs):
+        if 'session' in web.ctx:
+            if 'authenticated' in web.ctx.session:
+                if web.ctx.session.authenticated is True:
+                    return func(*args,**kwargs)
+        raise web.HTTPError('400 Bad Request',
+                {'Content-Type':'text/html; charset=utf-8'},
+                """You are not authenticated!""")
+    return wrapper
+
+def needs_admin(func):
+    def wrapper(*args,**kwargs):
+        if 'session' in web.ctx:
+            if 'is_dc2admin' in web.ctx.session:
+                if web.ctx.session.is_dc2admin is True:
+                    return func(*args,**kwargs)
+        raise web.HTTPError('400 Bad Request',
+                {'Content-Type':'text/html; charset=utf-8'},
+                """You are not authenticated!""")
+    return wrapper
+
+       
