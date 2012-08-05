@@ -43,4 +43,14 @@ class Hosts(RPCClient):
         hostlist=self.find()
         return len(hostlist)
 
-
+    def get(self,*args,**kwargs):
+        host={}
+        if 'id' in kwargs:
+            host['_id']=kwargs.get('id',None)
+        if 'server_id' in kwargs:
+            host['server_id']=kwargs.get('server_id',None)
+        if len(host)!=0:
+            host_entries=self._proxy.dc2.inventory.hosts.find(host)
+            if host_entries is not None and len(host_entries)==1:
+                return host_entries[0]
+        return None
