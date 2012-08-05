@@ -253,6 +253,7 @@ DC2.JSONCalls.BackendStats = function(selector) {
       break;
     case 'backend_deployment_stats':
       this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_deployment_stats(this,backend_id,this.container.attr('data-deployment-status')));
+      break;
   }
   this.container.trigger('backendstats.'+datatype+'.update');
 };
@@ -309,6 +310,15 @@ DC2.JSONCalls.BackendStats.prototype.do_remote = function(datatype,data) {
     context:this,
   });
   return(a);
+};
+
+DC2.JSONCalls.Servers = function(selector) {
+};
+
+DC2.JSONCalls.Servers.prototype.do_remote = function(datatype,data) {
+};
+
+DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) {
 };
 
 $(document).ready(function() {
