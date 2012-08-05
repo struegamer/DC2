@@ -66,6 +66,9 @@ class JSONServerBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backend_server_list','backend_server_list')
         self.add_process_method('backend_server_list',self._backend_server_list)
 
+        self.add_url_handler_to_verb('GET','backend_server_get_host','backend_server_get_host')
+        self.add_process_method('backend_server_get_host',self._backend_server_get_host)
+
     @needs_auth
     def _backend_server_list(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
@@ -82,3 +85,19 @@ class JSONServerBackendController(JSONController):
         result=self._prepare_output(result={'backend_id':backend_id,'datalist':[]})
         return result
 
+    @needs_auth
+    def _backend_server_get_host(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        if verb is not None:
+            params=web.input()
+            backend_id=params.get('backend_id',None)
+            server_id=params.get('server_id',None)
+            if backend_id is not None and server_id is not None:
+                backend=backends.backend_get({'_id':backend_id})
+                transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+                s=Hosts(transport)
+                h=s.get(id=server_id)
+                result=self._prepare_output(result={'backend_id':backend_id,'entry_type':'host','entry':h})
+                return result
+        result=self._prepare_output(result={'backend_id':backend_id,'entry_type':'host','entry':None})
+        return result
