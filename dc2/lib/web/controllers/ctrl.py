@@ -79,30 +79,22 @@ class Controller(object):
     def _content_type(self,*args, **kwargs):
         return 'text/html; charset=utf-8'
 
-    @Logger
     def process(self, path='/'):
         verb=self._process_request(path)
-        web.debug('PROCESS: VERB: %s' % verb)
         if verb is not None:
-            web.debug('REQ_METHODS: %s' % self._REQ_METHODS)
             func=self._REQ_METHODS[verb['action']]
             return func(verb=verb)
         return web.notfound()
 
     def _process_request(self,path):
         verbs=self._verb_methods[self._request_context.method.upper()]
-        web.debug("VERBS %s" % verbs)
         for verb in verbs:
             found=re.search(verb['urlre'],path)
             web.debug('FOUND: %s' % found )
             if found is not None:
-                web.debug('match rule: %s' % verb['urlre'])
-                web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO',''))
                 verb['request_data']=found.groupdict()
                 return verb
 
     def _prepare_output(self, *args, **kwargs):
         return 'No Output'
-
-
 
