@@ -68,6 +68,7 @@ try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib.auth import needs_auth
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -100,6 +101,7 @@ class BackendsCtrl(RESTController):
             self._page.add_page_data({'admin_is_link':True})
             self._fill_backends()
 
+    @needs_auth
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
@@ -115,6 +117,7 @@ class BackendsCtrl(RESTController):
             return result
 
     @Logger
+    @needs_auth
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']

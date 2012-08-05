@@ -42,6 +42,7 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib.controllers import JSONController
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib.auth import needs_auth
 except ImportError,e:
     print 'you have a problem with dc2.admincenter'
     print e
@@ -67,7 +68,8 @@ class JSONHostBackendController(JSONController):
 
         self.add_url_handler_to_verb('GET','backend_host_get_server_info','backend_host_get_server_info')
         self.add_process_method('backend_host_get_server_info',self._backend_host_get_server_info)
-
+        
+    @needs_auth
     def _backend_host_list(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
@@ -83,6 +85,7 @@ class JSONHostBackendController(JSONController):
         result=self._prepare_output(result={'backend_id':backend_id,'datalist':[]})
         return result
 
+    @needs_auth
     def _backend_host_get_server_info(self,*args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

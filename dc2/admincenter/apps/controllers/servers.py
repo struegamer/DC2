@@ -68,6 +68,7 @@ try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib.auth import needs_auth
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -112,6 +113,7 @@ class ServerController(RESTController):
         self._ribs=Ribs(self._transport)
 
     @Logger
+    @needs_auth
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._init_backend()

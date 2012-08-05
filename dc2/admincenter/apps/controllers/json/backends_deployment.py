@@ -42,6 +42,7 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib.controllers import JSONController
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib.auth import needs_auth
 except ImportError,e:
     print 'you have a problem with dc2.admincenter'
     print e
@@ -51,6 +52,7 @@ try:
     from dc2.api.dc2.inventory import Servers
     from dc2.api.dc2.inventory import Hosts
     from dc2.api.dc2.deployment import InstallState
+
 except ImportError,e:
     print 'you didn\'t have dc2.api installed'
     print e
@@ -65,7 +67,7 @@ class JSONDeploymentBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backend_deployment_list','backend_deployment_list')
         self.add_process_method('backend_deployment_list',self._backend_deployment_list)
 
-
+    @needs_auth
     def _backend_deployment_list(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

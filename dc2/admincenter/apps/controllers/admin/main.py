@@ -67,6 +67,8 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.controllers import AdminController
+    from dc2.admincenter.lib.auth import needs_auth
+    from dc2.admincenter.lib.auth import needs_admin
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -77,6 +79,8 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class MainAdminController(AdminController):
     CONTROLLER_IDENT={'title':'Admin Home','url':'/admin'}
     @Logger
+    @needs_auth
+    @needs_admin
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
