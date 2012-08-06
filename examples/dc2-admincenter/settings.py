@@ -76,6 +76,7 @@ CONTROLLER_MAPPINGS={
         '/backends/servers':'ServerController',
         '/admin':'admin.MainAdminController',
         '/admin/backends':'admin.BackendsController',
+        '/admin/ribs':'admin.AdminRIBController',
         '/json/backends':'json.JSONBackendController',
         '/json/backends/servers':'json.JSONServerBackendController',
         '/json/backends/hosts':'json.JSONHostBackendController',
