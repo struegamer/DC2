@@ -1,0 +1,39 @@
+{% extends 'layout.tmpl' %}
+{% block content %}
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <h2>Remote Insight Boards</h2>
+            <hr/>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class='span6'>
+            <table cellspacing="0" cellpadding="0" data-url-delete='/admin/ribs/' class="table table-striped data-list" id='ribs_list'>
+                <thead>
+                    <tr>
+                        <th><input id="check_all" type="checkbox" name="check_all"/></tH>
+                        <th>RIB Type</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for items in ribs %}
+                    <tr data-edit-url="/admin/ribs/{{items._id}}/edit">
+                        <td><input class="del_check" type="checkbox" name="check" value="{{ items._id }}"/></td>
+                        <td class="data-cell">{{ items.remote_type}}</td>
+                        <td class="data-cell">{{ items.name }}</td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+            <div id="ribbtn" class="btn-group pull-right">
+                <button type="button" name="btn_add" data-type='url' data-url='{{ controller.create_controller_url('new') }}' class="btn btn_add"><i class="icon-plus"></I> Add</button>
+                <button type="button" name="btn_refresh" data-type='url' data-url='/admin/ribs' class="btn btn_refresh"><i class="icon-refresh"></I> Refresh</button>
+                <button type="button" name="btn_delete" data-type='jsfunc' data-list='true' data-action='delete' class="btn btn_delete"><i class="icon-minus"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

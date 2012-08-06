@@ -1,0 +1,19 @@
+{% import 'macros/input.macro.tmpl' as forms with context -%}
+{% extends 'layout.tmpl' %}
+{% block content %}
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <h2>{{ page.title}}</h2>
+            <hr/>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class='span6'>
+            {% include 'admin/ribs/_form.inc.tmpl' with context %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
