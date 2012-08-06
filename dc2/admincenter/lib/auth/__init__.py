@@ -20,3 +20,5 @@
 
 from kerberos import do_kinit
 from exceptions import KerberosAuthError
+from decorators import needs_auth
+from decorators import needs_admin

@@ -1,5 +1,9 @@
 {%- extends 'layout.tmpl' %}
 {%- block content %}
 {%- include 'site/contentheading.inc.tmpl' with context %}
+{%- if page.context.session.authenticated %}
 {%- include 'inc/dashboard_backends_list.inc.tmpl' with context %}
+{%- else %}
+You are not authenticated
+{%- endif %}
 {%- endblock content %}

@@ -1,0 +1,10 @@
+{% import 'macros/links.macro.tmpl' as links %}
+<LI class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backends<b class="caret"></B></A>
+    <UL class="dropdown-menu">
+        {%- for backend in backendlist %}
+        <LI>{{ links.href('/backends/%s' % backend._id,backend.title,backend.title) }}</LI>
+        {%- endfor %}
+    </UL>
+</LI>
+

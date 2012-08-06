@@ -76,7 +76,7 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class AdminController(RESTController):
     CONTROLLER_IDENT={}
     def __init__(self, *args, **kwargs):
-        super(AdminController,self).__init__(self, *args, **kwargs)
+        super(AdminController,self).__init__(*args, **kwargs)
         self._add_to_admin_modules()
     @Logger
     def _add_to_admin_modules(self):

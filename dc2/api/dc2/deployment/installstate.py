@@ -18,31 +18,31 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-import xmlrpclib
+import types
+from dc2.api import RPCClient
 
-class Servers(object):
-    def __init__(self, xmlrpc_transport=None):
-        if rpcurl is None:
-            # TODO: Add Real Exception
-            raise Exception('No RPCUrl given')
-        self._proxy=xmlrpc_transport
 
-    def find_servers(self,rec=None):
+class InstallState(RPCClient):
+
+    def find(self,rec=None):
+        resultlist=[]
         if rec is None:
-            serverlist=self._proxy.dc2.inventory.servers.list()
-            return serverlist
+            resultlist=self._proxy.dc2.deployment.installstate.list()
         if rec is not None:
             if type(rec) is not types.DictType:
                 # TODO: Add Real Exception
                 raise Exception('The search argument is not a dictionary')
-            serverlist=self._proxy.dc2.inventory.servers.find(rec)
-            return serverlist
-    def list_servers(self):
-        serverlist=self._proxy.dc2.inventory.servers.list()
-        return serverlist
-    def count_servers(self):
+            resultlist=self._proxy.dc2.deployment.installstate.list(rec)
+        return resultlist
+
+    def list(self):
+        resultlist=[]
+        resultlist=self.find()
+        return resultlist
+
+    def count(self,status='localboot'):
         # TODO: Add a rpc call to appserver for counting
-        serverlist=self._proxy.dc2.inventory.servers.list()
-        return len(serverlist)
+        resultlist=self.find({'status':status})
+        return len(resultlist)
 
 

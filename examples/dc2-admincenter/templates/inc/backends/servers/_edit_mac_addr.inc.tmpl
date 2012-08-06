@@ -1,0 +1,22 @@
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span8'>
+            <table class='table table-bordered tabled-striped'>
+                <thead>
+                    <tr>
+                        <th>MAC Address</th>
+                        <th>Device Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for mac in macs %}
+                    <tr>
+                        <td><input type='text' id='mac__mac_addr' class='span4' name='mac[mac_addr][]' value='{{mac.mac_addr}}'/></td>
+                        <td><input type='text' id='mac__device_name' class='span4' name='mac[device_name][]' value='{{mac.device_name}}'/></td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

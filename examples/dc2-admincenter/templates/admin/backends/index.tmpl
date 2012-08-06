@@ -24,7 +24,7 @@
                         <td><input class="del_check" type="checkbox" name="check" value="{{ items._id }}"/></td>
                         <td class="data-cell">{{ items.title }}</td>
                         <td class="data-cell">{{ items.location }}</td>
-                        <td class="data-cell">{{ items.is_kerberos }}</td>
+                        <td class="data-cell"><div class="pull-right">{%- if items.is_kerberos %}<i class="icon-ok-sign"></i>{%-else%}<i class="icon-remove-sign"></i>{%-endif%}</div></td>
                     </tr>
                     {%- endfor %}
                 </tbody>

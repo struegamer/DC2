@@ -18,3 +18,7 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 from stats_backends import JSONBackendController
+from backends_server import JSONServerBackendController
+from backends_hosts import JSONHostBackendController
+from backends_deployment import JSONDeploymentBackendController
+

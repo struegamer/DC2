@@ -17,6 +17,26 @@ DC2.Widgets.StandardForms.prototype.submitForm = function (event) {
   }
 };
 
+
+DC2.Widgets.Tabs=function(selector) {
+  this.container=$(selector);
+  this.container.find('a[data-toggle="tab"]').on('click',this.container,this.on_tab_click.bind(this));
+};
+
+DC2.Widgets.Tabs.prototype.on_tab_click = function(event) {
+  event.preventDefault();
+  $(event.target).tab('show');
+};
+
+DC2.Widgets.Dashboard=function(selector) {
+  this.container=$(selector);
+  this.container.find('tbody td.data-cell').on('click',this.container,this.on_click.bind(this));
+};
+
+DC2.Widgets.Dashboard.prototype.on_click=function(event) {
+  window.location.href='/backends/'+$(event.target).parent().attr('data-backend-id');
+};
+
 DC2.Widgets.ButtonGroup = {};
 
 DC2.Widgets.ButtonGroup.Index = function(selector) {
@@ -88,7 +108,6 @@ DC2.Widgets.DataForms = function(selector) {
 DC2.Widgets.DataForms.prototype.save=function(event) {
   _this=this;
   var data={}
-  console.log(this.container.attr('method'));
   this.container.find('input').each(function(){
     input_type=$(this).attr('type')
     if (input_type != 'button' && input_type != 'checkbox' && input_type != 'radio') {
@@ -101,7 +120,6 @@ DC2.Widgets.DataForms.prototype.save=function(event) {
       }
     }
   });
-  console.log(this.container.attr('method'));
 
   a=$.ajax({
     url:this.container.attr('action'),
@@ -127,19 +145,203 @@ DC2.Widgets.DataForms.prototype.catch_enter = function(event) {
   }
 };
 
+DC2.Widgets.Datatables = function(selector) {
+  this.container=$(selector);
+  var listtype=this.container.attr('data-list-type');
+  this._listType=listtype;
+  switch(listtype) {
+    case 'servers':
+      columns=[
+        {'mDataProp':'_id','bVisible':false},
+        {'mDataProp':'uuid'},
+        {'mDataProp':'serial_no'},
+        {'mDataProp':'manufacturer'},
+        {'mDataProp':'product_name'},
+        {'mDataProp':'location'},
+        {'mDataProp':'asset_tags'}
+      ];
+      break;
+    case 'hosts':
+      columns=[
+        {'mDataProp':'_id','bVisible':false},
+        {'mDataProp':'server_id','bVisible':false},
+        {'mDataProp':'hostname'},
+        {'mDataProp':'domainname'},
+        {'mDataProp':'environments','sDefaultContent':'No Environment'}
+      ];
+      break;
+    case 'deployment':
+      columns=[
+      {'mDataProp':'_id','bVisible':false},
+      {'mDataProp':'hostname'},
+      {'mDataProp':'status'}
+      ];
+      break;
+  }
+  var _this=this;
+  this.container.dataTable({
+    'bDestroy':false,
+    'sDom': "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    'sPaginationType': 'bootstrap',
+    'iDisplayLength':25,
+    'aoColumns':columns,
+    'fnCreatedRow':function(nRow,aData) {
+      $(nRow).attr('data-entry-id',aData._id);
+      $(nRow).attr('data-entry-type',listtype);
+      $(nRow).attr('data-backend-id',_this.container.attr('data-backend-id'));
+      $(nRow).on('click',_this.container,_this.on_click);
+      $(nRow).rightClick(_this.on_right_click);
+    },
+  });
+  this.container.on('backend-update-'+listtype,this.container,this.backend_update.bind(this));
+  this.container.trigger('backend-update-'+listtype);
+  return(false);
+};
+
+
+DC2.Widgets.Datatables.prototype.on_right_click = function (event) {
+  console.log($(event.target).parent().attr('data-entry-id'));
+};
+DC2.Widgets.Datatables.prototype.backend_update=function(event) {
+  url=this.container.attr('data-retrieval-url');
+  a=$.ajax({
+    url:url,
+    dataType:'json',
+    type:'GET',
+    context:this,
+  });
+  a.done(function(data) {
+    console.log(this._listType);
+    this.container.dataTable().fnClearTable();
+    this.container.dataTable().fnAddData(data.datalist);
+  });
+  return(false);
+};
+
+DC2.Widgets.Datatables.prototype.on_click = function(event) {
+  dataEntryType=$(event.target).parent().attr('data-entry-type');
+  switch(dataEntryType) {
+    case 'servers':
+      window.location.href='/backends/servers/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
+      break;
+    case 'hosts':
+      break;
+    case 'installstate':
+      break;
+  }
+  return(false);
+};
+
 
 
 DC2.JSONCalls.BackendStats = function(selector) {
   this.container=$(selector);
-  url=this.container.attr('data-backend-type');
-  a=$.ajax({
-    url:'/json/backends/'+url,
-    dataType:'json',
-    context:this,
-  })
+  datatype=this.container.attr('data-backend-type');
+  backend_id=0;
+  if (this.container.attr('data-backend-id')) {
+    backend_id=this.container.attr('data-backend-id');
+  }
+  switch(datatype) {
+    case 'backendstats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backendstats.bind(this));
+      break;
+    case 'backend_servers_stats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_servers_stats(this,backend_id));
+      break;
+    case 'backend_hosts_stats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_hosts_stats(this,backend_id));
+      break;
+    case 'backend_deployment_stats':
+      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_deployment_stats(this,backend_id,this.container.attr('data-deployment-status')));
+      break;
+  }
+  this.container.trigger('backendstats.'+datatype+'.update');
+};
+
+DC2.JSONCalls.BackendStats.prototype.backendstats=function(event) {
+  a=this.do_remote('backendstats',null);
   a.done(function(data) {
     this.container.html(data.backend_count);
   });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backend_id) {
+  a=this.do_remote('backend_servers_stats',{'backend_id':backend_id});
+  a.done(function(data) {
+    this.container.html(data.server_count);
+  });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_id) {
+  a=this.do_remote('backend_hosts_stats',{'backend_id':backend_id});
+  a.done(function(data) {
+    this.container.html(data.host_count);
+  });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,backend_id,what) {
+  a=this.do_remote('backend_deployment_stats',{'backend_id':backend_id,'status':what});
+  a.done(function(data) {
+    if ('status' in data) {
+      switch(data.status) {
+        case 'all':
+          break;
+        case 'deploy':
+          this.container.html(data.count);
+          break;
+        case 'localboot':
+          this.container.html(data.count);
+          break;
+      }
+    }
+  });
+  return(false);
+};
+
+DC2.JSONCalls.BackendStats.prototype.do_remote = function(datatype,data) {
+  a=$.ajax({
+    url:'/json/backends/' + datatype,
+    type:'GET',
+    data:data,
+    dataType:'json',
+    context:this,
+  });
+  return(a);
+};
+
+DC2.JSONCalls.Servers = function(selector) {
+  this.container=$(selector);
+  var datatype=this.container.attr('data-type');
+  var backend_id=this.container.attr('data-backend-id');
+  var server_id=this.container.attr('data-server-id');
+  switch(datatype) {
+    case 'backend_server_get_host':
+      this.container.on('backends_server.'+datatype+'.update',this.container,this.get_host(this,backend_id,server_id));
+      break;
+  }
+  this.container.trigger('backends_server.'+datatype+'.update');
+};
+
+DC2.JSONCalls.Servers.prototype.do_remote = function(datatype,data) {
+  a=$.ajax({
+    url:'/json/backends/servers/'+datatype,
+    type:'GET',
+    data:data,
+    dataType:'json',
+    context:this,
+  });
+  return(a);
+};
+
+DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) {
+  var a=this.do_remote('backend_server_get_host',{'backend_id':backend_id,'server_id':server_id});
+  a.done(function(data) {
+    console.log(data);
+  });
+  return(false);
 };
 
 $(document).ready(function() {
@@ -161,13 +363,36 @@ $(document).ready(function() {
   });
   $('.data-form').each(function() {
     if ($(this).attr('id') != null && $(this).attr('data-remote')=='True') {
-      console.log('dataforms true')
       new DC2.Widgets.DataForms('#'+$(this).attr('id'));
     }
   });
   $('.backendstats').each(function() {
     if ($(this).attr('id') != null ) {
-      DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
+      new DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
+    }
+  });
+  $('.remote_backend_servers').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.JSONCalls.Servers('#'+$(this).attr('id'));
+    }
+  });
+
+  $('.dashboard').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.Dashboard('#'+$(this).attr('id'));
+    }
+  });
+
+  $('.datatable-lists').each(function() {
+    if ($(this).attr('id') != null) {
+      datatables={};
+      datatables[$(this).attr('id')]=new DC2.Widgets.Datatables('#'+$(this).attr('id'));
+    }
+  });
+
+  $('.widget-tab').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.Tabs('#'+$(this).attr('id'));
     }
   });
 });

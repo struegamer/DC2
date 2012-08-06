@@ -68,6 +68,8 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.controllers import AdminController
+    from dc2.admincenter.lib.auth import needs_auth
+    from dc2.admincenter.lib.auth import needs_admin
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -77,7 +79,10 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class BackendsController(AdminController):
     CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin/backends'}
+
     @Logger
+    @needs_auth
+    @needs_admin
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
@@ -87,7 +92,10 @@ class BackendsController(AdminController):
         page.set_action('index')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
+
     @Logger
+    @needs_auth
+    @needs_admin
     def _new(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
@@ -97,7 +105,10 @@ class BackendsController(AdminController):
         page.set_action('new')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
+
     @Logger
+    @needs_auth
+    @needs_admin
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
@@ -107,7 +118,10 @@ class BackendsController(AdminController):
         page.add_page_data({'backend':convert_values(backend)})
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
+
     @Logger
+    @needs_auth
+    @needs_admin
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -129,6 +143,8 @@ class BackendsController(AdminController):
         return result
 
     @Logger
+    @needs_auth
+    @needs_admin
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -150,6 +166,8 @@ class BackendsController(AdminController):
         return result
 
     @Logger
+    @needs_auth
+    @needs_admin
     def _delete(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         request_data=verb.get('request_data',None)

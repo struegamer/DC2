@@ -49,11 +49,8 @@ class MainAppHandler(RequestHandler):
         self._controller_modules={}
         for mod in CONTROLLER_MAPPINGS.keys():
             temp_import_path='dc2.admincenter.apps.controllers.%s' % CONTROLLER_MAPPINGS[mod]
-            web.debug('MODULE to IMPORT: %s'% CONTROLLER_MAPPINGS[mod])
             classname=temp_import_path.split('.')[-1]
-            web.debug('CLASSNAME: %s' % classname)
             import_path='.'.join(temp_import_path.split('.')[:-1])
-            web.debug('IMPORT_PATH: %s' % import_path)
             module=__import__(import_path,globals(),locals(),classname)
             self._controller_modules[mod]={'module':module,'classname':classname}
         self._controllers=CONTROLLER_MAPPINGS

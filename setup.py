@@ -112,8 +112,24 @@ setup(name='dc2.lib',
             'dc2.lib.web.controllers',
             'dc2.lib.web.helpers',
             'dc2.lib.logging',
+            'dc2.lib.transports',
         ]
     )
+
+setup(name='dc2.api',
+        version='0.9',
+        description='DC2 API',
+        author='Stephan Adig',
+        author_email='sh@sourcecode.de',
+        url='http://launchpad.net/dc2',
+        namespace_packages=['dc2'],
+        packages=[
+            'dc2.api',
+            'dc2.api.dc2',
+            'dc2.api.dc2.inventory',
+            'dc2.api.dc2.deployment',
+            ]
+        )
 
 setup(name='dc2.admincenter',
         version='0.9',
@@ -133,5 +149,6 @@ setup(name='dc2.admincenter',
             'dc2.admincenter.lib.auth',
             'dc2.admincenter.lib.backends',
             'dc2.admincenter.lib.controllers',
+            'dc2.admincenter.lib.ribs',
         ]
 )

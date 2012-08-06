@@ -11,6 +11,9 @@
         <UL class="nav">
             <LI><a href="/">Home</a></LI>
             {%- if page.context.session.authenticated %}
+            {%- include 'menu/backends.inc.tmpl' %}
+            {%- endif %}
+            {%- if page.context.session.authenticated %}
             {%- if page.context.session.is_dc2admin %}
             {%- if admin_is_link %}
             <LI><a href='/admin'>Administration</a></li>

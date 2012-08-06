@@ -106,6 +106,7 @@ class RESTController(object):
                     return 'text/html; charset=utf-8'
                 else:
                     return content_type
+        return 'text/html; charset=utf-8'
 
     def process(self, path='/'):
         verb=self._process_request(path)
@@ -146,7 +147,7 @@ class RESTController(object):
             output=json.dumps(output)
         result['output']=output
         return result
-    @Logger
+
     def _index(self, *args, **kwargs):
         return self._prepare_output()
     def _new(self, *args, **kwargs):
