@@ -79,10 +79,13 @@ class Page(object):
             self._page.update({'css_files':css_array})
             return True
         raise ValueError('css_array is None or not an array')
+    def set_page_value(self,key,value):
+        if key in self._page:
+            raise ValueError('key "%s" already in self._page')
+        self._page[key]=value
 
     def set_title(self,title=''):
         self._page['title']=title
-
     def set_action(self,action=''):
         self._page['action']=action
     def set_index(self,index=''):
