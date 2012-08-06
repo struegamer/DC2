@@ -52,15 +52,14 @@ def rib_list():
 def rib_new():
     rec={}
     rec['remote_type']=''
-    rec['remote_ip']=''
-    rec['connection_type']=''
+    rec['name']=''
     return rec
 
 
 def rib_add(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
-    if 'remote_type' not in rec or 'remote_ip' not in rec:
+    if 'remote_type' not in rec or 'name' not in rec:
         raise ValueError("no 'title' or 'backend_url' in rec")
     doc_id=tbl_ribs.save(rec)
     return doc_id
@@ -90,6 +89,6 @@ def rib_delete(rec=None):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    result=tbl_rib.remove(rec)
+    result=tbl_ribs.remove(rec)
     return result
 
