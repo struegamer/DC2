@@ -142,6 +142,33 @@ class ServerController(RESTController):
                 output={'content':self._page.render()})
             return result
 
+    @Logger
+    @needs_auth
+    def _edit(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._init_backend()
+        self._page.template_name=verb['template']
+        self._page.set_action('edit')
+        request_data=verb.get('request_data',None)
+        server_id=None
+        if request_data is not None:
+            server_id=request_data.get('id',None)
+        if server_id is not None:
+            server=self._servers.get(id=server_id)
+            macs=self._macs.get(server_id=server_id)
+            ribs=self._ribs.get(server_id=server_id)
+            self._page.set_title('Edit Server %s (%s - %s)' % (server['serial_no'],server['manufacturer'],server['product_name']))
+            self._page.add_page_data(
+                    {
+                        'server':server,
+                        'macs':macs,
+                        'ribs':ribs,
+                    })
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],
+                output={'content':self._page.render()})
+            return result
+
+
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})
