@@ -20,4 +20,5 @@
 
 from backends import BackendsController
 from main import MainAdminController
+from ribs import AdminRIBController
 

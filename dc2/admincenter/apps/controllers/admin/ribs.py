@@ -67,6 +67,7 @@ except ImportError,e:
 
 try:
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib import ribs
     from dc2.admincenter.lib.controllers import AdminController
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.lib.auth import needs_admin
@@ -86,10 +87,92 @@ class AdminRIBController(AdminController):
     def _index(self,*args, **kwargs):
         verb=kwargs.get('verb',None)
         backend_list=backends.backend_list()
+        rib_list=ribs.rib_list()
+        page=self._prepare_page(verb)
         page.set_title('DC2 Admincenter - RIBs - Index')
-        page.add_page_data({'backends':backend_list})
+        page.add_page_data({'backends':backend_list,'ribs':rib_list})
         page.set_action('index')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _new(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        rib=ribs.rib_new()
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - RIBs - New')
+        page.add_page_data({'backends':backend_list,'rib':rib})
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _create(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        rib={}
+        rib['remote_type']=params.remote_type
+        rib['name']=params.name
+        ribs.rib_add(rib)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _edit(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        rib=ribs.rib_get({'_id':verb['request_data']['id']})
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - RIBs - New')
+        page.add_page_data({'backends':backend_list,'rib':rib})
+        page.set_action('edit')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _update(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        rib={}
+        rib['_id']=params._id
+        rib['remote_type']=params.remote_type
+        rib['name']=params.name
+        ribs.rib_update(rib)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _delete(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        request_data=verb.get('request_data',None)
+        if request_data is not None and request_data.get('id',None) is not None:
+            rib={'_id':request_data.get('id',None)}
+            ribs.rib_delete(rib)
+        output_format=verb.get('request_output_format',None)
+        web.debug('DELETE: %s' % output_format)
+        if output_format is not None and output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
         return result
 
 
