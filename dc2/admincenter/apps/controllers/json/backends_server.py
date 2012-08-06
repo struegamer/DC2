@@ -96,7 +96,7 @@ class JSONServerBackendController(JSONController):
                 backend=backends.backend_get({'_id':backend_id})
                 transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
                 s=Hosts(transport)
-                h=s.get(id=server_id)
+                h=s.get(server_id=server_id)
                 result=self._prepare_output(result={'backend_id':backend_id,'entry_type':'host','entry':h})
                 return result
         result=self._prepare_output(result={'backend_id':backend_id,'entry_type':'host','entry':None})
