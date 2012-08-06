@@ -78,6 +78,7 @@ try:
     from dc2.api.dc2.inventory import Servers
     from dc2.api.dc2.inventory import Macs
     from dc2.api.dc2.inventory import Ribs
+    from dc2.api.dc2.inventory import Hosts
 except ImportError,e:
     print 'You did not install dc2.api'
     print e
@@ -111,6 +112,7 @@ class ServerController(RESTController):
         self._servers=Servers(self._transport)
         self._macs=Macs(self._transport)
         self._ribs=Ribs(self._transport)
+        self._hosts=Hosts(self._transport)
 
     @Logger
     @needs_auth
@@ -119,6 +121,7 @@ class ServerController(RESTController):
         self._init_backend()
         self._page.template_name=verb['template']
         self._page.set_action('show')
+        self._page.set_page_value('show_button',True)
         request_data=verb.get('request_data',None)
         if request_data is not None:
             server_id=request_data.get('id',None)
@@ -126,10 +129,15 @@ class ServerController(RESTController):
             server=self._servers.get(id=server_id)
             macs=self._macs.get(server_id=server_id)
             ribs=self._ribs.get(server_id=server_id)
+            host=self._hosts.get(server_id=server_id)
             self._page.set_title('Server %s (%s - %s)' % (server['serial_no'],server['manufacturer'],server['product_name']))
-            self._page.add_page_data({'server':server})
-            self._page.add_page_data({'macs':macs})
-            self._page.add_page_data({'ribs':ribs})
+            self._page.add_page_data(
+                    {
+                        'server':server,
+                        'macs':macs,
+                        'ribs':ribs,
+                        'host':host
+                    })
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
             return result
