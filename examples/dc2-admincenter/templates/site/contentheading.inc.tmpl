@@ -2,7 +2,7 @@
     <div class='row-fluid'>
         <div class='span12'>
             <h2>
-                {%- if page.action =='show' %}<a href='{{page.context.env['PATH_INFO']}}/edit?{{page.context.env['QUERY_STRING']}}' class='btn'><i class='icon-edit'></i> Edit</a>{%- endif %}
+                {%- if page.action =='show' and page.show_button %}<a href='{{page.context.env['PATH_INFO']}}/edit?{{page.context.env['QUERY_STRING']}}' class='btn'><i class='icon-edit'></i> Edit</a>{%- endif %}
                 {{page.title}}</h2>
             <hr/>
         </div>
