@@ -34,6 +34,8 @@ class KerberosAuthTransport(xmlrpclib.SafeTransport):
         xmlrpclib.SafeTransport.__init__(self,use_datetime)
 
     def send_host(self,connection,host):
+        if sys.version_info < (2,7):
+            connection.putheader('Host',host)
         connection.putheader('Authorization',self._krb.auth_header)
         connection.putheader('Referer',self._referer)
 
