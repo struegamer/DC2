@@ -1,9 +1,14 @@
-<div class='container-fluid'>
+<div class='container-fluid' id='contentheading'>
     <div class='row-fluid'>
         <div class='span12'>
             <h2>
-                {%- if page.action =='show' and page.show_button %}<a href='{{page.context.env['PATH_INFO']}}/edit?{{page.context.env['QUERY_STRING']}}' class='btn'><i class='icon-edit'></i> Edit</a>{%- endif %}
-                {{page.title}}</h2>
+                {%- if page.action =='show' and page.show_button %}<a href='{{page.context.env['PATH_INFO']}}/edit?{{page.context.env['QUERY_STRING']}}' class='btn'><i class='icon-edit'></i> Edit</a> {{page.title}}
+                {%- elif page.action == 'edit' and page.update_button %}<div class='btn-group'><button class='btn update_entry' data-entry-id='{{server._id}}' data-backend-id='{{backend_id}}'><i class='icon-ok'></i> Update</button><button class='btn update_cancel' data-cancel-uri='{{page.controller_path}}/{{server._id}}?backend_id={{backend_id}}'><i class='icon-remove'></i> Cancel</button>&nbsp;{{page.title}}</div>
+                {%- else %}
+                {{page.title}}
+                {%- endif %}
+
+            </h2>
             <hr/>
         </div>
     </div>
