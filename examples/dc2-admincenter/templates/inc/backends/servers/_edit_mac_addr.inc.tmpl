@@ -1,22 +1,43 @@
-<div class='container-fluid'>
+<div class='container-fluid edit' id='server_mac'>
     <div class='row-fluid'>
         <div class='span8'>
-            <table class='table table-bordered tabled-striped'>
+            <table class='table table-bordered tabled-striped' id='table_edit_server_mac'>
                 <thead>
                     <tr>
                         <th>MAC Address</th>
                         <th>Device Name</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {%- for mac in macs %}
                     <tr>
-                        <td><input type='text' id='mac__mac_addr' class='span4' name='mac[mac_addr][]' value='{{mac.mac_addr}}'/></td>
-                        <td><input type='text' id='mac__device_name' class='span4' name='mac[device_name][]' value='{{mac.device_name}}'/></td>
+                        <td><input type='text' id='mac__mac_addr' class='span6' name='mac[mac_addr][]' value='{{mac.mac_addr}}'/></td>
+                        <td><input type='text' id='mac__device_name' class='span6' name='mac[device_name][]' value='{{mac.device_name}}'/></td>
+                        <td><button class='btn remove'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+    <div class='row-fluid'>
+        <div class='span8'>
+            <div class='btn-group pull-right'  id='table_btn_edit_server_mac'>
+                <button class='btn' id='add'><i class='icon-plus'></i> Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id='table_row_edit_server_mac' style='display:none'>
+    <table>
+        <tbody>
+            <tr>
+                <td><input type='text' class='span6' name='mac[mac_addr][]' value=''/></td>
+                <td><input type='text' class='span6' name='mac[device_name][]' value=''/></td>
+                <td><button class='btn remove'>Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
