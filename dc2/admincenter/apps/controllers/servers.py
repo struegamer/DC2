@@ -69,6 +69,7 @@ try:
     from dc2.admincenter.lib.auth import KerberosAuthError
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
+    from dc2.admincenter.lib import ribs
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -102,7 +103,7 @@ class ServerController(RESTController):
             self._page.add_page_data({'user':user_info})
             self._page.add_page_data({'admin_is_link':True})
             self._fill_backends()
-
+        self._page.set_page_value('controller_path',self._controller_path)
     def _init_backend(self):
         params=web.input()
         self._backend_id=params.get('backend_id',None)
@@ -128,15 +129,17 @@ class ServerController(RESTController):
         if server_id is not None:
             server=self._servers.get(id=server_id)
             macs=self._macs.get(server_id=server_id)
-            ribs=self._ribs.get(server_id=server_id)
+            rib=self._ribs.get(server_id=server_id)
             host=self._hosts.get(server_id=server_id)
+            rib_def=ribs.rib_list()
             self._page.set_title('Server %s (%s - %s)' % (server['serial_no'],server['manufacturer'],server['product_name']))
             self._page.add_page_data(
                     {
                         'server':server,
                         'macs':macs,
-                        'ribs':ribs,
-                        'host':host
+                        'ribs':rib,
+                        'host':host,
+                        'ribdef':rib_def
                     })
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
@@ -149,6 +152,7 @@ class ServerController(RESTController):
         self._init_backend()
         self._page.template_name=verb['template']
         self._page.set_action('edit')
+        self._page.set_page_value('update_button',True)
         request_data=verb.get('request_data',None)
         server_id=None
         if request_data is not None:
@@ -156,13 +160,16 @@ class ServerController(RESTController):
         if server_id is not None:
             server=self._servers.get(id=server_id)
             macs=self._macs.get(server_id=server_id)
-            ribs=self._ribs.get(server_id=server_id)
+            rib=self._ribs.get(server_id=server_id)
+            rib_def=ribs.rib_list()
+
             self._page.set_title('Edit Server %s (%s - %s)' % (server['serial_no'],server['manufacturer'],server['product_name']))
             self._page.add_page_data(
                     {
                         'server':server,
                         'macs':macs,
-                        'ribs':ribs,
+                        'ribs':rib,
+                        'ribdef':rib_def,
                     })
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
