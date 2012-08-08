@@ -94,6 +94,7 @@ class AdminController(RESTController):
             user_info['realname']=self._request_context.session.realname
             user_info['is_dc2admin']=self._request_context.session.is_dc2admin
             page.add_page_data({'user':user_info})
+        page.set_page_value('controller_path',self._controller_path)
         page=self._create_menu(page)
         return page
 
