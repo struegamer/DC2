@@ -344,6 +344,68 @@ DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) 
   return(false);
 };
 
+DC2.Widgets.ContentHeading=function(selector) {
+  this.container=$(selector);
+  console.log(this.container);
+  this.btn_update=this.container.find('.btn.update_entry');
+  this.btn_cancel=this.container.find('.btn.update_cancel');
+  if (this.btn_update != undefined && this.btn_cancel != undefined) {
+    this.btn_update.on('click',this.container,this._btn_update_entry.bind(this));
+    this.btn_cancel.on('click',this.container,this._btn_update_cancel.bind(this));
+  }
+};
+
+
+DC2.Widgets.ContentHeading.prototype._btn_update_entry=function(event) {
+  return(false);
+};
+
+DC2.Widgets.ContentHeading.prototype._btn_update_cancel=function(event) {
+  window.location.href=$(event.target).attr('data-cancel-uri');
+  return(false);
+}
+
+DC2.Widgets.EditTables=function(selector) {
+  this.container=$(selector);
+  this.container_id=this.container.attr('id');
+  this.edit_table=this.container.find('#table_edit_'+this.container_id);
+  this.edit_btns=this.container.find('#table_btn_edit_'+this.container_id);
+  this.prepare_buttons(this.edit_btns);
+  this.bind_remove_btns(this.edit_table.find('.btn.remove'));
+};
+
+
+DC2.Widgets.EditTables.prototype.prepare_buttons=function(btns) {
+  var btn_add=btns.find('#add.btn');
+  btn_add.on('click',this.container,this._btn_add.bind(this));
+};
+
+DC2.Widgets.EditTables.prototype.bind_remove_btns=function(btns) {
+  var _this=this;
+  btns.each(function() {
+    $(this).on('click',_this.container,_this._btn_remove.bind(this));
+  });
+};
+
+DC2.Widgets.EditTables.prototype.unbind_remove_btns=function(btns) {
+  var _this=this;
+  btns.each(function() {
+    $(this).off('click');
+  });
+};
+
+DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
+  $(event.target).parent().parent().remove();
+  return(false);
+};
+DC2.Widgets.EditTables.prototype._btn_add=function(event) {
+  var add_row=$('#table_row_edit_'+this.container_id+' table tbody');
+  this.edit_table.find('tbody').append(add_row.html());
+  this.unbind_remove_btns(this.edit_table.find('.btn.remove'));
+  this.bind_remove_btns(this.edit_table.find('.btn.remove'));
+  return(false);
+};
+
 $(document).ready(function() {
 
   $('.std-form').each(function() {
@@ -395,4 +457,11 @@ $(document).ready(function() {
       new DC2.Widgets.Tabs('#'+$(this).attr('id'));
     }
   });
+
+  $('.edit').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.EditTables('#'+$(this).attr('id'));
+    }
+  });
+  new DC2.Widgets.ContentHeading('#contentheading');
 });
