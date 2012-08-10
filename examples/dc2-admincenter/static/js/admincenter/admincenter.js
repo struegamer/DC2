@@ -2,7 +2,8 @@ window.DC2 = {
   Widgets:{},
   Utilities:{},
   Forms:{},
-  JSONCalls:{}
+  JSONCalls:{},
+  JSON:{}
 };
 
 DC2.Widgets.StandardForms= function(selector) {
