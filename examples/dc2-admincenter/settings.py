@@ -81,6 +81,8 @@ CONTROLLER_MAPPINGS={
         '/json/backends/servers':'jsonctrl.JSONServerBackendController',
         '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
         '/json/backends/deployments':'jsonctrl.JSONDeploymentBackendController',
+        '/json/backends/macs':'jsonctrl.JSONMacBackendController',
+        '/json/backends/ribs':'jsonctrl.JSONRibBackendController',
         }
 
 #

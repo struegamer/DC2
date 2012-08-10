@@ -75,6 +75,6 @@ class Macs(RPCClient):
         if 'mac_addr' in kwargs:
             mac_rec['mac_addr'] = kwargs.get('mac_addr',None)
         if len(mac_rec)>0:
-            return self.proxy.dc2.inventory.servers.macaddr.delete(mac_rec)
+            return self._proxy.dc2.inventory.servers.macaddr.delete(mac_rec)
         return False
 

@@ -14,7 +14,7 @@
                     <tr data-entry-id='{{mac._id}}'>
                         <td><input type='text' id='mac[][mac_addr]' class='span6' name='mac[{{mac._id}}][mac_addr]' value='{{mac.mac_addr}}'/></td>
                         <td><input type='text' id='mac[][device_name]' class='span6' name='mac[{{mac._id}}][device_name]' value='{{mac.device_name}}'/></td>
-                        <td><button class='btn remove'>Remove</button></td>
+                        <td><button data-entry-id='{{mac._id}}' data-entry-type='mac' class='btn remove'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>

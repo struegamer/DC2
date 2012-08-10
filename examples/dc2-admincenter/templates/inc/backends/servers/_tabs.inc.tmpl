@@ -10,7 +10,7 @@
             <form method='POST' action='{{page.controller_path}}/{{server._id}}?backend_id={{backend_id}}'>
                 <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
             {%- endif %}
-                <div class='tab-content edit' id='server'>
+            <div class='tab-content edit' id='server' data-backend-id='{{backend_id}}'>
                     <div class='tab-pane active' id='dc_server_general_{{backend_id}}_{{server._id}}'>
                         {%- if page.action=='show' %}
                         {%- include 'inc/backends/servers/_server_general.inc.tmpl' with context %}

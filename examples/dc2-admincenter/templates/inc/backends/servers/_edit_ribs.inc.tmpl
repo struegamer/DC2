@@ -19,7 +19,7 @@
                             </select>
                         </td>
                         <td><input type='text' name='rib[{{rib._id}}][remote_ip]' value='{{rib.remote_ip}}' class='span6'/></td>
-                        <td><button class='btn remove'>Remove</button></td>
+                        <td><button data-entry-id='{{rib._id}}' data-entry-type='rib' class='btn remove'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>

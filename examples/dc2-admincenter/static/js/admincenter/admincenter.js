@@ -348,6 +348,7 @@ DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) 
 DC2.Widgets.EditTables=function(selector) {
   this.container=$(selector);
   this.container_id=this.container.attr('id');
+  this.backend_id=this.container.attr('data-backend-id');
   this.add_row_counter=0;
   this.contentheading=$('#contentheading');
   this.edit_forms=$('.edit_form');
@@ -411,7 +412,7 @@ DC2.Widgets.EditTables.prototype._btn_cancel=function(event) {
 DC2.Widgets.EditTables.prototype.bind_remove_btns=function(btns) {
   var _this=this;
   btns.each(function() {
-    $(this).on('click',_this.container,_this._btn_remove.bind(this));
+    $(this).on('click',_this.container,_this._btn_remove.bind(_this));
   });
 };
 
@@ -423,7 +424,26 @@ DC2.Widgets.EditTables.prototype.unbind_remove_btns=function(btns) {
 };
 
 DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
-  $(event.target).parent().parent().remove();
+  console.log(this);
+  var data_type=$(event.target).attr('data-entry-type');
+  var json=null;
+  var success=false;
+  switch(data_type) {
+    case 'mac':
+      json=new DC2.JSON.Backends.Macs(this.backend_id);
+      success=json.delete_mac($(event.target).attr('data-entry-id'));
+      break;
+    case 'rib':
+      json=new DC2.JSON.Backends.Ribs(this.backend_id);
+      success=json.delete_rib($(event.target).attr('data-entry-id'));
+      break;
+    default:
+      success=true;
+      break;
+  }
+  if (success) {
+    $(event.target).parent().parent().remove();
+  }
   return(false);
 };
 DC2.Widgets.EditTables.prototype._btn_add=function(event) {
@@ -443,6 +463,52 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
   this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   return(false);
+};
+
+DC2.JSON.Backends={};
+DC2.JSON.Backends.Macs=function(backend_id) {
+  this.url='/json/backends/macs/';
+  this.backend_id=backend_id;
+  this.success=false;
+};
+DC2.JSON.Backends.Macs.prototype.delete_mac=function(mac_id) {
+  var success=false;
+  var a=$.ajax({
+    url:this.url+'backend_mac_delete',
+    type:'GET',
+    data:{'backend_id':this.backend_id,'mac_id':mac_id},
+    dataType:'json',
+    async:false,
+  });
+  a.done(function(data) {
+    success=true;
+  });
+  if (success) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+DC2.JSON.Backends.Ribs=function(backend_id) {
+  this.url='/json/backends/ribs/';
+  this.backend_id=backend_id;
+  this.success=false;
+};
+
+DC2.JSON.Backends.Ribs.prototype.delete_rib=function(rib_id) {
+  var success=false;
+  var a=$.ajax({
+    url:this.url+'backend_rib_delete',
+    type:'GET',
+      data:{'backend_id':this.backend_id,'rib_id':rib_id},
+      dataType:'json',
+      async:false,
+  });
+  a.done(function(data) {
+    success=true;
+  });
+  return success;
 };
 
 $(document).ready(function() {

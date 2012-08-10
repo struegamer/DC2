@@ -68,7 +68,7 @@ class Ribs(RPCClient):
     def delete(self,*args,**kwargs):
         rib_rec={}
         if 'id' in kwargs:
-            rib_rec = kwargs.get('id',None)
+            rib_rec['_id'] = kwargs.get('id',None)
         if len(rib_rec)>0:
             return self._proxy.dc2.inventory.servers.rib.delete(rib_rec)
         return False
