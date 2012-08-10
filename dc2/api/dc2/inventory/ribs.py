@@ -50,4 +50,26 @@ class Ribs(RPCClient):
             rec['server_id']=kwargs.get('server_id',None)
         datalist=self._proxy.dc2.inventory.servers.rib.find(rec)
         return datalist
- 
+    
+    def add(self,*args,**kwargs):
+        rib_rec=None
+        if 'rib' in kwargs:
+            rib_rec = kwargs.get('rib',None)
+        if rib_rec is not None:
+            return self._proxy.dc2.inventory.servers.rib.add(rib_rec)
+        return false
+    def update(self,*args,**kwargs):
+        rib_rec=None
+        if 'rib' in kwargs:
+            rib_rec = kwargs.get('rib',None)
+        if rib_rec is not None:
+            return self._proxy.dc2.inventory.servers.rib.update(rib_rec)
+        return False
+    def delete(self,*args,**kwargs):
+        rib_rec={}
+        if 'id' in kwargs:
+            rib_rec = kwargs.get('id',None)
+        if len(rib_rec)>0:
+            return self._proxy.dc2.inventory.servers.rib.delete(rib_rec)
+        return False
+
