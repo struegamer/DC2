@@ -49,7 +49,11 @@ class Macs(RPCClient):
         if 'server_id' in kwargs:
             rec['server_id']=kwargs.get('server_id',None)
         macs=self._proxy.dc2.inventory.servers.macaddr.find(rec)
-        return macs
+        if len(macs)>0 and len(macs)==1:
+            return macs[0]
+        elif len(macs)>0:
+            return macs
+        return None
     def add(self,*args,**kwargs):
         mac_rec=None
         if 'mac' in kwargs:
