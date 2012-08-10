@@ -50,4 +50,27 @@ class Macs(RPCClient):
             rec['server_id']=kwargs.get('server_id',None)
         macs=self._proxy.dc2.inventory.servers.macaddr.find(rec)
         return macs
- 
+    def add(self,*args,**kwargs):
+        mac_rec=None
+        if 'mac' in kwargs:
+            mac_rec = kwargs.get('mac',None)
+        if mac_rec is not None:
+            return self._proxy.dc2.inventory.servers.macaddr.add(mac_rec)
+        return False
+    def update(self,*args,**kwargs):
+        mac_rec=None
+        if 'mac' in kwargs:
+            mac_rec = kwargs.get('mac',None)
+        if mac_rec is not None:
+            return self._proxy.dc2.inventory.servers.macaddr.update(mac_rec)
+        return False
+    def delete(self,*args,**kwargs):
+        mac_rec={}
+        if 'id' in kwargs:
+            mac_rec['_id'] = kwargs.get('id',None)
+        if 'mac_addr' in kwargs:
+            mac_rec['mac_addr'] = kwargs.get('mac_addr',None)
+        if len(mac_rec)>0:
+            return self.proxy.dc2.inventory.servers.macaddr.delete(mac_rec)
+        return False
+
