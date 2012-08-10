@@ -21,4 +21,6 @@ from stats_backends import JSONBackendController
 from backends_server import JSONServerBackendController
 from backends_hosts import JSONHostBackendController
 from backends_deployment import JSONDeploymentBackendController
+from backends_macs import JSONMacBackendController
+from backends_ribs import JSONRibBackendController
 

@@ -1,22 +1,55 @@
-<div class='container-fluid'>
+<div class='container-fluid edit_table'  id='server_rib'>
     <div class='row-fluid'>
         <div class='span6'>
-            <table class='table table-bordered tabled-striped'>
+            <table class='table table-bordered tabled-striped' id='table_edit_server_rib'>
                 <thead>
                     <tr>
                         <th>Type of RIB</th>
                         <th>RIB IP</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {%- for rib in ribs %}
                     <tr>
-                        <td>{{rib.remote_type}}</td>
-                        <td><a href='https://{{rib.remote_ip}}/' class='btn'><i class='icon-cog'></i> {{rib.remote_ip}}</a></td>
+                        <td><select name='rib[{{rib._id}}][remote_type]' class='span6'>
+                                {%- for rib_def in ribdef %}
+                                <option value='{{rib_def.remote_type}}'{%- if rib_def.remote_type == rib.remote_type %}selected{%-endif%}>{{rib_def.name}}</option>
+                                {%- endfor %}
+                            </select>
+                        </td>
+                        <td><input type='text' name='rib[{{rib._id}}][remote_ip]' value='{{rib.remote_ip}}' class='span6'/></td>
+                        <td><button data-entry-id='{{rib._id}}' data-entry-type='rib' class='btn remove'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+    <div class='row-fluid'>
+        <div class='span6'>
+            <div class='btn-group pull-right'  id='table_btn_edit_server_rib'>
+                <button class='btn' id='server_rib_add'><i class='icon-plus'></i> Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id='table_row_edit_server_rib' style='display:none'>
+    <table>
+        <tbody>
+    <tr>
+        <td><select name='rib[new][remote_type]' class='span6'>
+                {%- for rib_def in ribdef %}
+                <option value='{{rib_def.remote_type}}'>{{rib_def.name}}</option>
+                {%- endfor %}
+            </select>
+        </td>
+        <td>
+            <input type='text' name='rib[new][remote_ip]' value='' class='span6'/>
+        </td>
+        <td><button class='btn remove'>Remove</button></td>
+    </tr>
+</tbody>
+    </table>
 </div>

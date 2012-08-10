@@ -77,10 +77,12 @@ CONTROLLER_MAPPINGS={
         '/admin':'admin.MainAdminController',
         '/admin/backends':'admin.BackendsController',
         '/admin/ribs':'admin.AdminRIBController',
-        '/json/backends':'json.JSONBackendController',
-        '/json/backends/servers':'json.JSONServerBackendController',
-        '/json/backends/hosts':'json.JSONHostBackendController',
-        '/json/backends/deployments':'json.JSONDeploymentBackendController',
+        '/json/backends':'jsonctrl.JSONBackendController',
+        '/json/backends/servers':'jsonctrl.JSONServerBackendController',
+        '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
+        '/json/backends/deployments':'jsonctrl.JSONDeploymentBackendController',
+        '/json/backends/macs':'jsonctrl.JSONMacBackendController',
+        '/json/backends/ribs':'jsonctrl.JSONRibBackendController',
         }
 
 #
