@@ -85,7 +85,7 @@ def dc2_servers_rib_update(rec_rib=None):
 @rpcmethod(name="dc2.inventory.servers.rib.delete", returns={"bool success":"True if action was successful"}, params={"dict rec_rib":"Prefilled record dictionary with key _id, or server_id to delete all RIB records attached to a server"}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_servers_rib_delete(rec_rib=None):
     if rec_rib is not None and type(rec_rib) is types.DictType:
-        if rec_rib.has_key("_id") and rec_rib.has_key("server_id"):
+        if rec_rib.has_key("_id") or rec_rib.has_key("server_id"):
             response = tbl_server.remove(rec_rib)
             if response is False:
                 return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
