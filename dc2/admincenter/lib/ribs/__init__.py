@@ -44,7 +44,7 @@ except ImportError,e:
 tbl_ribs = Table(MONGOS["admincenter"]["database"].get_table("ribtypes"))
 
 def rib_list():
-    result=tbl_ribs.find()
+    result=tbl_ribs.find(sort_fieldname='remote_type')
     if result is not None:
         return result
     return []
