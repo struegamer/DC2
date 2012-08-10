@@ -344,42 +344,69 @@ DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) 
   return(false);
 };
 
-DC2.Widgets.ContentHeading=function(selector) {
-  this.container=$(selector);
-  console.log(this.container);
-  this.btn_update=this.container.find('.btn.update_entry');
-  this.btn_cancel=this.container.find('.btn.update_cancel');
-  if (this.btn_update != undefined && this.btn_cancel != undefined) {
-    this.btn_update.on('click',this.container,this._btn_update_entry.bind(this));
-    this.btn_cancel.on('click',this.container,this._btn_update_cancel.bind(this));
-  }
-};
-
-
-DC2.Widgets.ContentHeading.prototype._btn_update_entry=function(event) {
-  return(false);
-};
-
-DC2.Widgets.ContentHeading.prototype._btn_update_cancel=function(event) {
-  window.location.href=$(event.target).attr('data-cancel-uri');
-  return(false);
-}
-
 DC2.Widgets.EditTables=function(selector) {
   this.container=$(selector);
   this.container_id=this.container.attr('id');
-  this.edit_table=this.container.find('#table_edit_'+this.container_id);
-  this.edit_btns=this.container.find('#table_btn_edit_'+this.container_id);
-  this.prepare_buttons(this.edit_btns);
-  this.bind_remove_btns(this.edit_table.find('.btn.remove'));
+  this.add_row_counter=0;
+  this.contentheading=$('#contentheading');
+  this.edit_forms=$('.edit_form');
+
+  this.submit_data={};
+
+  this.prepare_tables();
 };
 
 
-DC2.Widgets.EditTables.prototype.prepare_buttons=function(btns) {
-  var btn_add=btns.find('#add.btn');
-  btn_add.on('click',this.container,this._btn_add.bind(this));
+DC2.Widgets.EditTables.prototype.prepare_tables=function() {
+  var _this=this;
+  this.edit_tables=this.container.find('.edit_table');
+  this.edit_tables.each(function() {
+    console.log($(this).attr('id'));
+    var btns=$(this).find('#table_btn_edit_'+$(this).attr('id'));
+    _this.prepare_table_buttons(btns,$(this).attr('id'));
+  });
+  var btn_update=this.contentheading.find('.btn.update_entry');
+  var btn_cancel=this.contentheading.find('.btn.update_cancel');
+  btn_update.on('click',this.container,this._btn_update.bind(this));
+  btn_cancel.on('click',this.container,this._btn_cancel.bind(this));
 };
 
+DC2.Widgets.EditTables.prototype.prepare_table_buttons=function(btns,ident) {
+  var btn_add=btns.find('#'+ident+'_add.btn');
+  btn_add.on('click',{selector:this.container,ident:ident},this._btn_add.bind(this));
+  this.unbind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+};
+
+DC2.Widgets.EditTables.prototype._btn_update=function(event) {
+  var button=$(event.target);
+  var controller_path=button.attr('data-controller-path');
+  var entry_id=button.attr('data-entry-id');
+  var backend_id=button.attr('data-backend-id');
+  var all_inputs=this.container.find(':input').not('button');
+  console.log(all_inputs);
+  var result=this.container.formParams();
+  var sectoken=$('input[name="sectoken"]').val();
+  console.log(sectoken)
+  var a=$.ajax({
+    url:controller_path+'/'+entry_id+'?backend_id='+backend_id+'&sectoken='+sectoken,      
+    type:'PUT',
+    contentType:'application/json; charset=utf-8',
+    data:JSON.stringify({'result':result}),
+    dataType:'json',
+  });
+  a.done(function(data) {
+    if ('redirect' in data) {
+      window.location.href=data.redirect.url
+    }
+  });
+  return(false);
+};
+
+DC2.Widgets.EditTables.prototype._btn_cancel=function(event) {
+  window.location.href=$(event.target).attr('data-cancel-uri');
+  return(false);
+};
 DC2.Widgets.EditTables.prototype.bind_remove_btns=function(btns) {
   var _this=this;
   btns.each(function() {
@@ -390,7 +417,7 @@ DC2.Widgets.EditTables.prototype.bind_remove_btns=function(btns) {
 DC2.Widgets.EditTables.prototype.unbind_remove_btns=function(btns) {
   var _this=this;
   btns.each(function() {
-    $(this).off('click');
+    $(this).off('click',_this._btn_remove);
   });
 };
 
@@ -399,10 +426,21 @@ DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
   return(false);
 };
 DC2.Widgets.EditTables.prototype._btn_add=function(event) {
-  var add_row=$('#table_row_edit_'+this.container_id+' table tbody');
-  this.edit_table.find('tbody').append(add_row.html());
-  this.unbind_remove_btns(this.edit_table.find('.btn.remove'));
-  this.bind_remove_btns(this.edit_table.find('.btn.remove'));
+  event.preventDefault();
+  var _this=this
+  var add_row=$('#table_row_edit_'+event.data.ident+' table tbody');
+  console.log(add_row.find(':input').not('button'));
+  this.add_row_counter++;
+  var add_row_temp=add_row.clone();
+  add_row_temp.find(':input').not('button').each(function() {
+    var input_name=$(this).attr('name');
+    input_name=input_name.replace('new','new_'+_this.add_row_counter);
+    $(this).attr('name',input_name);
+  });
+  console.log($(add_row_temp));
+  this.container.find('#table_edit_'+event.data.ident+' tbody').append(add_row_temp.html());
+  this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+  this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   return(false);
 };
 
@@ -413,11 +451,11 @@ $(document).ready(function() {
       DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
     }
   }); 
-  $('.btn-group').each(function() {
-    if ($(this).attr('id') != null ) {
-      new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
-    }
-  });
+  //$('.btn-group').each(function() {
+  //  if ($(this).attr('id') != null ) {
+  //    new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
+  //  }
+  //});
   $('.data-list').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.DataList('#'+$(this).attr('id'));
@@ -457,11 +495,9 @@ $(document).ready(function() {
       new DC2.Widgets.Tabs('#'+$(this).attr('id'));
     }
   });
-
   $('.edit').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.EditTables('#'+$(this).attr('id'));
     }
   });
-  new DC2.Widgets.ContentHeading('#contentheading');
 });
