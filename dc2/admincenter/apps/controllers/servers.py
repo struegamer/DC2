@@ -21,6 +21,7 @@
 import sys
 import os
 import os.path
+import json
 
 try:
     import web
@@ -175,6 +176,55 @@ class ServerController(RESTController):
                 output={'content':self._page.render()})
             return result
 
+    @Logger
+    @needs_auth
+    @csrf_protected
+    def _update(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._init_backend()
+        params=web.data()
+        data=json.loads(params)['result']
+        web.debug(data)
+        server={}
+        server['_id']=data['server_id'].strip()
+        server['uuid']=data['uuid'].strip()
+        server['serial_no']=data['serial_no'].strip()
+        server['manufacturer']=data['manufacturer'].strip()
+        server['product_name']=data['product_name'].strip()
+        server['location']=data['location'].strip()
+        server['asset_tags']=data['asset_tags'].strip()
+        self._servers.update(server=server)
+        web.debug(server)
+        for key in data['mac']:
+            mac={}
+            if key != 'new':
+                if key.find('new')==-1 and key != 'new':
+                    mac['_id']=key.strip()
+                if data['mac'][key]['mac_addr'] != '' and data['mac'][key]['device_name'] != '':
+                    mac['server_id']=data['server_id'].strip()
+                    mac['mac_addr']=data['mac'][key]['mac_addr'].strip()
+                    mac['device_name']=data['mac'][key]['device_name'].strip()
+                    web.debug(mac)
+                if '_id' in mac:
+                    self._macs.update(mac=mac)
+                else:
+                    self._macs.add(mac=mac)
+        for key in data['rib']:
+            rib={}
+            if key != 'new':
+                if key.find('new')==-1:
+                    rib['_id']=key.strip()
+                if data['rib'][key]['remote_ip'] != '':
+                    rib['server_id']=data['server_id'].strip()
+                    rib['remote_type']=data['rib'][key]['remote_type'].strip()
+                    rib['remote_ip']=data['rib'][key]['remote_ip'].strip()
+                    web.debug(rib)
+                if '_id' in rib:
+                    self._ribs.update(rib=rib)
+                else:
+                    self._ribs.add(rib=rib)
+        result=self._prepare_output('json',verb['request_content_type'],'json',{'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path,data['server_id'],self._backend_id),'absolute':'true'}})
+        return result
 
     def _fill_backends(self):
         backend_list=backends.backend_list()

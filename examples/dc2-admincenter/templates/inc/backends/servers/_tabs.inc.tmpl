@@ -6,32 +6,40 @@
                 <LI><a href='#dc_server_mac_{{backend_id}}_{{server._id}}' data-toggle='tab'>Network Interfaces</a></li>
                 <LI><a href='#dc_server_rib_{{backend_id}}_{{server._id}}' data-toggle='tab'>Remote Insight Boards</a></LI>
             </UL>
-            <div class='tab-content'>
-                <div class='tab-pane active' id='dc_server_general_{{backend_id}}_{{server._id}}'>
-                    {%- if page.action=='show' %}
-                    {%- include 'inc/backends/servers/_server_general.inc.tmpl' with context %}
-                    {%- endif %}
-                    {%- if page.action=='edit' %}
-                    {%- include 'inc/backends/servers/_edit_server_general.inc.tmpl' with context %}
-                    {%- endif %}
+            {%- if page.action=='edit' %}
+            <form method='POST' action='{{page.controller_path}}/{{server._id}}?backend_id={{backend_id}}'>
+                <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+            {%- endif %}
+                <div class='tab-content edit' id='server'>
+                    <div class='tab-pane active' id='dc_server_general_{{backend_id}}_{{server._id}}'>
+                        {%- if page.action=='show' %}
+                        {%- include 'inc/backends/servers/_server_general.inc.tmpl' with context %}
+                        {%- endif %}
+                        {%- if page.action=='edit' %}
+                        {%- include 'inc/backends/servers/_edit_server_general.inc.tmpl' with context %}
+                        {%- endif %}
+                    </div>
+                    <div class='tab-pane' id='dc_server_mac_{{backend_id}}_{{server._id}}'>
+                        {%- if page.action=='show' %}
+                        {%- include 'inc/backends/servers/_mac_addr.inc.tmpl' with context %}
+                        {%- endif %}
+                        {%- if page.action=='edit' %}
+                        {%- include 'inc/backends/servers/_edit_mac_addr.inc.tmpl' with context %}
+                        {%- endif %}
+                    </div>
+                    <div class='tab-pane' id='dc_server_rib_{{backend_id}}_{{server._id}}'>
+                        {%- if page.action=='show' %}
+                        {%- include 'inc/backends/servers/_ribs.inc.tmpl' with context %}
+                        {%- endif %}
+                        {%- if page.action=='edit' %}
+                        {%- include 'inc/backends/servers/_edit_ribs.inc.tmpl' with context %}
+                        {%- endif %}
+                    </div>
                 </div>
-                <div class='tab-pane' id='dc_server_mac_{{backend_id}}_{{server._id}}'>
-                    {%- if page.action=='show' %}
-                    {%- include 'inc/backends/servers/_mac_addr.inc.tmpl' with context %}
-                    {%- endif %}
-                    {%- if page.action=='edit' %}
-                    {%- include 'inc/backends/servers/_edit_mac_addr.inc.tmpl' with context %}
-                    {%- endif %}
-                </div>
-                <div class='tab-pane' id='dc_server_rib_{{backend_id}}_{{server._id}}'>
-                    {%- if page.action=='show' %}
-                    {%- include 'inc/backends/servers/_ribs.inc.tmpl' with context %}
-                    {%- endif %}
-                    {%- if page.action=='edit' %}
-                    {%- include 'inc/backends/servers/_edit_ribs.inc.tmpl' with context %}
-                    {%- endif %}
-                </div>
-            </div>
+            {%- if page.action=='edit' %}
+            </form>
+            {%- endif %}
+
         </div>
     </div>
     {%- if page.action=='show' %}
