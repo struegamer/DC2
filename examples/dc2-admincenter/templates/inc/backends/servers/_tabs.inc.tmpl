@@ -50,7 +50,7 @@
                 <div class='span12'>
                     <div class='row-fluid'>
                         <div class='span6'>
-                            Attached Host: {{ host.hostname }}.{{host.domainname}} (needs to be link to host show)
+                            Attached Host: <a href='/backends/hosts/{{host._id}}?backend_id={{backend_id}}'>{{ host.hostname }}.{{host.domainname}}</a>
                         </div>
                 </div>
             </div>
