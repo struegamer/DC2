@@ -32,7 +32,7 @@ class InstallState(RPCClient):
             if type(rec) is not types.DictType:
                 # TODO: Add Real Exception
                 raise Exception('The search argument is not a dictionary')
-            resultlist=self._proxy.dc2.deployment.installstate.list(rec)
+            resultlist=self._proxy.dc2.deployment.installstate.find(rec)
         return resultlist
 
     def list(self):
