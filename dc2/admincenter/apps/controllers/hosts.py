@@ -81,6 +81,7 @@ try:
     from dc2.api.dc2.inventory import Macs
     from dc2.api.dc2.inventory import Ribs
     from dc2.api.dc2.inventory import Hosts
+    from dc2.api.dc2.configuration import Environments
 except ImportError,e:
     print 'You did not install dc2.api'
     print e
@@ -118,6 +119,7 @@ class HostController(RESTController):
         self._macs=Macs(self._transport)
         self._ribs=Ribs(self._transport)
         self._hosts=Hosts(self._transport)
+        self._environments=Environments(self._transport)
     @Logger
     @needs_auth
     def _show(self, *args, **kwargs):
@@ -148,9 +150,25 @@ class HostController(RESTController):
         verb=kwargs.get('verb',None)
         host_id=None
         self._init_backend()
-        self._page.template=verb['template']
+        self._page.template_name=verb['template']
         self._page.set_action('edit')
         self._page.set_page_value('show_button',True)
+        request_data=verb.get('request_data',None)
+        if request_data is not None:
+            host_id=request_data.get('id',None)
+        if host_id is not None:
+            host=self._hosts.get(id=host_id)
+            serverlist=self._servers.list()
+            environmentlist=self._environments.list()
+            self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
+            self._page.add_page_data({
+                'serverlist':serverlist,
+                'environlist':environmentlist,
+                'host':host,
+                })
+            result = self._prepare_output(verb['request_type'],verb['request_content_type'],
+                    output={'content':self._page.render()})
+            return result
 
     def _fill_backends(self):
         backend_list=backends.backend_list()
