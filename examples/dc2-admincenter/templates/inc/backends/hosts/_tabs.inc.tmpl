@@ -7,7 +7,7 @@
                 <LI><a href='#dc_host_interfaces_{{backend_id}}_{{host._id}}' data-toggle='tab'>Host Interfaces</a></li>
             </UL>
             {%- if page.action=='edit' %}
-            <form method='POST' action='{{page.controller_path}}/{{server._id}}?backend_id={{backend_id}}'>
+            <form method='POST' action='{{page.controller_path}}/{{host._id}}?backend_id={{backend_id}}'>
                 <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
             {%- endif %}
             <div class='tab-content edit' id='server' data-backend-id='{{backend_id}}'>
