@@ -128,6 +128,7 @@ setup(name='dc2.api',
             'dc2.api.dc2',
             'dc2.api.dc2.inventory',
             'dc2.api.dc2.deployment',
+            'dc2.api.dc2.configuration',
             ]
         )
 
