@@ -29,7 +29,7 @@ class Environments(RPCClient):
             if type(rec) is not types.DictType:
                 raise Exception('The search argument is not a dictionary')
             environmentlist=self._proxy.dc2.configuration.environments.find(rec)
-            retuen environmentlist
+            return environmentlist
 
     def list(self):
         environmentlist=self.find()
