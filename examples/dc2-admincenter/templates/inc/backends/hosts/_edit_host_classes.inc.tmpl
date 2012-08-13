@@ -1,0 +1,31 @@
+<div class='container-fluid edit_table'  id='server_defaultclasses'>
+    <div class='row-fluid'>
+        <div class='span6'>
+            <table class='table table-bordered tabled-striped' id='table_edit_host_defaultclasses'>
+                <thead>
+                    <tr>
+                        <th>Classname</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for hostclass in host.hostclasses %}
+                    {{hostclass}}
+                    <tr>
+                        <td>
+                            <select name='host[hostclasses]'>
+                                {%- for class in defaultclasses %}
+                                <option value='{{class.classname}}'{%- if class.classname == hostclass %} selected{%-endif%}>{{class.classname}}</option>
+                                {%- endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+ 

@@ -82,6 +82,7 @@ try:
     from dc2.api.dc2.inventory import Ribs
     from dc2.api.dc2.inventory import Hosts
     from dc2.api.dc2.configuration import Environments
+    from dc2.api.dc2.configuration import DefaultClasses
 except ImportError,e:
     print 'You did not install dc2.api'
     print e
@@ -120,6 +121,7 @@ class HostController(RESTController):
         self._ribs=Ribs(self._transport)
         self._hosts=Hosts(self._transport)
         self._environments=Environments(self._transport)
+        self._defaultclasses=DefaultClasses(self._transport)
     @Logger
     @needs_auth
     def _show(self, *args, **kwargs):
@@ -160,10 +162,12 @@ class HostController(RESTController):
             host=self._hosts.get(id=host_id)
             serverlist=self._servers.list()
             environmentlist=self._environments.list()
+            defaultclasses=self._defaultclasses.list()
             self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
             self._page.add_page_data({
                 'serverlist':serverlist,
                 'environlist':environmentlist,
+                'defaultclasses':defaultclasses,
                 'host':host,
                 })
             result = self._prepare_output(verb['request_type'],verb['request_content_type'],

@@ -23,6 +23,9 @@
                         {%- if page.action=='show' %}
                         {%- include 'inc/backends/hosts/_host_classes.inc.tmpl' %}
                         {% endif %}
+                        {%- if page.action=='edit'%}
+                        {%- include 'inc/backends/hosts/_edit_host_classes.inc.tmpl' %}
+                        {%- endif %}
                     </div>
                     <div class='tab-pane' id='dc_host_interfaces_{{backend_id}}_{{host._id}}'>
                         {%- if page.action=='show' %}
