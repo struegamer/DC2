@@ -150,6 +150,7 @@ DC2.Widgets.Datatables = function(selector) {
   this.container=$(selector);
   var listtype=this.container.attr('data-list-type');
   this._listType=listtype;
+  var columns=null;
   switch(listtype) {
     case 'servers':
       columns=[
@@ -226,6 +227,7 @@ DC2.Widgets.Datatables.prototype.on_click = function(event) {
       window.location.href='/backends/servers/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
     case 'hosts':
+      window.location.href='/backends/hosts/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
     case 'installstate':
       break;
