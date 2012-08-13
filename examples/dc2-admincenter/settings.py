@@ -74,6 +74,7 @@ CONTROLLER_MAPPINGS={
         '/login':'SessionController',
         '/backends':'BackendsCtrl',
         '/backends/servers':'ServerController',
+        '/backends/hosts':'HostController',
         '/admin':'admin.MainAdminController',
         '/admin/backends':'admin.BackendsController',
         '/admin/ribs':'admin.AdminRIBController',
