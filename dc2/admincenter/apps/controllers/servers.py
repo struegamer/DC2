@@ -120,6 +120,7 @@ class ServerController(RESTController):
     @needs_auth
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
+        server_id=None
         self._init_backend()
         self._page.template_name=verb['template']
         self._page.set_action('show')
