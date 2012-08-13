@@ -1,0 +1,22 @@
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span6'>
+            <table class='table table-bordered tabled-striped'>
+                <thead>
+                    <tr>
+                        <th>Classname</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for class in host.hostclasses %}
+                    <tr>
+                        <td>
+                            {{class}}
+                        </td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

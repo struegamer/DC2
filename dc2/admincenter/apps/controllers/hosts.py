@@ -118,7 +118,40 @@ class HostController(RESTController):
         self._macs=Macs(self._transport)
         self._ribs=Ribs(self._transport)
         self._hosts=Hosts(self._transport)
+    @Logger
+    @needs_auth
+    def _show(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        host_id=None
+        self._init_backend()
+        self._page.template_name=verb['template']
+        self._page.set_action('show')
+        self._page.set_page_value('show_button',True)
+        request_data=verb.get('request_data',None)
+        if request_data is not None:
+            host_id=request_data.get('id',None)
+        if host_id is not None:
+            host=self._hosts.get(id=host_id)
+            if host is not None:
+                server=self._servers.get(id=host['server_id'])
+                self._page.set_title('Host %s.%s' % (host['hostname'],host['domainname']))
+                self._page.add_page_data({
+                    'server':server,
+                    'host':host
+                    })
+                result = self._prepare_output(verb['request_type'],verb['request_content_type'],
+                        output={'content':self._page.render()})
+                return result
+    @Logger
+    @needs_auth
+    def _edit(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        host_id=None
+        self._init_backend()
+        self._page.template=verb['template']
+        self._page.set_action('edit')
+        self._page.set_page_value('show_button',True)
 
-     def _fill_backends(self):
+    def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})
