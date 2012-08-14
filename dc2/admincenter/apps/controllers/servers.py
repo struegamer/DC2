@@ -168,6 +168,7 @@ class ServerController(RESTController):
             self._page.set_title('Edit Server %s (%s - %s)' % (server['serial_no'],server['manufacturer'],server['product_name']))
             self._page.add_page_data(
                     {
+                        'entry_id':server['_id'],
                         'server':server,
                         'macs':macs,
                         'ribs':rib,
