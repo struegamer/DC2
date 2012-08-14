@@ -154,7 +154,7 @@ class HostController(RESTController):
         self._init_backend()
         self._page.template_name=verb['template']
         self._page.set_action('edit')
-        self._page.set_page_value('show_button',True)
+        self._page.set_page_value('update_button',True)
         request_data=verb.get('request_data',None)
         if request_data is not None:
             host_id=request_data.get('id',None)
@@ -167,6 +167,7 @@ class HostController(RESTController):
             defclasses={}
             self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
             self._page.add_page_data({
+                'entry_id':host['_id'],
                 'serverlist':serverlist,
                 'environlist':environmentlist,
                 'defaultclasses':defaultclasses,
@@ -175,6 +176,15 @@ class HostController(RESTController):
             result = self._prepare_output(verb['request_type'],verb['request_content_type'],
                     output={'content':self._page.render()})
             return result
+
+    @Logger
+    @needs_auth
+    def _update(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._init_backend()
+        params=web.data()
+        data=json.loads(params)['result']
+        web.debug(data)
 
     def _fill_backends(self):
         backend_list=backends.backend_list()

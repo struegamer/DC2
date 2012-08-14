@@ -12,7 +12,7 @@
                     {%- for hostclass in host.hostclasses %}
                     <tr>
                         <td>
-                            <select name='host[hostclasses][]'>
+                            <select name='host[hostclasses][{{hostclass}}]'>
                                 {%- for class in defaultclasses %}
                                 <option value='{{class.classname}}'{%- if class.classname == hostclass %} selected{%-endif%}>{{class.classname}}</option>
                                 {%- endfor %}
@@ -39,7 +39,7 @@
         <tbody>
             <tr>
                 <td>
-                    <select name='host[hostclasses][]'>
+                    <select name='host[hostclasses][new]'>
                         {%- for class in defaultclasses %}
                         <option value='{{class.classname}}'>{{class.classname}}</option>
                         {%- endfor %}

@@ -31,6 +31,9 @@
                         {%- if page.action=='show' %}
                         {%- include 'inc/backends/hosts/_host_interfaces.inc.tmpl' %}
                         {%- endif %}
+                        {%- if page.action=='edit' %}
+                        {%- include 'inc/backends/hosts/_edit_host_interfaces.inc.tmpl' %}
+                        {%- endif %}
                     </div>
                 </div>
             {%- if page.action=='edit' %}
