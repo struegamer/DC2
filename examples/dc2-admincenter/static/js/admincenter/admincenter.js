@@ -439,6 +439,9 @@ DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
       json=new DC2.JSON.Backends.Ribs(this.backend_id);
       success=json.delete_rib($(event.target).attr('data-entry-id'));
       break;
+    case 'hostclass':
+      success=true;
+      break;
     default:
       success=true;
       break;

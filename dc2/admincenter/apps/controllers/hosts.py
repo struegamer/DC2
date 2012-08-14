@@ -160,9 +160,11 @@ class HostController(RESTController):
             host_id=request_data.get('id',None)
         if host_id is not None:
             host=self._hosts.get(id=host_id)
+            host['hostclasses']=sorted(host['hostclasses'])
             serverlist=self._servers.list()
             environmentlist=self._environments.list()
             defaultclasses=self._defaultclasses.list()
+            defclasses={}
             self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
             self._page.add_page_data({
                 'serverlist':serverlist,

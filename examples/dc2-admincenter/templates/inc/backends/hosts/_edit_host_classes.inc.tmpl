@@ -1,4 +1,4 @@
-<div class='container-fluid edit_table'  id='server_defaultclasses'>
+<div class='container-fluid edit_table'  id='host_defaultclasses'>
     <div class='row-fluid'>
         <div class='span6'>
             <table class='table table-bordered tabled-striped' id='table_edit_host_defaultclasses'>
@@ -10,22 +10,43 @@
                 </thead>
                 <tbody>
                     {%- for hostclass in host.hostclasses %}
-                    {{hostclass}}
                     <tr>
                         <td>
-                            <select name='host[hostclasses]'>
+                            <select name='host[hostclasses][]'>
                                 {%- for class in defaultclasses %}
                                 <option value='{{class.classname}}'{%- if class.classname == hostclass %} selected{%-endif%}>{{class.classname}}</option>
                                 {%- endfor %}
                             </select>
                         </td>
+                        <td><button data-entry-type='hostclass' class='btn remove pull-right'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+    <div class='row-fluid'>
+        <div class='span8'>
+            <div class='btn-group pull-right'  id='table_btn_edit_host_defaultclasses'>
+                <button class='btn' id='host_defaultclasses_add'><i class='icon-plus'></i> Add</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-
- 
+<div id='table_row_edit_host_defaultclasses' style='display:none'>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <select name='host[hostclasses][]'>
+                        {%- for class in defaultclasses %}
+                        <option value='{{class.classname}}'>{{class.classname}}</option>
+                        {%- endfor %}
+                    </select>
+                </td>
+                <td><button data-entry-type='hostclass' class='btn remove'>Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
