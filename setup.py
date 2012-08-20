@@ -151,5 +151,7 @@ setup(name='dc2.admincenter',
             'dc2.admincenter.lib.backends',
             'dc2.admincenter.lib.controllers',
             'dc2.admincenter.lib.ribs',
+            'dc2.admincenter.lib.interfacetypes',
+            'dc2.admincenter.lib.inettypes',
         ]
 )
