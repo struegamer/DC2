@@ -430,6 +430,7 @@ DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
   var data_type=$(event.target).attr('data-entry-type');
   var json=null;
   var success=false;
+  var remove_follow=false;
   switch(data_type) {
     case 'mac':
       json=new DC2.JSON.Backends.Macs(this.backend_id);
@@ -442,12 +443,20 @@ DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
     case 'hostclass':
       success=true;
       break;
+    case 'hostinterfaces':
+      success=true;
+      remove_follow=true;
+      break;
     default:
       success=true;
       break;
   }
   if (success) {
+    if (remove_follow) {
+      $(event.target).parent().parent().next().remove();
+    }
     $(event.target).parent().parent().remove();
+
   }
   return(false);
 };
@@ -464,7 +473,7 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
     $(this).attr('name',input_name);
   });
   console.log($(add_row_temp));
-  this.container.find('#table_edit_'+event.data.ident+' tbody').append(add_row_temp.html());
+  this.container.find('#table_edit_'+event.data.ident+' tbody.main_tbody').append(add_row_temp.html());
   this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   return(false);
