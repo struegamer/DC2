@@ -15,7 +15,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class='main_tbody'>
                     {%- for interface in host.interfaces %}
                     <tr>
                         <td class="action-icon"><a href="#" class='collapsible' id='interface-{{interface.name}}' data-target="#interface-details-{{interface.name}}"><I class="icon-chevron-right"></I></a></td>
@@ -26,7 +26,7 @@
                         <td><input type='text' name='host[interfaces][{{interface.name}}][netmask]' value='{{interface.netmask}}'/></td>
                         <td><input type='text' name='host[interfaces][{{interface.name}}][gateway]' value='{{interface.gateway}}'/></td>
                         <td><input type='checkbox' name='host[interfaces][{{interface.name}}][is_ipv6]'{%- if interface.is_ipv6 %}checked='checked'{%- endif %}/></td>
-                        <td>Remove</td>
+                        <td><button data-entry-type='hostinterfaces' class='btn remove pull-right'>Remove</button></td>
                     </tr>
                     <tr id='interface-details-{{interface.name}}' class='collapsible_hide'>
                         <td></td>
@@ -73,7 +73,7 @@
                 <td><input type='text' name='host[interfaces][new][netmask]' value=''/></td>
                 <td><input type='text' name='host[interfaces][new][gateway]' value=''/></td>
                 <td><input type='checkbox' name='host[interfaces][new][is_ipv6]'/></td>
-                <td>Remove</td>
+                <td><button data-entry-type='hostinterfaces' class='btn remove pull-right'>Remove</button></td>
                 <tr>
                     <td></td>
                     <td colspan='9'>

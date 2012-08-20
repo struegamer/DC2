@@ -8,7 +8,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class='main_tbody'>
                     {%- for hostclass in host.hostclasses %}
                     <tr>
                         <td>
@@ -45,7 +45,7 @@
                         {%- endfor %}
                     </select>
                 </td>
-                <td><button data-entry-type='hostclass' class='btn remove'>Remove</button></td>
+                <td><button data-entry-type='hostclass' class='btn remove pull-right'>Remove</button></td>
             </tr>
         </tbody>
     </table>
