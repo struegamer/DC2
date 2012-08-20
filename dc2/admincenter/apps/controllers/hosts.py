@@ -184,8 +184,26 @@ class HostController(RESTController):
         self._init_backend()
         params=web.data()
         data=json.loads(params)['result']
-        web.debug(data)
+        request_data=verb.get('request_data',None)
+        host_id=None
+        if request_data is not None:
+            host_id=request_data['id']
+        host={}
+        host['_id']=host_id
+        host['server_id']=data['server']
+        host['hostname']=data['hostname']
+        host['domainname']=data['domainname']
+        host['environments']=data['environments']
+        host['hostclasses']=[]
+        for key in data['hostclasses']:
+            if key != 'new':
+                host['hostclasses'].append(data['hostclasses'][key])
+        host['interfaces']=[]
+        for key in data['interfaces']:
+            if key !='new':
+                host['interfaces'].append(data['interfaces'][key])
 
+            
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})
