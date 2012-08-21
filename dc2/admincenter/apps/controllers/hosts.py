@@ -71,6 +71,7 @@ try:
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.lib import ribs
+    from dc2.admincenter.lib import interfacetypes
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -122,6 +123,7 @@ class HostController(RESTController):
         self._hosts=Hosts(self._transport)
         self._environments=Environments(self._transport)
         self._defaultclasses=DefaultClasses(self._transport)
+        self._itypes_list=interfacetypes.itype_list()
     @Logger
     @needs_auth
     def _show(self, *args, **kwargs):
@@ -138,9 +140,12 @@ class HostController(RESTController):
             host=self._hosts.get(id=host_id)
             if host is not None:
                 server=self._servers.get(id=host['server_id'])
+                server_macs=self._macs.get(server_id=host['server_id'])
                 self._page.set_title('Host %s.%s' % (host['hostname'],host['domainname']))
                 self._page.add_page_data({
+                    'itypes':self._itypes_list,
                     'server':server,
+                    'server_macs':server_macs,
                     'host':host
                     })
                 result = self._prepare_output(verb['request_type'],verb['request_content_type'],
@@ -164,12 +169,16 @@ class HostController(RESTController):
             serverlist=self._servers.list()
             environmentlist=self._environments.list()
             defaultclasses=self._defaultclasses.list()
+            server_macs=self._macs.get(server_id=host['server_id'])
+
             defclasses={}
             self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
             self._page.add_page_data({
+                'itypes':self._itypes_list,
                 'entry_id':host['_id'],
                 'serverlist':serverlist,
                 'environlist':environmentlist,
+                'server_macs':server_macs,
                 'defaultclasses':defaultclasses,
                 'host':host,
                 })
