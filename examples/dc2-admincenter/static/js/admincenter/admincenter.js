@@ -479,6 +479,33 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
   return(false);
 };
 
+
+DC2.Widgets.SelectionChange=function(selector) {
+  this.selector=$(selector);
+  this.iface_name=this.selector.attr('data-iface-name');
+  $('.div_vlan').hide();
+  $('.div_bond').hide();
+  this.selector.on('change',this.selector,this.change_div.bind(this));
+};
+
+DC2.Widgets.SelectionChange.prototype.change_div=function(event) {
+  console.log($(event.target).val());
+  console.log(this.iface_name);
+  var change_val=$(event.target).val();
+  switch(change_val) {
+    case 'vlan':
+      console.log('hier');
+      $('#div_vlan_'+this.iface_name).show();
+      $('#div_bond_'+this.iface_name).hide();
+      break;
+    case 'bond_1':
+    case 'bond_2':
+      $('#div_vlan_'+this.iface_name).hide();
+      $('#div_bond_'+this.iface_name).show();
+      break;
+  }
+};
+
 DC2.Widgets.Collapsible = function(selector) {
   console.log(selector);
   this.container=$(selector);
@@ -561,6 +588,11 @@ $(document).ready(function() {
       DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
     }
   }); 
+  $('.select-change-div').each(function() {
+    if ($(this).attr('id') != null ) {
+      new DC2.Widgets.SelectionChange('#'+$(this).attr('id'));
+    }
+  });
   $('.list-btn-group').each(function() {
     if ($(this).attr('id') != null ) {
       new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
