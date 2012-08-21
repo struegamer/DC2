@@ -90,7 +90,7 @@ class AdminRIBController(AdminController):
         rib_list=ribs.rib_list()
         page=self._prepare_page(verb)
         page.set_title('DC2 Admincenter - RIBs - Index')
-        page.add_page_data({'backends':backend_list,'ribs':rib_list})
+        page.add_page_data({'backendlist':backend_list,'ribs':rib_list})
         page.set_action('index')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
@@ -104,7 +104,7 @@ class AdminRIBController(AdminController):
         rib=ribs.rib_new()
         page=self._prepare_page(verb)
         page.set_title('DC2 Admincenter - RIBs - New')
-        page.add_page_data({'backends':backend_list,'rib':rib})
+        page.add_page_data({'backendlist':backend_list,'rib':rib})
         page.set_action('new')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
@@ -135,7 +135,7 @@ class AdminRIBController(AdminController):
         rib=ribs.rib_get({'_id':verb['request_data']['id']})
         page=self._prepare_page(verb)
         page.set_title('DC2 Admincenter - RIBs - New')
-        page.add_page_data({'backends':backend_list,'rib':rib})
+        page.add_page_data({'backendlist':backend_list,'rib':rib})
         page.set_action('edit')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
