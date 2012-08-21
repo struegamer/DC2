@@ -100,8 +100,11 @@ class BackendsController(AdminController):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
         backend=backends.backend_new()
+        backendlist=backends.backend_list()
         page.set_title('DC2 Admincenter - Backends - Add')
-        page.add_page_data({'backendlist':convert_values(backend)})
+        page.add_page_data({
+            'backendlist':backendlist,
+            'backend':convert_values(backend)})
         page.set_action('new')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
@@ -113,9 +116,12 @@ class BackendsController(AdminController):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
         backend=backends.backend_get({'_id':verb['request_data']['id']})
+        backendlist=backends.backend_list()
         page.set_title('DC2 Admincenter - Backends - Edit')
         page.set_action('edit')
-        page.add_page_data({'backendlist':convert_values(backend)})
+        page.add_page_data({
+            'backendlist':backendlist,
+            'backend':convert_values(backend)})
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
