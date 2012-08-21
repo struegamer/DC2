@@ -561,11 +561,11 @@ $(document).ready(function() {
       DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
     }
   }); 
-  //$('.btn-group').each(function() {
-  //  if ($(this).attr('id') != null ) {
-  //    new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
-  //  }
-  //});
+  $('.list-btn-group').each(function() {
+    if ($(this).attr('id') != null ) {
+      new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
+    }
+  });
   $('.data-list').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.DataList('#'+$(this).attr('id'));
