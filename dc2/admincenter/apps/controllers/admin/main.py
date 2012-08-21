@@ -78,13 +78,16 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class MainAdminController(AdminController):
     CONTROLLER_IDENT={'title':'Admin Home','url':'/admin'}
+
     @Logger
     @needs_auth
     @needs_admin
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
+        backend_list=backends.backend_list()
         page.set_title('Admin - Index')
+        page.add_page_data({'backendlist':backend_list})
         page.set_action('index')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
