@@ -100,28 +100,80 @@ class AdminInterfaceTypesController(AdminController):
     @needs_auth
     @needs_admin
     def _new(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        iface=interfacetypes.itype_new()
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - Interfacetypes - New')
+        page.add_page_data({'backendlist':backend_list, 'iface':iface})
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
+        return result
+
 
     @Logger
     @needs_auth
     @needs_admin
     def _edit(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        iface=interfacetypes.itype_get({'_id':verb['request_data']['id']})
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - Interfacetypes - New')
+        page.add_page_data({'backendlist':backend_list, 'iface':iface})
+        page.set_action('edit')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
+        return result
+
 
     @Logger
     @needs_auth
     @needs_admin
     def _create(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        iface={}
+        iface['type']=params.type
+        iface['desc']=params.desc
+        interfacetypes.itype_add(iface)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
 
     @Logger
     @needs_auth
     @needs_admin
     def _update(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        iface={}
+        iface['_id']=params._id
+        iface['type']=params.type
+        iface['desc']=params.desc
+        interfacetypes.itype_update(iface)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
 
+       
     @Logger
     @needs_auth
     @needs_admin
-    def _remove(self, *args, **kwargs):
-        pass
+    def _delete(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        request_data=verb.get('request_data',None)
+        if request_data is not None and request_data.get('id',None) is not None:
+            iface={'_id':request_data.get('id',None)}
+            interfacetypes.itype_delete(iface)
+        output_format=verb.get('request_output_format',None)
+        if output_format is not None and output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
