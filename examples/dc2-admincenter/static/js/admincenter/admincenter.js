@@ -150,6 +150,7 @@ DC2.Widgets.Datatables = function(selector) {
   this.container=$(selector);
   var listtype=this.container.attr('data-list-type');
   this._listType=listtype;
+  var columns=null;
   switch(listtype) {
     case 'servers':
       columns=[
@@ -226,6 +227,7 @@ DC2.Widgets.Datatables.prototype.on_click = function(event) {
       window.location.href='/backends/servers/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
     case 'hosts':
+      window.location.href='/backends/hosts/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
     case 'installstate':
       break;
@@ -428,6 +430,7 @@ DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
   var data_type=$(event.target).attr('data-entry-type');
   var json=null;
   var success=false;
+  var remove_follow=false;
   switch(data_type) {
     case 'mac':
       json=new DC2.JSON.Backends.Macs(this.backend_id);
@@ -437,12 +440,23 @@ DC2.Widgets.EditTables.prototype._btn_remove=function(event) {
       json=new DC2.JSON.Backends.Ribs(this.backend_id);
       success=json.delete_rib($(event.target).attr('data-entry-id'));
       break;
+    case 'hostclass':
+      success=true;
+      break;
+    case 'hostinterfaces':
+      success=true;
+      remove_follow=true;
+      break;
     default:
       success=true;
       break;
   }
   if (success) {
+    if (remove_follow) {
+      $(event.target).parent().parent().next().remove();
+    }
     $(event.target).parent().parent().remove();
+
   }
   return(false);
 };
@@ -459,9 +473,38 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
     $(this).attr('name',input_name);
   });
   console.log($(add_row_temp));
-  this.container.find('#table_edit_'+event.data.ident+' tbody').append(add_row_temp.html());
+  this.container.find('#table_edit_'+event.data.ident+' tbody.main_tbody').append(add_row_temp.html());
   this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+  return(false);
+};
+
+DC2.Widgets.Collapsible = function(selector) {
+  console.log(selector);
+  this.container=$(selector);
+  this.target=this.container.attr('data-target');
+  if ($(this.target).hasClass('collapsible_hide')) {
+    $(this.target).hide();
+  };
+
+  this.container.on('click',this.container,this.on_click.bind(this));
+};
+
+DC2.Widgets.Collapsible.prototype.on_click=function(event) {
+  select=$(event.target).parent().attr('data-target');
+  if ($(select).hasClass('collapsible_hide')) {
+    $(event.target).removeClass('icon-chevron-right');
+    $(event.target).addClass('icon-chevron-down');
+    $(select).removeClass('collapsible_hide');
+    $(select).addClass('collapsible_show');
+    $(select).show();
+  } else {
+    $(event.target).removeClass('icon-chevron-down');
+    $(event.target).addClass('icon-chevron-right');
+    $(select).removeClass('collapsible_show');
+    $(select).addClass('collapsible_hide');
+    $(select).hide();
+  }
   return(false);
 };
 
@@ -518,11 +561,11 @@ $(document).ready(function() {
       DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
     }
   }); 
-  //$('.btn-group').each(function() {
-  //  if ($(this).attr('id') != null ) {
-  //    new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
-  //  }
-  //});
+  $('.list-btn-group').each(function() {
+    if ($(this).attr('id') != null ) {
+      new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
+    }
+  });
   $('.data-list').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.DataList('#'+$(this).attr('id'));
@@ -565,6 +608,12 @@ $(document).ready(function() {
   $('.edit').each(function() {
     if ($(this).attr('id') != null) {
       new DC2.Widgets.EditTables('#'+$(this).attr('id'));
+    }
+  });
+
+  $('.collapsible').each(function() {
+    if ($(this).attr('id') != null) {
+      new DC2.Widgets.Collapsible('#'+$(this).attr('id'));
     }
   });
 });

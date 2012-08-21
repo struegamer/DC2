@@ -128,6 +128,7 @@ setup(name='dc2.api',
             'dc2.api.dc2',
             'dc2.api.dc2.inventory',
             'dc2.api.dc2.deployment',
+            'dc2.api.dc2.configuration',
             ]
         )
 
@@ -150,5 +151,7 @@ setup(name='dc2.admincenter',
             'dc2.admincenter.lib.backends',
             'dc2.admincenter.lib.controllers',
             'dc2.admincenter.lib.ribs',
+            'dc2.admincenter.lib.interfacetypes',
+            'dc2.admincenter.lib.inettypes',
         ]
 )

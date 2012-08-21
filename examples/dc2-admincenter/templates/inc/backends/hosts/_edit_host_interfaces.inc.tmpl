@@ -1,0 +1,99 @@
+<div class='container-fluid edit_table'  id='host_interfaces'>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <table class='table table-bordered tabled-striped' id='table_edit_host_interfaces'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>INET Type</th>
+                        <th>IP Address</th>
+                        <th>Netmask</th>
+                        <th>Gateway</th>
+                        <TH>IP Type</th>
+                        <th>Interface Details</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class='main_tbody'>
+                    {%- for interface in host.interfaces %}
+                    <tr>
+                        <td class="action-icon"><a href="#" class='collapsible' id='interface-{{interface.name}}' data-target="#interface-details-{{interface.name}}"><I class="icon-chevron-right"></I></a></td>
+                        <td><input type='text' name='host[interfaces][{{interface.name}}][name]' value='{{interface.name}}'/></td>
+                        <td>{{interface.type}}</td>
+                        <td>{{interface.inet}}</td>
+                        <td><input type='text' name='host[interfaces][{{interface.name}}][ip]' value='{{interface.ip}}'/></td>
+                        <td><input type='text' name='host[interfaces][{{interface.name}}][netmask]' value='{{interface.netmask}}'/></td>
+                        <td><input type='text' name='host[interfaces][{{interface.name}}][gateway]' value='{{interface.gateway}}'/></td>
+                        <td><input type='checkbox' name='host[interfaces][{{interface.name}}][is_ipv6]'{%- if interface.is_ipv6 %}checked='checked'{%- endif %}/></td>
+                        <td><button data-entry-type='hostinterfaces' class='btn remove pull-right'>Remove</button></td>
+                    </tr>
+                    <tr id='interface-details-{{interface.name}}' class='collapsible_hide'>
+                        <td></td>
+                        <td colspan='9'>
+                            <table class='table table-bordered table-condensed'>
+                                <thead>
+                                    <th>Pre Up</th>
+                                    <th>Pre Down</th>
+                                    <th>Post Up</th>
+                                    <th>Post Down</th>
+                                </thead>
+                                <tbody>
+                                    <td><textarea name='host[interfaces][{{interface.name}}][pre_up]'>{{interface.pre_up}}</textarea>
+                                    <td><textarea name='host[interfaces][{{interface.name}}][pre_down]'>{{interface.pre_down}}</textarea></td>
+                                    <td><textarea name='host[interfaces][{{interface.name}}][post_up]'>{{interface.post_up}}</textarea></td>
+                                    <td><textarea name='host[interfaces][{{interface.name}}][post_down]'>{{interface.post_down}}</textarea></td>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <div class='btn-group pull-right'  id='table_btn_edit_host_interfaces'>
+                <button class='btn' id='host_interfaces_add'><i class='icon-plus'></i> Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id='table_row_edit_host_interfaces' style='display:none'>
+    <table>
+        <tbody>
+            <tr>
+                <td></td>
+                <td><input type='text' name='host[interfaces][new][name]' value=''/></td>
+                <td>Whatever</td>
+                <td>Whatever</td>
+                <td><input type='text' name='host[interfaces][new][ip]' value=''/></td>
+                <td><input type='text' name='host[interfaces][new][netmask]' value=''/></td>
+                <td><input type='text' name='host[interfaces][new][gateway]' value=''/></td>
+                <td><input type='checkbox' name='host[interfaces][new][is_ipv6]'/></td>
+                <td><button data-entry-type='hostinterfaces' class='btn remove pull-right'>Remove</button></td>
+                <tr>
+                    <td></td>
+                    <td colspan='9'>
+                        <table class='table table-bordered table-condensed'>
+                            <thead>
+                                <th>Pre Up</th>
+                                <th>Pre Down</th>
+                                <th>Post Up</th>
+                                <th>Post Down</th>
+                            </thead>
+                            <tbody>
+                                <td><textarea name='host[interfaces][new][pre_up]'></textarea>
+                                <td><textarea name='host[interfaces][new][pre_down]'></textarea></td>
+                                <td><textarea name='host[interfaces][new][post_up]'></textarea></td>
+                                <td><textarea name='host[interfaces][new][post_down]'></textarea></td>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tr>
+        </tbody>
+    </table>
+</div>

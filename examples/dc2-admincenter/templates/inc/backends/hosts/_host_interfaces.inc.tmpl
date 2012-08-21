@@ -1,0 +1,50 @@
+<div class='container-fluid'>
+    <div class='row-fluid'>
+        <div class='span12'>
+            <table class='table table-bordered tabled-striped'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>INET Type</th>
+                        <th>IP Address</th>
+                        <th>Netmask</th>
+                        <th>Gateway</th>
+                        <TH>IP Type</th>
+                        <th>Interface Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for interface in host.interfaces %}
+                    <tr>
+                        <td>{{interface.name}}</td>
+                        <td>{{interface.type}}</td>
+                        <td>{{interface.inet}}</td>
+                        <td>{{interface.ip}}</td>
+                        <td>{{interface.netmask}}</td>
+                        <td>{{interface.gateway}}</td>
+                        <td>{%- if interface.is_ipv6 and interface.is_ipv6==True %}<span class='label label-important'>IPv6</span>{%- else %}<span class='label label-default'>IPv4</span>{%- endif %}
+                        </td>
+                        <td>
+                            <table class='table table-bordered table-condensed'>
+                                <thead>
+                                    <th>Pre Up</th>
+                                    <th>Pre Down</th>
+                                    <th>Post Up</th>
+                                    <th>Post Down</th>
+                                </thead>
+                                <tbody>
+                                    <td>{{interface.pre_up}}</td>
+                                    <td>{{interface.pre_down}}</td>
+                                    <td>{{interface.post_up}}</td>
+                                    <td>{{interface.post_down}}</td>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

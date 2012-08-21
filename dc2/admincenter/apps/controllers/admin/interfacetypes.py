@@ -49,6 +49,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
+    from dc2.lib.web.helpers import convert_values
     from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
@@ -66,6 +67,8 @@ except ImportError,e:
 
 try:
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib import ribs
+    from dc2.admincenter.lib import interfacetypes
     from dc2.admincenter.lib.controllers import AdminController
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.lib.auth import needs_admin
@@ -76,20 +79,49 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class MainAdminController(AdminController):
-    CONTROLLER_IDENT={'title':'Admin Home','url':'/admin'}
+class AdminInterfaceTypesController(AdminController):
+    CONTROLLER_IDENT={'title':'DC2 Interface Types','url':'/admin/ifacetypes'}
 
     @Logger
     @needs_auth
     @needs_admin
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
-        page=self._prepare_page(verb)
         backend_list=backends.backend_list()
-        page.set_title('Admin - Index')
-        page.add_page_data({'backendlist':backend_list})
+        ifacetype_list=interfacetypes.itype_list()
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - Interfacetypes - Index')
+        page.add_page_data({'backendlist':backend_list, 'iface_list':ifacetype_list})
         page.set_action('index')
-        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
         return result
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _new(self, *args, **kwargs):
+        pass
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _edit(self, *args, **kwargs):
+        pass
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _create(self, *args, **kwargs):
+        pass
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _update(self, *args, **kwargs):
+        pass
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _remove(self, *args, **kwargs):
+        pass

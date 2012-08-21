@@ -18,20 +18,21 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-CSS_FILES=[
-        '/static/css/bootstrap/bootstrap.css',
-        '/static/css/admincenter/base.css',
-        '/static/css/bootstrap/bootstrap-responsive.css',
-        '/static/css/datatable/jquery.dataTables.css',
-        ]
+from dc2.api import RPCClient
 
-JS_LIBS=[
-        '/static/js/jquery/jquery.js',
-        '/static/js/bootstrap/bootstrap.js',
-        '/static/js/datatable/jquery.dataTables.js',
-        '/static/js/datatable/DT_bootstrap.js',
-        '/static/js/jplugins/jquery.rightClick.js',
-        '/static/js/jplugins/jquery.formparams.js',
-        '/static/js/admincenter/admincenter.js',
-        ]
+class DefaultClasses(RPCClient):
+    def find(self, rec=None):
+        if rec is None:
+            datalist=self._proxy.dc2.configuration.defaultclasses.list()
+            return datalist
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                raise Exception('The search argument is not a dictionary')
+            datalist=self._proxy.dc2.configuration.defaultclasses.find(rec)
+            return datalist
 
+    def list(self):
+        datalist=self.find()
+        return datalist
+
+ 

@@ -9,7 +9,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class='main_tbody'>
                     {%- for mac in macs %}
                     <tr data-entry-id='{{mac._id}}'>
                         <td><input type='text' id='mac[][mac_addr]' class='span6' name='mac[{{mac._id}}][mac_addr]' value='{{mac.mac_addr}}'/></td>

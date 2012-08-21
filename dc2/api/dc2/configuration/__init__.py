@@ -18,20 +18,6 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-CSS_FILES=[
-        '/static/css/bootstrap/bootstrap.css',
-        '/static/css/admincenter/base.css',
-        '/static/css/bootstrap/bootstrap-responsive.css',
-        '/static/css/datatable/jquery.dataTables.css',
-        ]
 
-JS_LIBS=[
-        '/static/js/jquery/jquery.js',
-        '/static/js/bootstrap/bootstrap.js',
-        '/static/js/datatable/jquery.dataTables.js',
-        '/static/js/datatable/DT_bootstrap.js',
-        '/static/js/jplugins/jquery.rightClick.js',
-        '/static/js/jplugins/jquery.formparams.js',
-        '/static/js/admincenter/admincenter.js',
-        ]
-
+from environments import Environments
+from defaultclasses import DefaultClasses
