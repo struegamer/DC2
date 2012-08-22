@@ -21,7 +21,7 @@
                         <td class="action-icon"><a href="#" class='collapsible' id='interface-{{interface.name}}' data-target="#interface-details-{{interface.name}}"><I class="icon-chevron-right"></I></a></td>
                         <td><input type='text' name='host[interfaces][{{interface.name}}][name]' value='{{interface.name}}'/></td>
                         <td>
-                            <select class='input-mini select-change-div' data-iface-name='{{interface.name}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][type]'>
+                            <select class='input-mini select-change-div' data-iface-name='{{interface.name}}' data-iface-type='{{interface.type}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][type]'>
                                 {%- for itype in itypes %}
                             
                                 <option id='{{loop.index}}' value='{{itype.type}}'{%- if itype.type == interface.type %}selected='selected'{%-endif%}>{{itype.desc}}</option>
@@ -38,7 +38,6 @@
                     <tr id='interface-details-{{interface.name}}' class='collapsible_hide'>
                         <td></td>
                         <td colspan='9'>
-                            {%- if interface.type =='vlan' %}
                             <div class='span9 div_vlan' id='div_vlan_{{interface.name}}'>
                                 <label for='host[interfaces][{{interface.name}}][vlan_raw_device]'>VLAN Raw Device:</label>
                                 <select id='host[interfaces][{{interface.name}}][vlan_raw_device]' name='host[interfaces][{{interface.name}}][vlan_raw_device]'>
@@ -49,8 +48,6 @@
                                     {%- endfor %}
                                 </select>
                             </div>
-                            {%- endif %}
-                            {%- if interface.type =='bond_1' or interface.type=='bond_2' %}
                             <div class='span9 div_bond' id='div_bond_{{interface.name}}'>
                                 <label for='host[interfaces][{{interface.name}}][slaves][]'>BOND Slave Devices</label>
                                 <select id='host[interfaces][{{interface.name}}][slaves][]' name='host[interfaces][{{interface.name}}][slaves][]' size=5 multiple='multiple'>
@@ -59,7 +56,6 @@
                                     {%- endfor %}
                                 </select>
                             </div>
-                            {%- endif %}
                             <table class='table table-bordered table-condensed'>
                                 <thead>
                                     <th>Pre Up</th>
@@ -97,7 +93,7 @@
                 <td></td>
                 <td><input type='text' name='host[interfaces][new][name]' value=''/></td>
                 <td>
-                    <select id=host_interfaces_new_type' class='input-mini select-change-div' name='host[interfaces][new][type]'>
+                    <select id='host_interfaces_new_type' class='input-mini select-change-div' data-iface-name='None' data-iface-type='None' name='host[interfaces][new][type]'>
                         {%- for itype in itypes %}
                         <option value='{{itype.type}}'>{{itype.desc}}</option>
                         {%-endfor %}
@@ -112,9 +108,10 @@
                 <tr>
                     <td></td>
                     <td colspan='9'>
-                        <div class='span9' id='div_vlan' style='display:none'>
+                        <div class='span9 div_vlan' id='div_vlan_None' style='display:none'>
                             <label for='host[interfaces][new][vlan_raw_device]'>VLAN Raw Device:</label>
                             <select id='host[interfaces][new][vlan_raw_device]' name='host[interfaces][new][vlan_raw_device]'>
+                                <option value='None' selected='selected'>No Raw Device</option>
                                 {%- for iface in host.interfaces %}
                                 {%- if iface.type=='bond_1' or iface.type=='bond_2' or iface.type=='ethernet' %}
                                 <option value='{{iface.name}}'>{{iface.name}}</option>
@@ -122,7 +119,14 @@
                                 {%- endfor %}
                             </select>
                         </div>
-
+                        <div class='span9 div_bond' id='div_bond_None' style='display:none'>
+                            <label for='host[interfaces][new][slaves][]'>BOND Slave Devices</label>
+                            <select id='host[interfaces][new][slaves][]' name='host[interfaces][new][slaves][]' size=5 multiple='multiple'>
+                                {%- for slave in server_macs %}
+                                <option value='{{slave.device_name}}'>{{slave.device_name}}</option>
+                                {%- endfor %}
+                            </select>
+                        </div>
                         <table class='table table-bordered table-condensed'>
                             <thead>
                                 <th>Pre Up</th>
