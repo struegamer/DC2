@@ -193,6 +193,7 @@ class HostController(RESTController):
         self._init_backend()
         params=web.data()
         data=json.loads(params)['result']
+        web.debug('host update %s' % data)
         request_data=verb.get('request_data',None)
         host_id=None
         if request_data is not None:
