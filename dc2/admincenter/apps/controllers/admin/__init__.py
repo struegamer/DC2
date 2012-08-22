@@ -22,3 +22,4 @@ from backends import BackendsController
 from main import MainAdminController
 from ribs import AdminRIBController
 from interfacetypes import AdminInterfaceTypesController
+from inettypes import AdminInetTypesController
