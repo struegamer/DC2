@@ -21,4 +21,4 @@
 
 from environments import Environments
 from defaultclasses import DefaultClasses
-from classtemplates import ClasssTemplates
+from classtemplates import ClassTemplates
