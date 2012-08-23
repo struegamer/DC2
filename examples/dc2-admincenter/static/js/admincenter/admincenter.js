@@ -476,8 +476,6 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
         var input_id=$(this).attr('id');
         input_id=input_id.replace('_new_','_new_'+_this.add_row_counter+'_');
         $(this).attr('id',input_id);
-        console.log($(this).attr('data-iface-name'));
-        console.log($(this).attr('data-iface-type'));
         $(this).attr('data-iface-name','None_'+_this.add_row_counter);
         _this.new_selection_id=$(this).attr('id');
       }
@@ -493,23 +491,25 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
 };
 
 
-DC2.Widgets.SelectionChange=function(selector) {
+DC2.Widgets.SelectionChange=function(selector,which_type) {
   this.selector=$(selector);
-  this.iface_name=this.selector.attr('data-iface-name');
-  this.iface_type=this.selector.attr('data-iface-type');
-  console.log(this.selector.attr('id'));
-  switch(this.iface_type) {
-    case 'vlan':
-      $('#div_vlan_'+this.iface_name).show();
-      $('#div_bond_'+this.iface_name).hide();
-      break;
-    case 'bond_1':
-    case 'bond_2':
-      $('#div_bond_'+this.iface_name).show();
-      $('#div_vlan_'+this.iface_name).hide();
-      break;
-  };
-  this.selector.on('change',this.selector,this.change_div.bind(this));
+  if (which_type == 'iface') {
+    this.iface_name=this.selector.attr('data-iface-name');
+    this.iface_type=this.selector.attr('data-iface-type');
+    console.log(this.selector.attr('id'));
+    switch(this.iface_type) {
+      case 'vlan':
+        $('#div_vlan_'+this.iface_name).show();
+        $('#div_bond_'+this.iface_name).hide();
+        break;
+      case 'bond_1':
+      case 'bond_2':
+        $('#div_bond_'+this.iface_name).show();
+        $('#div_vlan_'+this.iface_name).hide();
+        break;
+    };
+    this.selector.on('change',this.selector,this.change_div.bind(this));
+  }
 };
 
 DC2.Widgets.SelectionChange.prototype.change_div=function(event) {
@@ -614,8 +614,8 @@ $(document).ready(function() {
     }
   }); 
   $('.select-change-div').each(function() {
-    if ($(this).attr('id') != null ) {
-      new DC2.Widgets.SelectionChange('#'+$(this).attr('id'));
+    if ($(this).attr('id') != null && $(this).attr('data-iface-type')!=undefined) {
+      new DC2.Widgets.SelectionChange('#'+$(this).attr('id'),'iface');
     }
   });
   $('.list-btn-group').each(function() {
