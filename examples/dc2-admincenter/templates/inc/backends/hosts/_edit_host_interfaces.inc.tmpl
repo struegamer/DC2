@@ -24,11 +24,17 @@
                             <select class='input-mini select-change-div' data-iface-name='{{interface.name}}' data-iface-type='{{interface.type}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][type]'>
                                 {%- for itype in itypes %}
                             
-                                <option id='{{loop.index}}' value='{{itype.type}}'{%- if itype.type == interface.type %}selected='selected'{%-endif%}>{{itype.desc}}</option>
+                                <option value='{{itype.type}}'{%- if itype.type == interface.type %}selected='selected'{%-endif%}>{{itype.desc}}</option>
                                 {%-endfor %}
                             </select>
                         </td>
-                        <td>{{interface.inet}}</td>
+                        <td>
+                            <select class='input-mini select-change-div' data-inet-name='{{interface.name}}' data-inet-type='{{interface.inet}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][inet]'>
+                                {%- for inet in inetlist %}
+                                <option value='{{inet.type}}'{%- if inet.type == interface.inet %}selected='selected'{%-endif%}>{{inet.desc}}</option>
+                                {%- endfor %}
+                            </select>
+                        </td>
                         <td><input type='text' name='host[interfaces][{{interface.name}}][ip]' value='{{interface.ip}}'/></td>
                         <td><input type='text' name='host[interfaces][{{interface.name}}][netmask]' value='{{interface.netmask}}'/></td>
                         <td><input type='text' name='host[interfaces][{{interface.name}}][gateway]' value='{{interface.gateway}}'/></td>

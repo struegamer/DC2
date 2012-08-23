@@ -23,7 +23,11 @@
                             {%- if itype.type == interface.type %} {{itype.desc}} {%- endif %}
                             {%- endfor %}
                         </td>
-                        <td>{{interface.inet}}</td>
+                        <td>
+                            {%- for inet in inetlist %}
+                            {%- if inet.type == interface.inet %} {{ inet.desc }} {%- endif %}
+                            {%- endfor %}
+                        </td>
                         <td>{{interface.ip}}</td>
                         <td>{{interface.netmask}}</td>
                         <td>{{interface.gateway}}</td>

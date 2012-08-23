@@ -72,6 +72,7 @@ try:
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.lib import ribs
     from dc2.admincenter.lib import interfacetypes
+    from dc2.admincenter.lib import inettypes
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -124,6 +125,7 @@ class HostController(RESTController):
         self._environments=Environments(self._transport)
         self._defaultclasses=DefaultClasses(self._transport)
         self._itypes_list=interfacetypes.itype_list()
+        self._inet_list=inettypes.inet_list()
     @Logger
     @needs_auth
     def _show(self, *args, **kwargs):
@@ -144,6 +146,7 @@ class HostController(RESTController):
                 self._page.set_title('Host %s.%s' % (host['hostname'],host['domainname']))
                 self._page.add_page_data({
                     'itypes':self._itypes_list,
+                    'inetlist':self._inet_list,
                     'server':server,
                     'server_macs':server_macs,
                     'host':host
@@ -175,6 +178,7 @@ class HostController(RESTController):
             self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
             self._page.add_page_data({
                 'itypes':self._itypes_list,
+                'inetlist':self._inet_list,
                 'entry_id':host['_id'],
                 'serverlist':serverlist,
                 'environlist':environmentlist,
