@@ -69,6 +69,7 @@ try:
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib import ribs
     from dc2.admincenter.lib import interfacetypes
+    from dc2.admincenter.lib import inettypes
     from dc2.admincenter.lib.controllers import AdminController
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.lib.auth import needs_admin
@@ -80,41 +81,99 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class AdminInetTypesController(AdminController):
-    CONTROLLER_IDENT={'title':'DC² Inet Types','url':'/admin/inettypes'}
+    CONTROLLER_IDENT={'title':'DC2 Inet Types','url':'/admin/inettypes'}
 
     @Logger
     @needs_auth
     @needs_admin
     def _index(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        inet_list=inettypes.inet_list()
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - IP Types - Index')
+        page.add_page_data({'backendlist':backend_list, 'inet_list':inet_list})
+        page.set_action('index')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
+        return result
 
     @Logger
     @needs_auth
     @needs_admin
     def _new(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - IP Types - New')
+        inet=inettypes.inet_new()
+        page.add_page_data({'backendlist':backend_list, 'inet':inet})
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
+        return result
 
     @Logger
     @needs_auth
     @needs_admin
     def _edit(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        inet=inettypes.inet_get({'_id':verb['request_data']['id']})
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - INET Tyoes - Edit')
+        page.add_page_data({'backendlist':backend_list, 'inet':inet})
+        page.set_action('edit')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
+        return result
 
     @Logger
     @needs_auth
     @needs_admin
     def _create(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        inet={}
+        inet['type']=params.type
+        inet['desc']=params.desc
+        inettypes.inet_add(inet)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
+
 
     @Logger
     @needs_auth
     @needs_admin
     def _update(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        params=web.input()
+        inet={}
+        inet['_id']=params._id
+        inet['type']=params.type
+        inet['desc']=params.desc
+        inettypes.inet_update(inet)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
 
     @Logger
     @needs_auth
     @needs_admin
     def _delete(self, *args, **kwargs):
-        pass
+        verb=kwargs.get('verb',None)
+        request_data=verb.get('request_data',None)
+        if request_data is not None and request_data.get('id',None) is not None:
+            inet={'_id':request_data.get('id',None)}
+            inettypes.inet_delete(inet)
+        output_format=verb.get('request_output_format',None)
+        if output_format is not None and output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+        return result
 
