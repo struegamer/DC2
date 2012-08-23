@@ -119,7 +119,7 @@ class AdminInterfaceTypesController(AdminController):
         backend_list=backends.backend_list()
         iface=interfacetypes.itype_get({'_id':verb['request_data']['id']})
         page=self._prepare_page(verb)
-        page.set_title('DC2 Admincenter - Interfacetypes - New')
+        page.set_title('DC2 Admincenter - Interfacetypes - Edit')
         page.add_page_data({'backendlist':backend_list, 'iface':iface})
         page.set_action('edit')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'], output={'content':page.render()})
