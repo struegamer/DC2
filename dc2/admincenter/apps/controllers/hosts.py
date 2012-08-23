@@ -85,6 +85,7 @@ try:
     from dc2.api.dc2.inventory import Hosts
     from dc2.api.dc2.configuration import Environments
     from dc2.api.dc2.configuration import DefaultClasses
+    from dc2.api.dc2.configuration import ClassTemplates
 except ImportError,e:
     print 'You did not install dc2.api'
     print e
@@ -124,8 +125,10 @@ class HostController(RESTController):
         self._hosts=Hosts(self._transport)
         self._environments=Environments(self._transport)
         self._defaultclasses=DefaultClasses(self._transport)
+        self._classtemplates=ClassTemplates(self._transport)
         self._itypes_list=interfacetypes.itype_list()
         self._inet_list=inettypes.inet_list()
+        
     @Logger
     @needs_auth
     def _show(self, *args, **kwargs):
@@ -143,8 +146,10 @@ class HostController(RESTController):
             if host is not None:
                 server=self._servers.get(id=host['server_id'])
                 server_macs=self._macs.get(server_id=host['server_id'])
+                classtemplates=self._classtemplates.list()
                 self._page.set_title('Host %s.%s' % (host['hostname'],host['domainname']))
                 self._page.add_page_data({
+                    'classtemplates':classtemplates,
                     'itypes':self._itypes_list,
                     'inetlist':self._inet_list,
                     'server':server,
@@ -172,11 +177,13 @@ class HostController(RESTController):
             serverlist=self._servers.list()
             environmentlist=self._environments.list()
             defaultclasses=self._defaultclasses.list()
+            classtemplates=self._classtemplates.list()
             server_macs=self._macs.get(server_id=host['server_id'])
 
             defclasses={}
             self._page.set_title('Edit Host %s.%s' % (host['hostname'],host['domainname']))
             self._page.add_page_data({
+                'classtemplates':classtemplates,
                 'itypes':self._itypes_list,
                 'inetlist':self._inet_list,
                 'entry_id':host['_id'],
