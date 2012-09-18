@@ -1,7 +1,7 @@
-<div class='container-fluid' id='contentheading'>
-    <div class='row-fluid'>
+<div class='container' id='contentheading'>
+    <div class='row'>
         <div class='span12'>
-            <h2>
+            <h3>
                 {%- if page.action =='show' and page.show_button %}<a href='{{page.context.env['PATH_INFO']}}/edit?{{page.context.env['QUERY_STRING']}}' class='btn'><i class='icon-edit'></i> Edit</a> {{page.title}}
                 {%- elif page.action == 'edit' and page.update_button %}
                 &nbsp;{{page.title}}
@@ -17,7 +17,7 @@
                 {{page.title}}
                 {%- endif %}
 
-            </h2>
+            </h3>
             <hr/>
         </div>
     </div>

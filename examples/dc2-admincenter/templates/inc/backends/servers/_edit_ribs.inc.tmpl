@@ -1,6 +1,6 @@
-<div class='container-fluid edit_table'  id='server_rib'>
-    <div class='row-fluid'>
-        <div class='span6'>
+<div class='edit_table'  id='server_rib'>
+    <div class='row'>
+        <div class='span12'>
             <table class='table table-bordered tabled-striped' id='table_edit_server_rib'>
                 <thead>
                     <tr>
@@ -18,16 +18,16 @@
                                 {%- endfor %}
                             </select>
                         </td>
-                        <td><input type='text' name='rib[{{rib._id}}][remote_ip]' value='{{rib.remote_ip}}' class='span6'/></td>
-                        <td><button data-entry-id='{{rib._id}}' data-entry-type='rib' class='btn remove'>Remove</button></td>
+                        <td><input type='text' name='rib[{{rib._id}}][remote_ip]' value='{{rib.remote_ip}}' /></td>
+                        <td><button data-entry-id='{{rib._id}}' data-entry-type='rib' class='btn pull-right remove'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    <div class='row-fluid'>
-        <div class='span6'>
+    <div class='row'>
+        <div class='span12'>
             <div class='btn-group pull-right'  id='table_btn_edit_server_rib'>
                 <button class='btn' id='server_rib_add'><i class='icon-plus'></i> Add</button>
             </div>
@@ -46,7 +46,7 @@
             </select>
         </td>
         <td>
-            <input type='text' name='rib[new][remote_ip]' value='' class='span6'/>
+            <input type='text' name='rib[new][remote_ip]' value='' />
         </td>
         <td><button class='btn remove'>Remove</button></td>
     </tr>

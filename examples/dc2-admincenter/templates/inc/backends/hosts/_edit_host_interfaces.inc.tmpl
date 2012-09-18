@@ -1,7 +1,7 @@
-<div class='container-fluid edit_table'  id='host_interfaces'>
-    <div class='row-fluid'>
+<div class='edit_table'  id='host_interfaces'>
+    <div class='row'>
         <div class='span12'>
-            <table class='table table-bordered tabled-striped' id='table_edit_host_interfaces'>
+            <table class='table table-bordered table-condensed table-striped' id='table_edit_host_interfaces'>
                 <thead>
                     <tr>
                         <th></th>
@@ -19,9 +19,9 @@
                     {%- for interface in host.interfaces %}
                     <tr>
                         <td class="action-icon"><a href="#" class='collapsible' id='interface-{{interface.name}}' data-target="#interface-details-{{interface.name}}"><I class="icon-chevron-right"></I></a></td>
-                        <td><input type='text' name='host[interfaces][{{interface.name}}][name]' value='{{interface.name}}'/></td>
+			<td><input type='text' class='input-mini' name='host[interfaces][{{interface.name}}][name]' value='{{interface.name}}'/></td>
                         <td>
-                            <select class='input-mini select-change-div' data-iface-name='{{interface.name}}' data-iface-type='{{interface.type}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][type]'>
+                            <select class='input-medium select-change-div' data-iface-name='{{interface.name}}' data-iface-type='{{interface.type}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][type]'>
                                 {%- for itype in itypes %}
                             
                                 <option value='{{itype.type}}'{%- if itype.type == interface.type %}selected='selected'{%-endif%}>{{itype.desc}}</option>
@@ -29,22 +29,22 @@
                             </select>
                         </td>
                         <td>
-                            <select class='input-mini select-change-div' data-inet-name='{{interface.name}}' data-inet-type='{{interface.inet}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][inet]'>
+                            <select class='input-medium select-change-div' data-inet-name='{{interface.name}}' data-inet-type='{{interface.inet}}' id='host_interfaces_{{interface.name}}_type' name='host[interfaces][{{interface.name}}][inet]'>
                                 {%- for inet in inetlist %}
                                 <option value='{{inet.type}}'{%- if inet.type == interface.inet %}selected='selected'{%-endif%}>{{inet.desc}}</option>
                                 {%- endfor %}
                             </select>
                         </td>
-                        <td><input type='text' name='host[interfaces][{{interface.name}}][ip]' value='{{interface.ip}}'/></td>
-                        <td><input type='text' name='host[interfaces][{{interface.name}}][netmask]' value='{{interface.netmask}}'/></td>
-                        <td><input type='text' name='host[interfaces][{{interface.name}}][gateway]' value='{{interface.gateway}}'/></td>
+                        <td><input type='text' class='input-medium' name='host[interfaces][{{interface.name}}][ip]' value='{{interface.ip}}'/></td>
+                        <td><input type='text' class='input-medium' name='host[interfaces][{{interface.name}}][netmask]' value='{{interface.netmask}}'/></td>
+                        <td><input type='text' class='input-medium' name='host[interfaces][{{interface.name}}][gateway]' value='{{interface.gateway}}'/></td>
                         <td><input type='checkbox' name='host[interfaces][{{interface.name}}][is_ipv6]'{%- if interface.is_ipv6 %}checked='checked'{%- endif %}/> IPv6</td>
                         <td><button data-entry-type='hostinterfaces' class='btn remove pull-right'>Remove</button></td>
                     </tr>
                     <tr id='interface-details-{{interface.name}}' class='collapsible_hide'>
                         <td></td>
                         <td colspan='9'>
-                            <div class='span9 div_vlan' id='div_vlan_{{interface.name}}'>
+                            <div class='div_vlan' id='div_vlan_{{interface.name}}'>
                                 <label for='host[interfaces][{{interface.name}}][vlan_raw_device]'>VLAN Raw Device:</label>
                                 <select id='host[interfaces][{{interface.name}}][vlan_raw_device]' name='host[interfaces][{{interface.name}}][vlan_raw_device]'>
                                     {%- for iface in host.interfaces %}
@@ -54,7 +54,7 @@
                                     {%- endfor %}
                                 </select>
                             </div>
-                            <div class='span9 div_bond' id='div_bond_{{interface.name}}'>
+                            <div class='div_bond' id='div_bond_{{interface.name}}'>
                                 <label for='host[interfaces][{{interface.name}}][slaves][]'>BOND Slave Devices</label>
 				<select id='host[interfaces][{{interface.name}}][slaves][]' name='host[interfaces][{{interface.name}}][slaves][]' size=5 multiple='multiple'>
 					{%- if interface.type=='bond_1' or interface.type=='bond_2' %}
@@ -85,8 +85,8 @@
             </table>
         </div>
     </div>
-    <div class='row-fluid'>
-        <div class='span12'>
+    <div class='row'>
+        <div class=''>
             <div class='btn-group pull-right'  id='table_btn_edit_host_interfaces'>
                 <button class='btn' id='host_interfaces_add'><i class='icon-plus'></i> Add</button>
             </div>
@@ -99,31 +99,31 @@
         <tbody>
             <tr>
                 <td></td>
-                <td><input type='text' name='host[interfaces][new][name]' value=''/></td>
+                <td><input type='text' class='input-mini' name='host[interfaces][new][name]' value=''/></td>
                 <td>
-                    <select id='host_interfaces_new_type' class='input-mini select-change-div' data-iface-name='None' data-iface-type='None' name='host[interfaces][new][type]'>
+                    <select id='host_interfaces_new_type' class='input-medium select-change-div' data-iface-name='None' data-iface-type='None' name='host[interfaces][new][type]'>
                         {%- for itype in itypes %}
                         <option value='{{itype.type}}'>{{itype.desc}}</option>
                         {%-endfor %}
                     </select>
 	    </td>
                         <td>
-                            <select class='input-mini select-change-div' data-inet-name='None' data-inet-type='None' id='host_interfaces_new_inet' name='host[interfaces][new][inet]'>
+                            <select class='input-medium select-change-div' data-inet-name='None' data-inet-type='None' id='host_interfaces_new_inet' name='host[interfaces][new][inet]'>
                                 {%- for inet in inetlist %}
                                 <option value='{{inet.type}}'>{{inet.desc}}</option>
                                 {%- endfor %}
                             </select>
                         </td>
  
-                <td><input type='text' name='host[interfaces][new][ip]' value=''/></td>
-                <td><input type='text' name='host[interfaces][new][netmask]' value=''/></td>
-                <td><input type='text' name='host[interfaces][new][gateway]' value=''/></td>
+                <td><input type='text' class='input-medium' name='host[interfaces][new][ip]' value=''/></td>
+                <td><input type='text' class='input-medium' name='host[interfaces][new][netmask]' value=''/></td>
+                <td><input type='text' class='input-medium' name='host[interfaces][new][gateway]' value=''/></td>
                 <td><input type='checkbox' name='host[interfaces][new][is_ipv6]'/></td>
                 <td><button data-entry-type='hostinterfaces' class='btn remove pull-right'>Remove</button></td>
                 <tr>
                     <td></td>
                     <td colspan='9'>
-                        <div class='span9 div_vlan' id='div_vlan_None'>
+                        <div class='div_vlan' id='div_vlan_None'>
                             <label for='host[interfaces][new][vlan_raw_device]'>VLAN Raw Device:</label>
                             <select id='host[interfaces][new][vlan_raw_device]' name='host[interfaces][new][vlan_raw_device]'>
                                 <option value='None' selected='selected'>No Raw Device</option>
@@ -134,7 +134,7 @@
                                 {%- endfor %}
                             </select>
                         </div>
-                        <div class='span9 div_bond' id='div_bond_None'>
+                        <div class='div_bond' id='div_bond_None'>
                             <label for='host[interfaces][new][slaves][]'>BOND Slave Devices</label>
                             <select id='host[interfaces][new][slaves][]' name='host[interfaces][new][slaves][]' size=5 multiple='multiple'>
                                 {%- for slave in server_macs %}

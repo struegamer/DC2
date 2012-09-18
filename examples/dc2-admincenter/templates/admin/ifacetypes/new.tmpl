@@ -1,15 +1,15 @@
 {% import 'macros/input.macro.tmpl' as forms with context -%}
 {% extends 'layout.tmpl' %}
 {% block content %}
-<div class='container-fluid'>
-    <div class='row-fluid'>
+<div class='container'>
+    <div class='row'>
         <div class='span12'>
-            <h2>{{ page.title}}</h2>
+            <h3>{{ page.title}}</h3>
             <hr/>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class='span6'>
+    <div class="row">
+        <div class='span12'>
             {% include 'admin/ifacetypes/_form.inc.tmpl' with context %}
         </div>
     </div>
