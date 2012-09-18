@@ -56,10 +56,12 @@
                             </div>
                             <div class='span9 div_bond' id='div_bond_{{interface.name}}'>
                                 <label for='host[interfaces][{{interface.name}}][slaves][]'>BOND Slave Devices</label>
-                                <select id='host[interfaces][{{interface.name}}][slaves][]' name='host[interfaces][{{interface.name}}][slaves][]' size=5 multiple='multiple'>
+				<select id='host[interfaces][{{interface.name}}][slaves][]' name='host[interfaces][{{interface.name}}][slaves][]' size=5 multiple='multiple'>
+					{%- if interface.type=='bond_1' or interface.type=='bond_2' %}
                                     {%- for slave in server_macs %}
                                     <option value='{{slave.device_name}}'{%- if slave.device_name in interface.slaves %} selected='selected'{%-endif%}>{{slave.device_name}}</option>
-                                    {%- endfor %}
+				    {%- endfor %}
+				    {%- endif %}
                                 </select>
                             </div>
                             <table class='table table-bordered table-condensed'>
@@ -104,8 +106,15 @@
                         <option value='{{itype.type}}'>{{itype.desc}}</option>
                         {%-endfor %}
                     </select>
-                </td>
-                <td>Whatever</td>
+	    </td>
+                        <td>
+                            <select class='input-mini select-change-div' data-inet-name='None' data-inet-type='None' id='host_interfaces_new_inet' name='host[interfaces][new][inet]'>
+                                {%- for inet in inetlist %}
+                                <option value='{{inet.type}}'>{{inet.desc}}</option>
+                                {%- endfor %}
+                            </select>
+                        </td>
+ 
                 <td><input type='text' name='host[interfaces][new][ip]' value=''/></td>
                 <td><input type='text' name='host[interfaces][new][netmask]' value=''/></td>
                 <td><input type='text' name='host[interfaces][new][gateway]' value=''/></td>
@@ -114,7 +123,7 @@
                 <tr>
                     <td></td>
                     <td colspan='9'>
-                        <div class='span9 div_vlan' id='div_vlan_None' style='display:none'>
+                        <div class='span9 div_vlan' id='div_vlan_None'>
                             <label for='host[interfaces][new][vlan_raw_device]'>VLAN Raw Device:</label>
                             <select id='host[interfaces][new][vlan_raw_device]' name='host[interfaces][new][vlan_raw_device]'>
                                 <option value='None' selected='selected'>No Raw Device</option>
@@ -125,7 +134,7 @@
                                 {%- endfor %}
                             </select>
                         </div>
-                        <div class='span9 div_bond' id='div_bond_None' style='display:none'>
+                        <div class='span9 div_bond' id='div_bond_None'>
                             <label for='host[interfaces][new][slaves][]'>BOND Slave Devices</label>
                             <select id='host[interfaces][new][slaves][]' name='host[interfaces][new][slaves][]' size=5 multiple='multiple'>
                                 {%- for slave in server_macs %}

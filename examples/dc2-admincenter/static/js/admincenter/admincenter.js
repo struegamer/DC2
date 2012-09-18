@@ -482,9 +482,10 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
     }
   });
   this.container.find('#table_edit_'+event.data.ident+' tbody.main_tbody').append(add_row_temp.html());
+  console.log(this.new_selection_id);
   $('#div_vlan_None').attr('id','div_vlan_None_'+this.add_row_counter);
   $('#div_bond_None').attr('id','div_bond_None_'+this.add_row_counter);
-  new DC2.Widgets.SelectionChange('#'+this.new_selection_id);
+  new DC2.Widgets.SelectionChange($('#host_interfaces_new_'+this.add_row_counter+'_type'),'iface');
   this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   return(false);
@@ -493,20 +494,29 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
 
 DC2.Widgets.SelectionChange=function(selector,which_type) {
   this.selector=$(selector);
+  console.log(selector);
   if (which_type == 'iface') {
     this.iface_name=this.selector.attr('data-iface-name');
     this.iface_type=this.selector.attr('data-iface-type');
     console.log(this.selector.attr('id'));
     switch(this.iface_type) {
       case 'vlan':
+        console.log('constructor: vlan');
         $('#div_vlan_'+this.iface_name).show();
         $('#div_bond_'+this.iface_name).hide();
         break;
       case 'bond_1':
       case 'bond_2':
+        console.log('constructor: bond');
         $('#div_bond_'+this.iface_name).show();
         $('#div_vlan_'+this.iface_name).hide();
         break;
+      default:
+        console.log('constructor: default');
+        $('#div_bond_'+this.iface_name).hide();
+        $('#div_vlan_'+this.iface_name).hide();
+        break;
+ 
     };
     this.selector.on('change',this.selector,this.change_div.bind(this));
   }
