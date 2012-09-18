@@ -18,8 +18,19 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from backends import BackendsController
-from main import MainAdminController
-from ribs import AdminRIBController
-from interfacetypes import AdminInterfaceTypesController
-from inettypes import AdminInetTypesController
+from dc2.api import RPCClient
+
+class ClassTemplates(RPCClient):
+    def find(self, rec=None):
+        if rec is None:
+            datalist=self._proxy.dc2.configuration.classtemplates.list()
+            return datalist
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                raise Exception('The search argument is not a dictionary')
+            datalist=self._proxy.dc2.configuration.classtemplates.find(rec)
+            return datalist
+
+    def list(self):
+        datalist=self.find()
+        return datalist

@@ -1,0 +1,19 @@
+{% import 'macros/input.macro.tmpl' as forms with context %}
+{% if page.action == 'new' %}
+    {{ forms.form('POST','/admin/ifacetypes/?oformat=json',id='iface_add',labels=True,class='data-form',enable_buttons=True,remote=True,
+                fields=[
+                { 'name':'type','value':iface.type,'label':'Type','type':'text','placeholder':'Type','size':'','id':'','class':'input-xlarge' },
+                { 'name':'desc','value':iface.desc,'label':'Description','type':'text','placeholder':'Description','size':'','id':'','class':'input-xlarge' },
+                ]) 
+    }}
+{% elif page.action == 'edit' %}
+{{ forms.form('PUT','/admin/ifacetypes/%s?oformat=json' % iface._id,id='iface_edit',labels=True, class='data-form',enable_buttons=True,remote=True,
+fields=[
+                { 'name':'_id','value':iface._id,'type':'hidden' },
+
+                { 'name':'type','value':iface.type,'label':'Type','type':'text','placeholder':'Type','size':'','id':'','class':'input-xlarge' },
+                { 'name':'desc','value':iface.desc,'label':'Description','type':'text','placeholder':'Description','size':'','id':'','class':'input-xlarge' },
+                ]) 
+
+}}
+{% endif %}

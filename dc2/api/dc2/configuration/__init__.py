@@ -21,3 +21,4 @@
 
 from environments import Environments
 from defaultclasses import DefaultClasses
+from classtemplates import ClassTemplates

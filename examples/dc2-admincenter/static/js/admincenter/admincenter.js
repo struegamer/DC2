@@ -471,16 +471,78 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
     var input_name=$(this).attr('name');
     input_name=input_name.replace('new','new_'+_this.add_row_counter);
     $(this).attr('name',input_name);
+    if ($(this)[0].tagName.toLowerCase() == 'select') {
+      if ($(this).attr('data-iface-name') != undefined && $(this).attr('data-iface-type') != undefined) {
+        var input_id=$(this).attr('id');
+        input_id=input_id.replace('_new_','_new_'+_this.add_row_counter+'_');
+        $(this).attr('id',input_id);
+        $(this).attr('data-iface-name','None_'+_this.add_row_counter);
+        _this.new_selection_id=$(this).attr('id');
+      }
+    }
   });
-  console.log($(add_row_temp));
   this.container.find('#table_edit_'+event.data.ident+' tbody.main_tbody').append(add_row_temp.html());
+  console.log(this.new_selection_id);
+  $('#div_vlan_None').attr('id','div_vlan_None_'+this.add_row_counter);
+  $('#div_bond_None').attr('id','div_bond_None_'+this.add_row_counter);
+  new DC2.Widgets.SelectionChange($('#host_interfaces_new_'+this.add_row_counter+'_type'),'iface');
   this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
   return(false);
 };
 
-DC2.Widgets.Collapsible = function(selector) {
+
+DC2.Widgets.SelectionChange=function(selector,which_type) {
+  this.selector=$(selector);
   console.log(selector);
+  if (which_type == 'iface') {
+    this.iface_name=this.selector.attr('data-iface-name');
+    this.iface_type=this.selector.attr('data-iface-type');
+    console.log(this.selector.attr('id'));
+    switch(this.iface_type) {
+      case 'vlan':
+        console.log('constructor: vlan');
+        $('#div_vlan_'+this.iface_name).show();
+        $('#div_bond_'+this.iface_name).hide();
+        break;
+      case 'bond_1':
+      case 'bond_2':
+        console.log('constructor: bond');
+        $('#div_bond_'+this.iface_name).show();
+        $('#div_vlan_'+this.iface_name).hide();
+        break;
+      default:
+        console.log('constructor: default');
+        $('#div_bond_'+this.iface_name).hide();
+        $('#div_vlan_'+this.iface_name).hide();
+        break;
+ 
+    };
+    this.selector.on('change',this.selector,this.change_div.bind(this));
+  }
+};
+
+DC2.Widgets.SelectionChange.prototype.change_div=function(event) {
+  var change_val=$(event.target).val();
+  console.log('change_div');
+  switch(change_val) {
+    case 'vlan':
+      $('#div_vlan_'+this.iface_name).show();
+      $('#div_bond_'+this.iface_name).hide();
+      break;
+    case 'bond_1':
+    case 'bond_2':
+      $('#div_vlan_'+this.iface_name).hide();
+      $('#div_bond_'+this.iface_name).show();
+      break;
+    default:
+      $('#div_vlan_'+this.iface_name).hide();
+      $('#div_bond_'+this.iface_name).hide();
+  }
+  return(false);
+};
+
+DC2.Widgets.Collapsible = function(selector) {
   this.container=$(selector);
   this.target=this.container.attr('data-target');
   if ($(this.target).hasClass('collapsible_hide')) {
@@ -561,6 +623,11 @@ $(document).ready(function() {
       DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
     }
   }); 
+  $('.select-change-div').each(function() {
+    if ($(this).attr('id') != null && $(this).attr('data-iface-type')!=undefined) {
+      new DC2.Widgets.SelectionChange('#'+$(this).attr('id'),'iface');
+    }
+  });
   $('.list-btn-group').each(function() {
     if ($(this).attr('id') != null ) {
       new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));

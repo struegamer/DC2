@@ -1,5 +1,5 @@
-<div class='container-fluid'>
-    <div class='row-fluid'>
+<div class='container'>
+    <div class='row'>
         <div class='span12'>
             <table class='table table-bordered tabled-striped'>
                 <thead>
@@ -18,20 +18,64 @@
                     {%- for interface in host.interfaces %}
                     <tr>
                         <td>{{interface.name}}</td>
-                        <td>{{interface.type}}</td>
-                        <td>{{interface.inet}}</td>
+                        <td>
+                            {%- for itype in itypes %}
+                            {%- if itype.type == interface.type %} {{itype.desc}} {%- endif %}
+                            {%- endfor %}
+                        </td>
+                        <td>
+                            {%- for inet in inetlist %}
+                            {%- if inet.type == interface.inet %} {{ inet.desc }} {%- endif %}
+                            {%- endfor %}
+                        </td>
                         <td>{{interface.ip}}</td>
                         <td>{{interface.netmask}}</td>
                         <td>{{interface.gateway}}</td>
                         <td>{%- if interface.is_ipv6 and interface.is_ipv6==True %}<span class='label label-important'>IPv6</span>{%- else %}<span class='label label-default'>IPv4</span>{%- endif %}
                         </td>
                         <td>
+                            {%- if interface.type == 'vlan' %}
                             <table class='table table-bordered table-condensed'>
                                 <thead>
-                                    <th>Pre Up</th>
-                                    <th>Pre Down</th>
-                                    <th>Post Up</th>
-                                    <th>Post Down</th>
+                                    <tr>
+                                        <th>VLAN Raw Device</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ interface.vlan_raw_device }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {%- endif %}
+                            {%- if interface.type == 'bond_1' or interface.type == 'bond_2' %}
+                            <table class='table table-bordered table-condensed'>
+                                <thead>
+                                    <tr>
+                                        <th>Bond Slave Interfaces</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <ul>
+                                                {%- for slave in interface.slaves %}
+                                                <li>{{ slave }}</LI>
+                                                {%- endfor %}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {%- endif %}
+                            <table class='table table-bordered table-condensed'>
+                                <thead>
+                                    <tr>
+                                        <th>Pre Up</th>
+                                        <th>Pre Down</th>
+                                        <th>Post Up</th>
+                                        <th>Post Down</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     <td>{{interface.pre_up}}</td>

@@ -1,6 +1,6 @@
-<div class='container-fluid edit_table' id='server_mac'>
-    <div class='row-fluid'>
-        <div class='span8'>
+<div class='edit_table' id='server_mac'>
+    <div class='row'>
+        <div class='span12'>
             <table class='table table-bordered tabled-striped' id='table_edit_server_mac'>
                 <thead>
                     <tr>
@@ -12,17 +12,17 @@
                 <tbody class='main_tbody'>
                     {%- for mac in macs %}
                     <tr data-entry-id='{{mac._id}}'>
-                        <td><input type='text' id='mac[][mac_addr]' class='span6' name='mac[{{mac._id}}][mac_addr]' value='{{mac.mac_addr}}'/></td>
-                        <td><input type='text' id='mac[][device_name]' class='span6' name='mac[{{mac._id}}][device_name]' value='{{mac.device_name}}'/></td>
-                        <td><button data-entry-id='{{mac._id}}' data-entry-type='mac' class='btn remove'>Remove</button></td>
+                        <td><input type='text' id='mac[][mac_addr]' name='mac[{{mac._id}}][mac_addr]' value='{{mac.mac_addr}}'/></td>
+                        <td><input type='text' id='mac[][device_name]' name='mac[{{mac._id}}][device_name]' value='{{mac.device_name}}'/></td>
+                        <td><button data-entry-id='{{mac._id}}' data-entry-type='mac' class='btn pull-right remove'>Remove</button></td>
                     </tr>
                     {%- endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    <div class='row-fluid'>
-        <div class='span8'>
+    <div class='row'>
+        <div class='span12'>
             <div class='btn-group pull-right'  id='table_btn_edit_server_mac'>
                 <button class='btn' id='server_mac_add'><i class='icon-plus'></i> Add</button>
             </div>
@@ -34,9 +34,9 @@
     <table>
         <tbody>
             <tr>
-                <td><input type='text' class='span6' id='server_mac_add_one' name='mac[new][mac_addr]' value=''/></td>
-                <td><input type='text' class='span6' id='server_mac_add_two' name='mac[new][device_name]' value=''/></td>
-                <td><button class='btn remove'>Remove</button></td>
+                <td><input type='text' id='server_mac_add_one' name='mac[new][mac_addr]' value=''/></td>
+                <td><input type='text' id='server_mac_add_two' name='mac[new][device_name]' value=''/></td>
+                <td><button class='btn pull-right remove'>Remove</button></td>
             </tr>
         </tbody>
     </table>

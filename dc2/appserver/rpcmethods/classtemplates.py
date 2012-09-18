@@ -58,8 +58,8 @@ TEMPLATE_RECORD = {
     "classes":True,
 }
 
-@rpcmethod(name="dc2.configuration.classtemplates.list",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_configuration_classtemplates_list(search=None):
+@rpcmethod(name="dc2.configuration.classtemplates.find",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_configuration_classtemplates_find(search=None):
     if search is not None and type(search) is types.DictType:
         for k in search.keys():
             a = re.compile('%s' % search[k], re.IGNORECASE)
@@ -69,6 +69,10 @@ def dc2_configuration_classtemplates_list(search=None):
         result = tbl_templates.find();
     return result
 
+@rpcmethod(name="dc2.configuration.classtemplates.list",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+def dc2_configuration_classtemplates_list():
+    result=dc2_configuration_classtemplates_find()
+    return result
 
 @rpcmethod(name="dc2.configuration.classtemplates.add",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_configuration_classtemplates_add(record=None):

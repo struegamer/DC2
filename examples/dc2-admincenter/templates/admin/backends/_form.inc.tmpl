@@ -2,20 +2,20 @@
 {% if page.action == 'new' %}
     {{ forms.form('POST','/admin/backends/?oformat=json',id='backends_add',labels=True,class='data-form',enable_buttons=True,remote=True,
                 fields=[
-                { 'name':'title','value':backend.title,'label':'Title','type':'text','placeholder':'Title','size':'','id':'','class':'span12' },
-                { 'name':'backend_url','value':backend.backend_url,'label':'Backend URL','type':'text','placeholder':'Backend URL','size':'','id':'','class':'span12' },
-                { 'name':'location','value':backend.location,'type':'text','placeholder':'Location','size':'','id':'','class':'span12' },
-                {'name':'is_kerberos','value':'True','label':'Kerberos Enabled?','type':'checkbox','id':'','class':'span12','adds':{'checked':''} }
+                { 'name':'title','value':backend.title,'label':'Title','type':'text','placeholder':'Title','size':'','id':'','class':'input-xlarge' },
+                { 'name':'backend_url','value':backend.backend_url,'label':'Backend URL','type':'text','placeholder':'Backend URL','size':'','id':'','class':'input-xlarge' },
+                { 'name':'location','value':backend.location,'type':'text','placeholder':'Location','size':'','id':'','class':'input-xlarge' },
+                {'name':'is_kerberos','value':'True','label':'Kerberos Enabled?','type':'checkbox','id':'','class':'input-xlarge','adds':{'checked':''} }
                 ]) 
     }}
 {% elif page.action == 'edit' %}
     {{ forms.form('PUT','/admin/backends/%s?oformat=json' % backend._id,id='backends_add',labels=True, class='data-form',enable_buttons=True,remote=True,
         fields=[
                 { 'name':'_id','value':backend._id,'type':'hidden' },
-                { 'name':'title','value':backend.title,'label':'Title','type':'text','placeholder':'Title','size':'','id':'','class':'span12' },
-                { 'name':'backend_url','value':backend.backend_url,'label':'Backend URL','type':'text','placeholder':'Backend URL','size':'','id':'','class':'span12' },
-                { 'name':'location','value':backend.location,'type':'text','placeholder':'Location','size':'','id':'','class':'span12' },
-                {'name':'is_kerberos','value':'True','label':'Kerberos Enabled?','type':'checkbox','id':'','class':'span12','adds':{'checked':backend.is_kerberos} }
+                { 'name':'title','value':backend.title,'label':'Title','type':'text','placeholder':'Title','size':'','id':'','class':'input-xlarge' },
+                { 'name':'backend_url','value':backend.backend_url,'label':'Backend URL','type':'text','placeholder':'Backend URL','size':'','id':'','class':'input-xlarge' },
+                { 'name':'location','value':backend.location,'type':'text','placeholder':'Location','size':'','id':'','class':'input-xlarge' },
+                {'name':'is_kerberos','value':'True','label':'Kerberos Enabled?','type':'checkbox','id':'','class':'input-xlarge','adds':{'checked':backend.is_kerberos} }
 
                 ]) 
 }}

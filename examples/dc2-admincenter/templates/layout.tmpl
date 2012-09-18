@@ -3,20 +3,25 @@
     <head>
         <title>{{ page.title }}</title>
         {% include 'site/css.inc.tmpl' with context %}
-        {% include 'site/js.inc.tmpl' with context %}
-        {% block js_scripts %}{% endblock %}
     </head>
     <body>
-        <div class='navbar navbar-fixed-top'>
-            <div class='navbar-inner'>
-                {% include 'menu/menubar.inc.tmpl' with context %}
-            </div>
-        </div>
+	    <div class='container'>
+			    <div class='navbar navbar-fixed-top'>
+				    <div class='navbar-inner'>
+					    {% include 'menu/menubar.inc.tmpl' with context %}
+			            </div>
+			    </div>
+
+	    </div>
         {%- if page.context.session.error %}
         {% include 'site/errors.inc.tmpl' with context %}
         {%- endif %}
-        <div id='content' class='container-fluid'>
+        <div id='content' class='container'>
             {% block content %} {% endblock %}
         </div>
+
+        {% include 'site/js.inc.tmpl' with context %}
+        {% block js_scripts %}{% endblock %}
+
     </body>
 </html>

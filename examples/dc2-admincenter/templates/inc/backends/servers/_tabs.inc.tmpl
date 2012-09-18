@@ -1,5 +1,5 @@
-<div class='container-fluid'>
-    <div class='row-fluid'>
+<div class='container'>
+    <div class='row'>
         <div class='span12'>
             <UL class='nav nav-tabs widget-tab' id='server_informations'>
                 <LI class='active'><a href='#dc_server_general_{{backend_id}}_{{server._id}}' data-toggle='tab'>General Information</a></li>
@@ -43,12 +43,12 @@
         </div>
     </div>
     {%- if page.action=='show' %}
-    <div class='row-fluid'>
+    <div class='row'>
         <div class='span6'>
             <h4>Additional Informations</h4>
-            <div class='row-fluid'>
+            <div class='row'>
                 <div class='span12'>
-                    <div class='row-fluid'>
+                    <div class='row'>
                         <div class='span6'>
                             Attached Host: <a href='/backends/hosts/{{host._id}}?backend_id={{backend_id}}'>{{ host.hostname }}.{{host.domainname}}</a>
                         </div>
