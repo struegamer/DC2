@@ -77,6 +77,7 @@ CONTROLLER_MAPPINGS={
         '/backends/hosts':'HostController',
         '/admin':'admin.MainAdminController',
         '/admin/backends':'admin.BackendsController',
+        '/admin/backends/environments':'admin.BackendEnvironmentController',
         '/admin/ribs':'admin.AdminRIBController',
         '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
         '/admin/inettypes':'admin.AdminInetTypesController',
