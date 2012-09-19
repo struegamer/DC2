@@ -79,7 +79,7 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class AdminRIBController(AdminController):
-    CONTROLLER_IDENT={'title':'DC2 RIBs','url':'/admin/ribs'}
+    CONTROLLER_IDENT={'title':'DC2 RIBs','url':'/admin/ribs','show_in_menu':'True'}
 
     @Logger
     @needs_auth

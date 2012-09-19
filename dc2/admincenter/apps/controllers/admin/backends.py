@@ -78,7 +78,7 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class BackendsController(AdminController):
-    CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin/backends'}
+    CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin/backends','show_in_menu':'True'}
 
     @Logger
     @needs_auth
