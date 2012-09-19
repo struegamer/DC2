@@ -35,4 +35,9 @@ class Environments(RPCClient):
         environmentlist=self.find()
         return environmentlist
 
-    
+    def get(self,*args,**kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        environment=self._proxy.dc2.configuration.environments.get(rec)
+        return rec
