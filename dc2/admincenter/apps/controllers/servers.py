@@ -186,7 +186,6 @@ class ServerController(RESTController):
         self._init_backend()
         params=web.data()
         data=json.loads(params)['result']
-        web.debug(data)
         server={}
         server['_id']=data['server_id'].strip()
         server['uuid']=data['uuid'].strip()
@@ -196,7 +195,6 @@ class ServerController(RESTController):
         server['location']=data['location'].strip()
         server['asset_tags']=data['asset_tags'].strip()
         self._servers.update(server=server)
-        web.debug(server)
         for key in data['mac']:
             mac={}
             if key != 'new':
@@ -206,7 +204,6 @@ class ServerController(RESTController):
                     mac['server_id']=data['server_id'].strip()
                     mac['mac_addr']=data['mac'][key]['mac_addr'].strip()
                     mac['device_name']=data['mac'][key]['device_name'].strip()
-                    web.debug(mac)
                 if '_id' in mac:
                     self._macs.update(mac=mac)
                 else:
@@ -220,7 +217,6 @@ class ServerController(RESTController):
                     rib['server_id']=data['server_id'].strip()
                     rib['remote_type']=data['rib'][key]['remote_type'].strip()
                     rib['remote_ip']=data['rib'][key]['remote_ip'].strip()
-                    web.debug(rib)
                 if '_id' in rib:
                     self._ribs.update(rib=rib)
                 else:
