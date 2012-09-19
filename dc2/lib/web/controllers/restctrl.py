@@ -87,12 +87,10 @@ class RESTController(object):
 
     def _content_type(self,formats=None):
         content_type=self._request_context.env.get('CONTENT_TYPE',None)
-        web.debug('CONTENT_TYPE: %s' % content_type)
         if formats is None:
             if content_type is None:
                 return 'text/html; charset=utf-8'
             else:
-                web.debug(content_type)
                 return content_type
         else:
             output_format=formats.get('oformat',None)
@@ -123,7 +121,6 @@ class RESTController(object):
         for verb in verbs:
             found=re.search(verb['urlre'],path)
             if found is not None:
-                web.debug(found.groupdict())
                 web.debug('match rule: %s' % verb['urlre'])
                 web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO',''))
                 verb['request_data']=found.groupdict()

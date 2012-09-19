@@ -64,12 +64,9 @@ class RequestHandler(object):
         if self._controller_modules is not None:
             for pat in reversed(sorted(self._controllers.iterkeys())):
                 if path.startswith(pat):
-                    web.debug(self._ctrl_instances)
                     self._ctrl_instances[pat].set_context(web.ctx)
                     result=self._ctrl_instances[pat].process(path)
-                    web.debug('RESULT: %s' % result)
                     output_format=result.get('format',None)
-                    web.debug('output_format: %s' % output_format)
                     if output_format is None:
                         output_format='html'
                     if output_format.lower()=='html':
