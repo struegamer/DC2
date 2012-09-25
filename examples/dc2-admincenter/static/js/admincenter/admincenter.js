@@ -3,7 +3,8 @@ window.DC2 = {
   Utilities:{},
   Forms:{},
   JSONCalls:{},
-  JSON:{}
+  JSON:{},
+  EditForm:{},
 };
 
 DC2.Widgets.StandardForms= function(selector) {
@@ -616,6 +617,51 @@ DC2.JSON.Backends.Ribs.prototype.delete_rib=function(rib_id) {
   return success;
 };
 
+DC2.EditForm.Environments=function(selector) {
+  this.selector=selector;
+  this.btnAdd=this.selector.find('.btnAdd');
+  this.btnAdd.on('click',this.selector,this.on_btnAdd_click.bind(this));
+  this.selector.find('button.btnRemove').on('click',this.selector,this.on_btnRemove_click.bind(this));
+  this.btnSave=this.selector.find('.btnSave');
+  this.btnSave.on('click',this.selector,this.on_btnSave_click.bind(this));
+  this.btnCancel=this.selector.find('.btnCancel');
+  this.btnCancel.on('click',this.selector,this.on_btnCancel_click.bind(this));
+  this.addRow=this.selector.find('#add_row_environment.add-table-row tbody');
+  this.rowCounter=0;
+};
+
+
+DC2.EditForm.Environments.prototype.on_btnAdd_click=function(event) {
+  var table=this.selector.find('table.edit-table tbody');
+  var temp_row=this.addRow.clone();
+  this.rowCounter++;
+  var _this=this;
+  temp_row.find(':input').not('button').each(function() {
+    var name=$(this).attr('name');
+    name=name.replace('new','new_'+_this.rowCounter);
+    $(this).attr('name',name);
+  });
+  table.append(temp_row.html());
+  this.selector.find('button.btnRemove').off('click');
+  this.selector.find('button.btnRemove').on('click',this.selector,this.on_btnRemove_click.bind(this));
+  event.preventDefault();
+};
+
+DC2.EditForm.Environments.prototype.on_btnRemove_click=function(event) {
+  $(event.target).parent().parent().remove();
+  event.preventDefault();
+};
+
+DC2.EditForm.Environments.prototype.on_btnCancel_click=function(event) {
+  event.preventDefault();
+  window.location.href=$(event.target).attr('data-cancel-url');
+};
+
+DC2.EditForm.Environments.prototype.on_btnSave_click=function(event) {
+  event.preventDefault();
+  console.log(this.selector.find('form').attr('action'));
+};
+
 $(document).ready(function() {
 
   $('.std-form').each(function() {
@@ -683,4 +729,8 @@ $(document).ready(function() {
       new DC2.Widgets.Collapsible('#'+$(this).attr('id'));
     }
   });
+  
+  DC2.Forms[$('#edit_environment')]=new DC2.EditForm.Environments($('#edit_environment'));
+
+  
 });

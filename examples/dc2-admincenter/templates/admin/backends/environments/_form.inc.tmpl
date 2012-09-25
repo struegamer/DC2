@@ -1,6 +1,6 @@
 <div class='container admin-edit-form' id='edit_environment'>
     {%- if page.action == 'edit' %}
-    <form class='form-horizontal' method='POST' action='/admin/backends/environments/%s?backend_id=%s' % (environment._id,backend_id), id='backend_environments_edit'>
+    <form class='form-horizontal' method='POST' action='/admin/backends/environments/{{environment._id}}?backend_id={{backend_id}}' id='backend_environments_edit'>
         <input type='hidden' name='environment[name]' value='{{environment.name}}'/>
         <input type='hidden' name='environment[id]' value='{{environment._id}}'/>
     {%- endif %}
@@ -39,21 +39,30 @@
             <div class='span12'>
                 <hr/>
                 <div class='pull-right'>
-                    <button class='btn btnAdd'>Add</button>
+                    <button class='btn btn-inverse btnAdd'>Add</button>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span12'>
+                <hr/>
+                <div class='pull-right'>
+                    <button class='btn btn-primary btnSave'>Save</button>
+                    <button class='btn btnCancel' data-cancel-url='/admin/backends/environments/?backend_id={{backend_id}}'>Cancel</button>
                 </div>
             </div>
         </div>
     </form>
+    <div class='add-table-row' id='add_row_environment' style='display:none'>
+        <table>
+            <tbody>
+                <tr>
+                    <td><input type='text' name='environment[variables][new][name]' value='' /></td>
+                   <td><input type='text' name='environment[variables][new][value]' value='' /></td>
+                   <td><button class='btn pull-right btnRemove'>Remove</button></td>
+               </tr>
+           </tbody>
+        </table>
+   </div>
 </div>
 
-<div class='add-table-row' id='add-row-environment' style='display:none'>
-    <table>
-        <tbody>
-            <tr>
-                <td><input type='text' name='environment[variables][new][name]' value='' /></td>
-                <td><input type='text' name='environment[variables][new][value]' value='' /></td>
-                <td><button class='btn pull-right btnRemove'>Remove</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
