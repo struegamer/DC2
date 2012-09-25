@@ -1,10 +1,59 @@
-{%- if page.action == 'edit' %}
-<form method='POST' action='/admin/backends/environments/%s?backend_id=%s' % (environment._id,backend_id), id='backend_environments_edit'>
-{%- endif %}
-<div class='container'>
-    <div class='row'>
-        <label class='control-label' for='environment_title'>Name</label>
-        <input type='text' name='name' id='environment_title' value='{{environment.name}}'/>
-    </div>
+<div class='container admin-edit-form' id='edit_environment'>
+    {%- if page.action == 'edit' %}
+    <form class='form-horizontal' method='POST' action='/admin/backends/environments/%s?backend_id=%s' % (environment._id,backend_id), id='backend_environments_edit'>
+        <input type='hidden' name='environment[name]' value='{{environment.name}}'/>
+        <input type='hidden' name='environment[id]' value='{{environment._id}}'/>
+    {%- endif %}
+        <div class='row'>
+            <div class='span12'>
+                <label class='control-label pull-left' for='environment_name'>Name</label>
+                <div class='controls'>
+                    <input type='text' name='environment[name]' value='{{environment.name}}' disabled='disabled'/>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span12'>
+                <hr/>
+                <table class='table table-condensed tables-striped edit-table'>
+                    <thead>
+                        <tr>
+                            <th>Variable Name</th>
+                            <th>Variable Value</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%- for var in environment.variables %}
+                        <tr>
+                            <td><input type='text' name='environment[variables][{{loop.index0}}][name]' value='{{var.name}}'/></td>
+                            <td><input type='text' name='environment[variables][{{loop.index0}}][value]' value='{{var.value}}'/></td>
+                            <td><button class='btn pull-right btnRemove'>Remove</button></td>
+                        </tr>
+                        {%- endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span12'>
+                <hr/>
+                <div class='pull-right'>
+                    <button class='btn btnAdd'>Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
-</form>
+
+<div class='add-table-row' id='add-row-environment' style='display:none'>
+    <table>
+        <tbody>
+            <tr>
+                <td><input type='text' name='environment[variables][new][name]' value='' /></td>
+                <td><input type='text' name='environment[variables][new][value]' value='' /></td>
+                <td><button class='btn pull-right btnRemove'>Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

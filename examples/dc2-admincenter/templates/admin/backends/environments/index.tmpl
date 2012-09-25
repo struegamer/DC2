@@ -14,6 +14,7 @@
                     <tr>
                         <th><input id='check_all' type='checkbox' name='check_all'/></th>
                         <th>Environment Name</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,6 +22,7 @@
                     <tr data-edit-url='/admin/backends/environments/{{environ._id}}/edit?backend_id={{backend_id}}'>
                         <td><input class='del_check' type='checkbox' name='check' value='{{environ._id}}'/></td>
                         <td class='data-cell'>{{environ.name}}</td>
+                        <td class='data-cell'>{{environ.description}}</td>
                     </tr>
                     {%- endfor %}
                 </tbody>
