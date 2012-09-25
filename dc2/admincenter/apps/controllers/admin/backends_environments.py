@@ -134,18 +134,15 @@ class BackendEnvironmentController(AdminController):
     @needs_auth
     @needs_admin
     def _edit(self, *args, **kwargs):
-        web.debug('in BackendEnvironments')
         params=web.input()
         verb=kwargs.get('verb',None)
-        web.debug('VERB' % verb)
         page=self._prepare_page(verb)
         backendlist=backends.backend_list()
         backend_id=params.get('backend_id',None)
         backend=backends.backend_get({'_id':backend_id})
         self._init_backend(backend)
-        environment=self._environments.get(verb['request_data']['id'])
-        web.debug(verb['request_data'])
-        page.set_title('DC2 Admincenter - Backends - Edit')
+        environment=self._environments.get(id=verb['request_data']['id'])
+        page.set_title('DC2 Admincenter - Backends - Environment - Edit')
         page.set_action('edit')
         page.add_page_data({
             'backendlist':backendlist,
