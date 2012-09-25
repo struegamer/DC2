@@ -19,6 +19,7 @@
 #################################################################################
 
 from dc2.api import RPCClient
+import web
 
 class Environments(RPCClient):
     def find(self, rec=None):
@@ -39,5 +40,7 @@ class Environments(RPCClient):
         rec={}
         if 'id' in kwargs:
             rec['_id']=kwargs.get('id',None)
-        environment=self._proxy.dc2.configuration.environments.get(rec)
-        return rec
+        environments=self._proxy.dc2.configuration.environments.find(rec)
+        if len(environments)>0 and len(environments)<2:
+            return environments[0]
+        return None
