@@ -21,7 +21,7 @@
                     {%- for defclass in backend_defclasses %}
                     <tr data-edit-url='/admin/backends/defaultclasses/{{defclass._id}}/edit?backend_id={{backend_id}}'>
                         <td><input class='del_check' type='checkbox' name='check' value='{{defclass._id}}'/></td>
-                        <td class='data-cell'>{{defclass.name}}</td>
+                        <td class='data-cell'>{{defclass.classname}}</td>
                         <td class='data-cell'>{{defclass.description}}</td>
                     </tr>
                     {%- endfor %}

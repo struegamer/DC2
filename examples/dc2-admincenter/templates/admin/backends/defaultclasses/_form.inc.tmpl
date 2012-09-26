@@ -1,0 +1,29 @@
+<div class='container admin-edit-form' id='edit_defaultclasses'>
+    <input type='hidden' name='defclass[id]' value='{{defclass._id}}'/>
+    <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+    <div class='row'>
+        <div class='span3'>
+            Classname:
+        </div>
+        <div class='span3'>
+            <input type='text' name='defclass[classname]' value='{{defclass.classname}}'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Description:
+        </div>
+        <div class='span3'>
+            <input type='text' name='defclass[description]' value='{{defclass.description}}'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span6'>
+            <hr/>
+            <div class='pull-right'>
+                <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
+                <button class='btn btnCancel' data-cancel-url='/admin/backends/environments/?backend_id={{backend_id}}'>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
