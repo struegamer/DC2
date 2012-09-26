@@ -58,10 +58,15 @@ DC2.Widgets.ButtonGroup.Index.prototype.action=function(event) {
     case 'jsfunc':
       if ($(this).attr('data-list')=='true') {
         if ($(this).attr('data-action')=='delete') {
+          var data_query='';
+          if ($(this).attr('data-query') != undefined) {
+            data_query=$(this).attr('data-query');
+          }
           $('table.data-list').find('input[type="checkbox"].del_check').each(function() {
             if ($(this).prop('checked')==true) {
               a=$.ajax({
-                url:$('table.data-list').attr('data-url-delete')+$(this).val()+'?oformat=json',
+                url:$('table.data-list').attr('data-url-delete')+$(this).val()+'?'+data_query+'&oformat=json',
+                contentType:'application/json; charset=utf-8',
                 dataType:'json',
                 type:'DELETE',
               });
@@ -659,7 +664,30 @@ DC2.EditForm.Environments.prototype.on_btnCancel_click=function(event) {
 
 DC2.EditForm.Environments.prototype.on_btnSave_click=function(event) {
   event.preventDefault();
-  console.log(this.selector.find('form').attr('action'));
+    console.log(this.selector.find('form').attr('action'));
+    var put_url=this.selector.find('form').attr('action');
+    var sectoken=this.selector.find(':input[name=sectoken]').val();
+    var result=this.selector.find('form').formParams();
+    var action_type='POST'
+    if ($(event.target).attr('data-action')=='new') {
+      action_type='POST';
+    } else if ($(event.target).attr('data-action')=='edit') {
+      action_type='PUT';
+    }
+    var a=$.ajax({
+      url:put_url+'&sectoken='+sectoken,      
+      type:action_type,
+      contentType:'application/json; charset=utf-8',
+      data:JSON.stringify({'result':result}),
+      dataType:'json',
+    });
+    a.done(function(data) {
+      if ('redirect' in data) {
+        if (data.redirect.absolute=='true') {
+          window.location.href=data.redirect.url;
+        }
+      }
+    });
 };
 
 $(document).ready(function() {
