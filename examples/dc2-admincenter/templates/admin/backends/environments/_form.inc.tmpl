@@ -1,19 +1,30 @@
 <div class='container admin-edit-form' id='edit_environment'>
     {%- if page.action == 'edit' %}
     <form class='form-horizontal' method='POST' action='/admin/backends/environments/{{environment._id}}?backend_id={{backend_id}}' id='backend_environments_edit'>
-        <input type='hidden' name='environment[name]' value='{{environment.name}}'/>
         <input type='hidden' name='environment[id]' value='{{environment._id}}'/>
-    {%- endif %}
+        {%- elif page.action == 'new' %}
+        <form class='form-horizontal' method='POST' action='/admin/backends/environments/?backend_id={{backend_id}}' id='backend_environments_add'>
+            {%- endif %}
+
+        <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
         <div class='row'>
-            <div class='span12'>
-                <label class='control-label pull-left' for='environment_name'>Name</label>
-                <div class='controls'>
-                    <input type='text' name='environment[name]' value='{{environment.name}}' disabled='disabled'/>
-                </div>
+            <div class='span3'>
+                Name:
+            </div>
+            <div class='span3'>
+                <input type='text' name='environment[name]' value='{{environment.name}}' {%- if page.action=='edit' %}disabled='disabled'{%- endif %}/>
             </div>
         </div>
         <div class='row'>
-            <div class='span12'>
+            <div class='span3'>
+                Description:
+            </div>
+            <div class='span3'>
+                <input type='text' name='environment[description]' value='{{environment.description}}'/>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span6'>
                 <hr/>
                 <table class='table table-condensed tables-striped edit-table'>
                     <thead>
@@ -36,7 +47,7 @@
             </div>
         </div>
         <div class='row'>
-            <div class='span12'>
+            <div class='span6'>
                 <hr/>
                 <div class='pull-right'>
                     <button class='btn btn-inverse btnAdd'>Add</button>
@@ -44,10 +55,10 @@
             </div>
         </div>
         <div class='row'>
-            <div class='span12'>
+            <div class='span6'>
                 <hr/>
                 <div class='pull-right'>
-                    <button class='btn btn-primary btnSave'>Save</button>
+                    <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
                     <button class='btn btnCancel' data-cancel-url='/admin/backends/environments/?backend_id={{backend_id}}'>Cancel</button>
                 </div>
             </div>

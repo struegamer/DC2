@@ -21,7 +21,7 @@
 import sys
 import os
 import os.path
-
+import json
 try:
     import web
 except ImportError,e:
@@ -117,14 +117,21 @@ class BackendEnvironmentController(AdminController):
     @needs_auth
     @needs_admin
     def _new(self, *args, **kwargs):
+        params=web.input()
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
-        backend=backends.backend_new()
         backendlist=backends.backend_list()
-        page.set_title('DC2 Admincenter - Backends - Add')
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        environment=self._environments.new()
+        page.set_title('DC2 Admincenter - Backends - Environments - Add')
         page.add_page_data({
             'backendlist':backendlist,
-            'backend':convert_values(backend)})
+            'backend':convert_values(backend),
+            'backend_id':backend_id,
+            'environment':environment
+        })
         page.set_action('new')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
@@ -158,22 +165,26 @@ class BackendEnvironmentController(AdminController):
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
-        web.debug('_create: %s' % params)
-        backend={}
-        backend['title']=params.title
-        backend['backend_url']=params.backend_url
-        backend['location']=params.location
-        if params.is_kerberos is None or params.is_kerberos == '' or params.is_kerberos=='null':
-            backend['is_kerberos']=False
-        else:
-            backend['is_kerberos']=True
-        backends.backend_add(backend)
+        raw_data=web.data()
+        result=json.loads(raw_data)
+        backend_id=params.get('backend_id')
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        environment=self._environments.new()
         output_format=verb.get('request_output_format')
+        environment['name']=result['result']['environment']['name']
+        environment['description']=result['result']['environment']['description']
+        environment['variables']=[]
+        if 'variables' in result['result']['environment']:
+            for i in result['result']['environment']['variables'].keys():
+                environment['variables'].append(result['result']['environment']['variables'][i])
+        self._environments.add(environment=environment)
         if output_format.lower()=='json':
-            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         else:
-            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
+
 
     @Logger
     @needs_auth
@@ -181,39 +192,45 @@ class BackendEnvironmentController(AdminController):
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
-        backend={}
-        backend['_id']=params._id
-        backend['title']=params.title
-        backend['backend_url']=params.backend_url
-        backend['location']=params.location
-        if params.is_kerberos is None or params.is_kerberos == '' or params.is_kerberos=='null':
-            backend['is_kerberos']=False
-        else:
-            backend['is_kerberos']=True
-        backends.backend_update(backend)
+        raw_data=web.data()
+        result=json.loads(raw_data)
+        backend_id=params.get('backend_id')
+        backend=backends.backend_get({'_id':backend_id})
+        environment_id=verb['request_data']['id']
+        self._init_backend(backend)
+        environment=self._environments.get(id=environment_id)
         output_format=verb.get('request_output_format')
+        environment['description']=result['result']['environment']['description']
+        environment['variables']=[]
+        if 'variables' in result['result']['environment']:
+            for i in result['result']['environment']['variables'].keys():
+                environment['variables'].append(result['result']['environment']['variables'][i])
+        self._environments.update(environment=environment)
         if output_format.lower()=='json':
-            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         else:
-            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
     @Logger
     @needs_auth
     @needs_admin
     def _delete(self, *args, **kwargs):
+        web.debug('IN _DELETE  METHOD')
+        params=web.input()
         verb=kwargs.get('verb',None)
         request_data=verb.get('request_data',None)
+        backend_id=params.get('backend_id')
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
         if request_data is not None and request_data.get('id',None) is not None:
-            backend={'_id':request_data.get('id',None)}
-            backends.backend_delete(backend)
+            environment={'_id':request_data.get('id',None)}
+            self._environments.delete(environment=environment)
         output_format=verb.get('request_output_format',None)
-        web.debug('DELETE: %s' % output_format)
         if output_format is not None and output_format.lower()=='json':
-            web.debug('json')
-            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':self._controller_path,'absolute':'true'}})
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         else:
-            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
 
