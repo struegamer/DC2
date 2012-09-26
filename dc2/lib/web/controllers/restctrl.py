@@ -88,6 +88,7 @@ class RESTController(object):
     def _content_type(self,formats=None):
         content_type=self._request_context.env.get('CONTENT_TYPE',None)
         if formats is None:
+            web.debug('CONTENT_TYPE %s' % content_type)
             if content_type is None:
                 return 'text/html; charset=utf-8'
             else:
@@ -100,11 +101,19 @@ class RESTController(object):
                 if output_format.lower() == 'html':
                     return 'text/html; charset=utf-8'
             else:
+                web.debug('CONTENT_TYPE %s' % content_type)
+
                 if content_type is None:
                     return 'text/html; charset=utf-8'
                 else:
                     return content_type
         return 'text/html; charset=utf-8'
+
+    def _output_format(self,content_type):
+        if content_type.find('text/html') != -1:
+            return 'html'
+        if content_type.find('application/json') != -1:
+            return 'json'
 
     def process(self, path='/'):
         verb=self._process_request(path)
@@ -129,7 +138,7 @@ class RESTController(object):
                     if self._request_context.env['X-Request-With']=='XMLHttpRequest':
                         verb['request_type']='ajax'
                 verb['request_content_type']=self._content_type(params)
-                verb['request_output_format']=params.get('oformat',None)
+                verb['request_output_format']=self._output_format(verb['request_content_type'])
                 if verb.get('template',None) is not None:
                     verb['template']='%s/%s' % (self._controller_path,verb['template'])
                 return verb
