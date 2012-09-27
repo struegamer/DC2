@@ -1,5 +1,10 @@
 <div class='container admin-edit-form' id='edit_defaultclasses'>
-    <input type='hidden' name='defclass[id]' value='{{defclass._id}}'/>
+    {%- if page.action == 'edit' %}
+    <form class='form-horizontal' method='POST' action='/admin/backends/defaultclasses/{{defclass._id}}?backend_id={{backend_id}}' id='backend_defaultclasses_edit'>
+        <input type='hidden' name='defclass[id]' value='{{defclass._id}}'/>
+        {%- elif page.action=='new' %}
+        <form class='form-horizontal'method='POST' action='/admin/backends/defaultclasses/?backend_id={{backend_id}}' id='backend_defaultclasses_add'>
+            {%- endif %}
     <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
     <div class='row'>
         <div class='span3'>
@@ -22,7 +27,7 @@
             <hr/>
             <div class='pull-right'>
                 <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
-                <button class='btn btnCancel' data-cancel-url='/admin/backends/environments/?backend_id={{backend_id}}'>Cancel</button>
+                <button class='btn btnCancel' data-cancel-url='/admin/backends/defaultclasses/?backend_id={{backend_id}}'>Cancel</button>
             </div>
         </div>
     </div>
