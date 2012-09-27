@@ -35,4 +35,29 @@ class DefaultClasses(RPCClient):
         datalist=self.find()
         return datalist
 
- 
+    def new(self):
+        rec={}
+        rec['classname']=''
+        rec['description']=''
+        return rec
+    def add(self, *args, **kwargs):
+        rec={}
+        if 'defclass' in kwargs:
+            rec=kwargs.get('defclass',None)
+        doc_id=self._proxy.dc2.configuration.defaultclasses.add(rec)
+        return doc_id
+
+    def update(self, *args, **kwargs):
+        rec={}
+        if 'defclass' in kwargs:
+            rec=kwargs.get('defclass',None)
+        doc_id=self._proxy.dc2.configuration.defaultclasses.update(rec)
+        return doc_id
+
+    def delete(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.defaultclasses.delete(rec)
+        return result
+
