@@ -1,3 +1,4 @@
+{% import 'macros/links.macro.tmpl' as links %}
 {% extends 'layout.tmpl' %}
 {% block content %}
 <div class='container'>
@@ -8,7 +9,7 @@
         </div>
     </div>
     <div class="row">
-        <div class='span12'>
+        <div class='span9'>
             <table cellspacing="0" cellpadding="0" data-url-delete='/admin/backends/' class="table table-striped data-list" id='backend_list'>
                 <thead>
                     <tr>
@@ -16,6 +17,7 @@
                         <th>DC² Backend</th>
                         <th>Location</th>
                         <th>Keberos Secured</th>
+                        <th>Configuration</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +27,19 @@
                         <td class="data-cell">{{ items.title }}</td>
                         <td class="data-cell">{{ items.location }}</td>
                         <td class="data-cell"><div class="pull-right">{%- if items.is_kerberos %}<i class="icon-ok-sign"></i>{%-else%}<i class="icon-remove-sign"></i>{%-endif%}</div></td>
+                        <td>
+                            <div class='btn-group pull-right'>
+                                <a href='#' class='btn btn-small'>Choose</a>
+                                <button class='btn btn-small dropdown-toggle' data-toggle='dropdown'>
+                                    <span class='caret'></span>
+                                </button>
+                                <ul class='dropdown-menu'>
+                                    <li>{{ links.href('/admin/backends/environments?backend_id=%s' % items._id,'Environments') }}</li>
+                                    <li>{{ links.href('/admin/backends/defaultclasses?backend_id=%s' % items._id,'Default Classes') }}</li>
+                                    <li>{{ links.href('/admin/backends/classtemplates?backend_id=%s' % items._id,'Class Templates') }}</li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                     {%- endfor %}
                 </tbody>
