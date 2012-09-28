@@ -19,8 +19,8 @@
                 </thead>
                 <tbody>
                     {%- for tmpl in backend_classtemplates %}
-                    <tr data-edit-url='/admin/backends/classtemplates/{{defclass._id}}/edit?backend_id={{backend_id}}'>
-                        <td><input class='del_check' type='checkbox' name='check' value='{{defclass._id}}'/></td>
+                    <tr data-edit-url='/admin/backends/classtemplates/{{tmpl._id}}/edit?backend_id={{backend_id}}'>
+                        <td><input class='del_check' type='checkbox' name='check' value='{{tmpl._id}}'/></td>
                         <td class='data-cell'>{{tmpl.name}}</td>
                         <td class='data-cell'>{{tmpl.description}}</td>
                     </tr>
