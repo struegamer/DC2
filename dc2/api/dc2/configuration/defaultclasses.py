@@ -60,4 +60,11 @@ class DefaultClasses(RPCClient):
             rec['_id']=kwargs.get('id',None)
         result=self._proxy.dc2.configuration.defaultclasses.delete(rec)
         return result
-
+    def get(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.defaultclasses.list(rec)
+        if len(result)>0:
+            return result[0]
+        return None

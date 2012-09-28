@@ -148,14 +148,14 @@ class BackendDefaultClassesController(AdminController):
         backend_id=params.get('backend_id',None)
         backend=backends.backend_get({'_id':backend_id})
         self._init_backend(backend)
-        defaultclass=self._defaultclasses.get(verb['request_data']['id'])
+        defaultclass=self._defaultclasses.get(id=verb['request_data']['id'])
         page.set_title('DC2 Admincenter - Backends - Defaultclasses - Edit')
         page.add_page_data({
             'backendlist':backendlist,
             'backend_id':backend_id,
             'defclass':defaultclass
             })
-        page.set_edit('edit')
+        page.set_action('edit')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
@@ -170,7 +170,6 @@ class BackendDefaultClassesController(AdminController):
         self._init_backend(backend)
         defaultclass={}
         result=json.loads(web.data())
-        web.debug('DEFAULTCLASSES RESULT: %s' % result)
         defaultclass['classname']=result['result']['defclass']['classname']
         defaultclass['description']=result['result']['defclass']['description']
         self._defaultclasses.add(defclass=defaultclass)
@@ -181,9 +180,46 @@ class BackendDefaultClassesController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _update(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        defaultclass={}
+        result=json.loads(web.data())
+        defaultclass['_id']=verb['request_data']['id']
+        defaultclass['classname']=result['result']['defclass']['classname']
+        defaultclass['description']=result['result']['defclass']['description']
+        self._defaultclasses.update(defclass=defaultclass)
+        output_format=verb.get('request_output_format',None)
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
 
 
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _delete(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        defclass_id=verb['request_data']['id']
+        result=self._defaultclasses.delete(id=defclass_id)
+        output_format=verb.get('request_output_format',None)
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
 
 
