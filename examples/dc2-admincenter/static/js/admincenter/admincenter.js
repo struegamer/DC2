@@ -690,6 +690,87 @@ DC2.EditForm.Environments.prototype.on_btnSave_click=function(event) {
     });
 };
 
+DC2.EditForm.ClassTemplates=function(selector) {
+  this.selector=selector;
+  this.defaultclasses=this.selector.find('#defaultclasses');
+  this.template_classes=this.selector.find('#template_classes');
+  this.btnPlus=this.selector.find('.btnPlus');
+  this.btnPlus.on('click',this.selector,this.on_btnPlus_click.bind(this));
+  this.btnMinus=this.selector.find('.btnMinus');
+  this.btnMinus.on('click',this.selector,this.on_btnMinus_click.bind(this));
+  this.btnSave=this.selector.find('.btnSave');
+  this.btnSave.on('click',this.selector,this.on_btnSave_click.bind(this));
+  this.btnCancel=this.selector.find('.btnCancel');
+  this.btnCancel.on('click',this.selector,this.on_btnCancel_click.bind(this));
+};
+
+DC2.EditForm.ClassTemplates.prototype.on_btnPlus_click=function(event) {
+  event.preventDefault();
+  var _this=this;
+  this.defaultclasses.find('option:selected').each(function () {
+    _this.template_classes.append(this);
+  });
+  this.sort_options(this.template_classes);
+};
+
+DC2.EditForm.ClassTemplates.prototype.sort_options=function(select_selector) {
+  var options=select_selector.find('option');
+  options.sort(function(a,b) {
+    if (a.text > b.text) {
+      return 1;
+    } else if (a.text < b.text) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  select_selector.empty().append(options);
+};
+
+DC2.EditForm.ClassTemplates.prototype.on_btnMinus_click=function(event) {
+  event.preventDefault();
+  var _this=this;
+  this.template_classes.find('option:selected').each(function() {
+    _this.defaultclasses.append(this);
+  })
+  this.sort_options(this.defaultclasses);
+
+};
+
+DC2.EditForm.ClassTemplates.prototype.on_btnSave_click=function(event) {
+  event.preventDefault();
+  var action_type=$(event.target).attr('data-action');
+  var action_method='POST';
+  if (action_type=='add') {
+    action_method='POST';
+  } else if (action_type=='edit') {
+    action_method='PUT'
+  }
+  var put_url=this.selector.find('form').attr('action');
+  var sectoken=this.selector.find(':input[name=sectoken]').val();
+  var result=this.selector.find('form').formParams();
+  var a=$.ajax({
+    url:put_url+'&sectoken='+sectoken,
+      type:action_method,
+      contentType:'application/json; charset=utf-8',
+      data:JSON.stringify({'result':result}),
+      dataType:'json',
+  });
+  a.done(function(data) {
+    if ('redirect' in data) {
+      if (data.redirect.absolute=='true') {
+        window.location.href=data.redirect.url;
+      }
+    }
+  });
+};
+
+DC2.EditForm.ClassTemplates.prototype.on_btnCancel_click=function(event) {
+  event.preventDefault();
+  window.location.href=$(event.target).attr('data-cancel-url');
+
+};
+
 DC2.EditForm.DefaultClasses=function(selector) {
   this.selector=selector;
   this.btnSave=this.selector.find('.btnSave');
@@ -801,6 +882,5 @@ $(document).ready(function() {
   
   DC2.Forms[$('#edit_environment')]=new DC2.EditForm.Environments($('#edit_environment'));
   DC2.Forms[$('#edit_defaultclasses')]=new DC2.EditForm.DefaultClasses($('#edit_defaultclasses'));
-
-  
+  DC2.Forms[$('#edit_classtemplates')]=new DC2.EditForm.ClassTemplates($('#edit_classtemplates'));
 });
