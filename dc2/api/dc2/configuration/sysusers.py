@@ -18,9 +18,31 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
+from dc2.api import RPCClient
+import web
 
-from environments import Environments
-from defaultclasses import DefaultClasses
-from classtemplates import ClassTemplates
-from sysgroups import SysGroups
-from sysusers import SysUsers
+class SysUsers(RPCClient):
+    def find(self, rec=None):
+        if rec is None:
+            userlist=self._proxy.dc2.configuration.systemusers.list()
+            return userlist
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                raise Exception('The search argument is not a dictionary')
+            userlist=self._proxy.dc2.configuration.systemusers.list(rec)
+            return userlist
+
+    def list(self):
+        userlist=self.find()
+        return userlist
+    def new(self):
+        rec={}
+        rec['username']=''
+        rec['realname']=''
+        rec['uid']=''
+        rec['is_admin']='0'
+        rec['cryptpw']=''
+        rec['ssh_pubkey']=''
+        return rec
+
+ 
