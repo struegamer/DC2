@@ -812,6 +812,50 @@ DC2.EditForm.DefaultClasses.prototype.on_btnCancel_click=function(event) {
   window.location.href=$(event.target).attr('data-cancel-url');
 };
 
+
+DC2.EditForm.SysGroups=function(selector) {
+  this.selector=selector;
+  console.log('sysgroups');
+  this.btnSave=this.selector.find('.btnSave');
+  this.btnCancel=this.selector.find('.btnCancel');
+  this.btnSave.on('click',this.selector,this.on_btnSave_click.bind(this));
+  this.btnCancel.on('click',this.selector,this.on_btnCancel_click.bind(this));
+};
+
+DC2.EditForm.SysGroups.prototype.on_btnSave_click=function(event) {
+  event.preventDefault();
+  var action_type=$(event.target).attr('data-action');
+  var action_method='POST';
+  if (action_type=='new') {
+    action_method='POST';
+  } else if (action_type=='edit') {
+    action_method='PUT'
+  }
+  var put_url=this.selector.find('form').attr('action');
+  var sectoken=this.selector.find(':input[name=sectoken]').val();
+  var result=this.selector.find('form').formParams();
+  console.log(result);
+  var a=$.ajax({
+    url:put_url+'&sectoken='+sectoken,
+      type:action_method,
+      contentType:'application/json; charset=utf-8',
+      data:JSON.stringify({'result':result}),
+      dataType:'json',
+  });
+  a.done(function(data) {
+    if ('redirect' in data) {
+      if (data.redirect.absolute=='true') {
+        window.location.href=data.redirect.url;
+      }
+    }
+  });
+};
+
+DC2.EditForm.SysGroups.prototype.on_btnCancel_click=function(event) {
+  event.preventDefault();
+  window.location.href=$(event.target).attr('data-cancel-url');
+};
+
 $(document).ready(function() {
 
   $('.std-form').each(function() {
@@ -883,4 +927,6 @@ $(document).ready(function() {
   DC2.Forms[$('#edit_environment')]=new DC2.EditForm.Environments($('#edit_environment'));
   DC2.Forms[$('#edit_defaultclasses')]=new DC2.EditForm.DefaultClasses($('#edit_defaultclasses'));
   DC2.Forms[$('#edit_classtemplates')]=new DC2.EditForm.ClassTemplates($('#edit_classtemplates'));
+  DC2.Forms[$('#edit_systemgroups')]=new DC2.EditForm.SysGroups($('#edit_systemgroups'));
+
 });
