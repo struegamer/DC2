@@ -88,7 +88,7 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class BackendSysGroupController(AdminController):
     CONTROLLER_IDENT={'title':'DC2 Backends System Groups','url':'/admin/backends/sysgroups','show_in_menu':'False'}
 
-    def _init_bakend(self, backend):
+    def _init_backend(self, backend):
         self._transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
         self._sysgroups=SysGroups(self._transport)
 
@@ -111,6 +111,131 @@ class BackendSysGroupController(AdminController):
         })
         page.set_action('index')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _new(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backendlist=backends.backend_list()
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        group=self._sysgroups.new()
+        page.set_title('DC2 Admincenter - Backends - System Groups - Add')
+        page.add_page_data({
+            'backendlist':backendlist,
+            'backend_id':backend_id,
+            'group':group
+        })
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _edit(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backendlist=backends.backend_list()
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        group=self._sysgroups.get(id=verb['request_data']['id'])
+        page.set_title('DC2 Admincenter - Backends - System Groups - Edit')
+        page.add_page_data({
+            'backendlist':backendlist,
+            'backend_id':backend_id,
+            'group':group
+        })
+        page.set_action('edit')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _create(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        web.debug('WEB DATA: %s' % web.data())
+        result=json.loads(web.data())
+        rec={}
+        rec=result['result']['group']
+        rec['gid']=str(rec['gid'])
+        if 'is_admin_group' in rec:
+            rec['is_admin_group']=str(rec['is_admin_group'])
+        else:
+            rec['is_admin_group']='0'
+        if 'is_system_group' in rec:
+            rec['is_system_group']=str(rec['is_system_group'])
+        else:
+            rec['is_system_group']='0'
+        self._sysgroups.add(group=rec)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _update(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        web.debug('WEB DATA: %s' % web.data())
+        result=json.loads(web.data())
+        rec={}
+        rec=result['result']['group']
+        rec['gid']=str(rec['gid'])
+        if 'is_admin_group' in rec:
+            rec['is_admin_group']=str(rec['is_admin_group'])
+        else:
+            rec['is_admin_group']='0'
+        if 'is_system_group' in rec:
+            rec['is_system_group']=str(rec['is_system_group'])
+        else:
+            rec['is_system_group']='0'
+
+        self._sysgroups.update(group=rec)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
+
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _delete(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        request_data=verb.get('request_data',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        if request_data is not None and request_data.get('id',None) is not None:
+            self._sysgroups.delete(id=request_data.get('id',None))
+        output_format=verb.get('request_output_format',None)
+        if output_format is not None and output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
 
