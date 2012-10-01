@@ -216,7 +216,6 @@ class BackendEnvironmentController(AdminController):
     @needs_auth
     @needs_admin
     def _delete(self, *args, **kwargs):
-        web.debug('IN _DELETE  METHOD')
         params=web.input()
         verb=kwargs.get('verb',None)
         request_data=verb.get('request_data',None)
