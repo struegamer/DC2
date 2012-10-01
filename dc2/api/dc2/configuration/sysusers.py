@@ -44,5 +44,33 @@ class SysUsers(RPCClient):
         rec['cryptpw']=''
         rec['ssh_pubkey']=''
         return rec
+    def get(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        userlist=self._proxy.dc2.configuration.systemusers.list(rec)
+        if len(userlist)>0:
+            return userlist[0]
+        return None
 
- 
+    def add(self, *args, **kwargs):
+        rec={}
+        if 'user' in kwargs:
+            rec=kwargs.get('user',None)
+        doc_id=self._proxy.dc2.configuration.systemusers.add(rec)
+        return doc_id
+
+    def update(self, *args, **kwargs):
+        rec={}
+        if 'user' in kwargs:
+            rec=kwargs.get('user',None)
+        doc_id=self._proxy.dc2.configuration.systemusers.update(rec)
+        return doc_id
+
+    def delete(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.systemusers.delete(rec)
+        return result
+   
