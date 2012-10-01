@@ -1,0 +1,50 @@
+<div class='container admin-edit-form' id='edit_systemgroups'>
+    {%- if page.action == 'edit' %}
+    <form class='form-horizontal' method='POST' action='/admin/backends/sysgroups/{{group._id}}?backend_id={{backend_id}}' id='backend_sysgroups_edit'>
+        <input type='hidden' name='group[_id]' value='{{group._id}}'/>
+        {%- elif page.action=='new' %}
+        <form class='form-horizontal'method='POST' action='/admin/backends/sysgroups/?backend_id={{backend_id}}' id='backend_sysgroups_add'>
+            {%- endif %}
+    <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+    <div class='row'>
+        <div class='span3'>
+            Groupname:
+        </div>
+        <div class='span3'>
+            <input type='text' name='group[groupname]' value='{{group.groupname}}'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Group ID:
+        </div>
+        <div class='span3'>
+            <input type='text' name='group[gid]' value='{{group.gid}}'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            System Group?:
+        </div>
+        <div class='span3'>
+            <input type='checkbox' value='1' name='group[is_system_group]' {%- if page.action=='edit' %}{%- if group.is_system_group=='1' %}checked='checked'{%- endif %}{%- endif%}/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Admin Group?
+        </div>
+        <div class='span3'>
+            <input type='checkbox' value='1' name='group[is_admin_group]' {%- if page.action=='edit' %}{%- if group.is_admin_group=='1' %}checked='checked'{%- endif %}{%- endif %}/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span6'>
+            <hr/>
+            <div class='pull-right'>
+                <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
+                <button class='btn btnCancel' data-cancel-url='/admin/backends/sysgroups/?backend_id={{backend_id}}'>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
