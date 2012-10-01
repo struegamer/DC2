@@ -1,0 +1,19 @@
+{% import 'macros/input.macro.tmpl' as forms with context -%}
+{% extends 'layout.tmpl' %}
+{% block content %}
+<div class='container'>
+    <div class='row'>
+        <div class='span12'>
+            <h3>{{ page.title }}</h3>
+            <hr/>
+        </div>
+    </div>
+    <div class="row">
+        <div class='span12'>
+            {% include 'admin/backends/sysusers/_form.inc.tmpl' with context %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

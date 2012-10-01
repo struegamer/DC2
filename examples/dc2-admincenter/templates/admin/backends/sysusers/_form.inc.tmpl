@@ -1,0 +1,66 @@
+<div class='container admin-edit-form' id='edit_systemusers'>
+    {%- if page.action == 'edit' %}
+    <form class='form-horizontal' method='POST' action='/admin/backends/sysusers/{{user._id}}?backend_id={{backend_id}}' id='backend_sysusers_edit'>
+        <input type='hidden' name='user[_id]' value='{{user._id}}'/>
+        {%- elif page.action=='new' %}
+        <form class='form-horizontal'method='POST' action='/admin/backends/sysusers/?backend_id={{backend_id}}' id='backend_sysusers_add'>
+            {%- endif %}
+    <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+    <div class='row'>
+        <div class='span3'>
+            Username:
+        </div>
+        <div class='span3'>
+            <input type='text' name='user[username]' value='{{user.username}}'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Real Name:
+        </div>
+        <div class='span3'>
+            <input type='text' name='user[realname]' value='{{user.realname}}'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            User ID:
+        </div>
+        <div class='span3'>
+            <input type='text' value='{{user.uid}}' name='user[uid]'/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Crypt PW:
+        </div>
+        <div class='span3'>
+            <input type='text' name='user[cryptpw]' value='{{user.cryptpw}}' />
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            SSH Publickey:
+        </div>
+        <div class='span3'>
+            <textarea name='user[sshpubkey]' rows='5'>{{user.sshpubkey}}</textarea>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+           Admin User?
+        </div>
+        <div class='span3'>
+            <input type='checkbox' value='1' name='user[is_admin]' {%- if page.action=='edit' %}{%- if user.is_admin=='1' %}checked='checked'{%- endif %}{%- endif %}/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span6'>
+            <hr/>
+            <div class='pull-right'>
+                <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
+                <button class='btn btnCancel' data-cancel-url='/admin/backends/sysusers/?backend_id={{backend_id}}'>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
