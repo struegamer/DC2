@@ -32,6 +32,6 @@ JS_LIBS=[
         '/static/js/datatable/DT_bootstrap.js',
         '/static/js/jplugins/jquery.rightClick.js',
         '/static/js/jplugins/jquery.formparams.js',
-        '/static/js/admincenter/admincenter.js',
+        '/static/js/admincenter/main.js',
         ]
 
