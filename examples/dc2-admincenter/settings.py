@@ -80,6 +80,7 @@ CONTROLLER_MAPPINGS={
         '/admin/backends/environments':'admin.BackendEnvironmentController',
         '/admin/backends/defaultclasses':'admin.BackendDefaultClassesController',
         '/admin/backends/classtemplates':'admin.BackendClassTemplatesController',
+        '/admin/backends/sysgroups':'admin.BackendSysGroupController',
         '/admin/ribs':'admin.AdminRIBController',
         '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
         '/admin/inettypes':'admin.AdminInetTypesController',
