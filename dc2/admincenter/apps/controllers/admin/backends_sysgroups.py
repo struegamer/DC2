@@ -77,12 +77,40 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.api.dc2.configuration import Environments
+    from dc2.api.dc2.configuration import SysGroups
 except ImportError,e:
     print "You didn't install dc2.api package"
     print e
     sys.exit(1)
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+
+class BackendSysGroupController(AdminController):
+    CONTROLLER_IDENT={'title':'DC2 Backends System Groups','url':'/admin/backends/sysgroups','show_in_menu':'False'}
+
+    def _init_bakend(self, backend):
+        self._transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
+        self._sysgroups=SysGroups(self._transport)
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _index(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backend_list=backends.backend_list()
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        page.set_title('DC2 Admincenter - Backends - System Groups - Index')
+        page.add_page_data({
+            'backendlist':backend_list,
+            'backend_id':backend_id,
+            'backend_sysgroups':self._sysgroups.list()
+        })
+        page.set_action('index')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
 
 
