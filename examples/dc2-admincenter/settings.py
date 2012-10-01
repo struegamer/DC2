@@ -82,6 +82,7 @@ CONTROLLER_MAPPINGS={
         '/admin/backends/classtemplates':'admin.BackendClassTemplatesController',
         '/admin/backends/sysgroups':'admin.BackendSysGroupController',
         '/admin/backends/sysusers':'admin.BackendSysUserController',
+        '/admin/backends/pxemethods':'admin.BackendPXEMethodController',
         '/admin/ribs':'admin.AdminRIBController',
         '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
         '/admin/inettypes':'admin.AdminInetTypesController',
