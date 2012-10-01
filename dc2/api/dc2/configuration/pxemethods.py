@@ -18,10 +18,28 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
+from dc2.api import RPCClient
+import web
 
-from environments import Environments
-from defaultclasses import DefaultClasses
-from classtemplates import ClassTemplates
-from sysgroups import SysGroups
-from sysusers import SysUsers
-from pxemethods import PXEMethods
+class PXEMethods(RPCClient):
+    def find(self, rec=None):
+        if rec is None:
+            pxelist=self._proxy.dc2.configuration.bootmethods.list()
+            return pxelist
+        if rec is not None:
+            if type(rec) is not types.DictType:
+                raise Exception('The search argument is not a dictionary')
+            pxelist=self._proxy.dc2.configuration.bootmethods.list(rec)
+            return pxelist
+
+    def list(self):
+        pxelist=self.find()
+        return pxelist
+
+    def new(self):
+        rec={}
+        rec['hardware_type']=''
+        rec['pxe_bootmethod']=''
+        return rec
+
+
