@@ -88,9 +88,17 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class BackendPXEMethodController(AdminController):
     CONTROLLER_IDENT={'title':'DC2 Backends PXE Methods','url':'/admin/backends/pxemethods','show_in_menu':'False'}
 
+    def __init__(self, *args, **kwargs):
+        super(BackendPXEMethodController,self).__init__(*args, **kwargs)
+        self._prepare_json_urls()
+
     def _init_backend(self, backend):
         self._transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
         self._pxemethods=PXEMethods(self._transport)
+
+    def _prepare_json_urls(self):
+        self.add_url_handler_to_verb('GET','update_hardware','update_hardware')
+        self.add_process_method('update_hardware',self._update_hardware)
     
     @Logger
     @needs_auth
@@ -114,6 +122,22 @@ class BackendPXEMethodController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _update_hardware(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        self._pxemethods.update_hardware()
+        output_format=verb.get('request_output_format',None)
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
 
 
 
