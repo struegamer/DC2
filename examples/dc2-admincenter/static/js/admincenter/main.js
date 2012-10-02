@@ -20,6 +20,11 @@ window.DC2 = {
       Inettypes:{},
       Ribs:{},
     },
+    Backends:{
+      Servers:{},
+      Hosts:{},
+      Deployments:{},
+    },
   },
 };
 

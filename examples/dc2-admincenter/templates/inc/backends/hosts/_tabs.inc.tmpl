@@ -1,7 +1,7 @@
 <div class='container'>
     <div class='row'>
         <div class='span12'>
-            <UL class='nav nav-tabs widget-tab' id='server_informations'>
+            <UL class='nav nav-tabs widget-tab' id='host_informations'>
                 <LI class='active'><a href='#dc_host_general_{{backend_id}}_{{host._id}}' data-toggle='tab'>General Information</a></li>
                 <LI><a href='#dc_host_classes_{{backend_id}}_{{host._id}}' data-toggle='tab'>Host Classes</a></li>
                 <LI><a href='#dc_host_interfaces_{{backend_id}}_{{host._id}}' data-toggle='tab'>Host Interfaces</a></li>
@@ -10,7 +10,7 @@
             <form method='POST' action='{{page.controller_path}}/{{host._id}}?backend_id={{backend_id}}'>
                 <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
             {%- endif %}
-            <div class='tab-content edit' id='server' data-backend-id='{{backend_id}}'>
+            <div class='tab-content edit' id='hosts' data-backend-id='{{backend_id}}'>
                     <div class='tab-pane active' id='dc_host_general_{{backend_id}}_{{host._id}}'>
                         {%- if page.action=='show' %}
                         {%- include 'inc/backends/hosts/_host_general.inc.tmpl' with context %}
