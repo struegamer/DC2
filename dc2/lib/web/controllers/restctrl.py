@@ -73,6 +73,26 @@ class RESTController(object):
                 {'urlre':'^%s/(?P<id>[a-z,0-9,\-,\.A-Z]+)$' % self._controller_path,'action':'delete' } # delete
             ]
         }
+    
+
+    def add_process_method(self, action_name='',action_method=None):
+        if action_name is None or action_name == '':
+            raise ValueError('action_name can\'t be None or empty')
+        if action_name in self._REQ_METHODS:
+            raise ValueError('action_name \'%s\' is already defined' % action_name)
+        if action_method is None:
+            raise ValueError('action_method is none')
+
+        self._REQ_METHODS[action_name]=action_method
+        
+    def add_url_handler_to_verb(self, verb='GET', urlre='^$',action_name='',**kwargs):
+        url_regexp='^%s/%s$' % (self._controller_path,urlre)
+        verb_method={'urlre':url_regexp,'action':action_name}
+        if len(kwargs)>0:
+            for key in kwargs.keys():
+                verb_method[key]=kwargs[key]
+        self._verb_methods[verb].append(verb_method)
+
 
     def _define_process_methods(self):
         self._REQ_METHODS={
