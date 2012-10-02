@@ -19,6 +19,7 @@ window.DC2 = {
       Ifacetypes:{},
       Inettypes:{},
       Ribs:{},
+      Pxe:{},
     },
     Backends:{
       Servers:{},
