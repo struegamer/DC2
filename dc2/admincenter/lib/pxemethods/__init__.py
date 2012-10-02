@@ -69,7 +69,7 @@ def pxe_update(rec=None):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    if tbl_pxe.find_one({'_id'}:rec['_id']}) is not None:
+    if tbl_pxe.find_one({'_id':rec['_id']}) is not None:
         doc_id=tbl_pxe.save(rec)
         return doc_id
     return None
