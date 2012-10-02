@@ -42,4 +42,6 @@ class PXEMethods(RPCClient):
         rec['pxe_bootmethod']=''
         return rec
 
-
+    def update_hardware(self):
+        self._proxy.dc2.configuration.bootmethods.update_hw_types()
+        return True
