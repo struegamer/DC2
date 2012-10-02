@@ -86,6 +86,7 @@ CONTROLLER_MAPPINGS={
         '/admin/ribs':'admin.AdminRIBController',
         '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
         '/admin/inettypes':'admin.AdminInetTypesController',
+        '/admin/pxe':'admin.AdminPXEController',
         '/json/backends':'jsonctrl.JSONBackendController',
         '/json/backends/servers':'jsonctrl.JSONServerBackendController',
         '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
