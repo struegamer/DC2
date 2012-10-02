@@ -23,6 +23,7 @@ from main import MainAdminController
 from ribs import AdminRIBController
 from interfacetypes import AdminInterfaceTypesController
 from inettypes import AdminInetTypesController
+from pxe import AdminPXEController
 from backends_environments import BackendEnvironmentController
 from backends_defaultclasses import BackendDefaultClassesController
 from backends_classtemplates import BackendClassTemplatesController
