@@ -8,7 +8,13 @@ window.DC2 = {
   EditForm:{},
   Pages:{
     Admin:{
-      Backends:{},
+      Backends:{
+        Sysusers:{},
+        Sysgroups:{},
+        Environments:{},
+        Defaultclasses:{},
+        Classtemplates:{},
+      },
       Ifacetypes:{},
       Inettypes:{},
       Ribs:{},

@@ -1,9 +1,9 @@
 <div class='container admin-edit-form' id='edit_systemusers'>
     {%- if page.action == 'edit' %}
-    <form class='form-horizontal' method='POST' action='/admin/backends/sysusers/{{user._id}}?backend_id={{backend_id}}' id='backend_sysusers_edit'>
+    <form class='form-horizontal' method='POST' action='/admin/backends/sysusers/{{user._id}}?backend_id={{backend_id}}' id='form_backend_sysusers'>
         <input type='hidden' name='user[_id]' value='{{user._id}}'/>
         {%- elif page.action=='new' %}
-        <form class='form-horizontal'method='POST' action='/admin/backends/sysusers/?backend_id={{backend_id}}' id='backend_sysusers_add'>
+        <form class='form-horizontal'method='POST' action='/admin/backends/sysusers/?backend_id={{backend_id}}' id='form_backend_sysusers_add'>
             {%- endif %}
     <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
     <div class='row'>

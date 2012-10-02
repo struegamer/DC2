@@ -9,7 +9,7 @@
     </div>
     <div class='row'>
         <div class='span6'>
-            <table cellspacing='0' cellpadding='0' data-url-delete='/admin/backends/sysusers/' class='table table-condensed table-striped data-list' id='backend_configuration_list'>
+            <table cellspacing='0' cellpadding='0' data-url-delete='/admin/backends/sysusers/' class='table table-condensed table-striped data-list' id='list_backend_sysusers_index'>
                 <thead>
                     <tr>
                         <th><input id='check_all' type='checkbox' name='check_all'/></th>
@@ -32,7 +32,7 @@
                 </tbody>
 
             </table>
-            <div id="backendconfbtn" class="btn-group pull-right list-btn-group">
+            <div id="btngrp_backend_sysusers" class="btn-group pull-right list-btn-group">
                 <button type="button" name="btn_add" data-type='url' data-url='{{ controller.create_controller_url('new',query_string=[{'backend_id':backend_id}]) }}' class="btn btn_add"><i class="icon-plus"></I> Add</button>
                 <button type="button" name="btn_refresh" data-type='url' data-url='/admin/backends/sysusers?backend_id={{backend_id}}' class="btn btn_refresh"><i class="icon-refresh"></I> Refresh</button>
                 <button type="button" name="btn_delete" data-type='jsfunc' data-list='true' data-query='backend_id={{backend_id}}' data-action='delete' class="btn btn_delete"><i class="icon-minus"></i> Delete</button>
@@ -42,3 +42,8 @@
     </div>
 </div>
 {% endblock %}
+{%- block js_scripts %}
+<script src='/static/js/admincenter/widgets.js' type='text/javascript'></script>
+<script src='/static/js/admincenter/admin/backends/sysusers/index.js' type='text/javascript'></script>
+{%- endblock js_scripts %}
+
