@@ -1,13 +1,13 @@
 {% import 'macros/input.macro.tmpl' as forms with context %}
 {% if page.action == 'new' %}
-    {{ forms.form('POST','/admin/inettypes/?oformat=json',id='iface_add',labels=True,class='data-form',enable_buttons=True,remote=True,
+    {{ forms.form('POST','/admin/inettypes/?oformat=json',id='form_inettypes',labels=True,class='data-form',enable_buttons=True,remote=True,
                 fields=[
                 { 'name':'type','value':inet.type,'label':'Type','type':'text','placeholder':'Type','size':'','id':'','class':'input-xlarge' },
                 { 'name':'desc','value':inet.desc,'label':'Description','type':'text','placeholder':'Description','size':'','id':'','class':'input-xlarge' },
                 ]) 
     }}
 {% elif page.action == 'edit' %}
-{{ forms.form('PUT','/admin/inettypes/%s?oformat=json' % inet._id,id='iface_edit',labels=True, class='data-form',enable_buttons=True,remote=True,
+{{ forms.form('PUT','/admin/inettypes/%s?oformat=json' % inet._id,id='form_inettypes',labels=True, class='data-form',enable_buttons=True,remote=True,
 fields=[
                 { 'name':'_id','value':inet._id,'type':'hidden' },
 

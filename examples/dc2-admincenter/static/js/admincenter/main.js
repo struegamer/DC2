@@ -7,7 +7,12 @@ window.DC2 = {
   JSON:{},
   EditForm:{},
   Pages:{
-    Backends:{},
+    Admin:{
+      Backends:{},
+      Ifacetypes:{},
+      Inettypes:{},
+      Ribs:{},
+    },
   },
 };
 

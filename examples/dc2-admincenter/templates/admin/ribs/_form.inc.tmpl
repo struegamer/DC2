@@ -1,13 +1,13 @@
 {% import 'macros/input.macro.tmpl' as forms with context %}
 {% if page.action == 'new' %}
-    {{ forms.form('POST','/admin/ribs/?oformat=json',id='rib_add',labels=True,class='data-form',enable_buttons=True,remote=True,
+    {{ forms.form('POST','/admin/ribs/?oformat=json',id='form_ribs',labels=True,class='data-form',enable_buttons=True,remote=True,
                 fields=[
                 { 'name':'remote_type','value':rib.remote_type,'label':'Type','type':'text','placeholder':'Type','size':'','id':'','class':'input-xlarge' },
                 { 'name':'name','value':rib.name,'label':'Title','type':'text','placeholder':'Title','size':'','id':'','class':'input-xlarge' },
                 ]) 
     }}
 {% elif page.action == 'edit' %}
-{{ forms.form('PUT','/admin/ribs/%s?oformat=json' % rib._id,id='rib_edit',labels=True, class='data-form',enable_buttons=True,remote=True,
+{{ forms.form('PUT','/admin/ribs/%s?oformat=json' % rib._id,id='form_ribs',labels=True, class='data-form',enable_buttons=True,remote=True,
 fields=[
                 { 'name':'_id','value':rib._id,'type':'hidden' },
 
