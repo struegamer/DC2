@@ -455,4 +455,9 @@ DC2.Widgets.Collapsible.prototype.on_click=function(event) {
   return(false);
 };
 
+DC2.Widgets.Button={}
+DC2.Widgets.Button.Click=function(selector,func) {
+  this.selector=selector;
+  this.selector.on('click',this.selector,func.bind(this));
+};
 
