@@ -14,6 +14,7 @@ window.DC2 = {
         Environments:{},
         Defaultclasses:{},
         Classtemplates:{},
+        Pxemethods:{},
       },
       Ifacetypes:{},
       Inettypes:{},
