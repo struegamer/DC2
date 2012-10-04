@@ -75,6 +75,7 @@ CONTROLLER_MAPPINGS={
         '/backends':'BackendsCtrl',
         '/backends/servers':'ServerController',
         '/backends/hosts':'HostController',
+        '/backends/installstate':'InstallStateController',
         '/admin':'admin.MainAdminController',
         '/admin/backends':'admin.BackendsController',
         '/admin/backends/environments':'admin.BackendEnvironmentController',
