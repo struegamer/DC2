@@ -23,3 +23,4 @@ from session import SessionController
 from backends import BackendsCtrl
 from servers import ServerController
 from hosts import HostController
+from installstate import InstallStateController
