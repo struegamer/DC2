@@ -68,6 +68,7 @@ except ImportError,e:
 
 try:
     from dc2.admincenter.lib import backends
+    from dc2.admincenter.lib import pxemethods
     from dc2.admincenter.lib.controllers import AdminController
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.lib.auth import needs_admin
@@ -112,11 +113,13 @@ class BackendPXEMethodController(AdminController):
         backend=backends.backend_get({'_id':backend_id})
         self._init_backend(backend)
         pxelist=self._pxemethods.list()
+        pxe_methods=pxemethods.pxe_list()
         page.set_title('DC2 Admincenter - Backends - PXE Bootmethods - Index')
         page.add_page_data({
-             'backendlist':backend_list,
-             'backend_id':backend_id,
-             'backend_pxemethods':pxelist
+            'backendlist':backend_list,
+            'backend_id':backend_id,
+            'backend_pxemethods':pxelist,
+            'pxemethods':pxe_methods,
          })
         page.set_action('index')
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})

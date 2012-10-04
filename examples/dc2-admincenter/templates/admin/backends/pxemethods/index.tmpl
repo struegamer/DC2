@@ -22,7 +22,13 @@
                     <tr data-edit-url='/admin/backends/pxemthods/{{pxe._id}}/edit?backend_id={{backend_id}}'>
                         <td><input class='del_check' type='checkbox' name='check' value='{{pxe._id}}'/></td>
                         <td class='data-cell'>{{pxe.hardware_type}}</td>
-                        <td class='data-cell'>{{pxe.pxe_bootmethod}}</td>
+                        <td class='data-cell'>
+                            {%- for pxemethod in pxemethods %}
+                            {%- if pxemethod.type == pxe.pxe_bootmethod %}
+                            {{pxemethod.name}}
+                            {%- endif %}
+                            {%- endfor %}
+                        </td>
                     </tr>
                     {%- endfor %}
                 </tbody>
