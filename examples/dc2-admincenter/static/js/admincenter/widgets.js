@@ -173,7 +173,8 @@ DC2.Widgets.Datatables = function(selector) {
       columns=[
       {'mDataProp':'_id','bVisible':false},
       {'mDataProp':'hostname'},
-      {'mDataProp':'status'}
+      {'mDataProp':'status'},
+      {'mDataProp':'progress'},
       ];
       break;
   }
@@ -226,7 +227,9 @@ DC2.Widgets.Datatables.prototype.on_click = function(event) {
     case 'hosts':
       window.location.href='/backends/hosts/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
-    case 'installstate':
+    case 'deployment':
+      console.log('hello');
+      window.location.href='/backends/installstate/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
   }
   return(false);
