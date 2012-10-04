@@ -105,6 +105,7 @@ class ServerController(RESTController):
             self._page.add_page_data({'admin_is_link':True})
             self._fill_backends()
         self._page.set_page_value('controller_path',self._controller_path)
+
     def _init_backend(self):
         params=web.input()
         self._backend_id=params.get('backend_id',None)
