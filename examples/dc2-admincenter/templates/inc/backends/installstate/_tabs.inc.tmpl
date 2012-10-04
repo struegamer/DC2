@@ -1,0 +1,12 @@
+<div class='container'>
+    <div class='row'>
+        <div class='span9'>
+            {%- if page.action=='show' %}
+            {%- include 'inc/backends/installstate/_show.inc.tmpl' with context %}
+            {%- endif %}
+            {%- if page.action=='edit' %}
+            {%- include 'inc/backends/installstate/_edit.inc.tmpl' with context %}
+            {%- endif %}
+        </div>
+    </div>
+</div>
