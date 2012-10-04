@@ -154,5 +154,6 @@ setup(name='dc2.admincenter',
             'dc2.admincenter.lib.interfacetypes',
             'dc2.admincenter.lib.inettypes',
             'dc2.admincenter.lib.pxemethods',
+            'dc2.admincenter.lib.installmethods',
         ]
 )
