@@ -9,7 +9,7 @@
     </div>
     <div class='row'>
         <div class='span6'>
-            <table cellspacing='0' cellpadding='0' data-url-delete='/admin/backends/pxemthods/' class='table table-condensed table-striped data-list' id='list_backend_pxemethods_index'>
+            <table cellspacing='0' cellpadding='0' data-url-delete='/admin/backends/pxemethods/' class='table table-condensed table-striped data-list' id='list_backend_pxemethods_index'>
                 <thead>
                     <tr>
                         <th><input id='check_all' type='checkbox' name='check_all'/></th>
@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                     {%- for pxe in backend_pxemethods %}
-                    <tr data-edit-url='/admin/backends/pxemthods/{{pxe._id}}/edit?backend_id={{backend_id}}'>
+                    <tr data-edit-url='/admin/backends/pxemethods/{{pxe._id}}/edit?backend_id={{backend_id}}'>
                         <td><input class='del_check' type='checkbox' name='check' value='{{pxe._id}}'/></td>
                         <td class='data-cell'>{{pxe.hardware_type}}</td>
                         <td class='data-cell'>
@@ -37,7 +37,7 @@
             <div class='btn-toolbar pull-right'>
                 <div id="btngrp_backend_pxemethods" class="btn-group list-btn-group">
                     <button type="button" name="btn_add" data-type='url' data-url='{{ controller.create_controller_url('new',query_string=[{'backend_id':backend_id}]) }}' class="btn btn_add"><i class="icon-plus"></I> Add</button>
-                    <button type="button" name="btn_refresh" data-type='url' data-url='/admin/backends/sysgroups?backend_id={{backend_id}}' class="btn btn_refresh"><i class="icon-refresh"></I> Refresh</button>
+                    <button type="button" name="btn_refresh" data-type='url' data-url='/admin/backends/pxemethods?backend_id={{backend_id}}' class="btn btn_refresh"><i class="icon-refresh"></I> Refresh</button>
                     <button type="button" name="btn_delete" data-type='jsfunc' data-list='true' data-query='backend_id={{backend_id}}' data-action='delete' class="btn btn_delete"><i class="icon-minus"></i> Delete</button>
                 </div>
                 <div class='btn-group'>
