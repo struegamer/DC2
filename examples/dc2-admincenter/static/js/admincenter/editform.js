@@ -277,3 +277,45 @@ DC2.EditForm.SysUsers.prototype.on_btnCancel_click=function(event) {
 };
 
 
+DC2.EditForm.PXEMethods=function(selector) {
+  this.selector=selector;
+  this.btnSave=this.selector.find('.btnSave');
+  this.btnCancel=this.selector.find('.btnCancel');
+  this.btnSave.on('click',this.selector,this.on_btnSave_click.bind(this));
+  this.btnCancel.on('click',this.selector,this.on_btnCancel_click.bind(this));
+};
+
+DC2.EditForm.PXEMethods.prototype.on_btnSave_click=function(event) {
+  event.preventDefault();
+  var action_type=$(event.target).attr('data-action');
+  var action_method='POST';
+  if (action_type=='new') {
+    action_method='POST';
+  } else if (action_type=='edit') {
+    action_method='PUT'
+  }
+  var put_url=this.selector.find('form').attr('action');
+  var sectoken=this.selector.find(':input[name=sectoken]').val();
+  var result=this.selector.find('form').formParams();
+  console.log(result);
+  var a=$.ajax({
+    url:put_url+'&sectoken='+sectoken,
+      type:action_method,
+      contentType:'application/json; charset=utf-8',
+      data:JSON.stringify({'result':result}),
+      dataType:'json',
+  });
+  a.done(function(data) {
+    if ('redirect' in data) {
+      if (data.redirect.absolute=='true') {
+        window.location.href=data.redirect.url;
+      }
+    }
+  });
+};
+
+DC2.EditForm.PXEMethods.prototype.on_btnCancel_click=function(event) {
+  event.preventDefault();
+  console.log($(event.target).attr('data-cancel-url'));
+  window.location.href=$(event.target).attr('data-cancel-url');
+};
