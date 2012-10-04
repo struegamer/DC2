@@ -45,3 +45,33 @@ class PXEMethods(RPCClient):
     def update_hardware(self):
         self._proxy.dc2.configuration.bootmethods.update_hw_types()
         return True
+
+    def get(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.bootmethods.list({'_id':kwargs.get('id',None)})
+        if len(result)>0:
+            return result[0]
+        return None
+
+    def add(self, *args, **kwargs):
+        rec={}
+        if 'pxe' in kwargs:
+            rec=kwargs.get('pxe',None)
+        doc_id=self._proxy.dc2.configuration.bootmethods.add(rec)
+        return doc_id
+    
+    def update(self, *args, **kwargs):
+        rec={}
+        if 'pxe' in kwargs:
+            rec=kwargs.get('pxe',None)
+        doc_id=self._proxy.dc2.configuration.bootmethods.update(rec)
+        return doc_id
+    def delete(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.bootmethods.delete(rec)
+        return result
+
