@@ -30,3 +30,4 @@ from backends_classtemplates import BackendClassTemplatesController
 from backends_sysgroups import BackendSysGroupController
 from backends_sysusers import BackendSysUserController
 from backends_pxemethods import BackendPXEMethodController
+from installmethod import AdminInstallMethodController
