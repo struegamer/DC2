@@ -44,5 +44,11 @@ class InstallState(RPCClient):
         # TODO: Add a rpc call to appserver for counting
         resultlist=self.find({'status':status})
         return len(resultlist)
+    def get(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id')
+        result=self._proxy.dc2.deployment.installstate.get(rec)
+        return result
 
 
