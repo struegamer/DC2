@@ -142,5 +142,117 @@ class BackendPXEMethodController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _new(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backend_id=params.get('backend_id',None)
+        backend_list=backends.backend_list()
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        pxe=self._pxemethods.new()
+        pxe_methods=pxemethods.pxe_list()
+        page.set_title('DC2 Admincenter - Backends - PXE Bootmethods - Index')
+        page.add_page_data({
+            'backendlist':backend_list,
+            'backend_id':backend_id,
+            'pxe':pxe,
+            'pxemethods':pxe_methods,
+        })
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
 
 
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _edit(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        page=self._prepare_page(verb)
+        backend_id=params.get('backend_id',None)
+        backend_list=backends.backend_list()
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        pxe=self._pxemethods.get(id=verb['request_data']['id'])
+        pxe_methods=pxemethods.pxe_list()
+        page.set_title('DC2 Admincenter - Backends - PXE Bootmethods - Index')
+        page.add_page_data({
+            'backendlist':backend_list,
+            'backend_id':backend_id,
+            'pxe':pxe,
+            'pxemethods':pxe_methods,
+        })
+        page.set_action('edit')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _create(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        result=json.loads(web.data())
+        rec={}
+        rec=result['result']['pxe']
+        web.debug('PXE %s' % rec)
+        self._pxemethods.add(pxe=rec)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _update(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        result=json.loads(web.data())
+        rec={}
+        rec=result['result']['pxe']
+        web.debug('PXE %s' % rec)
+        self._pxemethods.update(pxe=rec)
+        output_format=verb.get('request_output_format')
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
+
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _delete(self, *args, **kwargs):
+        params=web.input()
+        verb=kwargs.get('verb',None)
+        request_data=verb.get('request_data',None)
+        backend_id=params.get('backend_id',None)
+        backend=backends.backend_get({'_id':backend_id})
+        self._init_backend(backend)
+        if request_data is not None and request_data.get('id',None) is not None:
+            self._pxemethods.delete(id=request_data.get('id',None))
+        output_format=verb.get('request_output_format',None)
+        if output_format is not None and output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
+        return result
+
+
+        
