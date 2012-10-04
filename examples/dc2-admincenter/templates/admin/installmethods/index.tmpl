@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class='span12'>
-            <table cellspacing="0" cellpadding="0" data-url-delete='/admin/ribs/' class="table table-striped data-list" id='list_installmethods_index'>
+            <table cellspacing="0" cellpadding="0" data-url-delete='/admin/installmethods/' class="table table-striped data-list" id='list_installmethods_index'>
                 <thead>
                     <tr>
                         <th><input id="check_all" type="checkbox" name="check_all"/></tH>
@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                     {%- for items in installmethods %}
-                    <tr data-edit-url="/admin/pxe/{{items._id}}/edit">
+                    <tr data-edit-url="/admin/installmethods/{{items._id}}/edit">
                         <td><input class="del_check" type="checkbox" name="check" value="{{ items._id }}"/></td>
                         <td class="data-cell">{{ items.type}}</td>
                         <td class="data-cell">{{ items.name }}</td>
@@ -29,7 +29,7 @@
             </table>
             <div id="btngrp_installmethods" class="btn-group pull-right list-btn-group">
                 <button type="button" name="btn_add" data-type='url' data-url='{{ controller.create_controller_url('new') }}' class="btn btn_add"><i class="icon-plus"></I> Add</button>
-                <button type="button" name="btn_refresh" data-type='url' data-url='/admin/installmethod' class="btn btn_refresh"><i class="icon-refresh"></I> Refresh</button>
+                <button type="button" name="btn_refresh" data-type='url' data-url='/admin/installmethods' class="btn btn_refresh"><i class="icon-refresh"></I> Refresh</button>
                 <button type="button" name="btn_delete" data-type='jsfunc' data-list='true' data-action='delete' class="btn btn_delete"><i class="icon-minus"></i> Delete</button>
             </div>
         </div>
