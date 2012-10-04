@@ -88,7 +88,7 @@ CONTROLLER_MAPPINGS={
         '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
         '/admin/inettypes':'admin.AdminInetTypesController',
         '/admin/pxe':'admin.AdminPXEController',
-        '/admin/installmethdos':'admin.AdminInstallMethodController',
+        '/admin/installmethods':'admin.AdminInstallMethodController',
         '/json/backends':'jsonctrl.JSONBackendController',
         '/json/backends/servers':'jsonctrl.JSONServerBackendController',
         '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
