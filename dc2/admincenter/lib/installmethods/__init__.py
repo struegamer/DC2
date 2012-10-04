@@ -63,12 +63,12 @@ def installmethod_add(rec=None):
     doc_id=tbl_installmethod.save(rec)
     return doc_id
 
-def installmethod_update(rec=None)
+def installmethod_update(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-     if tbl_installmethods.find_one({'_id':rec['_id']}) is not None:
+    if tbl_installmethods.find_one({'_id':rec['_id']}) is not None:
         doc_id=tbl_installmethods.save(rec)
         return doc_id
     return None
