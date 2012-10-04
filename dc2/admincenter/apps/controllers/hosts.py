@@ -200,6 +200,8 @@ class HostController(RESTController):
     @Logger
     @needs_auth
     def _update(self, *args, **kwargs):
+        params=web.input()
+        backend_id=params.get('backend_id',None)
         verb=kwargs.get('verb',None)
         self._init_backend()
         params=web.data()
@@ -211,18 +213,26 @@ class HostController(RESTController):
             host_id=request_data['id']
         host={}
         host['_id']=host_id
-        host['server_id']=data['server']
-        host['hostname']=data['hostname']
-        host['domainname']=data['domainname']
-        host['environments']=data['environments']
+        host['server_id']=data['host']['server']
+        host['hostname']=data['host']['hostname']
+        host['domainname']=data['host']['domainname']
+        host['environments']=data['host']['environments']
         host['hostclasses']=[]
-        for key in data['hostclasses']:
+        for key in data['host']['hostclasses']:
             if key != 'new':
-                host['hostclasses'].append(data['hostclasses'][key])
+                host['hostclasses'].append(data['host']['hostclasses'][key])
         host['interfaces']=[]
-        for key in data['interfaces']:
+        for key in data['host']['interfaces']:
             if key !='new':
-                host['interfaces'].append(data['interfaces'][key])
+                host['interfaces'].append(data['host']['interfaces'][key])
+        self._hosts.update(host=host)
+        output_format=verb.get('request_output_format',None)
+        if output_format.lower()=='json':
+            result=self._prepare_output('json',verb['request_content_type'],verb['request_output_format'],{'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path,host_id,backend_id),'absolute':'true'}})
+        else:
+            result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path,host_id,backend_id),'absolute':'true'}})
+        return result
+
 
             
     def _fill_backends(self):
