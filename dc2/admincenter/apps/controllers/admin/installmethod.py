@@ -98,4 +98,39 @@ class AdminInstallMethodController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _new(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        install_method=installmethods.installmethod_new()
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - Installmethod Types - New')
+        page.add_page_data({
+            'backendlist':backend_list,
+            'installmethod':install_method
+        })
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
 
+    @Logger
+    @needs_auth
+    @needs_admin
+    def _edit(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        backend_list=backends.backend_list()
+        install_method=installmethods.installmethod_get({'_id':verb['request_data']['id']})
+        page=self._prepare_page(verb)
+        page.set_title('DC2 Admincenter - Installmethod Types - New')
+        page.add_page_data({
+            'backendlist':backend_list,
+            'installmethod':install_method
+        })
+        page.set_action('new')
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
+        return result
+
+
+    
