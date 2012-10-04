@@ -20,6 +20,7 @@ window.DC2 = {
       Inettypes:{},
       Ribs:{},
       Pxe:{},
+      Installmethods:{},
     },
     Backends:{
       Servers:{},
