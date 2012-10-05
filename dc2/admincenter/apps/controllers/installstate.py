@@ -127,9 +127,11 @@ class InstallStateController(RESTController):
             installstate_id=request_data.get('id',None)
         if installstate_id is not None:
             installstate=self._installstate.get(id=installstate_id)
+            web.debug('INSTALLSTATE SHOW: %s ' % installstate)
             install_methods=installmethods.installmethod_list()
             self._page.set_title('Deployment State of %s' % installstate['hostname'])
             self._page.add_page_data({
+                'entry_id':request_data['id'],
                 'installstate':installstate,
                 'installmethods':install_methods
             })
@@ -151,9 +153,11 @@ class InstallStateController(RESTController):
             installstate_id=request_data.get('id',None)
         if installstate_id is not None:
             installstate=self._installstate.get(id=installstate_id)
+            web.debug('INSTALLSTATE EDIT: %s' % installstate)
             self._page.set_title('Deployment State of %s' % installstate['hostname'])
             install_methods=installmethods.installmethod_list()
             self._page.add_page_data({
+                'entry_id':request_data['id'],
                 'installstate':installstate,
                 'installmethods':install_methods
             })
@@ -161,6 +165,24 @@ class InstallStateController(RESTController):
                 output={'content':self._page.render()})
             return result
 
+
+
+    @Logger
+    @needs_auth
+    def _update(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        self._init_backend()
+        result=json.loads(web.data())
+        installstate={}
+        installstate=result['result']['installstate']
+        web.debug('INSTALLSTATE: %s' % installstate)
+        installstate_rec=self._installstate.get(id=installstate['_id'])
+        web.debug('INSTALLSTATE REC: %s ' % installstate_rec)
+        installstate_rec['status']=installstate['status']
+        web.debug('INSTALLSTATE REC AFTER UPDATE: %s' % installstate_rec)
+        self._installstate.update(rec=installstate_rec)
+        result=self._prepare_output('json',verb['request_content_type'],'json',{'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path,installstate['_id'],self._backend_id),'absolute':'true'}})
+        return result
 
 
     def _fill_backends(self):

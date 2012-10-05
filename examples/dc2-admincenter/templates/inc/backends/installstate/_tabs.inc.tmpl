@@ -1,11 +1,15 @@
 <div class='container'>
     <div class='row'>
-        <div class='span9'>
+        <div class='span9' id='installstate'>
             {%- if page.action=='show' %}
             {%- include 'inc/backends/installstate/_show.inc.tmpl' with context %}
             {%- endif %}
             {%- if page.action=='edit' %}
-            {%- include 'inc/backends/installstate/_edit.inc.tmpl' with context %}
+            <form method='POST' action='{{page.controller_path}}/{{installstate._id}}?backend_id={{backend_id}}'>
+                <input type='hidden' name='sectoken' value='{{ page.sectoken()}}'/>
+                <input type='hidden' name='installstate[_id]' value='{{installstate._id}}' />
+                {%- include 'inc/backends/installstate/_edit.inc.tmpl' with context %}
+            </form>
             {%- endif %}
         </div>
     </div>

@@ -271,6 +271,7 @@ DC2.Widgets.EditTables.prototype.prepare_table_buttons=function(btns,ident) {
 };
 
 DC2.Widgets.EditTables.prototype._btn_update=function(event) {
+  console.log('hello');
   var button=$(event.target);
   var controller_path=button.attr('data-controller-path');
   var entry_id=button.attr('data-entry-id');

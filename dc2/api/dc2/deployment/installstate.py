@@ -48,7 +48,15 @@ class InstallState(RPCClient):
         rec={}
         if 'id' in kwargs:
             rec['_id']=kwargs.get('id')
-        result=self._proxy.dc2.deployment.installstate.get(rec)
-        return result
+            result=self._proxy.dc2.deployment.installstate.get(rec)
+            return result
+        return None
 
+    def update(self, *args, **kwargs):
+        rec={}
+        if 'rec' in kwargs:
+            rec=kwargs.get('rec',None)
+            result=self._proxy.dc2.deployment.installstate.update(rec)
+            return result
+        return None
 
