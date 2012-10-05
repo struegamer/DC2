@@ -12,8 +12,10 @@
     </div>
     <div class='span6'>
         <select name='installstate[status]'>
+            {%- for installmethod in installmethods %}
+            <option value='{{installmethod.type}}'{%- if installstate.status==installmethod.type%} selected='selected'{%- endif %}>{{installmethod.name}}</option>
+            {%- endfor %}
         </select>
-        {{installstate.status}}
     </div>
 </div>
 <div class='row'>

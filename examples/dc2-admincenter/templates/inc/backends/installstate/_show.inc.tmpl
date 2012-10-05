@@ -11,7 +11,11 @@
         Deployment State:
     </div>
     <div class='span6'>
-        {{installstate.status}}
+        {%- for installmethod in installmethods %}
+        {%- if installstate.status == installmethod.type %}
+        {{installmethod.name}}
+        {%- endif %}
+        {%- endfor %}
     </div>
 </div>
 <div class='row'>
