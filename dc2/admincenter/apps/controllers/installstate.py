@@ -70,7 +70,7 @@ try:
     from dc2.admincenter.lib.auth import KerberosAuthError
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
-    from dc2.admincenter.lib import ribs
+    from dc2.admincenter.lib import installmethods
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -127,9 +127,11 @@ class InstallStateController(RESTController):
             installstate_id=request_data.get('id',None)
         if installstate_id is not None:
             installstate=self._installstate.get(id=installstate_id)
+            install_methods=installmethods.installmethod_list()
             self._page.set_title('Deployment State of %s' % installstate['hostname'])
             self._page.add_page_data({
-                'installstate':installstate
+                'installstate':installstate,
+                'installmethods':install_methods
             })
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
@@ -150,8 +152,10 @@ class InstallStateController(RESTController):
         if installstate_id is not None:
             installstate=self._installstate.get(id=installstate_id)
             self._page.set_title('Deployment State of %s' % installstate['hostname'])
+            install_methods=installmethods.installmethod_list()
             self._page.add_page_data({
-                'installstate':installstate
+                'installstate':installstate,
+                'installmethods':install_methods
             })
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],
                 output={'content':self._page.render()})
