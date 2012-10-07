@@ -34,7 +34,7 @@
 {% endmacro %}
 
 {% macro form_navbar(method='GET',action="",class="",id="",remote=True,fields=[]) -%}
-    {{ form(method=method,action=action,class='navbar-form form-inline %s' % class,enable_buttons=False,id=id,remote=remote,labels=False,fields=fields) }}
+    {{ form(method=method,action=action,class='navbar-form %s' % class,enable_buttons=False,id=id,remote=remote,labels=False,fields=fields) }}
 {% endmacro %}
 
 

@@ -54,3 +54,11 @@ class Hosts(RPCClient):
             if host_entries is not None and len(host_entries)==1:
                 return host_entries[0]
         return None
+
+    def update(self, *args, **kwargs):
+        host={}
+        if 'host' in kwargs:
+            host=kwargs.get('host',None)
+        doc_id=self._proxy.dc2.inventory.hosts.update(host)
+        return doc_id
+

@@ -1,11 +1,3 @@
-window.DC2 = {
-  Widgets:{},
-  Utilities:{},
-  Forms:{},
-  JSONCalls:{},
-  JSON:{}
-};
-
 DC2.Widgets.StandardForms= function(selector) {
   this.container=$(selector);
   this.container.on('keypress',this.container,this.submitForm.bind(this));
@@ -57,10 +49,15 @@ DC2.Widgets.ButtonGroup.Index.prototype.action=function(event) {
     case 'jsfunc':
       if ($(this).attr('data-list')=='true') {
         if ($(this).attr('data-action')=='delete') {
+          var data_query='';
+          if ($(this).attr('data-query') != undefined) {
+            data_query=$(this).attr('data-query');
+          }
           $('table.data-list').find('input[type="checkbox"].del_check').each(function() {
             if ($(this).prop('checked')==true) {
               a=$.ajax({
-                url:$('table.data-list').attr('data-url-delete')+$(this).val()+'?oformat=json',
+                url:$('table.data-list').attr('data-url-delete')+$(this).val()+'?'+data_query+'&oformat=json',
+                contentType:'application/json; charset=utf-8',
                 dataType:'json',
                 type:'DELETE',
               });
@@ -176,7 +173,8 @@ DC2.Widgets.Datatables = function(selector) {
       columns=[
       {'mDataProp':'_id','bVisible':false},
       {'mDataProp':'hostname'},
-      {'mDataProp':'status'}
+      {'mDataProp':'status'},
+      {'mDataProp':'progress'},
       ];
       break;
   }
@@ -229,121 +227,11 @@ DC2.Widgets.Datatables.prototype.on_click = function(event) {
     case 'hosts':
       window.location.href='/backends/hosts/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
-    case 'installstate':
+    case 'deployment':
+      console.log('hello');
+      window.location.href='/backends/installstate/'+$(event.target).parent().attr('data-entry-id')+'?backend_id='+$(event.target).parent().attr('data-backend-id');
       break;
   }
-  return(false);
-};
-
-
-
-DC2.JSONCalls.BackendStats = function(selector) {
-  this.container=$(selector);
-  datatype=this.container.attr('data-backend-type');
-  backend_id=0;
-  if (this.container.attr('data-backend-id')) {
-    backend_id=this.container.attr('data-backend-id');
-  }
-  switch(datatype) {
-    case 'backendstats':
-      this.container.on('backendstats.'+datatype+'.update',this.container,this.backendstats.bind(this));
-      break;
-    case 'backend_servers_stats':
-      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_servers_stats(this,backend_id));
-      break;
-    case 'backend_hosts_stats':
-      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_hosts_stats(this,backend_id));
-      break;
-    case 'backend_deployment_stats':
-      this.container.on('backendstats.'+datatype+'.update',this.container,this.backend_deployment_stats(this,backend_id,this.container.attr('data-deployment-status')));
-      break;
-  }
-  this.container.trigger('backendstats.'+datatype+'.update');
-};
-
-DC2.JSONCalls.BackendStats.prototype.backendstats=function(event) {
-  a=this.do_remote('backendstats',null);
-  a.done(function(data) {
-    this.container.html(data.backend_count);
-  });
-  return(false);
-};
-
-DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backend_id) {
-  a=this.do_remote('backend_servers_stats',{'backend_id':backend_id});
-  a.done(function(data) {
-    this.container.html(data.server_count);
-  });
-  return(false);
-};
-
-DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_id) {
-  a=this.do_remote('backend_hosts_stats',{'backend_id':backend_id});
-  a.done(function(data) {
-    this.container.html(data.host_count);
-  });
-  return(false);
-};
-
-DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,backend_id,what) {
-  a=this.do_remote('backend_deployment_stats',{'backend_id':backend_id,'status':what});
-  a.done(function(data) {
-    if ('status' in data) {
-      switch(data.status) {
-        case 'all':
-          break;
-        case 'deploy':
-          this.container.html(data.count);
-          break;
-        case 'localboot':
-          this.container.html(data.count);
-          break;
-      }
-    }
-  });
-  return(false);
-};
-
-DC2.JSONCalls.BackendStats.prototype.do_remote = function(datatype,data) {
-  a=$.ajax({
-    url:'/json/backends/' + datatype,
-    type:'GET',
-    data:data,
-    dataType:'json',
-    context:this,
-  });
-  return(a);
-};
-
-DC2.JSONCalls.Servers = function(selector) {
-  this.container=$(selector);
-  var datatype=this.container.attr('data-type');
-  var backend_id=this.container.attr('data-backend-id');
-  var server_id=this.container.attr('data-server-id');
-  switch(datatype) {
-    case 'backend_server_get_host':
-      this.container.on('backends_server.'+datatype+'.update',this.container,this.get_host(this,backend_id,server_id));
-      break;
-  }
-  this.container.trigger('backends_server.'+datatype+'.update');
-};
-
-DC2.JSONCalls.Servers.prototype.do_remote = function(datatype,data) {
-  a=$.ajax({
-    url:'/json/backends/servers/'+datatype,
-    type:'GET',
-    data:data,
-    dataType:'json',
-    context:this,
-  });
-  return(a);
-};
-
-DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) {
-  var a=this.do_remote('backend_server_get_host',{'backend_id':backend_id,'server_id':server_id});
-  a.done(function(data) {
-    console.log(data);
-  });
   return(false);
 };
 
@@ -383,6 +271,7 @@ DC2.Widgets.EditTables.prototype.prepare_table_buttons=function(btns,ident) {
 };
 
 DC2.Widgets.EditTables.prototype._btn_update=function(event) {
+  console.log('hello');
   var button=$(event.target);
   var controller_path=button.attr('data-controller-path');
   var entry_id=button.attr('data-entry-id');
@@ -570,117 +459,9 @@ DC2.Widgets.Collapsible.prototype.on_click=function(event) {
   return(false);
 };
 
-DC2.JSON.Backends={};
-DC2.JSON.Backends.Macs=function(backend_id) {
-  this.url='/json/backends/macs/';
-  this.backend_id=backend_id;
-  this.success=false;
-};
-DC2.JSON.Backends.Macs.prototype.delete_mac=function(mac_id) {
-  var success=false;
-  var a=$.ajax({
-    url:this.url+'backend_mac_delete',
-    type:'GET',
-    data:{'backend_id':this.backend_id,'mac_id':mac_id},
-    dataType:'json',
-    async:false,
-  });
-  a.done(function(data) {
-    success=true;
-  });
-  if (success) {
-    return true;
-  } else {
-    return false;
-  }
+DC2.Widgets.Button={}
+DC2.Widgets.Button.Click=function(selector,func) {
+  this.selector=selector;
+  this.selector.on('click',this.selector,func.bind(this));
 };
 
-DC2.JSON.Backends.Ribs=function(backend_id) {
-  this.url='/json/backends/ribs/';
-  this.backend_id=backend_id;
-  this.success=false;
-};
-
-DC2.JSON.Backends.Ribs.prototype.delete_rib=function(rib_id) {
-  var success=false;
-  var a=$.ajax({
-    url:this.url+'backend_rib_delete',
-    type:'GET',
-      data:{'backend_id':this.backend_id,'rib_id':rib_id},
-      dataType:'json',
-      async:false,
-  });
-  a.done(function(data) {
-    success=true;
-  });
-  return success;
-};
-
-$(document).ready(function() {
-
-  $('.std-form').each(function() {
-    if ($(this).attr('id') != null ) {
-      DC2.Forms[$(this).attr('id')]=new DC2.Widgets.StandardForms("#"+$(this).attr('id'));
-    }
-  }); 
-  $('.select-change-div').each(function() {
-    if ($(this).attr('id') != null && $(this).attr('data-iface-type')!=undefined) {
-      new DC2.Widgets.SelectionChange('#'+$(this).attr('id'),'iface');
-    }
-  });
-  $('.list-btn-group').each(function() {
-    if ($(this).attr('id') != null ) {
-      new DC2.Widgets.ButtonGroup.Index('#'+$(this).attr('id'));
-    }
-  });
-  $('.data-list').each(function() {
-    if ($(this).attr('id') != null) {
-      new DC2.Widgets.DataList('#'+$(this).attr('id'));
-    }
-  });
-  $('.data-form').each(function() {
-    if ($(this).attr('id') != null && $(this).attr('data-remote')=='True') {
-      new DC2.Widgets.DataForms('#'+$(this).attr('id'));
-    }
-  });
-  $('.backendstats').each(function() {
-    if ($(this).attr('id') != null ) {
-      new DC2.JSONCalls.BackendStats('#'+$(this).attr('id'));
-    }
-  });
-  $('.remote_backend_servers').each(function() {
-    if ($(this).attr('id') != null) {
-      new DC2.JSONCalls.Servers('#'+$(this).attr('id'));
-    }
-  });
-
-  $('.dashboard').each(function() {
-    if ($(this).attr('id') != null) {
-      new DC2.Widgets.Dashboard('#'+$(this).attr('id'));
-    }
-  });
-
-  $('.datatable-lists').each(function() {
-    if ($(this).attr('id') != null) {
-      datatables={};
-      datatables[$(this).attr('id')]=new DC2.Widgets.Datatables('#'+$(this).attr('id'));
-    }
-  });
-
-  $('.widget-tab').each(function() {
-    if ($(this).attr('id') != null) {
-      new DC2.Widgets.Tabs('#'+$(this).attr('id'));
-    }
-  });
-  $('.edit').each(function() {
-    if ($(this).attr('id') != null) {
-      new DC2.Widgets.EditTables('#'+$(this).attr('id'));
-    }
-  });
-
-  $('.collapsible').each(function() {
-    if ($(this).attr('id') != null) {
-      new DC2.Widgets.Collapsible('#'+$(this).attr('id'));
-    }
-  });
-});

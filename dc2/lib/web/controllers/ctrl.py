@@ -62,7 +62,6 @@ class Controller(object):
             raise ValueError('action_name can\'t be None or empty')
         if action_name in self._REQ_METHODS:
             raise ValueError('action_name \'%s\' is already defined' % action_name)
-        web.debug('ACTION_METHOD: %s' % type(action_method))
         if action_method is None:
             raise ValueError('action_method is none')
 

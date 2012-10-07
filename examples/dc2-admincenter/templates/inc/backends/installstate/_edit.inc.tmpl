@@ -1,0 +1,28 @@
+<div class='row'>
+    <div class='span3'>
+        Hostname:
+    </div>
+    <div class='span6'>
+        {{installstate.hostname}}
+    </div>
+</div>
+<div class='row'>
+    <div class='span3'>
+        Deployment State:
+    </div>
+    <div class='span6'>
+        <select name='installstate[status]'>
+            {%- for installmethod in installmethods %}
+            <option value='{{installmethod.type}}'{%- if installstate.status==installmethod.type%} selected='selected'{%- endif %}>{{installmethod.name}}</option>
+            {%- endfor %}
+        </select>
+    </div>
+</div>
+<div class='row'>
+    <div class='span3'>
+        Progress
+    </div>
+    <div class='span6'>
+        {{installstate.progress}}
+    </div>
+</div>

@@ -102,7 +102,7 @@ def dc2_deployment_installstate_update(record=None):
         if check_record(record,INSTALLSTATUS_RECORD) and tbl_installstatus.find_one({"server_id":record["server_id"],"host_id":record["host_id"]}) is not None:
             doc_id=tbl_installstatus.save(record)
             return doc_id
-    return xmlrpclib.Fault(-32501, "Record couldn't be added")
+    return xmlrpclib.Fault(-32501, "Record couldn't be updated ")
     
 @rpcmethod(name="dc2.deployment.installstate.remove",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)    
 def dc2_deployment_installstate_delete(record=None):

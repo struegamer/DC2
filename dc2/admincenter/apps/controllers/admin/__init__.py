@@ -23,3 +23,11 @@ from main import MainAdminController
 from ribs import AdminRIBController
 from interfacetypes import AdminInterfaceTypesController
 from inettypes import AdminInetTypesController
+from pxe import AdminPXEController
+from backends_environments import BackendEnvironmentController
+from backends_defaultclasses import BackendDefaultClassesController
+from backends_classtemplates import BackendClassTemplatesController
+from backends_sysgroups import BackendSysGroupController
+from backends_sysusers import BackendSysUserController
+from backends_pxemethods import BackendPXEMethodController
+from installmethod import AdminInstallMethodController

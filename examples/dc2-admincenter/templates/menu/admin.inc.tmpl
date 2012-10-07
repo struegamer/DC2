@@ -2,8 +2,10 @@
 <LI class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration<b class="caret"></B></A>
     <UL class="dropdown-menu">
-        {%- for item in admin_menu %}
+        {%- for item in admin_menu|sort %}
+        {%- if item.show_in_menu == 'True' %}
         <LI>{{ links.href(item.url,item.title,item.title) }}</LI>
+        {%- endif %}
         {%- endfor %}
     </UL>
 </LI>

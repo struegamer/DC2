@@ -1,0 +1,38 @@
+<div class='container admin-edit-form' id='edit_pxemethods'>
+    {%- if page.action == 'edit' %}
+    <form class='form-horizontal' method='POST' action='/admin/backends/pxemethods/{{pxe._id}}?backend_id={{backend_id}}' id='form_backend_pxemethods'>
+        <input type='hidden' name='pxe[_id]' value='{{pxe._id}}'/>
+        {%- elif page.action=='new' %}
+        <form class='form-horizontal'method='POST' action='/admin/backends/pxemethods/?backend_id={{backend_id}}' id='form_backend_pxemethods_add'>
+            {%- endif %}
+    <input type="hidden" name="sectoken" value="{{ page.sectoken() }}"/>
+    <div class='row'>
+        <div class='span3'>
+            Hwardware Type:
+        </div>
+        <div class='span3'>
+            <input type='text' name='pxe[hardware_type]' value='{{pxe.hardware_type}}' {%- if page.action=='edit' %}disabled='disabled'{%- endif%}/>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Boot Method:
+        </div>
+        <div class='span3'>
+            <select name='pxe[pxe_bootmethod]'>
+                {%- for pxemethod in pxemethods %}
+                <option value='{{pxemethod.type}}'{%- if page.action=='edit'%}{%- if pxe.pxe_bootmethod == pxemethod.type %} selected='selected'{%-endif%}{%- else %}{%- if pxemethod.type=='none'%} selected='selected'{%- endif %}{%- endif %}>{{pxemethod.name}}</option>
+                {%- endfor %}
+            </select>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span6'>
+            <hr/>
+            <div class='pull-right'>
+                <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
+                <button class='btn btnCancel' data-cancel-url='/admin/backends/pxemethods/?backend_id={{backend_id}}'>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

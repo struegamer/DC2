@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </a>
-    <a href="#" class="brand">DC² AdminCenter</a>
+    <a href="/" class="brand">DC² AdminCenter</a>
     <div class="nav-collapse">
         <UL class="nav">
             <LI><a href="/">Home</a></LI>
@@ -29,7 +29,8 @@
                 {{ forms.form_navbar(method='POST',action='/login',class='pull-right std-form',id='loginform',remote=False,
                     fields=[
                         { 'name':'username','type':'text','placeholder':'Username','size':'','id':'','class':'' },
-                        { 'name':'password','type':'password','placeholder':'Password','size':'','id':'','class':''}
+                        { 'name':'password','type':'password','placeholder':'Password','size':'','id':'','class':''},
+                        { 'name':'action','type':'submit','value':'Login','id':'','class':'btn btn-primary'}
                     ]
                     ) 
                 }}

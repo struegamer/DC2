@@ -22,3 +22,6 @@
 from environments import Environments
 from defaultclasses import DefaultClasses
 from classtemplates import ClassTemplates
+from sysgroups import SysGroups
+from sysusers import SysUsers
+from pxemethods import PXEMethods

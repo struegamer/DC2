@@ -19,7 +19,9 @@
 #################################################################################
 
 from main import MainController
-from session import SessionController
+from session import SessionLoginController
+from session import SessionLogoutController
 from backends import BackendsCtrl
 from servers import ServerController
 from hosts import HostController
+from installstate import InstallStateController

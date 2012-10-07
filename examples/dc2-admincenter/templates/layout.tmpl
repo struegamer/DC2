@@ -5,14 +5,9 @@
         {% include 'site/css.inc.tmpl' with context %}
     </head>
     <body>
-	    <div class='container'>
-			    <div class='navbar navbar-fixed-top'>
-				    <div class='navbar-inner'>
-					    {% include 'menu/menubar.inc.tmpl' with context %}
-			            </div>
-			    </div>
-
-	    </div>
+        {%- block menubar %}
+            {%- include 'site/menubar.inc.tmpl' with context %}
+        {%- endblock %}
         {%- if page.context.session.error %}
         {% include 'site/errors.inc.tmpl' with context %}
         {%- endif %}
@@ -22,6 +17,5 @@
 
         {% include 'site/js.inc.tmpl' with context %}
         {% block js_scripts %}{% endblock %}
-
     </body>
 </html>

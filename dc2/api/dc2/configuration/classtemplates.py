@@ -34,3 +34,36 @@ class ClassTemplates(RPCClient):
     def list(self):
         datalist=self.find()
         return datalist
+    def new(self):
+        rec={}
+        rec['name']=''
+        rec['description']=''
+        rec['classes']=[]
+        return rec
+
+    def add(self, *args, **kwargs):
+        rec={}
+        if 'classtemplate' in kwargs:
+            rec=kwargs.get('classtemplate',None)
+        doc_id=self._proxy.dc2.configuration.classtemplates.add(rec)
+        return doc_id
+
+    def get(self, *args, **kwargs):
+        id='';
+        if 'id' in kwargs:
+            id=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.classtemplates.get(id)
+        return result
+    def update(self, *args, **kwargs):
+        rec={}
+        if 'classtemplate' in kwargs:
+            rec=kwargs.get('classtemplate',None)
+        doc_id=self._proxy.dc2.configuration.classtemplates.update(rec)
+        return doc_id
+    def delete(self, *args, **kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        result=self._proxy.dc2.configuration.classtemplates.remove(rec)
+        return result
+

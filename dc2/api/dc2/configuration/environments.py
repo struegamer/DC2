@@ -19,6 +19,7 @@
 #################################################################################
 
 from dc2.api import RPCClient
+import web
 
 class Environments(RPCClient):
     def find(self, rec=None):
@@ -35,4 +36,46 @@ class Environments(RPCClient):
         environmentlist=self.find()
         return environmentlist
 
+    def get(self,*args,**kwargs):
+        rec={}
+        if 'id' in kwargs:
+            rec['_id']=kwargs.get('id',None)
+        environments=self._proxy.dc2.configuration.environments.find(rec)
+        if len(environments)>0 and len(environments)<2:
+            return environments[0]
+        return None
+
+    def add(self, *args, **kwargs):
+        rec=None
+        if 'environment' in kwargs:
+            rec=kwargs['environment']
+        if rec is not None:
+            doc_id=self._proxy.dc2.configuration.environments.add(rec)
+            return doc_id
+        return None
+
+    def update(self,*args,**kwargs):
+        rec=None
+        if 'environment' in kwargs:
+            rec=kwargs['environment']
+        if rec is not None:
+            doc_id=self._proxy.dc2.configuration.environments.update(rec)
+            return doc_id
+        return None
     
+    def new(self):
+        rec={}
+        rec['name']=''
+        rec['description']=''
+        rec['variables']=[]
+        return rec
+
+    def delete(self, *args, **kwargs):
+        rec=None
+        if 'environment' in kwargs:
+            rec=kwargs['environment']
+        if rec is not None:
+            result=self._proxy.dc2.configuration.environments.delete(rec)
+            return result
+        return None
+

@@ -1,6 +1,6 @@
 <div class='container'>
     <div class='row'>
-        <div class='span8'>
+        <div class='span12'>
             <table class='table table-bordered tabled-striped'>
                 <thead>
                     <tr>
@@ -9,7 +9,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {%- for mac in macs %}
+			{%- for mac in macs %}
                     <tr>
                         <td>{{mac.mac_addr}}</td>
                         <td>{{mac.device_name}}</td>

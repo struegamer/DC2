@@ -77,7 +77,7 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class MainAdminController(AdminController):
-    CONTROLLER_IDENT={'title':'Admin Home','url':'/admin'}
+    CONTROLLER_IDENT={'title':'Admin Home','url':'/admin','show_in_menu':'True'}
 
     @Logger
     @needs_auth

@@ -1,0 +1,72 @@
+<div class='container admin-edit-form' id='edit_classtemplates'>
+    {%- if page.action == 'new' %}
+    <form class='form-horizontal' method='POST' action='/admin/backends/classtemplates/?backend_id={{backend_id}}' id='backend_classtemplates_add'>
+        {%- elif page.action == 'edit' %}
+        <form class='form-horizontal' method='POST' action='/admin/backends/classtemplates/{{tmpl._id}}?backend_id={{backend_id}}' id='backend_classtemplate_edit'>
+            <input type='hidden' name='classtemplate[_id]' value='{{tmpl._id}}' />
+            {%- endif %}
+        <input type='hidden' name='sectoken' value='{{page.sectoken()}}'/>
+
+    <div class='row'>
+        <div class='span3'>
+            Template Name:
+        </div>
+        <div class='span6'>
+            <input type='text' name='classtemplate[name]' value='{{tmpl.name}}' />
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Description
+        </div>
+        <div class='span6'>
+            <input type='text' name='classtemplate[description]' value='{{tmpl.description}}' />
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            Defaultclasses
+        </div>
+        <div class='span3'>
+            &nbsp;
+        </div>
+        <div class='span3'>
+            Template Classes
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span3'>
+            <select name='defaultclasses' multiple='multiple' id='defaultclasses' size='10'>
+                {%- for cls in defaultclasses %}
+                <option value='{{cls.classname}}'>{{cls.classname}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class='span3'>
+            <div class='btn-group btn-group-vertical'>
+                <button class='btn btnPlus'><i class='icon-plus'></i></button>
+                <button class='btn btnMinus'><i class='icon-minus'></i></button>
+            </div>
+        </div>
+        <div class='span3'>
+            <select name='classtemplate[classes]' multiple='multiple' id='template_classes' size='10'>
+                {%- if page.action=='edit' %}
+                {%- for cls in tmpl.classes %}
+                <option value='{{cls}}'>{{cls}}</option>
+                {%- endfor %}
+                {%- endif %}
+            </select>
+        </div>
+    <div class='row'>
+        <div class='span9'>
+            <hr/>
+            <div class='pull-right'>
+                <button class='btn btn-primary btnSave' data-action='{{page.action}}'>Save</button>
+                <button class='btn btnCancel' data-cancel-url='/admin/backends/classtemplates/?backend_id={{backend_id}}'>Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </form>
+</div>
