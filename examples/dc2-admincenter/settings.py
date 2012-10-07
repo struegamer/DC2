@@ -71,7 +71,8 @@ TEMPLATE_DIR="%s/templates" % os.path.dirname(__file__)
 
 CONTROLLER_MAPPINGS={
         '/':'MainController',
-        '/login':'SessionController',
+        '/login':'SessionLoginController',
+        '/logout':'SessionLogoutController',
         '/backends':'BackendsCtrl',
         '/backends/servers':'ServerController',
         '/backends/hosts':'HostController',

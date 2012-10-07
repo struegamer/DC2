@@ -72,7 +72,7 @@ except ImportError,e:
 
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-class SessionController(RESTController):
+class SessionLoginController(RESTController):
     @csrf_protected
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
@@ -98,3 +98,11 @@ class SessionController(RESTController):
             web.ctx.session.username=params.username
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'/','absolute':True}})
         return result
+
+class SessionLogoutController(RESTController):
+    def _index(self, *args, **kwargs):
+        verb=kwargs.get('verb',None)
+        web.ctx.session.kill()
+        result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'/','absolute':True}})
+        return result
+
