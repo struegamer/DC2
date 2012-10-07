@@ -1,8 +1,14 @@
+dc2 (0.9-0ubuntu1~precise40) precise; urgency=low
+
+  * New Upstream version
+
+ -- Stephan Adig <sh@sourcecode.de>  Sun, 07 Oct 2012 19:39:21 +0200
+
 dc2 (0.9-0ubuntu1~precise1) precise; urgency=low
 
   * New Upstream Version
 
- -- Stephan Adig <sadig@itloaner005>  Tue, 24 Jul 2012 12:39:59 -0700
+ -- Stephan Adig <sh@sourcecode.de>  Tue, 24 Jul 2012 12:39:59 -0700
 
 dc2 (0.8-0ubuntu1~precise8) precise; urgency=low
 
