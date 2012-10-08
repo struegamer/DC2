@@ -19,33 +19,25 @@
 #################################################################################
 
 import sys
-import types
 import logging
 
 try:
-    import web
-except ImportError,e:
-    print 'you do not have web.py installed'
+    from settings import APP_LOGGER_NAME
+    from settings import LOGFILE
+    from settings import LOGLEVEL
+    from settings import LOGFORMAT
+except ImportError, e:
+    print "You don't have a settings file"
     print e
     sys.exit(1)
 
+logger=logging.getLogger(APP_LOGGER_NAME)
+logger.setLevel(LOGLEVEL)
 
-class Logger(object):
-    def __init__(self, *args, **kwargs):
-        self._args=args
-        self._kwargs=kwargs
-        self._logger=None
-        if 'logger' in self._kwargs:
-            self._logger=self._kwargs.get('logger',None)
+fh=logging.FileHandler(LOGFILE)
+fh.setLevel(LOGLEVEL)
+formatter=logging.Formatter(LOGFORMAT)
+fh.setFormatter(formatter)
 
-    def _debug(self, msg):
-        if self._logger is not None:
-            web.debug('LOGGER: %s' % self._logger)
-            self._logger.debug(msg)
-    def __call__(self,func):
-        def newf(*args, **kwargs):
-            slf=args[0]
-            self._debug('CLASS: %s\tMETHOD: %s' % (slf.__class__.__name__, func.__name__))
-            ret=func(*args, **kwargs)
-            return ret
-        return newf
+logger.addHandler(fh)
+

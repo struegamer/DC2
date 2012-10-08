@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -78,7 +79,7 @@ class AdminController(RESTController):
     def __init__(self, *args, **kwargs):
         super(AdminController,self).__init__(*args, **kwargs)
         self._add_to_admin_modules()
-    @Logger()
+    @Logger(logger=logger)
     def _add_to_admin_modules(self):
         if self.CONTROLLER_IDENT not in ADMIN_MODULES:
             ADMIN_MODULES.append(self.CONTROLLER_IDENT)

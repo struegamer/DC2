@@ -32,6 +32,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -84,12 +85,12 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class BackendsCtrl(RESTController):
-    @Logger()
+    @Logger(logger=logger)
     def __init__(self, *args, **kwargs):
         super(BackendsCtrl,self).__init__(*args, **kwargs)
         self._prepare_page()
 
-    @Logger()
+    @Logger(logger=logger)
     def _prepare_page(self):
         self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
@@ -104,7 +105,7 @@ class BackendsCtrl(RESTController):
             self._fill_backends()
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
@@ -120,7 +121,7 @@ class BackendsCtrl(RESTController):
             return result
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
@@ -135,7 +136,7 @@ class BackendsCtrl(RESTController):
                 output={'content':self._page.render()})
             return result
 
-    @Logger()
+    @Logger(logger=logger)
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})

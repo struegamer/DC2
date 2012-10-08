@@ -31,9 +31,16 @@ except ImportError,e:
 
 try:
     from dc2.lib.web.requesthandlers import RequestHandler
+    from dc2.lib.logging import Logger
 except ImportError,e:
     print 'errors in dc2'
     print e
+    sys.exit(1)
+
+try:
+    from dc2.admincenter.globals import logger
+except ImportError,e:
+    print 'Error: %s in File: %s' % (e, __file__)
     sys.exit(1)
 
 try:
@@ -44,7 +51,7 @@ except ImportError,e:
     sys.exit(1)
 
 class MainAppHandler(RequestHandler):
-    @Logger()
+    @Logger(logger=logger)
     def _import_controllers(self):
         super(MainAppHandler,self)._import_controllers()
         self._controller_modules={}

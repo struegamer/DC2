@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -95,12 +96,12 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
 class HostController(RESTController):
-    @Logger()
+    @Logger(logger=logger)
     def __init__(self, *args, **kwargs):
         super(HostController,self).__init__(*args,**kwargs)
         self._prepare_page()
 
-    @Logger()
+    @Logger(logger=logger)
     def _prepare_page(self):
         self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
@@ -115,7 +116,7 @@ class HostController(RESTController):
             self._fill_backends()
         self._page.set_page_value('controller_path',self._controller_path)
 
-    @Logger()
+    @Logger(logger=logger)
     def _init_backend(self):
         params=web.input()
         self._backend_id=params.get('backend_id',None)
@@ -133,7 +134,7 @@ class HostController(RESTController):
         self._inet_list=inettypes.inet_list()
         
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         host_id=None
@@ -163,7 +164,7 @@ class HostController(RESTController):
                         output={'content':self._page.render()})
                 return result
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         host_id=None
@@ -201,7 +202,7 @@ class HostController(RESTController):
             return result
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _update(self, *args, **kwargs):
         params=web.input()
         backend_id=params.get('backend_id',None)
@@ -238,7 +239,7 @@ class HostController(RESTController):
 
 
             
-    @Logger()
+    @Logger(logger=logger)
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})

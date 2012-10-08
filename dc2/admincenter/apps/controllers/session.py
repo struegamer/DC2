@@ -32,6 +32,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -48,6 +49,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
+    from dc2.lib.logging import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -65,6 +67,7 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
+    from dc2.admincenter.lib.auth import needs_auth
 except ImportError,e:
     print "There are dc2.admincenter modules missing"
     print e
@@ -74,7 +77,7 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class SessionLoginController(RESTController):
     @csrf_protected
-    @Logger()
+    @Logger(logger=logger)
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         web.debug('SessionController: create')
@@ -102,7 +105,7 @@ class SessionLoginController(RESTController):
 
 class SessionLogoutController(RESTController):
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         web.ctx.session.kill()

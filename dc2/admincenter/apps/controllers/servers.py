@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -89,11 +90,11 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class ServerController(RESTController):
-    @Logger()
+    @Logger(logger=logger)
     def __init__(self, *args, **kwargs):
         super(ServerController,self).__init__(*args, **kwargs)
         self._prepare_page()
-    @Logger()
+    @Logger(logger=logger)
     def _prepare_page(self):
         self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
@@ -108,7 +109,7 @@ class ServerController(RESTController):
             self._fill_backends()
         self._page.set_page_value('controller_path',self._controller_path)
 
-    @Logger()
+    @Logger(logger=logger)
     def _init_backend(self):
         params=web.input()
         self._backend_id=params.get('backend_id',None)
@@ -121,7 +122,7 @@ class ServerController(RESTController):
         self._hosts=Hosts(self._transport)
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         server_id=None
@@ -152,7 +153,7 @@ class ServerController(RESTController):
             return result
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._init_backend()
@@ -184,7 +185,7 @@ class ServerController(RESTController):
 
     @needs_auth
     @csrf_protected
-    @Logger()
+    @Logger(logger=logger)
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._init_backend()
@@ -228,7 +229,7 @@ class ServerController(RESTController):
         result=self._prepare_output('json',verb['request_content_type'],'json',{'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path,data['server_id'],self._backend_id),'absolute':'true'}})
         return result
 
-    @Logger()
+    @Logger(logger=logger)
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})

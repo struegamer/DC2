@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -81,7 +82,7 @@ class MainAdminController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)

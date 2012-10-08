@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -103,7 +104,7 @@ class BackendPXEMethodController(AdminController):
     
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _index(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -127,7 +128,7 @@ class BackendPXEMethodController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _update_hardware(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -144,7 +145,7 @@ class BackendPXEMethodController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _new(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -170,7 +171,7 @@ class BackendPXEMethodController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _edit(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -195,7 +196,7 @@ class BackendPXEMethodController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _create(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -216,7 +217,7 @@ class BackendPXEMethodController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _update(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -237,7 +238,7 @@ class BackendPXEMethodController(AdminController):
 
     @needs_auth
     @needs_admin
-    @Logger()
+    @Logger(logger=logger)
     def _delete(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)

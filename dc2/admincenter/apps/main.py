@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -73,7 +74,7 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class Home(object):
-    @Logger()
+    @Logger(logger=logger)
     def GET(self):
         page=Page('index.tmpl',tmpl_env,web.ctx)
         page.set_title('DC2-AdminCenter - Index')
@@ -89,7 +90,7 @@ class Home(object):
             
 class Login(object):
     @csrf_protected
-    @Logger()
+    @Logger(logger=logger)
     def POST(self):
         params=web.input()
         if KERBEROS_AUTH_ENABLED:

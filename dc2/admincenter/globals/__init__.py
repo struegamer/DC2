@@ -22,4 +22,4 @@ from db import connectionpool
 from webconst import CSS_FILES
 from webconst import JS_LIBS
 from admin import ADMIN_MODULES
-
+from log import logger

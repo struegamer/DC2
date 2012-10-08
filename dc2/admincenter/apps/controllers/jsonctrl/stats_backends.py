@@ -43,6 +43,7 @@ try:
     from dc2.admincenter.lib.controllers import JSONController
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print 'you have a problem with dc2.admincenter'
     print e
@@ -62,7 +63,7 @@ class JSONBackendController(JSONController):
         super(JSONBackendController,self).__init__(*args,**kwargs)
         self._prepare_urls()
     
-    @Logger()
+    @Logger(logger=logger)
     def _prepare_urls(self):
         self.add_url_handler_to_verb('GET','backendstats','backend_stats')
         self.add_process_method('backend_stats',self._backend_stats)
@@ -77,7 +78,7 @@ class JSONBackendController(JSONController):
         self.add_process_method('backend_deployment_stats',self._backend_deployment_stats)
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _backend_stats(self,*args,**kwargs):
         web.debug('backend_stats')
         verb=kwargs.get('verb',None)
@@ -88,7 +89,7 @@ class JSONBackendController(JSONController):
             web.debug('_backend_stats: %s' % result)
             return result
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _backend_servers_stats(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
@@ -106,7 +107,7 @@ class JSONBackendController(JSONController):
             return result
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _backend_hosts_stats(self,*args,**kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
@@ -124,7 +125,7 @@ class JSONBackendController(JSONController):
             return result
     
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _backend_deployment_stats(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

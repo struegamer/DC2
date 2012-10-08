@@ -43,6 +43,7 @@ try:
     from dc2.admincenter.lib.controllers import JSONController
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print 'you have a problem with dc2.admincenter'
     print e
@@ -70,7 +71,7 @@ class JSONServerBackendController(JSONController):
         self.add_process_method('backend_server_get_host',self._backend_server_get_host)
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _backend_server_list(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
@@ -87,7 +88,7 @@ class JSONServerBackendController(JSONController):
         return result
 
     @needs_auth
-    @Logger()
+    @Logger(logger=logger)
     def _backend_server_get_host(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
