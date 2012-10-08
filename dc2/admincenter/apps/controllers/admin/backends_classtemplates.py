@@ -95,9 +95,9 @@ class BackendClassTemplatesController(AdminController):
         self._defaultclasses=DefaultClasses(self._transport)
         self._classtemplates=ClassTemplates(self._transport)
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _index(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -117,9 +117,9 @@ class BackendClassTemplatesController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _new(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -141,9 +141,9 @@ class BackendClassTemplatesController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _edit(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -177,9 +177,9 @@ class BackendClassTemplatesController(AdminController):
 
 
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _create(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -199,9 +199,9 @@ class BackendClassTemplatesController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _update(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -223,9 +223,9 @@ class BackendClassTemplatesController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _delete(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
