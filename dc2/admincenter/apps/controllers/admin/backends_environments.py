@@ -92,9 +92,9 @@ class BackendEnvironmentController(AdminController):
         self._transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
         self._environments=Environments(self._transport)
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _index(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -113,9 +113,9 @@ class BackendEnvironmentController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _new(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -137,9 +137,9 @@ class BackendEnvironmentController(AdminController):
         return result
 
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _edit(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -159,9 +159,9 @@ class BackendEnvironmentController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -186,9 +186,9 @@ class BackendEnvironmentController(AdminController):
         return result
 
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -212,9 +212,9 @@ class BackendEnvironmentController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _delete(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
