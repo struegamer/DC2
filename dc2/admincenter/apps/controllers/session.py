@@ -74,6 +74,7 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class SessionLoginController(RESTController):
     @csrf_protected
+    @Logger()
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         web.debug('SessionController: create')
@@ -100,6 +101,8 @@ class SessionLoginController(RESTController):
         return result
 
 class SessionLogoutController(RESTController):
+    @needs_auth
+    @Logger()
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         web.ctx.session.kill()

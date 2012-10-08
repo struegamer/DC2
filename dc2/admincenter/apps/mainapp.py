@@ -44,6 +44,7 @@ except ImportError,e:
     sys.exit(1)
 
 class MainAppHandler(RequestHandler):
+    @Logger()
     def _import_controllers(self):
         super(MainAppHandler,self)._import_controllers()
         self._controller_modules={}

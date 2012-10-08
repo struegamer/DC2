@@ -73,6 +73,7 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class Home(object):
+    @Logger()
     def GET(self):
         page=Page('index.tmpl',tmpl_env,web.ctx)
         page.set_title('DC2-AdminCenter - Index')
@@ -88,6 +89,7 @@ class Home(object):
             
 class Login(object):
     @csrf_protected
+    @Logger()
     def POST(self):
         params=web.input()
         if KERBEROS_AUTH_ENABLED:

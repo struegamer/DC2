@@ -78,7 +78,7 @@ class AdminController(RESTController):
     def __init__(self, *args, **kwargs):
         super(AdminController,self).__init__(*args, **kwargs)
         self._add_to_admin_modules()
-    @Logger
+    @Logger()
     def _add_to_admin_modules(self):
         if self.CONTROLLER_IDENT not in ADMIN_MODULES:
             ADMIN_MODULES.append(self.CONTROLLER_IDENT)

@@ -89,9 +89,11 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class ServerController(RESTController):
+    @Logger()
     def __init__(self, *args, **kwargs):
         super(ServerController,self).__init__(*args, **kwargs)
         self._prepare_page()
+    @Logger()
     def _prepare_page(self):
         self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
@@ -106,6 +108,7 @@ class ServerController(RESTController):
             self._fill_backends()
         self._page.set_page_value('controller_path',self._controller_path)
 
+    @Logger()
     def _init_backend(self):
         params=web.input()
         self._backend_id=params.get('backend_id',None)
@@ -117,8 +120,8 @@ class ServerController(RESTController):
         self._ribs=Ribs(self._transport)
         self._hosts=Hosts(self._transport)
 
-    @Logger
     @needs_auth
+    @Logger()
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         server_id=None
@@ -148,8 +151,8 @@ class ServerController(RESTController):
                 output={'content':self._page.render()})
             return result
 
-    @Logger
     @needs_auth
+    @Logger()
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._init_backend()
@@ -179,9 +182,9 @@ class ServerController(RESTController):
                 output={'content':self._page.render()})
             return result
 
-    @Logger
     @needs_auth
     @csrf_protected
+    @Logger()
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._init_backend()
@@ -225,6 +228,7 @@ class ServerController(RESTController):
         result=self._prepare_output('json',verb['request_content_type'],'json',{'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path,data['server_id'],self._backend_id),'absolute':'true'}})
         return result
 
+    @Logger()
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})

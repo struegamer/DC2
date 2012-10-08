@@ -74,10 +74,12 @@ except ImportError,e:
 tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class MainController(RESTController):
+    @Logger()
     def __init__(self, *args, **kwargs):
         super(MainController,self).__init__(self, *args, **kwargs)
         self._prepare_page()
 
+    @Logger()
     def _prepare_page(self):
         self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
@@ -90,6 +92,7 @@ class MainController(RESTController):
             self._page.add_page_data({'user':user_info})
             self._page.add_page_data({'admin_is_link':True})
 
+    @Logger()
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         self._page.template_name=verb['template']
@@ -100,6 +103,7 @@ class MainController(RESTController):
                 output={'content':self._page.render()})
         return result
 
+    @Logger()
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})
