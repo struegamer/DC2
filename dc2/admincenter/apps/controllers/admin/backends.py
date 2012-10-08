@@ -80,9 +80,9 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class BackendsController(AdminController):
     CONTROLLER_IDENT={'title':'DC2 Backends','url':'/admin/backends','show_in_menu':'True'}
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
@@ -93,9 +93,9 @@ class BackendsController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _new(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
@@ -109,9 +109,9 @@ class BackendsController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)
@@ -125,9 +125,9 @@ class BackendsController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -148,9 +148,9 @@ class BackendsController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -171,9 +171,9 @@ class BackendsController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _delete(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         request_data=verb.get('request_data',None)
