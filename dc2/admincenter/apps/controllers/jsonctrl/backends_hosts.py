@@ -70,6 +70,7 @@ class JSONHostBackendController(JSONController):
         self.add_process_method('backend_host_get_server_info',self._backend_host_get_server_info)
         
     @needs_auth
+    @Logger()
     def _backend_host_list(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
@@ -86,6 +87,7 @@ class JSONHostBackendController(JSONController):
         return result
 
     @needs_auth
+    @Logger()
     def _backend_host_get_server_info(self,*args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

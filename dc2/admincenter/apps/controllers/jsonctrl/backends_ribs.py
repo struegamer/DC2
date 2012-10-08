@@ -64,8 +64,8 @@ class JSONRibBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backend_rib_delete','backend_rib_delete')
         self.add_process_method('backend_rib_delete',self._backend_rib_delete)
 
-    @Logger
     @needs_auth
+    @Logger()
     def _backend_rib_delete(self,*args,**kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

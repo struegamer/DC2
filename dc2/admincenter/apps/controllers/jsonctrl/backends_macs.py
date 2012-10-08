@@ -64,8 +64,8 @@ class JSONMacBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backend_mac_delete','backend_mac_delete')
         self.add_process_method('backend_mac_delete',self._backend_mac_delete)
 
-    @Logger
     @needs_auth
+    @Logger()
     def _backend_mac_delete(self,*args,**kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

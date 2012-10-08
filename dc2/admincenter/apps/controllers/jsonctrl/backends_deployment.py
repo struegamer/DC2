@@ -68,6 +68,7 @@ class JSONDeploymentBackendController(JSONController):
         self.add_process_method('backend_deployment_list',self._backend_deployment_list)
 
     @needs_auth
+    @Logger()
     def _backend_deployment_list(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:
