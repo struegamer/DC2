@@ -79,9 +79,9 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class MainAdminController(AdminController):
     CONTROLLER_IDENT={'title':'Admin Home','url':'/admin','show_in_menu':'True'}
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)

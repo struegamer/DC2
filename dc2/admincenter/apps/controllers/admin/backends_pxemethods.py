@@ -101,9 +101,9 @@ class BackendPXEMethodController(AdminController):
         self.add_url_handler_to_verb('GET','update_hardware','update_hardware')
         self.add_process_method('update_hardware',self._update_hardware)
     
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _index(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -125,9 +125,9 @@ class BackendPXEMethodController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _update_hardware(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -142,9 +142,9 @@ class BackendPXEMethodController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _new(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -168,9 +168,9 @@ class BackendPXEMethodController(AdminController):
 
 
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _edit(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -193,9 +193,9 @@ class BackendPXEMethodController(AdminController):
         return result
 
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _create(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -214,9 +214,9 @@ class BackendPXEMethodController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _update(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -235,9 +235,9 @@ class BackendPXEMethodController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger()
     def _delete(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
