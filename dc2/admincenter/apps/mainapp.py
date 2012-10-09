@@ -31,7 +31,7 @@ except ImportError,e:
 
 try:
     from dc2.lib.web.requesthandlers import RequestHandler
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print 'errors in dc2'
     print e
