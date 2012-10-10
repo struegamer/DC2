@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import connectionpool
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -50,7 +51,7 @@ try:
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
     from dc2.lib.transports import get_xmlrpc_transport
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -95,10 +96,12 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
 class HostController(RESTController):
+    @Logger(logger=logger)
     def __init__(self, *args, **kwargs):
         super(HostController,self).__init__(*args,**kwargs)
         self._prepare_page()
 
+    @Logger(logger=logger)
     def _prepare_page(self):
         self._page=Page(None,tmpl_env,self._request_context)
         self._page.set_cssfiles(CSS_FILES)
@@ -113,6 +116,7 @@ class HostController(RESTController):
             self._fill_backends()
         self._page.set_page_value('controller_path',self._controller_path)
 
+    @Logger(logger=logger)
     def _init_backend(self):
         params=web.input()
         self._backend_id=params.get('backend_id',None)
@@ -129,8 +133,8 @@ class HostController(RESTController):
         self._itypes_list=interfacetypes.itype_list()
         self._inet_list=inettypes.inet_list()
         
-    @Logger
     @needs_auth
+    @Logger(logger=logger)
     def _show(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         host_id=None
@@ -159,8 +163,8 @@ class HostController(RESTController):
                 result = self._prepare_output(verb['request_type'],verb['request_content_type'],
                         output={'content':self._page.render()})
                 return result
-    @Logger
     @needs_auth
+    @Logger(logger=logger)
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         host_id=None
@@ -197,8 +201,8 @@ class HostController(RESTController):
                     output={'content':self._page.render()})
             return result
 
-    @Logger
     @needs_auth
+    @Logger(logger=logger)
     def _update(self, *args, **kwargs):
         params=web.input()
         backend_id=params.get('backend_id',None)
@@ -235,6 +239,7 @@ class HostController(RESTController):
 
 
             
+    @Logger(logger=logger)
     def _fill_backends(self):
         backend_list=backends.backend_list()
         self._page.add_page_data({'backendlist':backend_list})

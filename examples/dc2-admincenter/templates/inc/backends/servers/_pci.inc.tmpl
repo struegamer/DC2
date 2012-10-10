@@ -1,0 +1,34 @@
+<div class='container'>
+    <div class='row'>
+        <div class='span12'>
+            {%- if server.pci_devices %}
+            <table class='table table-bordered tabled-striped'>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Slot</th>
+                        <th>Vendor</th>
+                        <th>Device</th>
+                        <th>Subsystem Vendor</th>
+                        <th>Subsystem Device</th>
+                        <th>Revision</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for pci in server.pci_devices %}
+                    <tr>
+                        <td>{{pci.class}}</td>
+                        <td>{{pci.slot}}</td>
+                        <td>{{pci.vendor}}</td>
+                        <td>{{pci.device}} <a target='_new' href='http://google.com/search?q={{pci.device}}' class='btn btn-small pull-right'>Search for this device on Google</a></td>
+                        <td>{{pci.svendor}}</td>
+                        <td>{{pci.sdevice}}</td>
+                        <td>{{pci.rev}}</td>
+                    </tr>
+                    {%- endfor %}
+                </tbody>
+            </table>
+            {%- endif %}
+        </div>
+    </div>
+</div>

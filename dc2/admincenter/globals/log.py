@@ -19,36 +19,25 @@
 #################################################################################
 
 import sys
-import os
-import os.path
-import re
-import types
-import json
+import logging
 
 try:
-    import web
-except ImportError,e:
-    print "You need to install web.py"
-    sys.exit(1)
-
-try:
-    from dc2.lib.decorators import Logger
-    from dc2.lib.web.controllers import Controller
-except ImportError,e:
-    print 'you do not have dc2.lib installed'
+    from settings import APP_LOGGER_NAME
+    from settings import LOGFILE
+    from settings import LOGLEVEL
+    from settings import LOGFORMAT
+except ImportError, e:
+    print "You don't have a settings file"
     print e
     sys.exit(1)
 
-class JSONController(Controller):
+logger=logging.getLogger(APP_LOGGER_NAME)
+logger.setLevel(LOGLEVEL)
 
-    def _content_type(self,*args, **kwargs):
-        return 'application/json; charset=utf-8'
+fh=logging.FileHandler(LOGFILE)
+fh.setLevel(LOGLEVEL)
+formatter=logging.Formatter(LOGFORMAT)
+fh.setFormatter(formatter)
 
-    def _prepare_output(self, *args, **kwargs):
-        # Takes -> result
-        content=kwargs.get('result',None)
-        result={'format':'json','content-type':self._content_type(),'output':json.dumps(content)}
-        return result
-
-
+logger.addHandler(fh)
 

@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -49,7 +50,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -78,7 +79,7 @@ class AdminController(RESTController):
     def __init__(self, *args, **kwargs):
         super(AdminController,self).__init__(*args, **kwargs)
         self._add_to_admin_modules()
-    @Logger
+    @Logger(logger=logger)
     def _add_to_admin_modules(self):
         if self.CONTROLLER_IDENT not in ADMIN_MODULES:
             ADMIN_MODULES.append(self.CONTROLLER_IDENT)

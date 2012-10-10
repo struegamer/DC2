@@ -32,7 +32,7 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
     from dc2.lib.transports import get_xmlrpc_transport
 except ImportError,e:
     print 'you do not have dc2.lib installed'
@@ -43,6 +43,7 @@ try:
     from dc2.admincenter.lib.controllers import JSONController
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print 'you have a problem with dc2.admincenter'
     print e
@@ -64,8 +65,8 @@ class JSONRibBackendController(JSONController):
         self.add_url_handler_to_verb('GET','backend_rib_delete','backend_rib_delete')
         self.add_process_method('backend_rib_delete',self._backend_rib_delete)
 
-    @Logger
     @needs_auth
+    @Logger(logger=logger)
     def _backend_rib_delete(self,*args,**kwargs):
         verb=kwargs.get('verb',None)
         if verb is not None:

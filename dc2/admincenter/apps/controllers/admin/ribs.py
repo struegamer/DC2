@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -50,7 +51,7 @@ try:
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
     from dc2.lib.web.helpers import convert_values
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -81,9 +82,9 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class AdminRIBController(AdminController):
     CONTROLLER_IDENT={'title':'DC2 RIBs','url':'/admin/ribs','show_in_menu':'True'}
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _index(self,*args, **kwargs):
         verb=kwargs.get('verb',None)
         backend_list=backends.backend_list()
@@ -95,9 +96,9 @@ class AdminRIBController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _new(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         backend_list=backends.backend_list()
@@ -109,9 +110,9 @@ class AdminRIBController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _create(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -126,9 +127,9 @@ class AdminRIBController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _edit(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         backend_list=backends.backend_list()
@@ -140,9 +141,9 @@ class AdminRIBController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _update(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         params=web.input()
@@ -158,9 +159,9 @@ class AdminRIBController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':self._controller_path,'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _delete(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         request_data=verb.get('request_data',None)

@@ -101,11 +101,13 @@ CONTROLLER_MAPPINGS={
 #
 # LOGFILE settings
 #
+APP_LOGGER_NAME='dc2-admincenter'
 if os.path.exists("/var/log/dc2-admincenter"):
     LOGFILE = "/var/log/dc2/dc2-admincenter.log"
 else:
     LOGFILE = "dc2-admincenter.log"    
 LOGLEVEL = logging.DEBUG
+LOGFORMAT='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 
 APPNAME = "dc2-admincenter"

@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -49,7 +50,7 @@ try:
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
     from dc2.lib.web.controllers import RESTController
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -79,9 +80,9 @@ tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 class MainAdminController(AdminController):
     CONTROLLER_IDENT={'title':'Admin Home','url':'/admin','show_in_menu':'True'}
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _index(self, *args, **kwargs):
         verb=kwargs.get('verb',None)
         page=self._prepare_page(verb)

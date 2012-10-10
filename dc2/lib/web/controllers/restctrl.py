@@ -38,7 +38,7 @@ except ImportError,e:
     sys.exit(1)
 
 try:
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print 'you do not have dc2.lib installed'
     print e

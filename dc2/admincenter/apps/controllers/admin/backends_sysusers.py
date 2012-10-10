@@ -33,6 +33,7 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import ADMIN_MODULES
+    from dc2.admincenter.globals import logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
@@ -51,7 +52,7 @@ try:
     from dc2.lib.web.controllers import RESTController
     from dc2.lib.web.helpers import convert_values
     from dc2.lib.transports import get_xmlrpc_transport
-    from dc2.lib.logging import Logger
+    from dc2.lib.decorators import Logger
 except ImportError,e:
     print "You are missing the necessary DC2 modules"
     print e
@@ -93,9 +94,9 @@ class BackendSysUserController(AdminController):
         self._transport=get_xmlrpc_transport(backend['backend_url'],backend['is_kerberos'])
         self._sysusers=SysUsers(self._transport)
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _index(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -115,9 +116,9 @@ class BackendSysUserController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _new(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -137,9 +138,9 @@ class BackendSysUserController(AdminController):
         result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'content':page.render()})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _edit(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -160,9 +161,9 @@ class BackendSysUserController(AdminController):
         return result
 
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _create(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -185,9 +186,9 @@ class BackendSysUserController(AdminController):
         return result
 
        
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _update(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)
@@ -209,9 +210,9 @@ class BackendSysUserController(AdminController):
             result=self._prepare_output(verb['request_type'],verb['request_content_type'],output={'redirect':{'url':'%s?backend_id=%s' % (self._controller_path,backend_id),'absolute':'true'}})
         return result
 
-    @Logger
     @needs_auth
     @needs_admin
+    @Logger(logger=logger)
     def _delete(self, *args, **kwargs):
         params=web.input()
         verb=kwargs.get('verb',None)

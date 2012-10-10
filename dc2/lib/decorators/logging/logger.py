@@ -19,21 +19,33 @@
 #################################################################################
 
 import sys
-
+import types
+import logging
 
 try:
     import web
 except ImportError,e:
-    print 'you do not have web.py instlled'
+    print 'you do not have web.py installed'
     print e
     sys.exit(1)
 
 
 class Logger(object):
-    def __init__(self, func):
-        self.func = func
-    def __get__(self, obj, type=None):
-        return self.__class__(self.func.__get__(obj, type))
-    def __call__(self, *args, **kw):
-        web.debug('Entering: %s' % self.func)
-        return self.func(*args, **kw)
+    def __init__(self, *args, **kwargs):
+        self._args=args
+        self._kwargs=kwargs
+        self._logger=None
+        if 'logger' in self._kwargs:
+            self._logger=self._kwargs.get('logger',None)
+
+    def _debug(self, msg):
+        if self._logger is not None:
+            web.debug('LOGGER: %s' % self._logger)
+            self._logger.debug(msg)
+    def __call__(self,func):
+        def newf(*args, **kwargs):
+            slf=args[0]
+            self._debug('CLASS: %s\tMETHOD: %s' % (slf.__class__.__name__, func.__name__))
+            ret=func(*args, **kwargs)
+            return ret
+        return newf
