@@ -5,6 +5,7 @@
                 <LI class='active'><a href='#dc_server_general_{{backend_id}}_{{server._id}}' data-toggle='tab'>General Information</a></li>
                 <LI><a href='#dc_server_mac_{{backend_id}}_{{server._id}}' data-toggle='tab'>Network Interfaces</a></li>
                 <LI><a href='#dc_server_rib_{{backend_id}}_{{server._id}}' data-toggle='tab'>Remote Insight Boards</a></LI>
+                <LI><a href='#dc_server_pci_{{backend_id}}_{{server._id}}' data-toggle='tab'>PCI Devices</a></LI>
             </UL>
             {%- if page.action=='edit' %}
             <form method='POST' action='{{page.controller_path}}/{{server._id}}?backend_id={{backend_id}}'>
@@ -33,6 +34,11 @@
                         {%- endif %}
                         {%- if page.action=='edit' %}
                         {%- include 'inc/backends/servers/_edit_ribs.inc.tmpl' with context %}
+                        {%- endif %}
+                    </div>
+                    <div class='tab-pane' id='dc_server_pci_{{backend_id}}_{{server._id}}'>
+                        {%- if page.action=='show' or page.action=='edit' %}
+                        {%- include 'inc/backends/servers/_pci.inc.tmpl' with context %}
                         {%- endif %}
                     </div>
                 </div>
