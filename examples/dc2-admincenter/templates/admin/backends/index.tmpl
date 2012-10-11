@@ -29,6 +29,18 @@
                         <td class="data-cell"><div class="pull-right">{%- if items.is_kerberos %}<i class="icon-ok-sign"></i>{%-else%}<i class="icon-remove-sign"></i>{%-endif%}</div></td>
                         <td>
                             <div class='btn-group pull-right'>
+                                <a href='#' class='btn btn-small'>Sync</a>
+                                <button class='btn btn-small dropdown-toggle' data-toggle='dropdown'>
+                                    <span class='caret'></span>
+                                </button>
+                                <ul class='dropdown-menu'>
+                                    <li>Environments</li>
+                                    <li>Default Classes</li>
+                                    <li>Class Tempaltes</li>
+                                </ul>
+                            </div>
+                            &nbsp;
+                            <div class='btn-group pull-right'>
                                 <a href='#' class='btn btn-small'>Choose</a>
                                 <button class='btn btn-small dropdown-toggle' data-toggle='dropdown'>
                                     <span class='caret'></span>
@@ -42,6 +54,7 @@
                                     <li>{{ links.href('/admin/backends/pxemethods?backend_id=%s' % items._id,'PXE Bootmethods') }}</li>
                                 </ul>
                             </div>
+ 
                         </td>
                     </tr>
                     {%- endfor %}
