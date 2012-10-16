@@ -117,6 +117,7 @@ setup(name='dc2.lib',
             'dc2.lib.ipam',
             'dc2.lib.ipam.proteus',
             'dc2.lib.ipam.proteus.api',
+            'dc2.lib.ipam.proteus.objects',
         ]
     )
 

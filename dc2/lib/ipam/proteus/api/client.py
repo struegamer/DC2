@@ -31,9 +31,12 @@ import sys
 
 try:
     from suds.client import Client
+    from suds.sudsobject import asdict
 except ImportError,e:
     print "You don't have the python suds library installed."
     sys.exit(1)
+
+from dc2.lib.ipam.proteus.objects import APIObject
 
 TYPE_CONFIGURATION='Configuration'
 TYPE_VIEW='View'
@@ -149,11 +152,11 @@ class ProteusClient(ProteusClientApi):
             if zone_name is not None and zone_name !="":
                 if view_id is not None and view_id >= 0:
                     zone=self._get_entity_by_name(view_id,zone_name,TYPE_ZONE)
-                    return zone
+                    return APIObject(TypeRecord=asdict(zone))
                 elif view_id is None and view_name is not None and view_name != '':
                     view=self.get_view(view_name)
                     zone=self._get_entity_by_name(view['id'],zone_name,TYPE_ZONE)
-                    return zone
+                    return APIObject(TypeRecord=asdict(zone))
         return False
 
     def get_host_record(self,hostname,view):
