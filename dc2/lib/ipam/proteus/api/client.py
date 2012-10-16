@@ -53,7 +53,7 @@ class ProteusClientApi(object):
         self._is_connected=None
         self._is_authenticated=None
     def _connect(self):
-        if self.client is not None:
+        if self._client is not None:
             raise Exception('Disconnect first')
         self._client=Client('%s?wsdl' % self._api_url)
         self._client.set_options(location=self._api_url)
@@ -111,7 +111,7 @@ class ProteusClientApi(object):
 	
 class ProteusClient(ProteusClientApi):
     def __init__(self,api_url=None,api_user=None,api_password=None,config_name=None):
-        super(ProteusClientApi).__init__(self,api_url,api_user,api_password)
+        super(ProteusClient,self).__init__(api_url,api_user,api_password)
         self._config_name=config_name
         self._configuration=None
 
@@ -119,7 +119,7 @@ class ProteusClient(ProteusClientApi):
         if self.is_valid_connection():
             try:
                 # parent_id is 0 for configuratioin objects
-                self._configuration=self._get_entity_by_name(0,config_name,TYPE_CONFIGURATION)
+                self._configuration=self._get_entity_by_name(0,self._config_name,TYPE_CONFIGURATION)
                 return True
             except Exception,e:
                 print e
@@ -145,13 +145,13 @@ class ProteusClient(ProteusClientApi):
     def get_zone(self,zone_name=None,view_id=None,view_name=None):
         if self._configuration is None:
             self._get_configuration()
-        if self._is_valid_connection():
+        if self.is_valid_connection():
             if zone_name is not None and zone_name !="":
                 if view_id is not None and view_id >= 0:
                     zone=self._get_entity_by_name(view_id,zone_name,TYPE_ZONE)
                     return zone
                 elif view_id is None and view_name is not None and view_name != '':
-                    view=get_view(view_name)
+                    view=self.get_view(view_name)
                     zone=self._get_entity_by_name(view['id'],zone_name,TYPE_ZONE)
                     return zone
         return False
@@ -159,7 +159,7 @@ class ProteusClient(ProteusClientApi):
     def get_host_record(self,hostname,view):
         if self._configuration is None:
             self._get_configuration()
-        if self._is_valid_connection():
+        if self.is_valid_connection():
             if view is not None:
                 host_arr=hostname.split(".")
                 count=len(host_arr)
