@@ -122,7 +122,8 @@ class ProteusClient(ProteusClientApi):
         if self.is_valid_connection():
             try:
                 # parent_id is 0 for configuratioin objects
-                self._configuration=self._get_entity_by_name(0,self._config_name,TYPE_CONFIGURATION)
+                configuration=self._get_entity_by_name(0,self._config_name,TYPE_CONFIGURATION)
+                self._configuration=APIObject(TypeRecord=asdict(configuration))
                 return True
             except Exception,e:
                 print e
@@ -133,16 +134,19 @@ class ProteusClient(ProteusClientApi):
         if self._configuration is None:
             self._get_configuration()
         if self.is_valid_connection():
-            view=self._get_entity_by_name(self._configuration['id'],view_name,TYPE_VIEW)
-            return view
+            view=self._get_entity_by_name(self._configuration.id,view_name,TYPE_VIEW)
+            return APIObject(TypeRecord=asdict(view))
         return None
 
     def get_views(self):
         if self._configuration is None:
             self._get_configuration()
         if self.is_valid_connection():
-            views=self._get_entities(self._configuration['id'],TYPE_VIEW,1,99999)
-            return views
+            views=self._get_entities(self._configuration.id,TYPE_VIEW,0,99999)
+            view_arr=[]
+            for i in views.item:
+                view_arr.append(APIObject(TypeRecord=asdict(i)))
+            return view_arr
         return None
 
     def get_zone(self,zone_name=None,view_id=None,view_name=None):
@@ -159,24 +163,76 @@ class ProteusClient(ProteusClientApi):
                     return APIObject(TypeRecord=asdict(zone))
         return False
 
-    def get_host_record(self,hostname,view):
+    def get_host_record(self,hostname,view=None,view_name=None):
         if self._configuration is None:
             self._get_configuration()
         if self.is_valid_connection():
             if view is not None:
                 host_arr=hostname.split(".")
                 count=len(host_arr)
-                parent_id=view['id']
-                for i in reversed(host_arr):
-                    if count != 1:
-                        zone=self.get_zone(i,parent_id)
-                        parent_id=zone['id']
-                    if count == 1:
-                        record=self._get_entity_by_name(parent_id,i,TYPE_HOSTRECORD)
-                        if record != '':
-                            return record
-                        else:
-                            return None
-                    count=count-1
+                parent_id=view.id
+            if view_name is not None:
+                view_rec=self.get_view(view_name)
+                host_arr=hostname.split('.')
+                count=len(host_arr)
+                parent_id=view_rec.id
+ 
+            for i in reversed(host_arr):
+                if count != 1:
+                    zone=self.get_zone(i,parent_id)
+                    parent_id=zone.id
+                if count == 1:
+                    record=self._get_entity_by_name(parent_id,i,TYPE_HOSTRECORD)
+                    if record is not None:
+                        return APIObject(TypeRecord=asdict(record))
+                    else:
+                        return None
+                count=count-1
+        return None
+        
+    def get_zone_list(self, zonename, view=None, view_name=None):
+        if self._configuration is None:
+            self._get_configuration()
+        if self.is_valid_connection():
+            if view is not None and view_name is None:
+                zone_arr=zonename.split('.')
+                count=len(zone_arr)
+                parent_id=view.id
+            if view is None and view_name is not None:
+                zone_arr=zonename.split('.')
+                count=len(zone_arr)
+                view_rec=self.get_view(view_name)
+                parent_id=view_rec.id
+ 
+            for i in reversed(zone_arr):
+                if count!=1:
+                    print count
+                    zone=self.get_zone(i,parent_id)
+                    if zone is None:
+                        print 'jumping out'
+                        return None
+                    parent_id=zone.id
+                if count==1:
+                    records=self._get_entities(parent_id,TYPE_HOSTRECORD,0,99999999)
+                    zones=self._get_entities(parent_id,TYPE_ZONE,0,999999)
+                    zone_list={}
+                    zone_list['hosts']=[]
+                    zone_list['subzones']=[]
+                    try:
+                        for i in records.item:
+                            a=APIObject(TypeRecord=asdict(i))
+                            if a is not None:
+                                zone_list['hosts'].append(a)
+                    except AttributeError:
+                        pass
+                    try:
+                        for i in zones.item:
+                            a=APIObject(TypeRecord=asdict(i))
+                            if a is not None:
+                                zone_list['subzones'].append(a)
+                    except AttributeError:
+                        pass
+                    return zone_list
+                count=count-1
         return None
 
