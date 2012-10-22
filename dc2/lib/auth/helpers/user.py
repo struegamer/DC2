@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import sys
 import pwd
@@ -24,5 +24,5 @@ import pwd
 def get_realname(username=None):
     if username is None:
         raise ValueError('username can\'t be none')
-    a=pwd.getpwnam(username)
+    a = pwd.getpwnam(username)
     return a[4]

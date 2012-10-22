@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,14 +16,14 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import sys
 from uuid import uuid4
 
 try:
     import web
-except ImportError,e:
+except ImportError, e:
     print "You didn't install web.py"
     print e
     sys.exit(1)
@@ -31,7 +31,7 @@ except ImportError,e:
 
 def csrf_token():
     if not web.ctx.session.has_key('sectoken'):
-        web.ctx.session.sectoken=uuid4().hex
+        web.ctx.session.sectoken = uuid4().hex
     return web.ctx.session.sectoken
 
 

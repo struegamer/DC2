@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,13 +16,13 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import kerberos
 
 class KerberosTicket:
     def __init__(self, service):
-        __, krb_context = kerberos.authGSSClientInit(service,kerberos.GSS_C_DELEG_FLAG|kerberos.GSS_C_MUTUAL_FLAG|kerberos.GSS_C_SEQUENCE_FLAG)
+        __, krb_context = kerberos.authGSSClientInit(service, kerberos.GSS_C_DELEG_FLAG | kerberos.GSS_C_MUTUAL_FLAG | kerberos.GSS_C_SEQUENCE_FLAG)
         kerberos.authGSSClientStep(krb_context, "")
         self._krb_context = krb_context
         self.auth_header = ("Negotiate " +

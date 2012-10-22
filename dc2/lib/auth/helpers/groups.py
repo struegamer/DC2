@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,18 +16,18 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import sys
 import grp
 
-def check_membership_in_group(username=None,groupname=None):
+def check_membership_in_group(username=None, groupname=None):
     if username is None or groupname is None:
         raise ValueError('username/groupname can\'t be none')
     try:
-        a=grp.getgrnam(groupname)
+        a = grp.getgrnam(groupname)
         if username in a[3]:
             return True
-    except KeyError,e:
+    except KeyError, e:
         pass
     return False

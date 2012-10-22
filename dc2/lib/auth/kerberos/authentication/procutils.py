@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,8 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
+
 
 import sys
 import os
@@ -90,8 +91,8 @@ def run(args, stdin=None, raiseonerr=True,
     try:
         p = subprocess.Popen(args, stdin=p_in, stdout=p_out, stderr=p_err,
                              close_fds=True, env=env)
-        stdout,stderr = p.communicate(stdin)
-        stdout,stderr = str(stdout), str(stderr)    # Make pylint happy
+        stdout, stderr = p.communicate(stdin)
+        stdout, stderr = str(stdout), str(stderr)  # Make pylint happy
     except KeyboardInterrupt:
         p.wait()
         raise
