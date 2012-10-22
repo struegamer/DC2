@@ -11,7 +11,10 @@ DC2.Pages.Backends.Hosts.Edit=function() {
       new DC2.Widgets.SelectionChange('#'+$(this).attr('id'),'iface');
     }
   });
-
+  $('#update_host_classes_with_template').on('click',$('#update_host_classes_with_template'),function(event) {
+	  console.log('hello');
+	  event.preventDefault();
+  });
 };
 
 $(document).ready(function() {
