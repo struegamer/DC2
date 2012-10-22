@@ -36,78 +36,79 @@ MONGOS = {
              }
 }
 
-#LIBVIRT_SERVER= {
+# LIBVIRT_SERVER= {
 #        "xenserver01": {
 #            "host":"xenserver01",
 #            "method":"tls",
 #            "conn":None
 #        }
-#}
+# }
 
 
 #
 # HTTP Access Headers
 #
-ACCESS_CONTROL_ALLOW_ORIGIN="*"
-ACCESS_CONTROL_ALLOW_METHODS="GET,POST,OPTIONS,PUT,DELETE"
+ACCESS_CONTROL_ALLOW_ORIGIN = "*"
+ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 
 #
 # HTTP Access Headers
 #
-ACCESS_CONTROL_ALLOW_ORIGIN="*"
-ACCESS_CONTROL_ALLOW_METHODS="GET,POST,OPTIONS,PUT,DELETE"
+ACCESS_CONTROL_ALLOW_ORIGIN = "*"
+ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 
 #
 # RPC Modules for RPCDispatcher
 #
-KERBEROS_AUTH_ENABLED=False
-GRP_NAME_DC2ADMINS='dc2admins'
+KERBEROS_AUTH_ENABLED = False
+GRP_NAME_DC2ADMINS = 'dc2admins'
 
 # 
 # DC² Settings for PXE Boot
 #
-FREEIPA_SERVER_URL=''
-TEMPLATE_DIR="%s/templates" % os.path.dirname(__file__)
+FREEIPA_SERVER_URL = ''
+TEMPLATE_DIR = "%s/templates" % os.path.dirname(__file__)
 
-CONTROLLER_MAPPINGS={
-        '/':'MainController',
-        '/login':'SessionLoginController',
-        '/logout':'SessionLogoutController',
-        '/backends':'BackendsCtrl',
-        '/backends/servers':'ServerController',
-        '/backends/hosts':'HostController',
-        '/backends/installstate':'InstallStateController',
-        '/admin':'admin.MainAdminController',
-        '/admin/backends':'admin.BackendsController',
-        '/admin/backends/environments':'admin.BackendEnvironmentController',
-        '/admin/backends/defaultclasses':'admin.BackendDefaultClassesController',
-        '/admin/backends/classtemplates':'admin.BackendClassTemplatesController',
-        '/admin/backends/sysgroups':'admin.BackendSysGroupController',
-        '/admin/backends/sysusers':'admin.BackendSysUserController',
-        '/admin/backends/pxemethods':'admin.BackendPXEMethodController',
-        '/admin/ribs':'admin.AdminRIBController',
-        '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
-        '/admin/inettypes':'admin.AdminInetTypesController',
-        '/admin/pxe':'admin.AdminPXEController',
-        '/admin/installmethods':'admin.AdminInstallMethodController',
-        '/json/backends':'jsonctrl.JSONBackendController',
-        '/json/backends/servers':'jsonctrl.JSONServerBackendController',
-        '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
-        '/json/backends/deployments':'jsonctrl.JSONDeploymentBackendController',
-        '/json/backends/macs':'jsonctrl.JSONMacBackendController',
-        '/json/backends/ribs':'jsonctrl.JSONRibBackendController',
-        }
+CONTROLLER_MAPPINGS = {
+    '/':'MainController',
+    '/login':'SessionLoginController',
+    '/logout':'SessionLogoutController',
+    '/backends':'BackendsCtrl',
+    '/backends/servers':'ServerController',
+    '/backends/hosts':'HostController',
+    '/backends/installstate':'InstallStateController',
+    '/admin':'admin.MainAdminController',
+    '/admin/backends':'admin.BackendsController',
+    '/admin/backends/environments':'admin.BackendEnvironmentController',
+    '/admin/backends/defaultclasses':'admin.BackendDefaultClassesController',
+    '/admin/backends/classtemplates':'admin.BackendClassTemplatesController',
+    '/admin/backends/sysgroups':'admin.BackendSysGroupController',
+    '/admin/backends/sysusers':'admin.BackendSysUserController',
+    '/admin/backends/pxemethods':'admin.BackendPXEMethodController',
+    '/admin/ribs':'admin.AdminRIBController',
+    '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
+    '/admin/inettypes':'admin.AdminInetTypesController',
+    '/admin/pxe':'admin.AdminPXEController',
+    '/admin/installmethods':'admin.AdminInstallMethodController',
+    '/json/backends':'jsonctrl.JSONBackendController',
+    '/json/backends/servers':'jsonctrl.JSONServerBackendController',
+    '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
+    '/json/backends/deployments':'jsonctrl.JSONDeploymentBackendController',
+    '/json/backends/macs':'jsonctrl.JSONMacBackendController',
+    '/json/backends/ribs':'jsonctrl.JSONRibBackendController',
+    '/json/backends/classtemplates':'jsonctrl.JSONBackendClassTemplatesController',
+}
 
 #
 # LOGFILE settings
 #
-APP_LOGGER_NAME='dc2-admincenter'
+APP_LOGGER_NAME = 'dc2-admincenter'
 if os.path.exists("/var/log/dc2-admincenter"):
     LOGFILE = "/var/log/dc2/dc2-admincenter.log"
 else:
     LOGFILE = "dc2-admincenter.log"    
 LOGLEVEL = logging.DEBUG
-LOGFORMAT='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+LOGFORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 
 APPNAME = "dc2-admincenter"
