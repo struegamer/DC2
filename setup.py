@@ -24,12 +24,12 @@ from distutils.file_util import copy_file
 from distutils.command.install_scripts import install_scripts
 
 setup(name='dc2',
-        version='0.9',
-        description='DC² Namespace Package',
-        author='Stephan Adig',
-        author_email='sh@sourcecode.de',
-        url='http://launchpad.net/dc2',
-        packages=['dc2']
+      version='0.9',
+      description='DC² Namespace Package',
+      author='Stephan Adig',
+      author_email='sh@sourcecode.de',
+      url='http://launchpad.net/dc2',
+      packages=['dc2']
 )
 
 setup(name="dc2.distrotools",
@@ -38,7 +38,7 @@ setup(name="dc2.distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
       url="http://launchpad.net/dc2",
-      packages=['dc2.distrotools','dc2.distrotools.config','dc2.distrotools.actions'],
+      packages=['dc2.distrotools', 'dc2.distrotools.config', 'dc2.distrotools.actions'],
       namespace_packages=['dc2'],
       scripts=[
           'scripts/dc2-mirror',
