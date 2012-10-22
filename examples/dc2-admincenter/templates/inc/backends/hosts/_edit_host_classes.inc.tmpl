@@ -28,11 +28,11 @@
     <div class='row'>
 	    <div class='span12'>
 			<button class='btn pull-right' id='update_host_classes_with_template'>Select template</button>
-                <select class='pull-right' id='classtemplate'>
-                    {%- for ct in classtemplates %}
-                    <option value='{{ct.name}}'>{{ct.name}}</option>
-                    {%- endfor %} 
-	    </select>
+            <select class='pull-right' id='classtemplate'>
+				{%- for ct in classtemplates %}
+				<option value='{{ct.name}}'>{{ct.name}}</option>
+				{%- endfor %} 
+	    	</select>
             <div class='btn-group pull-right'  id='table_btn_edit_host_defaultclasses'>
 		    <button class='btn' id='host_defaultclasses_add'><i class='icon-plus'></i> Add</button>
 	    </div>
