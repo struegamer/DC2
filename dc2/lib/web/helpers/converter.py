@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import sys
 import types
@@ -28,9 +28,9 @@ def convert_values(rec=None):
     for field in rec.keys():
         if type(rec[field]) is types.BooleanType:
             if rec[field] is True:
-                rec[field]='True'
+                rec[field] = 'True'
             if rec[field] is False:
-                rec[field]=''
+                rec[field] = ''
     return rec
 
 
