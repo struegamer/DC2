@@ -63,8 +63,10 @@ class JSONBackendClassTemplatesController(JSONController):
         self._prepare_urls()
     
     def _prepare_urls(self):
-        self.add_url_handler_to_verb('GET', 'backend_classtemplate_get', 'backend_classtemplate_get')
-        self.add_process_method('backend_classtemplate_get', self._backend_classtemplate_get)
+        self.add_url_handler_to_verb('GET', 'backend_classtemplate_get',
+                                     'backend_classtemplate_get')
+        self.add_process_method('backend_classtemplate_get',
+                                self._backend_classtemplate_get)
         
     def _backend_classtemplate_get(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
@@ -74,12 +76,17 @@ class JSONBackendClassTemplatesController(JSONController):
             template_id = params.get('template_id', None)
             if backend_id is not None:
                 backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'], backend['is_kerberos'])
+                transport = get_xmlrpc_transport(backend['backend_url'],
+                                                 backend['is_kerberos'])
                 s = ClassTemplates(transport)
                 template_list = s.get(id=template_id)
                 if template_list is not None:
-                    result = self._prepare_output(result={'backend_id':backend_id, 'datalist':template_list})
+                    result = self._prepare_output(result={
+                                                'backend_id':backend_id,
+                                                'datalist':template_list
+                                                })
                     return result
-        result = self._prepare_output(result={'backend_id':backend_id, 'datalist':[]})
+        result = self._prepare_output(result={'backend_id':backend_id,
+                                              'datalist':[]})
         return result
 

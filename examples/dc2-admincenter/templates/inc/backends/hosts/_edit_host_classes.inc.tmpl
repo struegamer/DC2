@@ -25,12 +25,12 @@
             </table>
         </div>
     </div>
-    <div class='row'>
+    <div class='row' id='classtemplate_row' data-backend_id='{{backend_id}}'>
 	    <div class='span12'>
 			<button class='btn pull-right' id='update_host_classes_with_template'>Select template</button>
             <select class='pull-right' id='classtemplate'>
 				{%- for ct in classtemplates %}
-				<option value='{{ct.name}}'>{{ct.name}}</option>
+				<option value='{{ct._id}}'>{{ct.name}}</option>
 				{%- endfor %} 
 	    	</select>
             <div class='btn-group pull-right'  id='table_btn_edit_host_defaultclasses'>
