@@ -255,6 +255,13 @@ DC2.Widgets.EditTables.prototype.prepare_tables=function() {
   this.edit_tables.each(function() {
     var btns=$(this).find('#table_btn_edit_'+$(this).attr('id'));
     _this.prepare_table_buttons(btns,$(this).attr('id'));
+    var ident=$(this).attr('id');
+    $(this).bind('unbind_remove_buttons',function() {
+    	unbind_buttons(_this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',_this._btn_remove);    	
+    });	
+    $(this).bind('bind_remove_buttons',function() {
+    	bind_buttons(_this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',_this.container,_this._btn_remove,this);
+    });
   });
   var btn_update=this.contentheading.find('.btn.update_entry');
   var btn_cancel=this.contentheading.find('.btn.update_cancel');
@@ -265,8 +272,10 @@ DC2.Widgets.EditTables.prototype.prepare_tables=function() {
 DC2.Widgets.EditTables.prototype.prepare_table_buttons=function(btns,ident) {
   var btn_add=btns.find('#'+ident+'_add.btn');
   btn_add.on('click',{selector:this.container,ident:ident},this._btn_add.bind(this));
-  this.unbind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
-  this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  //this.unbind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  unbind_buttons(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',this._btn_remove);
+  //this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  bind_buttons(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',this.container,this._btn_remove,this);
 };
 
 DC2.Widgets.EditTables.prototype._btn_update=function(event) {
@@ -374,8 +383,12 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
   $('#div_vlan_None').attr('id','div_vlan_None_'+this.add_row_counter);
   $('#div_bond_None').attr('id','div_bond_None_'+this.add_row_counter);
   new DC2.Widgets.SelectionChange($('#host_interfaces_new_'+this.add_row_counter+'_type'),'iface');
-  this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
-  this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+//  this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+//  this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+  unbind_buttons(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'),'click',this._btn_remove);
+  //this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  bind_buttons(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'),'click',this.container,this._btn_remove,this);  
+  
   return(false);
 };
 
@@ -482,6 +495,7 @@ DC2.Widgets.ClassTemplates.prototype.btn_classtemplate_click=function(event) {
 
 DC2.Widgets.ClassTemplates.prototype.cleanTable=function() {
 	var tbody=this.table_selector.find('tbody');
+	this.table_selector.trigger('unbind_remove_buttons');
 	tbody.find('tr').each(function() {
 		$(this).remove();
 	});
@@ -502,6 +516,7 @@ DC2.Widgets.ClassTemplates.prototype.addTableData=function(template_data) {
 		})
 		this.table_selector.find('tbody').append(clone.html());
 	}
+	this.table_selector.trigger('bind_remove_buttons');
 };
 
 DC2.Widgets.ClassTemplates.prototype.loadClassTemplateData=function(template_id) {
