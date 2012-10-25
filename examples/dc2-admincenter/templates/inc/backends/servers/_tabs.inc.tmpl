@@ -6,7 +6,7 @@
                 <LI><a href='#dc_server_mac_{{backend_id}}_{{server._id}}' data-toggle='tab'>Network Interfaces</a></li>
                 <LI><a href='#dc_server_rib_{{backend_id}}_{{server._id}}' data-toggle='tab'>Remote Insight Boards</a></LI>
                 <LI><a href='#dc_server_pci_{{backend_id}}_{{server._id}}' data-toggle='tab'>PCI Devices</a></LI>
-                 {%- if page.context.session.is_dc2admin %}
+                 {%- if page.context.session.is_dc2admin and page.action == 'show' %}
                 <LI><a href='#dc_server_admin_{{backend_id}}_{{server._id}}' data-toggle='tab'>Admin Functions</a></LI>
                 {%- endif %}                
             </UL>
@@ -44,11 +44,9 @@
                         {%- include 'inc/backends/servers/_pci.inc.tmpl' with context %}
                         {%- endif %}
                     </div>
-                    {%- if page.context.session.is_dc2admin %}
+                    {%- if page.context.session.is_dc2admin and page.action=='show' %}
                     <div class='tab-pane' id='dc_server_admin_{{backend_id}}_{{server._id}}'>
-                      {%- if page.action=='show' or page.action =='edit' %}
                       {%- include 'inc/backends/servers/_admin.inc.tmpl' with context %}
-                      {%- endif %}
                     </div>   
                     {%- endif %}                
                     
