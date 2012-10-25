@@ -1,3 +1,26 @@
+# -*- coding: utf-8 -*-
+# The MIT License
+#
+# Copyright (c) 2009-10 Steven Anderson and Joshua Bronson
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
 from datetime import datetime
 from bson.binary import Binary
 from re import _pattern_type
@@ -56,18 +79,18 @@ def needs_encode(obj):
     return True
 
 
-#: field name used for id
+# : field name used for id
 _id = '_id'
-#: field name used for accessed time
+# : field name used for accessed time
 _atime = 'atime'
-#: field name used for data
+# : field name used for data
 _data = 'data'
 
 class MongoStore(Store):
     def __init__(self, db, collection_name='sessions'):
         self.collection = db[collection_name]
         self.collection.ensure_index(_atime)
-    
+
     def encode(self, sessiondict):
         return dict((k, Binary(Store.encode(self, v)) if needs_encode(v) else v)
             for (k, v) in sessiondict.iteritems())
@@ -83,12 +106,14 @@ class MongoStore(Store):
         s = self.collection.find_one({_id: sessionid})
         if not s:
             raise KeyError(sessionid)
-        self.collection.update({_id: sessionid}, {'$set': {_atime: time()}}, safe=True)
+        self.collection.update({_id: sessionid}, {'$set': {_atime: time()}},
+                               safe=True)
         return self.decode(s[_data])
 
     def __setitem__(self, sessionid, sessiondict):
         data = self.encode(sessiondict)
-        self.collection.save({_id: sessionid, _data: data, _atime: time()}, safe=True)
+        self.collection.save({_id: sessionid, _data: data, _atime: time()},
+                             safe=True)
 
     def __delitem__(self, sessionid):
         self.collection.remove({_id: sessionid}, safe=True)

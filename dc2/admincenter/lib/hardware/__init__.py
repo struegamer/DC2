@@ -18,5 +18,37 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from client import ProteusClientApi
-from client import ProteusCLient
+#
+# Std. Python Libs
+#
+import sys
+import types
+import re
+import uuid
+
+try:
+    from dc2.lib.db.mongo import Database
+    from dc2.lib.db.mongo import Table
+except ImportError,e:
+    print 'You do not have dc2.lib installed!'
+    print e
+    sys.exit(1)
+
+try:
+    from settings import MONGOS
+except ImportError,e:
+    print 'You do not have a settings file!'
+    print e
+    sys.exit(1)
+
+tbl_hardware = Table(MONGOS["admincenter"]["database"].get_table("hardware"))
+
+def hardware_list():
+    result=tbl_hardware.find()
+    if result is not None:
+        return result
+    return []
+
+def hardware_sync():
+    pass
+

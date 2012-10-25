@@ -48,41 +48,45 @@ except ImportError, e:
     print 'you have a problem with dc2.admincenter'
     print e
     sys.exit(1)
-
+    
 try:
-    from dc2.api.dc2.inventory import Servers
-    from dc2.api.dc2.inventory import Hosts
-    from dc2.api.dc2.deployment import InstallState
-
+    from dc2.api.dc2.configuration import ClassTemplates
 except ImportError, e:
     print 'you didn\'t have dc2.api installed'
     print e
     sys.exit(1)
 
-class JSONDeploymentBackendController(JSONController):
+class JSONBackendClassTemplatesController(JSONController):
     def __init__(self, *args, **kwargs):
-        super(JSONDeploymentBackendController, self).__init__(*args, **kwargs)
+        super(JSONBackendClassTemplatesController, self).__init__(*args,
+                                                                  **kwargs)
         self._prepare_urls()
-
+    
     def _prepare_urls(self):
-        self.add_url_handler_to_verb('GET', 'backend_deployment_list', 'backend_deployment_list')
-        self.add_process_method('backend_deployment_list', self._backend_deployment_list)
-
-    @needs_auth
-    @Logger(logger=logger)
-    def _backend_deployment_list(self, *args, **kwargs):
+        self.add_url_handler_to_verb('GET', 'backend_classtemplate_get',
+                                     'backend_classtemplate_get')
+        self.add_process_method('backend_classtemplate_get',
+                                self._backend_classtemplate_get)
+        
+    def _backend_classtemplate_get(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
             params = web.input()
             backend_id = params.get('backend_id', None)
+            template_id = params.get('template_id', None)
             if backend_id is not None:
                 backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'], backend['is_kerberos'])
-                s = InstallState(transport)
-                deploymentlist = s.list()
-                result = self._prepare_output(result={'backend_id':backend_id, 'datalist':deploymentlist})
-                return result
-        result = self._prepare_output(result={'backend_id':backend_id, 'datalist':[]})
+                transport = get_xmlrpc_transport(backend['backend_url'],
+                                                 backend['is_kerberos'])
+                s = ClassTemplates(transport)
+                template_list = s.get(id=template_id)
+                if template_list is not None:
+                    result = self._prepare_output(result={
+                                                'backend_id':backend_id,
+                                                'datalist':template_list
+                                                })
+                    return result
+        result = self._prepare_output(result={'backend_id':backend_id,
+                                              'datalist':[]})
         return result
-
 

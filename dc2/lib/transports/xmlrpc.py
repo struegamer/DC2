@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 
 import sys
@@ -25,18 +25,18 @@ import xmlrpclib
 
 try:
     from dc2.lib.auth.kerberos.xmlrpc import KerberosServerProxy
-except ImportError,e:
+except ImportError, e:
     print 'not installed KerberosServerProxy'
     print e
     sys.exit(1)
 
-def get_xmlrpc_transport(url,kerberos_enabled):
-    parsed_url=urlparse.urlparse(url)
-    proxy=None
+def get_xmlrpc_transport(url, kerberos_enabled):
+    parsed_url = urlparse.urlparse(url)
+    proxy = None
     if kerberos_enabled:
-        kerberos_service='HTTP@%s' % parsed_url.hostname
-        proxy=KerberosServerProxy(url,service=kerberos_service,allow_none=True)
+        kerberos_service = 'HTTP@%s' % parsed_url.hostname
+        proxy = KerberosServerProxy(url, service=kerberos_service, allow_none=True)
     else:
-        proxy=xmlrpclib.ServerProxy(url,allow_none=True)
+        proxy = xmlrpclib.ServerProxy(url, allow_none=True)
     return proxy
 

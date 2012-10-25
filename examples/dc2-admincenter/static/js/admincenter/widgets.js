@@ -253,9 +253,15 @@ DC2.Widgets.EditTables.prototype.prepare_tables=function() {
   var _this=this;
   this.edit_tables=this.container.find('.edit_table');
   this.edit_tables.each(function() {
-    console.log($(this).attr('id'));
     var btns=$(this).find('#table_btn_edit_'+$(this).attr('id'));
     _this.prepare_table_buttons(btns,$(this).attr('id'));
+    var ident=$(this).attr('id');
+    $(this).bind('unbind_remove_buttons',function() {
+    	unbind_buttons(_this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',_this._btn_remove);    	
+    });	
+    $(this).bind('bind_remove_buttons',function() {
+    	bind_buttons(_this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',_this.container,_this._btn_remove,this);
+    });
   });
   var btn_update=this.contentheading.find('.btn.update_entry');
   var btn_cancel=this.contentheading.find('.btn.update_cancel');
@@ -266,8 +272,10 @@ DC2.Widgets.EditTables.prototype.prepare_tables=function() {
 DC2.Widgets.EditTables.prototype.prepare_table_buttons=function(btns,ident) {
   var btn_add=btns.find('#'+ident+'_add.btn');
   btn_add.on('click',{selector:this.container,ident:ident},this._btn_add.bind(this));
-  this.unbind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
-  this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  //this.unbind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  unbind_buttons(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',this._btn_remove);
+  //this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  bind_buttons(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'),'click',this.container,this._btn_remove,this);
 };
 
 DC2.Widgets.EditTables.prototype._btn_update=function(event) {
@@ -353,7 +361,7 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
   event.preventDefault();
   var _this=this
   var add_row=$('#table_row_edit_'+event.data.ident+' table tbody');
-  console.log(add_row.find(':input').not('button'));
+  console.log(this.selector)
   this.add_row_counter++;
   var add_row_temp=add_row.clone();
   add_row_temp.find(':input').not('button').each(function() {
@@ -375,8 +383,12 @@ DC2.Widgets.EditTables.prototype._btn_add=function(event) {
   $('#div_vlan_None').attr('id','div_vlan_None_'+this.add_row_counter);
   $('#div_bond_None').attr('id','div_bond_None_'+this.add_row_counter);
   new DC2.Widgets.SelectionChange($('#host_interfaces_new_'+this.add_row_counter+'_type'),'iface');
-  this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
-  this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+//  this.unbind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+//  this.bind_remove_btns(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'));
+  unbind_buttons(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'),'click',this._btn_remove);
+  //this.bind_remove_btns(this.container.find('#table_edit_'+ident+' tbody').find('.btn.remove'));
+  bind_buttons(this.container.find('#table_edit_'+event.data.ident+' tbody').find('.btn.remove'),'click',this.container,this._btn_remove,this);  
+  
   return(false);
 };
 
@@ -463,5 +475,62 @@ DC2.Widgets.Button={}
 DC2.Widgets.Button.Click=function(selector,func) {
   this.selector=selector;
   this.selector.on('click',this.selector,func.bind(this));
+};
+
+DC2.Widgets.ClassTemplates=function(selector,table_selector) {
+	this.selector=selector;
+	this.table_selector=table_selector;
+	this.backend_id=this.selector.attr('data-backend_id');
+	this.classTemplateButton=this.selector.find('#update_host_classes_with_template');
+	this.classTemplateSelector=this.selector.find('#classtemplate');
+	this.classTemplateButton.on('click',this.selector,this.btn_classtemplate_click.bind(this));
+};
+
+DC2.Widgets.ClassTemplates.prototype.btn_classtemplate_click=function(event) {
+	event.preventDefault();
+	var template_data=this.loadClassTemplateData(this.classTemplateSelector.val());
+	this.cleanTable();
+	this.addTableData(template_data);
+};
+
+DC2.Widgets.ClassTemplates.prototype.cleanTable=function() {
+	var tbody=this.table_selector.find('tbody');
+	this.table_selector.trigger('unbind_remove_buttons');
+	tbody.find('tr').each(function() {
+		$(this).remove();
+	});
+};
+
+DC2.Widgets.ClassTemplates.prototype.addTableData=function(template_data) {
+	var edit_row=$('#table_row_edit_host_defaultclasses').find('tbody');
+	console.log(edit_row);
+	for (var i=0;i<template_data.datalist.classes.length;i++) {
+		var clone=edit_row.clone();
+		var name=clone.find('select').attr('name');
+		name=name.replace('new',template_data.datalist.classes[i]);
+		clone.find('select').attr('name',name);
+		clone.find('option').each(function() {
+			if ($(this).val()==template_data.datalist.classes[i]) {
+				$(this).attr('selected','selected');
+			}
+		})
+		this.table_selector.find('tbody').append(clone.html());
+	}
+	this.table_selector.trigger('bind_remove_buttons');
+};
+
+DC2.Widgets.ClassTemplates.prototype.loadClassTemplateData=function(template_id) {
+	var template_data=null;
+	var _this=this;
+	var a=$.ajax({
+		url:'/json/backends/classtemplates/backend_classtemplate_get?backend_id='+this.backend_id+'&template_id='+template_id,
+		type:'GET',
+		contentType:'application/json; charset=utf8',
+		async:false,
+	});
+	a.done(function(data) {
+		template_data=data;
+	});
+	return(template_data);
 };
 

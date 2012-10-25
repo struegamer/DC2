@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#################################################################################
+################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010  Stephan Hermann <sh@sourcecode.de>
@@ -17,19 +17,19 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+################################################################################
 import setuptools
 from distutils.core import setup
 from distutils.file_util import copy_file
 from distutils.command.install_scripts import install_scripts
 
 setup(name='dc2',
-        version='0.9',
-        description='DC² Namespace Package',
-        author='Stephan Adig',
-        author_email='sh@sourcecode.de',
-        url='http://launchpad.net/dc2',
-        packages=['dc2']
+      version='0.9',
+      description='DC² Namespace Package',
+      author='Stephan Adig',
+      author_email='sh@sourcecode.de',
+      url='http://launchpad.net/dc2',
+      packages=['dc2']
 )
 
 setup(name="dc2.distrotools",
@@ -38,7 +38,7 @@ setup(name="dc2.distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
       url="http://launchpad.net/dc2",
-      packages=['dc2.distrotools','dc2.distrotools.config','dc2.distrotools.actions'],
+      packages=['dc2.distrotools', 'dc2.distrotools.config', 'dc2.distrotools.actions'],
       namespace_packages=['dc2'],
       scripts=[
           'scripts/dc2-mirror',

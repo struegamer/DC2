@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
@@ -16,20 +16,20 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 import sys
 import xmlrpclib
 
 try:
     from ticket import KerberosTicket
     from kerberostransport import KerberosAuthTransport
-except ImportError,e:
+except ImportError, e:
     print 'Your installation of DC2 is not correct'
     sys.exit(1)
 
 class KerberosServerProxy(xmlrpclib.ServerProxy):
     def __init__(self, uri, service=None, encoding=None, verbose=0,
                  allow_none=0, use_datetime=0):
-        kerb_transport=KerberosAuthTransport(use_datetime,service,uri)
-        xmlrpclib.ServerProxy.__init__(self,uri,transport=kerb_transport,encoding=encoding,verbose=verbose,allow_none=allow_none, use_datetime=use_datetime)
+        kerb_transport = KerberosAuthTransport(use_datetime, service, uri)
+        xmlrpclib.ServerProxy.__init__(self, uri, transport=kerb_transport, encoding=encoding, verbose=verbose, allow_none=allow_none, use_datetime=use_datetime)
 
