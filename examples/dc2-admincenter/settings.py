@@ -23,7 +23,7 @@ import logging
 import os
 import os.path
 
-# 
+#
 # MongoDB Server and Database Collections
 #
 
@@ -63,7 +63,7 @@ ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 KERBEROS_AUTH_ENABLED = False
 GRP_NAME_DC2ADMINS = 'dc2admins'
 
-# 
+#
 # DC² Settings for PXE Boot
 #
 FREEIPA_SERVER_URL = ''
@@ -85,6 +85,7 @@ CONTROLLER_MAPPINGS = {
     '/admin/backends/sysgroups':'admin.BackendSysGroupController',
     '/admin/backends/sysusers':'admin.BackendSysUserController',
     '/admin/backends/pxemethods':'admin.BackendPXEMethodController',
+    '/admin/json/backends/servers':'admin.jsonctrl.JSONAdminBackendsServerController',
     '/admin/ribs':'admin.AdminRIBController',
     '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
     '/admin/inettypes':'admin.AdminInetTypesController',
@@ -106,7 +107,7 @@ APP_LOGGER_NAME = 'dc2-admincenter'
 if os.path.exists("/var/log/dc2-admincenter"):
     LOGFILE = "/var/log/dc2/dc2-admincenter.log"
 else:
-    LOGFILE = "dc2-admincenter.log"    
+    LOGFILE = "dc2-admincenter.log"
 LOGLEVEL = logging.DEBUG
 LOGFORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
