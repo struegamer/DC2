@@ -71,7 +71,7 @@ class JSONAdminBackendsServerController(JSONController):
                                 self._backend_server_delete)
 
         # Single Server incl. hosts, installstate etc.
-        self.add_url_handler('DELETE', 'backend_server_delete_complete',
+        self.add_url_handler_to_verb('DELETE', 'backend_server_delete_complete',
                               'backend_server_delete_complete')
         self.add_process_method('backend_server_delete_complete',
                                 self._backend_server_delete_complete)
