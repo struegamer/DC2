@@ -64,10 +64,24 @@ class JSONAdminBackendsServerController(JSONController):
         self._prepare_urls()
 
     def _prepare_urls(self):
+        # Single Server Delete
         self.add_url_handler_to_verb('DELETE', 'backend_server_delete',
                                      'backend_server_delete')
         self.add_process_method('backend_server_delete',
                                 self._backend_server_delete)
+
+        # Single Server incl. hosts, installstate etc.
+        self.add_url_handler('DELETE', 'backend_server_delete_complete',
+                              'backend_server_delete_complete')
+        self.add_process_method('backend_server_delete_complete',
+                                self._backend_server_delete_complete)
+
+
+    def _init_backends(self, backend_id):
+        backend = backends.backend_get({'_id':backend_id})
+        transport = get_xmlrpc_transport(backend['backend_url'],
+                                         backend['is_kerberos'])
+        self._servers = Servers(transport)
 
     @needs_auth
     @needs_admin
@@ -79,11 +93,33 @@ class JSONAdminBackendsServerController(JSONController):
             backend_id = params.get('backend_id', None)
             server_id = params.get('server_id', None)
             if backend_id is not None and server_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'],
-                                               backend['is_kerberos'])
-                s = Servers(transport)
-                if s.delete(server_id=server_id):
+                self._init_backends(backend_id)
+                if self._servers.delete(server_id=server_id):
+                    result = self._prepare_output(result=
+                                                  {'redirect':
+                                                   {'url':'/backends/%s' %
+                                                    (backend_id),
+                                                    'absolute':'true'}})
+                    return result
+        result = self._prepare_output(result=
+                                      {'redirect':
+                                       {'url':'/backends/%s' % (backend_id),
+                                        'absolute':'true'}})
+
+        return result
+
+    @needs_auth
+    @needs_admin
+    @Logger(logger=logger)
+    def _backend_server_delete_complete(self, *args, **kwargs):
+        verb = kwargs.get('verb', None)
+        if verb is not None:
+            params = web.input()
+            backend_id = params.get('backend_id', None)
+            server_id = params.get('server_id', None)
+            if backend_id is not None and server_id is not None:
+                self._init_backends(backend_id)
+                if self._servers.delete_complete(server_id=server_id):
                     result = self._prepare_output(result=
                                                   {'redirect':
                                                    {'url':'/backends/%s' %
