@@ -65,8 +65,10 @@ class JSONDeploymentBackendController(JSONController):
         self._prepare_urls()
 
     def _prepare_urls(self):
-        self.add_url_handler_to_verb('GET', 'backend_deployment_list', 'backend_deployment_list')
-        self.add_process_method('backend_deployment_list', self._backend_deployment_list)
+        self.add_url_handler_to_verb('GET', 'backend_deployment_list',
+                                     'backend_deployment_list')
+        self.add_process_method('backend_deployment_list',
+                                self._backend_deployment_list)
 
     @needs_auth
     @Logger(logger=logger)
@@ -77,12 +79,15 @@ class JSONDeploymentBackendController(JSONController):
             backend_id = params.get('backend_id', None)
             if backend_id is not None:
                 backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'], backend['is_kerberos'])
+                transport = get_xmlrpc_transport(backend['backend_url'],
+                                                 backend['is_kerberos'])
                 s = InstallState(transport)
                 deploymentlist = s.list()
-                result = self._prepare_output(result={'backend_id':backend_id, 'datalist':deploymentlist})
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                      'datalist':deploymentlist})
                 return result
-        result = self._prepare_output(result={'backend_id':backend_id, 'datalist':[]})
+        result = self._prepare_output(result={'backend_id':backend_id,
+                                              'datalist':[]})
         return result
 
 
