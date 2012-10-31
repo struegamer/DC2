@@ -38,7 +38,7 @@ Section: python
 Architecture: all
 Depends: ${python:Depends},${misc:Depends},
 	python-dc2,
-	python-lib
+	python-dc2.lib
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
  It helps System Administrators to have a clean way of deployment of
