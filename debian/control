@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Stephan Adig <sh@sourcecode.de>
 Standards-Version: 3.9.2
 X-Python-Version: >= 2.6
-Build-Depends: debhelper (>= 8), python-all (>= 2.6), python-setuptools, qooxdoo-framework1.5
+Build-Depends: debhelper (>= 8), python-all (>= 2.6), python-setuptools
 Homepage: http://launchpad.net/dc2
 
 Package: python-dc2
