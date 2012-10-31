@@ -198,16 +198,16 @@ Description: DC² is a bookkeeping tool for automatic deployments
  This package comprises the FAI config space adjusted for DC².
 
 
-Package: dc2-frontend-qooxdoo
-Architecture: all
-Section: web
-Depends: ${misc:Depends}
-Description: DC² is a bookkeeping tool for automatic deployments
- DC² uses FAI as automatic deployment framework.
- It helps System Administrators to have a clean way of deployment of
- Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
- SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
- .
- This package comprises the DC² Qooxdoo Web-Frontend
+#Package: dc2-frontend-qooxdoo
+#Architecture: all
+#Section: web
+#Depends: ${misc:Depends}
+#Description: DC² is a bookkeeping tool for automatic deployments
+# DC² uses FAI as automatic deployment framework.
+# It helps System Administrators to have a clean way of deployment of
+# Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+# SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+# .
+# This package comprises the DC² Qooxdoo Web-Frontend
 
 

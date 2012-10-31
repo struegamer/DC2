@@ -4,8 +4,8 @@
 	dh $@ --with python2 --buildsystem=python_distutils
 
 override_dh_auto_build:
-	cd $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/ ; \
-		QOOXDOO_PATH=/usr/share/qooxdoo-framework1.5/ ./generate.py -m QOOXDOO_PATH:/usr/share/qooxdoo-framework1.5/ build
+	#cd $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/ ; \
+	#QOOXDOO_PATH=/usr/share/qooxdoo-framework1.5/ ./generate.py -m QOOXDOO_PATH:/usr/share/qooxdoo-framework1.5/ build
 	dh_auto_build
 
 override_dh_auto_install:
@@ -41,8 +41,8 @@ override_dh_auto_install:
 	#
 	# dc2-frontend-qooxdoo
 	#
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo
-	cp -r $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/build/* $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo/
+	#mkdir -p $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo
+	#cp -r $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/build/* $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo/
 	#
 	# auto install everything
 	#
