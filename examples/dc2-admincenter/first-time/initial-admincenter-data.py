@@ -40,7 +40,7 @@ def is_table_empty(table=None):
     if table is None:
         return False
     l = table.find()
-    if len(l) > 0:
+    if l.count() > 0:
         return False
     return True
 
