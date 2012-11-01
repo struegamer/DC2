@@ -171,7 +171,6 @@ class BackendClassTemplatesController(AdminController):
                         break;
         else:
             classtemplate['classes'] = []
-        web.debug('classtemplate: %s' % classtemplate)
         page.set_title('DC2 Admindcenter - Backends - Class Templates - Edit')
         page.add_page_data({
             'backendlist':backend_list,
@@ -209,14 +208,14 @@ class BackendClassTemplatesController(AdminController):
                                           verb['request_output_format'],
                                           {'redirect':
                                            {'url':
-                                            '%s?backend_id=%s' % 
+                                            '%s?backend_id=%s' %
                                             (self._controller_path, backend_id),
                                             'absolute':'true'}})
         else:
             result = self._prepare_output(verb['request_type'],
                                           verb['request_content_type'],
                                           output={'redirect':
-                                                  {'url':'%s?backend_id=%s' % 
+                                                  {'url':'%s?backend_id=%s' %
                                                    (self._controller_path,
                                                     backend_id),
                                                    'absolute':'true'}})
@@ -245,14 +244,14 @@ class BackendClassTemplatesController(AdminController):
                                           verb['request_content_type'],
                                           verb['request_output_format'],
                                           {'redirect':
-                                           {'url':'%s?backend_id=%s' % 
+                                           {'url':'%s?backend_id=%s' %
                                             (self._controller_path, backend_id),
                                             'absolute':'true'}})
         else:
             result = self._prepare_output(verb['request_type'],
                                           verb['request_content_type'],
                                           output={'redirect':
-                                                  {'url':'%s?backend_id=%s' % 
+                                                  {'url':'%s?backend_id=%s' %
                                                    (self._controller_path,
                                                     backend_id),
                                                    'absolute':'true'}})
@@ -275,14 +274,14 @@ class BackendClassTemplatesController(AdminController):
                                           verb['request_content_type'],
                                           verb['request_output_format'],
                                           {'redirect':
-                                           {'url':'%s?backend_id=%s' % 
+                                           {'url':'%s?backend_id=%s' %
                                             (self._controller_path, backend_id),
                                             'absolute':'true'}})
         else:
             result = self._prepare_output(verb['request_type'],
                                           verb['request_content_type'],
                                           output={'redirect':
-                                                  {'url':'%s?backend_id=%s' % 
+                                                  {'url':'%s?backend_id=%s' %
                                                    (self._controller_path,
                                                     backend_id),
                                                    'absolute':'true'}})

@@ -108,7 +108,6 @@ class RESTController(object):
     def _content_type(self, formats=None):
         content_type = self._request_context.env.get('CONTENT_TYPE', None)
         if formats is None:
-            web.debug('CONTENT_TYPE %s' % content_type)
             if content_type is None:
                 return 'text/html; charset=utf-8'
             else:
@@ -121,8 +120,6 @@ class RESTController(object):
                 if output_format.lower() == 'html':
                     return 'text/html; charset=utf-8'
             else:
-                web.debug('CONTENT_TYPE %s' % content_type)
-
                 if content_type is None:
                     return 'text/html; charset=utf-8'
                 else:
@@ -143,15 +140,11 @@ class RESTController(object):
         return web.notfound()
 
     def _process_request(self, path):
-        web.debug('GET PATH: %s' % path)
         verbs = self._verb_methods[self._request_context.method.upper()]
-        web.debug('REQUEST METHOD: %s' % web.ctx.method.upper())
         params = web.input()
         for verb in verbs:
             found = re.search(verb['urlre'], path)
             if found is not None:
-                web.debug('match rule: %s' % verb['urlre'])
-                web.debug('PATH_INFO: %s' % web.ctx.env.get('PATH_INFO', ''))
                 verb['request_data'] = found.groupdict()
                 verb['request_type'] = 'html'
                 if self._request_context.env.get('X-Request-With', None) is not None:

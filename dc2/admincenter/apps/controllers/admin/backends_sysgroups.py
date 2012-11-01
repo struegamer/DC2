@@ -176,7 +176,6 @@ class BackendSysGroupController(AdminController):
         backend_id = params.get('backend_id', None)
         backend = backends.backend_get({'_id':backend_id})
         self._init_backend(backend)
-        web.debug('WEB DATA: %s' % web.data())
         result = json.loads(web.data())
         rec = {}
         rec = result['result']['group']
@@ -219,7 +218,6 @@ class BackendSysGroupController(AdminController):
         backend_id = params.get('backend_id', None)
         backend = backends.backend_get({'_id':backend_id})
         self._init_backend(backend)
-        web.debug('WEB DATA: %s' % web.data())
         result = json.loads(web.data())
         rec = {}
         rec = result['result']['group']

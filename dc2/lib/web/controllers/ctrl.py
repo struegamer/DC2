@@ -89,7 +89,6 @@ class Controller(object):
         verbs = self._verb_methods[self._request_context.method.upper()]
         for verb in verbs:
             found = re.search(verb['urlre'], path)
-            web.debug('FOUND: %s' % found)
             if found is not None:
                 verb['request_data'] = found.groupdict()
                 return verb

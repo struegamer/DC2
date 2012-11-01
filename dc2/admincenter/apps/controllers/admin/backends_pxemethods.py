@@ -230,7 +230,6 @@ class BackendPXEMethodController(AdminController):
         result = json.loads(web.data())
         rec = {}
         rec = result['result']['pxe']
-        web.debug('PXE %s' % rec)
         self._pxemethods.add(pxe=rec)
         output_format = verb.get('request_output_format')
         if output_format.lower() == 'json':
@@ -264,7 +263,6 @@ class BackendPXEMethodController(AdminController):
         result = json.loads(web.data())
         rec = {}
         rec = result['result']['pxe']
-        web.debug('PXE %s' % rec)
         self._pxemethods.update(pxe=rec)
         output_format = verb.get('request_output_format')
         if output_format.lower() == 'json':

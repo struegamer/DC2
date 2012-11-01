@@ -36,7 +36,7 @@ except ImportError:
     print "You need to install web.py"
     sys.exit(1)
 
-# 
+#
 # DC² own modules
 #
 try:
@@ -56,18 +56,16 @@ except ImportError:
 
 
 class IPXEBoot:
-        def GET(self,name):
-            web.debug("Requested name: %s" % name)
-            result=""
+        def GET(self, name):
+            result = ""
             if name is None or name == "":
-                web.debug("Name is none")
-                result="#!ipxe\n\n"
-                result+=":retry_dhcp\n"
-                result+="dhcp || goto retry_dhcp\n"
-                result+="set 209:string http://%s/boot/pxelinux.cfg/01-${mac:hexhyp}\n" % (XMLRPC_BACKEND_SERVER_IP)
-                result+="set 210:string %s/\n" %(DOWNLOAD_SERVER_URL)
-                result+="chain pxelinux.0\n"
-            web.header("Content-Type","text/plain")
+                result = "#!ipxe\n\n"
+                result += ":retry_dhcp\n"
+                result += "dhcp || goto retry_dhcp\n"
+                result += "set 209:string http://%s/boot/pxelinux.cfg/01-${mac:hexhyp}\n" % (XMLRPC_BACKEND_SERVER_IP)
+                result += "set 210:string %s/\n" % (DOWNLOAD_SERVER_URL)
+                result += "chain pxelinux.0\n"
+            web.header("Content-Type", "text/plain")
             return result
 
 

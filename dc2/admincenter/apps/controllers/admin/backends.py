@@ -140,7 +140,6 @@ class BackendsController(AdminController):
     def _create(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         params = web.input()
-        web.debug('_create: %s' % params)
         backend = {}
         backend['title'] = params.title
         backend['backend_url'] = params.backend_url
@@ -208,9 +207,7 @@ class BackendsController(AdminController):
             backend = {'_id':request_data.get('id', None)}
             backends.backend_delete(backend)
         output_format = verb.get('request_output_format', None)
-        web.debug('DELETE: %s' % output_format)
         if output_format is not None and output_format.lower() == 'json':
-            web.debug('json')
             result = self._prepare_output('json',
                                           verb['request_content_type'],
                                           verb['request_output_format'],

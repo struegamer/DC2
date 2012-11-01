@@ -84,8 +84,6 @@ class SessionLoginController(RESTController):
     @Logger(logger=logger)
     def _create(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
-        web.debug('SessionController: create')
-        web.debug('SessionController.create: %s' % kwargs)
         params = web.input()
         if KERBEROS_AUTH_ENABLED:
             try:

@@ -157,7 +157,6 @@ def dc2_servers_delete_complete(rec_server=None):
                 dc2_deployment_installstate_delete(m)
                 return True
             except Exception, e:
-                web.debug(e)
                 return None
 
     return False
@@ -177,7 +176,7 @@ def dc2_servers_list_servers_without_hosts():
                 if host_rec is None:
                     servers_without_hosts.append(server)
             except Exception, e:
-                web.debug(e)
+                return None
     return servers_without_hosts
 
 

@@ -24,21 +24,20 @@ import types
 
 from helper import *
 
-                                    
-def xenserver_login(xenhost=None,xenuser=None,xenpw=None):
-    web.debug("xenserver_login")
+
+def xenserver_login(xenhost=None, xenuser=None, xenpw=None):
     if xenhost is not None and xenuser is not None and xenpw is not None:
-        try:        
-            s=xmlrpclib.ServerProxy("https://%s/" % xenhost)
-            session_id=parse_output(s.session.login_with_password(xenuser,xenpw))
+        try:
+            s = xmlrpclib.ServerProxy("https://%s/" % xenhost)
+            session_id = parse_output(s.session.login_with_password(xenuser, xenpw))
             return session_id
-        except Exception,e:
-            return xmlrpclib.Fault(500,"Exception: %s" % e)
+        except Exception, e:
+            return xmlrpclib.Fault(500, "Exception: %s" % e)
     return None
 
-def xenserver_logout(xenhost=None,session_id=None):
+def xenserver_logout(xenhost=None, session_id=None):
     if xenhost is not None and session_id is not None:
-        s=xmlrpclib.ServerProxy("https://%s/" % xenhost)
+        s = xmlrpclib.ServerProxy("https://%s/" % xenhost)
         s.session.logout(session_id)
         return True
     return False

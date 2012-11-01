@@ -195,7 +195,6 @@ class AdminRIBController(AdminController):
             rib = {'_id':request_data.get('id', None)}
             ribs.rib_delete(rib)
         output_format = verb.get('request_output_format', None)
-        web.debug('DELETE: %s' % output_format)
         if output_format is not None and output_format.lower() == 'json':
             result = self._prepare_output('json',
                                           verb['request_content_type'],

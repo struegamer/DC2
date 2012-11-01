@@ -40,7 +40,6 @@ class Logger(object):
 
     def _debug(self, msg):
         if self._logger is not None:
-            web.debug('LOGGER: %s' % self._logger)
             self._logger.debug(msg)
     def __call__(self, func):
         def newf(*args, **kwargs):

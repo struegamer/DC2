@@ -80,10 +80,8 @@ class JSONMacBackendController(JSONController):
                                                backend['is_kerberos'])
                 s = Macs(transport)
                 mac = s.get(id=mac_id)
-                web.debug(mac)
                 if mac is not None:
                     result = s.delete(id=mac_id)
-                    web.debug(result)
                     result = self._prepare_output(result=
                                                 {'backend_id':backend_id,
                                                  'entry_type':'boolean',

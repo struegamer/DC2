@@ -47,15 +47,15 @@ except ImportError:
     print "You don't have a settings file"
     sys.exit(1)
 
-tbl_xenserver=Table(MONGOS["xendb"]["database"].get_table("xenserver"))
+tbl_xenserver = Table(MONGOS["xendb"]["database"].get_table("xenserver"))
 
-XENSERVER_RECORD={
+XENSERVER_RECORD = {
     "xen_host":True,
     "xen_username":True,
     "xen_password":True
 }
 
-@rpcmethod(name="dc2.inventory.xenserver.list",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+@rpcmethod(name="dc2.inventory.xenserver.list", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_xenserver_list(search=None):
     if search is not None and type(search) is types.DictType:
         for k in search.keys():
@@ -66,7 +66,7 @@ def dc2_inventory_xenserver_list(search=None):
         result = tbl_xenserver.find();
     return result
 
-@rpcmethod(name="dc2.inventory.xenserver.add",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+@rpcmethod(name="dc2.inventory.xenserver.add", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_xenserver_add(record=None):
     if record is not None and type(record) is types.DictType:
         if check_record(record, XENSERVER_RECORD) and tbl_xenserver.find_one({"xen_host":record["xen_host"]}) is None:
@@ -74,7 +74,7 @@ def dc2_inventory_xenserver_add(record=None):
             return doc_id
     return xmlrpclib.Fault(-32501, "Record wasn't added!")
 
-@rpcmethod(name="dc2.inventory.xenserver.update",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+@rpcmethod(name="dc2.inventory.xenserver.update", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_xenserver_update(record=None):
     if record is not None and type(record) is types.DictType:
         if check_record(record, XENSERVER_RECORD) and tbl_xenserver.find_one({"xen_host":record["xen_host"]}) is not None:
@@ -82,7 +82,7 @@ def dc2_inventory_xenserver_update(record=None):
             return doc_id
     return xmlrpclib.Fault(-32501, "Record wasn't update!")
 
-@rpcmethod(name="dc2.inventory.xenserver.remove",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)    
+@rpcmethod(name="dc2.inventory.xenserver.remove", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_xenserver_delete(record=None):
     if record is not None and type(record) is types.DictType:
         if record.has_key("_id"):
@@ -92,33 +92,28 @@ def dc2_inventory_xenserver_delete(record=None):
         return True
     return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
 
-@rpcmethod(name="dc2.inventory.xenserver.get",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+@rpcmethod(name="dc2.inventory.xenserver.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_xenserver_get(record=None):
     if record is not None and type(record) is types.DictType:
-        xenserver_record=tbl_xenserver.find_one(record)
+        xenserver_record = tbl_xenserver.find_one(record)
         if xenserver_record is not None:
             return xenserver_record
     return None
 
-@rpcmethod(name="dc2.inventory.xenserver.login",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
+@rpcmethod(name="dc2.inventory.xenserver.login", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_xenserver_login(record=None):
-    web.debug("dc2_inventory_xenserver_login")
     if record is not None and type(record) is types.DictType:
-        web.debug("record is not None")
-        xenserver_record=tbl_xenserver.find_one(record)
-        web.debug("xenserver_record %s " % xenserver_record)
+        xenserver_record = tbl_xenserver.find_one(record)
         if xenserver_record is not None:
-            web.debug("xenserver_record is not None")
-            response=xenserver_login(str(xenserver_record["xen_host"]),xenserver_record["xen_username"],xenserver_record["xen_password"])
-            web.debug("response: %s " % response)
+            response = xenserver_login(str(xenserver_record["xen_host"]), xenserver_record["xen_username"], xenserver_record["xen_password"])
             return response
     return None
 
-@rpcmethod(name="dc2.inventory.xenserver.logout",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_inventory_xenserver_logout(xenhost=None,session_id=None):
+@rpcmethod(name="dc2.inventory.xenserver.logout", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+def dc2_inventory_xenserver_logout(xenhost=None, session_id=None):
     if xenhost is not None and session_id is not None:
-        xenserver_record=tbl_xenserver.find_one({"xen_host":xenhost})
+        xenserver_record = tbl_xenserver.find_one({"xen_host":xenhost})
         if xenserver_record is not None:
-            response=xenserver_logout(xenhost,session_id)
+            response = xenserver_logout(xenhost, session_id)
             return response
     return None

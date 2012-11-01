@@ -86,14 +86,11 @@ class JSONBackendController(JSONController):
     @needs_auth
     @Logger(logger=logger)
     def _backend_stats(self, *args, **kwargs):
-        web.debug('backend_stats')
         verb = kwargs.get('verb', None)
-        web.debug('%s: %s' % (self.__class__.__name__, verb))
         if verb is not None:
             backendlist = backends.backend_list()
             result = self._prepare_output(result={'backend_count':
                                                 len(backendlist)})
-            web.debug('_backend_stats: %s' % result)
             return result
     @needs_auth
     @Logger(logger=logger)

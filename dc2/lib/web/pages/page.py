@@ -98,7 +98,6 @@ class Page(object):
         if query_string is not None and type(query_string) is types.ListType:
             query = ''
             for item in query_string:
-                web.debug(item)
                 if type(item) is types.DictType:
                     for (key, value) in item.iteritems():
                         if query != '':

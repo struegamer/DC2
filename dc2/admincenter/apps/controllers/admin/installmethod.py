@@ -129,7 +129,6 @@ class AdminInstallMethodController(AdminController):
         verb = kwargs.get('verb', None)
         backend_list = backends.backend_list()
         install_method = installmethods.installmethod_get({'_id':verb['request_data']['id']})
-        web.debug('INSTALL METHOD EDIT: %s' % install_method)
         page = self._prepare_page(verb)
         page.set_title('DC2 Admincenter - Installmethod Types - Edit')
         page.add_page_data({

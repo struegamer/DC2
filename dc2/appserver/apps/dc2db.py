@@ -36,13 +36,13 @@ except ImportError:
     print "You need to install web.py"
     sys.exit(1)
 
-# 
+#
 # DC² own modules
 #
 try:
     from dc2.appserver.globals import connectionpool
     from dc2.appserver.globals import requestdispatcher
-except ImportError,e:
+except ImportError, e:
     print "You are missing necessary DC² modules"
     print e
     sys.exit(1)
@@ -60,13 +60,12 @@ except ImportError:
 
 class DC2DB:
     def GET(self):
-        listmethods=web.template.frender("%s/methodList.tmpl" % TEMPLATE_DIR)
-        methodlist=requestdispatcher.list_rpc_methods()
-        web.debug(methodlist)
-        result=listmethods(requestdispatcher.list_rpc_methods())
-        web.header("Content-Type","text/html")
-        web.header("Access-Control-Allow-Origin",ACCESS_CONTROL_ALLOW_ORIGIN)
-        web.header("Access-Control-Allow-Methods",ACCESS_CONTROL_ALLOW_METHODS)
+        listmethods = web.template.frender("%s/methodList.tmpl" % TEMPLATE_DIR)
+        methodlist = requestdispatcher.list_rpc_methods()
+        result = listmethods(requestdispatcher.list_rpc_methods())
+        web.header("Content-Type", "text/html")
+        web.header("Access-Control-Allow-Origin", ACCESS_CONTROL_ALLOW_ORIGIN)
+        web.header("Access-Control-Allow-Methods", ACCESS_CONTROL_ALLOW_METHODS)
         return result
     def POST(self):
         content_type = web.ctx.env.get("CONTENT_TYPE")
@@ -79,14 +78,14 @@ class DC2DB:
             content_type = "jsonrpc"
         return_data = requestdispatcher.handle_request(content_type, web.data())
         web.header("Content-Type", return_data[0])
-        web.header("Access-Control-Allow-Origin",ACCESS_CONTROL_ALLOW_ORIGIN)
-        web.header("Access-Control-Allow-Methods",ACCESS_CONTROL_ALLOW_METHODS)
+        web.header("Access-Control-Allow-Origin", ACCESS_CONTROL_ALLOW_ORIGIN)
+        web.header("Access-Control-Allow-Methods", ACCESS_CONTROL_ALLOW_METHODS)
         return return_data[1]
     def OPTIONS(self):
         web.header("Content-Type", "text/plain")
         web.header("Access-Control-Max-Age", "0")
-        web.header("Access-Control-Allow-Origin",ACCESS_CONTROL_ALLOW_ORIGIN)
-        web.header("Access-Control-Allow-Methods",ACCESS_CONTROL_ALLOW_METHODS)
+        web.header("Access-Control-Allow-Origin", ACCESS_CONTROL_ALLOW_ORIGIN)
+        web.header("Access-Control-Allow-Methods", ACCESS_CONTROL_ALLOW_METHODS)
         web.header("Access-Control-Allow-Headers", web.ctx.env.get("HTTP_ACCESS_CONTROL_REQUEST_HEADERS"))
         return "true"
 

@@ -37,7 +37,7 @@ except ImportError:
     print "You need to install web.py"
     sys.exit(1)
 
-# 
+#
 # DC² own modules
 #
 try:
@@ -58,93 +58,90 @@ except ImportError:
 
 
 class BootServer:
-    def GET(self,name):
-        web.debug("BootServer: GET")
-        web.debug("Requested name: %s " % name)
-        env_variables=None
-        p=re.compile(r'01-(.*-.*-.*-.*-.*-.*)',re.VERBOSE)
-        found=p.search(name)
-        s=xmlrpclib.ServerProxy(XMLRPC_BACKEND_SERVER_URL,allow_none=True)
-        web.header("Content-Type","text/plain")
-        if found is not None and len(found.groups())>0:
-            web.debug("FOUND: %s " % found.group(1).replace("-",":"))
-            mac_addr=found.group(1).replace("-",":")
-            mac_list=s.dc2.inventory.servers.macaddr.find({"mac_addr":mac_addr})
-            if len(mac_list)>0 and mac_list[0] is not None:
-                mac_rec=mac_list[0]
-                host_list=s.dc2.inventory.hosts.list({"server_id":mac_rec["server_id"]})
-                if host_list is not None and len(host_list)>0:
-                    host_rec=host_list[0]
-                    installstate=s.dc2.deployment.installstate.get({"host_id":host_rec["_id"]})
+    def GET(self, name):
+        env_variables = None
+        p = re.compile(r'01-(.*-.*-.*-.*-.*-.*)', re.VERBOSE)
+        found = p.search(name)
+        s = xmlrpclib.ServerProxy(XMLRPC_BACKEND_SERVER_URL, allow_none=True)
+        web.header("Content-Type", "text/plain")
+        if found is not None and len(found.groups()) > 0:
+            mac_addr = found.group(1).replace("-", ":")
+            mac_list = s.dc2.inventory.servers.macaddr.find({"mac_addr":mac_addr})
+            if len(mac_list) > 0 and mac_list[0] is not None:
+                mac_rec = mac_list[0]
+                host_list = s.dc2.inventory.hosts.list({"server_id":mac_rec["server_id"]})
+                if host_list is not None and len(host_list) > 0:
+                    host_rec = host_list[0]
+                    installstate = s.dc2.deployment.installstate.get({"host_id":host_rec["_id"]})
                     if host_rec.has_key("environments"):
-                        environ_rec=s.dc2.configuration.environments.list({"name":host_rec["environments"]})[0]
-                        env_variables=self.convert_to_dict(environ_rec["variables"])
+                        environ_rec = s.dc2.configuration.environments.list({"name":host_rec["environments"]})[0]
+                        env_variables = self.convert_to_dict(environ_rec["variables"])
                     else:
                         pass
                     if installstate is not None:
-                        if installstate.has_key("status") and installstate["status"]=="localboot":
-                            servers=s.dc2.inventory.servers.find({"_id":host_rec["server_id"]})
-                            server=None
-                            if servers is not None and len(servers)>0:
-                                server=servers[0]
+                        if installstate.has_key("status") and installstate["status"] == "localboot":
+                            servers = s.dc2.inventory.servers.find({"_id":host_rec["server_id"]})
+                            server = None
+                            if servers is not None and len(servers) > 0:
+                                server = servers[0]
                             if server is not None and server.has_key("product_name") and server["product_name"] is not None and server["product_name"] != "":
-                                bootmethods=s.dc2.configuration.bootmethods.list({"hardware_type":server["product_name"]})
-                                bootmethod=None
-                                if bootmethods is not None and len(bootmethods)>0:
-                                    bootmethod=bootmethods[0]["pxe_bootmethod"]
-                                return self.write_pxefile(mac_addr,"localboot",bootmethod=bootmethod)
+                                bootmethods = s.dc2.configuration.bootmethods.list({"hardware_type":server["product_name"]})
+                                bootmethod = None
+                                if bootmethods is not None and len(bootmethods) > 0:
+                                    bootmethod = bootmethods[0]["pxe_bootmethod"]
+                                return self.write_pxefile(mac_addr, "localboot", bootmethod=bootmethod)
                             else:
-                                return self.write_pxefile(mac_addr,"localboot")
-                        if installstate.has_key("status") and installstate["status"]=="deploy":
-                            return self.write_pxefile(mac_addr,"deploy",env_variables["LINUX_KERNEL_NAME"],env_variables["LINUX_INITRD_NAME"],env_variables["FAI_NFSROOT"],env_variables["DC2_BACKEND_URL"])
-                        if installstate.has_key("status") and installstate["status"]=="xenserver":
+                                return self.write_pxefile(mac_addr, "localboot")
+                        if installstate.has_key("status") and installstate["status"] == "deploy":
+                            return self.write_pxefile(mac_addr, "deploy", env_variables["LINUX_KERNEL_NAME"], env_variables["LINUX_INITRD_NAME"], env_variables["FAI_NFSROOT"], env_variables["DC2_BACKEND_URL"])
+                        if installstate.has_key("status") and installstate["status"] == "xenserver":
                             pass
             else:
-                environ_rec=s.dc2.configuration.environments.list({"name":"INVENTORY"})[0]
-                env_variables=self.convert_to_dict(environ_rec["variables"])
-                return self.write_pxefile(mac_addr,"inventory",env_variables["LINUX_KERNEL_NAME"],env_variables["LINUX_INITRD_NAME"],env_variables["FAI_NFSROOT"],env_variables["DC2_BACKEND_URL"])
+                environ_rec = s.dc2.configuration.environments.list({"name":"INVENTORY"})[0]
+                env_variables = self.convert_to_dict(environ_rec["variables"])
+                return self.write_pxefile(mac_addr, "inventory", env_variables["LINUX_KERNEL_NAME"], env_variables["LINUX_INITRD_NAME"], env_variables["FAI_NFSROOT"], env_variables["DC2_BACKEND_URL"])
         else:
             return web.notfound()
 
-    def write_pxefile(self,filename,action=None,kernel_name=None,initrd_name=None,nfs_root=None,backend_url=None,bootmethod=None):
+    def write_pxefile(self, filename, action=None, kernel_name=None, initrd_name=None, nfs_root=None, backend_url=None, bootmethod=None):
         if action is not None:
-            if action=="localboot":
-                result="DEFAULT chain.c32 hd0 0\n"
+            if action == "localboot":
+                result = "DEFAULT chain.c32 hd0 0\n"
                 if bootmethod is None:
-                    result="DEFAULT chain.c32 hd0 0\n"
+                    result = "DEFAULT chain.c32 hd0 0\n"
                 if bootmethod is not None:
-                    if bootmethod=="chain.c32":
-                        result="DEFAULT chain.c32 hd0 0\n"
-                    if bootmethod=="localboot":
-                        result="DEFAULT generated\n"
-                        result+="LABEL generated\n"
-                        result+="LOCALBOOT 0\n"
-                    if bootmethod=="localboot-1":
-                        result="DEFAULT generated\n"
-                        result+="LABEL generated\n"
-                        result+="LOCALBOOT -1\n"
+                    if bootmethod == "chain.c32":
+                        result = "DEFAULT chain.c32 hd0 0\n"
+                    if bootmethod == "localboot":
+                        result = "DEFAULT generated\n"
+                        result += "LABEL generated\n"
+                        result += "LOCALBOOT 0\n"
+                    if bootmethod == "localboot-1":
+                        result = "DEFAULT generated\n"
+                        result += "LABEL generated\n"
+                        result += "LOCALBOOT -1\n"
                 return result
-            if action=="inventory":
-                result="DEFAULT generated\n"
-                result+="LABEL generated\n"
-                result+="IPAPPEND 2\n"
-                result+="KERNEL %s/%s\n" % (DOWNLOAD_SERVER_URL,kernel_name)
-                result+='APPEND initrd=%s/%s ip=dhcp root=/dev/nfs nomodeset nfsroot=%s  DEBUG=1  boot=live nofb FAI_ACTION=%s FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="%s"\n' % (DOWNLOAD_SERVER_URL,initrd_name,nfs_root,action,backend_url)
+            if action == "inventory":
+                result = "DEFAULT generated\n"
+                result += "LABEL generated\n"
+                result += "IPAPPEND 2\n"
+                result += "KERNEL %s/%s\n" % (DOWNLOAD_SERVER_URL, kernel_name)
+                result += 'APPEND initrd=%s/%s ip=dhcp root=/dev/nfs nomodeset nfsroot=%s  DEBUG=1  boot=live nofb FAI_ACTION=%s FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="%s"\n' % (DOWNLOAD_SERVER_URL, initrd_name, nfs_root, action, backend_url)
                 return result
-            if action=="deploy":
-                action="install"
-                result="DEFAULT generated\n"
-                result+="LABEL generated\n"
-                result+="IPAPPEND 2\n"
-                result+="KERNEL %s/%s\n" % (DOWNLOAD_SERVER_URL,kernel_name)
-                result+='APPEND initrd=%s/%s ip=dhcp root=/dev/nfs nomodeset nfsroot=%s  DEBUG=1  boot=live nofb FAI_ACTION=%s FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="%s"\n' % (DOWNLOAD_SERVER_URL,initrd_name,nfs_root,action,backend_url)
+            if action == "deploy":
+                action = "install"
+                result = "DEFAULT generated\n"
+                result += "LABEL generated\n"
+                result += "IPAPPEND 2\n"
+                result += "KERNEL %s/%s\n" % (DOWNLOAD_SERVER_URL, kernel_name)
+                result += 'APPEND initrd=%s/%s ip=dhcp root=/dev/nfs nomodeset nfsroot=%s  DEBUG=1  boot=live nofb FAI_ACTION=%s FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="%s"\n' % (DOWNLOAD_SERVER_URL, initrd_name, nfs_root, action, backend_url)
                 return result
-                        
-    def convert_to_dict(self,list_of_vars=None):        
+
+    def convert_to_dict(self, list_of_vars=None):
         if list_of_vars is not None:
-            vars={}
+            vars = {}
             for entry in list_of_vars:
-                vars[entry["name"]]=entry["value"]
+                vars[entry["name"]] = entry["value"]
             return vars
         return None
 
