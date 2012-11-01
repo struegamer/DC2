@@ -23,36 +23,36 @@ import os
 
 try:
     import krbV
-except ImportError,e:
-    print 'you don\'t have python-krbV installed'
-    print e
+except ImportError, e:
+    print('you don\'t have python-krbV installed')
+    print(e)
     sys.exit(1)
 
 try:
     from dc2.lib.auth.kerberos.authentication import run
     from dc2.lib.auth.kerberos.authentication import krb5_format_principal_name
     from dc2.lib.auth.kerberos.authentication import get_ccache_name
-except ImportError,e:
-    print "You didn't install dc2.lib"
-    print e
+except ImportError, e:
+    print("You didn't install dc2.lib")
+    print(e)
     sys.exit(1)
 
 from exceptions import KerberosAuthError
 
-ENCODING='UTF-8'
+ENCODING = 'UTF-8'
 
-def do_kinit(username=None,password=None):
+def do_kinit(username=None, password=None):
     if username is None or password is None:
         raise ValueError('Username and Password can\'t be None')
     if username == '' or password == '':
         raise ValueErorr('Username and Password can\'t be empty strings')
-    realm=krbV.default_context().default_realm.decode(ENCODING)
+    realm = krbV.default_context().default_realm.decode(ENCODING)
     principal = krb5_format_principal_name(username, realm)
-    ccache_name=get_ccache_name()
+    ccache_name = get_ccache_name()
     (stdout, stderr, returncode) = run(['/usr/bin/kinit', principal],
             env={'KRB5CCNAME':ccache_name},
             stdin=password, raiseonerr=False)
-    os.environ['KRB5CCNAME']=ccache_name
+    os.environ['KRB5CCNAME'] = ccache_name
     if returncode != 0:
         raise KerberosAuthError(principal=principal, message=unicode(stderr))
-    
+
