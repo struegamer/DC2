@@ -27,16 +27,23 @@ try:
     from settings import LOGLEVEL
     from settings import LOGFORMAT
 except ImportError, e:
-    print "You don't have a settings file"
-    print e
+    print("You don't have a settings file")
+    print(e)
     sys.exit(1)
 
-logger=logging.getLogger(APP_LOGGER_NAME)
+try:
+    from dc2.lib.logging import AppLogger
+except ImportError, e:
+    print('You don\'t have python-dc2.lib installed')
+    print(e)
+    sys.exit(1)
+
+logger = logging.getLogger(APP_LOGGER_NAME)
 logger.setLevel(LOGLEVEL)
 
-fh=logging.FileHandler(LOGFILE)
+fh = logging.FileHandler(LOGFILE)
 fh.setLevel(LOGLEVEL)
-formatter=logging.Formatter(LOGFORMAT)
+formatter = logging.Formatter(LOGFORMAT)
 fh.setFormatter(formatter)
 
 logger.addHandler(fh)
