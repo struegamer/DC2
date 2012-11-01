@@ -35,8 +35,6 @@ except ImportError, e:
         print(e)
         sys.exit(1)
 
-_FILL_TABLE_FUNCS = [fill_inettypes, fill_interfacetypes, fill_pxetypes,
-                   fill_ribtypes, fill_installmethods]
 
 def is_table_empty(table=None):
     if table is None:
@@ -105,6 +103,8 @@ def fill_installmethods(db=None):
     t.save({ "type" : "deploy_xen", "name" : "Deploy a Citrix XenServer" })
     t.save({ "type" : "localboot", "name" : "Boot " })
 
+_FILL_TABLE_FUNCS = [fill_inettypes, fill_interfacetypes, fill_pxetypes,
+                   fill_ribtypes, fill_installmethods]
 
 
 if __name__ == '__main__':
