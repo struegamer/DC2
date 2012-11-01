@@ -25,8 +25,8 @@ import logging
 try:
     import web
 except ImportError, e:
-    print 'you do not have web.py installed'
-    print e
+    print('you do not have web.py installed')
+    print(e)
     sys.exit(1)
 
 
@@ -49,3 +49,28 @@ class Logger(object):
             ret = func(*args, **kwargs)
             return ret
         return newf
+
+class AppLogger(object):
+    def __init__(self, logger=None):
+        if logger is None:
+            self._logger = self._init_logging()
+        else:
+            self._logger = logger
+
+    def _init_logging(self):
+        logger = logging.getLogger('DEFAULT_APP_LOGGER')
+        logger.setLevel(LOGLEVEL)
+
+        fh = logging.FileHandler(LOGFILE)
+        fh.setLevel(LOGLEVEL)
+        formatter = logging.Formatter(LOGFORMAT)
+        fh.setFormatter(formatter)
+
+        logger.addHandler(fh)
+        return logger
+
+    def log(self, severity=LOG_DEBUG, logmsg=''):
+        if severity == LOG_DEBUG:
+            self._logger.debug(logmsg)
+        if severity == LOG_INFO:
+            self._logger.info(logmsg)
