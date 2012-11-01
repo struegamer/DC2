@@ -20,6 +20,10 @@
 
 import logging
 
+
+LOG_INFO = 1
+LOG_DEBUG = 10
+
 class AppLogger(object):
     def __init__(self, logger=None):
         if logger is None:
