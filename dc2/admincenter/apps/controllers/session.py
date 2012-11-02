@@ -85,6 +85,10 @@ class SessionLoginController(RESTController):
     def _create(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         params = web.input()
+        if 'error' in web.ctx.session:
+            del web.ctx.session.error
+            del web.ctx.session.errorno
+            del web.ctx.session.errormsg
         if KERBEROS_AUTH_ENABLED:
             try:
                 do_kinit(params.username, params.password)
