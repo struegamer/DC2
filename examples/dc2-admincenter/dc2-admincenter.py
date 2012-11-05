@@ -59,6 +59,7 @@ except ImportError, e:
 try:
     from settings import MONGOS
     from settings import GRP_NAME_DC2ADMINS
+    from settings import KERBEROS_AUTH_ENABLED
 except ImportError, e:
     print 'You do not have a settings file.'
     sys.exit(1)
@@ -85,9 +86,16 @@ def is_admin():
             web.ctx.session.realname = get_realname(web.ctx.session.username)
             web.ctx.session.is_dc2admin = check_membership_in_group(web.ctx.session.username, GRP_NAME_DC2ADMINS)
 
+def set_kerberos_ccname():
+    if KERBEROS_AUTH_ENABLED:
+        if 'krb5ccname' in web.ctx.session:
+            web.ctx.env['KRB5CCNAME'] = web.ctx.session.krb5ccname
+            os.environ['KRB5CCNAME'] = web.ctx.session.krb5ccname
+
 
 app.add_processor(web.loadhook(session_hook))
 app.add_processor(web.loadhook(is_admin))
+app.add_processor(web.loadhook(set_kerberos_data))
 
 application = app.wsgifunc()
 
