@@ -19,6 +19,8 @@
 ###############################################################################
 import sys
 import xmlrpclib
+import urlparse
+
 
 try:
     from ticket import KerberosTicket
