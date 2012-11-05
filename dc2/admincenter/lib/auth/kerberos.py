@@ -22,6 +22,13 @@ import sys
 import os
 
 try:
+    import web
+except ImportError, e:
+    print('you did not install web.py')
+    print(e)
+    sys.exit(1)
+
+try:
     import krbV
 except ImportError, e:
     print('you don\'t have python-krbV installed')
@@ -53,6 +60,7 @@ def do_kinit(username=None, password=None):
             env={'KRB5CCNAME':ccache_name},
             stdin=password, raiseonerr=False)
     os.environ['KRB5CCNAME'] = ccache_name
+    web.ctx.session.krb5ccname = ccache_name
     if returncode != 0:
         raise KerberosAuthError(principal=principal, message=unicode(stderr))
 
