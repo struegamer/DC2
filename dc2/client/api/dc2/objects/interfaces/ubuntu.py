@@ -59,7 +59,7 @@ def write_host_network_configuration(host=None, rpcurl=None):
                     if not already_auto.has_key(interface["name"]):
                         print "auto %s" % interface["name"]
                         already_auto[interface["name"]] = True
-                    if interface["is_ipv6"]:
+                    if 'is_ipv6' in interface and interface["is_ipv6"]:
                         print "iface %s inet6 %s" % (interface["name"], interface["inet"])
                     else:
                         print "iface %s inet %s" % (interface["name"], interface["inet"])
