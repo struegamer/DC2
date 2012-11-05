@@ -23,6 +23,7 @@ import xmlrpclib
 try:
     from ticket import KerberosTicket
     from kerberostransport import KerberosAuthTransport
+    from kerberostransport import SafeKerberosAuthTransport
 except ImportError, e:
     print 'Your installation of DC2 is not correct'
     sys.exit(1)
@@ -30,6 +31,10 @@ except ImportError, e:
 class KerberosServerProxy(xmlrpclib.ServerProxy):
     def __init__(self, uri, service=None, encoding=None, verbose=0,
                  allow_none=0, use_datetime=0):
-        kerb_transport = KerberosAuthTransport(use_datetime, service, uri)
+        parsed_url = urlparse.urlparse(uri)
+        if parsed_url.scheme == 'http':
+            kerb_transport = KerberosAuthTransport(use_datetime, service, uri)
+        if parsed_url.scheme == 'https':
+            kerb_transport = SafeKerberosAuthTransport(use_datetime, service, uri)
         xmlrpclib.ServerProxy.__init__(self, uri, transport=kerb_transport, encoding=encoding, verbose=verbose, allow_none=allow_none, use_datetime=use_datetime)
 
