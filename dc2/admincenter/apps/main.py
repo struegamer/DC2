@@ -25,7 +25,7 @@ import os.path
 
 try:
     import web
-except ImportError,e:
+except ImportError, e:
     print "You need to install web.py"
     sys.exit(1)
 
@@ -34,13 +34,13 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import logger
-except ImportError,e:
+except ImportError, e:
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
 
 try:
     from jinja2 import Environment, FileSystemLoader
-except ImportError,e:
+except ImportError, e:
     print "You didn't install jinja2 templating engine"
     sys.exit(1)
 
@@ -49,7 +49,7 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
-except ImportError,e:
+except ImportError, e:
     print "You are missing the necessary DC2 modules"
     print e
     sys.exit(1)
@@ -58,7 +58,7 @@ try:
     from settings import TEMPLATE_DIR
     from settings import KERBEROS_AUTH_ENABLED
     from settings import GRP_NAME_DC2ADMINS
-except ImportError,e:
+except ImportError, e:
     print "You don't have a settings file"
     print e
     sys.exit(1)
@@ -66,47 +66,51 @@ except ImportError,e:
 try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
-except ImportError,e:
+except ImportError, e:
     print "There are dc2.admincenter modules missing"
     print e
     sys.exit(1)
 
-tmpl_env=Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+tmpl_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 class Home(object):
     @Logger(logger=logger)
     def GET(self):
-        page=Page('index.tmpl',tmpl_env,web.ctx)
+        page = Page('index.tmpl', tmpl_env, web.ctx)
         page.set_title('DC2-AdminCenter - Index')
         page.set_cssfiles(CSS_FILES)
         page.set_jslibs(JS_LIBS)
         if 'authenticated' in web.ctx.session and web.ctx.session.authenticated:
-            user_info={}
-            user_info['username']=web.ctx.session.username
-            user_info['realname']=web.ctx.session.realname
-            user_info['is_dc2admin']=web.ctx.session.is_dc2admin
+            user_info = {}
+            user_info['username'] = web.ctx.session.username
+            user_info['realname'] = web.ctx.session.realname
+            user_info['is_dc2admin'] = web.ctx.session.is_dc2admin
             page.add_page_data({'user':user_info})
         return page.render()
-            
+
 class Login(object):
     @csrf_protected
     @Logger(logger=logger)
     def POST(self):
-        params=web.input()
+        params = web.input()
+        if 'error' in web.ctx.session:
+            del web.ctx.session.error
+            del web.ctx.session.errorno
+            del web.ctx.session.errormsg
         if KERBEROS_AUTH_ENABLED:
             try:
-                do_kinit(params.username,params.password)
-                web.ctx.session.authenticated=True
-                web.ctx.session.username=params.username
+                do_kinit(params.username, params.password)
+                web.ctx.session.authenticated = True
+                web.ctx.session.username = params.username
                 raise web.seeother('/')
-            except KerberosAuthError,e:
-                web.ctx.session.authenticated=False
-                web.ctx.session.error=True
-                web.ctx.session.errorno=1020
-                web.ctx.session.errormsg=e
+            except KerberosAuthError, e:
+                web.ctx.session.authenticated = False
+                web.ctx.session.error = True
+                web.ctx.session.errorno = 1020
+                web.ctx.session.errormsg = e
                 raise web.seeother('/')
         # TODO: Standard Auth
         else:
-            web.ctx.session.authenticated=True
-            web.ctx.session.username=params.username
+            web.ctx.session.authenticated = True
+            web.ctx.session.username = params.username
             raise web.seeother('/')
