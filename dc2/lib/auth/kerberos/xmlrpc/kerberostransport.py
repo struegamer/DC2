@@ -27,7 +27,7 @@ except ImportError, e:
     print "Your dc2 installation is not correct"
     sys.exit(1)
 
-class KerberosAuthTransport(xmlrpclib.SafeTransport):
+class SafeKerberosAuthTransport(xmlrpclib.SafeTransport):
     def __init__(self, use_datetime=0, service='', referer=''):
         self._krb = KerberosTicket(service)
         self._referer = referer
@@ -39,4 +39,15 @@ class KerberosAuthTransport(xmlrpclib.SafeTransport):
         connection.putheader('Authorization', self._krb.auth_header)
         connection.putheader('Referer', self._referer)
 
+class KerberosAuthTransport(xmlrpclib.Transport):
+    def __init__(self, use_datetime=0, service='', referer=''):
+        self._krb = KerberosTicket(service)
+        self._referer = referer
+        xmlrpclib.Transport.__init__(self, use_datetime)
+
+    def send_host(self, connection, host):
+        if sys.version_info < (2, 7):
+            connection.putheader('Host', host)
+        connection.putheader('Authorization', self._krb.auth_header)
+        connection.putheader('Referer', self._referer)
 

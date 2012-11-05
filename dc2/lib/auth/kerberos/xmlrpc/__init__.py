@@ -20,4 +20,5 @@
 
 from ticket import KerberosTicket
 from kerberostransport import KerberosAuthTransport
+from kerberostransport import SafeKerberosAuthTransport
 from kerb_xmlrpc import KerberosServerProxy
