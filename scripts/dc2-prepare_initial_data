@@ -7,91 +7,93 @@ import os.path
 import xmlrpclib
 from optparse import OptionParser, OptionGroup
 
-def add_inventory_options(options=None,xmlrpc_server=None):
+def add_inventory_options(options=None, xmlrpc_server=None):
     if options is not None and xmlrpc_server is not None:
-        env_list=[]
-        env_list=xmlrpc_server.dc2.configuration.environments.find({"name":"INVENTORY"})
-        if env_list is not None and len(env_list)>0:
+        env_list = []
+        env_list = xmlrpc_server.dc2.configuration.environments.find({"name":"INVENTORY"})
+        if env_list is not None and len(env_list) > 0:
             pass
         else:
-            env_inventory={}
-            env_inventory["name"]="INVENTORY"
-            env_inventory["description"]="Default environment for the Inventory Job"
-            env_inventory["variables"]=[]
+            env_inventory = {}
+            env_inventory["name"] = "INVENTORY"
+            env_inventory["description"] = "Default environment for the Inventory Job"
+            env_inventory["variables"] = []
             if options.dc2_kernel_filename is not None and options.dc2_kernel_filename != "":
-                env_inventory["variables"].append({"name":"LINUX_KERNEL_NAME","value":"%s" % options.dc2_kernel_filename})
+                env_inventory["variables"].append({"name":"LINUX_KERNEL_NAME", "value":"%s" % options.dc2_kernel_filename})
             else:
-                env_inventory["variables"].append({"name":"LINUX_KERNEL_NAME","value":"vmlinuz"})
+                env_inventory["variables"].append({"name":"LINUX_KERNEL_NAME", "value":"vmlinuz"})
             if options.dc2_initrd_filename is not None and options.dc2_initrd_filename != "":
-                env_inventory["variables"].append({"name":"LINUX_INITRD_NAME","value":"%s" % options.dc2_initrd_filename})
+                env_inventory["variables"].append({"name":"LINUX_INITRD_NAME", "value":"%s" % options.dc2_initrd_filename})
             else:
-                env_inventory["variables"].append({"name":"LINUX_INITRD_NAME","value":"initrd.img"})
+                env_inventory["variables"].append({"name":"LINUX_INITRD_NAME", "value":"initrd.img"})
             if options.fai_nfsroot is not None and options.fai_nfsroot != "":
-                env_inventory["variables"].append({"name":"FAI_NFSROOT","value":"%s" % options.fai_nfsroot})
+                env_inventory["variables"].append({"name":"FAI_NFSROOT", "value":"%s" % options.fai_nfsroot})
             else:
-                env_inventory["variables"].append({"name":"FAI_NFSROOT","value":"/srv/fai/nfsroot"})
+                env_inventory["variables"].append({"name":"FAI_NFSROOT", "value":"/srv/fai/nfsroot"})
             if options.dc2_backend_url is not None and options.dc2_backend_url != "":
-                env_inventory["variables"].append({"name":"DC2_BACKEND_URL","value":"%s" % options.dc2_backend_url})
+                env_inventory["variables"].append({"name":"DC2_BACKEND_URL", "value":"%s" % options.dc2_backend_url})
             else:
-                env_inventory["variables"].append({"name":"DC2_BACKEND_URL","value":"http://localhost/RPC"})
+                env_inventory["variables"].append({"name":"DC2_BACKEND_URL", "value":"http://localhost/RPC"})
+            env_inventory['variables'].append({'name':'DC2_ROOTFS_TYPE', 'value':'nfs'})
+            env_inventory['variables'].append({'name':'DC2_ROOTFS_IMAGE', 'value':'None'})
             xmlrpc_server.dc2.configuration.environments.add(env_inventory)
-            add_default_classes(options,xmlrpc_server)
-            xmlrpc_server.dc2.configuration.environments.copy("INVENTORY","EXAMPLE_ENVIRONMENT")
-            example_env=xmlrpc_server.dc2.configuration.environments.list({"name":"EXAMPLE_ENVIRONMENT"})[0]
-            example_env["description"]="Example Environment definition"
-            example_env["variables"].append({"name":"DNSSERVERS","value":"8.8.8.8"})
-            example_env["variables"].append({"name":"DEFAULT_TIMEZONE","value":"Etc/UTC"})
+            add_default_classes(options, xmlrpc_server)
+            xmlrpc_server.dc2.configuration.environments.copy("INVENTORY", "EXAMPLE_ENVIRONMENT")
+            example_env = xmlrpc_server.dc2.configuration.environments.list({"name":"EXAMPLE_ENVIRONMENT"})[0]
+            example_env["description"] = "Example Environment definition"
+            example_env["variables"].append({"name":"DNSSERVERS", "value":"8.8.8.8"})
+            example_env["variables"].append({"name":"DEFAULT_TIMEZONE", "value":"Etc/UTC"})
             xmlrpc_server.dc2.configuration.environments.update(example_env)
 
 
-def add_default_classes(options=None,xmlrpc_server=None):
+def add_default_classes(options=None, xmlrpc_server=None):
     if options is not None and xmlrpc_server is not None:
-        defclasses=[
-                {"classname":"10_ARCH_x86_64","description":"Default Class for X86_64 Architectures"},
-                {"classname":"20_BOOT_GRUB_PC","description":"Default Classes for GRUB2 Bootloader"},
-                {"classname":"30_DISK_SIMPLE_10G_EXT2","description":"Default Class for a 10G Disklayout with Ext2 as default filesystem"},
-                {"classname":"30_DISK_SIMPLE_10G_EXT3","description":"Default Class for a 10G Disklayout with Ext3 as default filesystem"},
-                {"classname":"30_DISK_SIMPLE_10G_EXT4","description":"Default Class for a 10G Disklayout with Ext4 as default filesystem"},
-                {"classname":"30_DISK_SIMPLE_10G_XFS","description":"Default Class for a 10G Disklayout with XFS as default filesystem"},
-                {"classname":"50_OS_UBUNTU_1004","description":"Default Class for OS Ubuntu 10.04 LTS"},
-                {"classname":"50_OS_UBUNTU_1204","description":"Default Class for OS Ubuntu 12.04 LTS"},
-                {"classname":"70_USERS","description":"Default Class to install default users"}
+        defclasses = [
+                {"classname":"10_ARCH_x86_64", "description":"Default Class for X86_64 Architectures"},
+                {"classname":"20_BOOT_GRUB_PC", "description":"Default Classes for GRUB2 Bootloader"},
+                {"classname":"30_DISK_SIMPLE_10G_EXT2", "description":"Default Class for a 10G Disklayout with Ext2 as default filesystem"},
+                {"classname":"30_DISK_SIMPLE_10G_EXT3", "description":"Default Class for a 10G Disklayout with Ext3 as default filesystem"},
+                {"classname":"30_DISK_SIMPLE_10G_EXT4", "description":"Default Class for a 10G Disklayout with Ext4 as default filesystem"},
+                {"classname":"30_DISK_SIMPLE_10G_XFS", "description":"Default Class for a 10G Disklayout with XFS as default filesystem"},
+                {"classname":"50_OS_UBUNTU_1004", "description":"Default Class for OS Ubuntu 10.04 LTS"},
+                {"classname":"50_OS_UBUNTU_1204", "description":"Default Class for OS Ubuntu 12.04 LTS"},
+                {"classname":"70_USERS", "description":"Default Class to install default users"}
                 ]
         for cl in defclasses:
             xmlrpc_server.dc2.configuration.defaultclasses.add(cl)
 
 
 
-if __name__=="__main__":
-    parser=OptionParser()
-    parser.add_option("","--kernel-filename",
+if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("", "--kernel-filename",
             action="store",
             dest="dc2_kernel_filename",
             metavar="<kernel filename>",
             help="Kernel filename i.e. vmlinuz-3.2.0-15-generic",
             default=None)
-    parser.add_option("","--initrd-filename",
+    parser.add_option("", "--initrd-filename",
             action="store",
             dest="dc2_initrd_filename",
             metavar="<initrd filename>",
             help="Initrd filename i.e. initrd.img-3.2.0-15-generic",
             default=None)
-    parser.add_option("","--fai-nfsroot",
+    parser.add_option("", "--fai-nfsroot",
             action="store",
             dest="fai_nfsroot",
             metavar="<directory>",
             help="FAI NFSRoot directoryname",
             default=None)
-    parser.add_option("","--dc2-backend-url",
+    parser.add_option("", "--dc2-backend-url",
             action="store",
             dest="dc2_backend_url",
             metavar="<url to your dc2 backend server>",
             help="DC2 Backend URL",
             default=None)
-    (options,args)=parser.parse_args()
+    (options, args) = parser.parse_args()
     if options.dc2_backend_url is not None and options.dc2_backend_url != "":
-        s=xmlrpclib.ServerProxy("%s" % options.dc2_backend_url,allow_none=True)
-        add_inventory_options(options,s)
+        s = xmlrpclib.ServerProxy("%s" % options.dc2_backend_url, allow_none=True)
+        add_inventory_options(options, s)
     else:
         print "You need to set the DC² backend url"
         sys.exit(1)
