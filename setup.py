@@ -86,7 +86,7 @@ setup(name="dc2.appserver",
             'dc2.appserver.rpc',
             'dc2.appserver.rpcmethods',
         ],
-        scripts=["scripts/dc2-prepare_initial_data"]
+        scripts=["scripts/dc2-prepare_initial_data", "scripts/dc2-squashfs"]
 )
 
 setup(name='dc2.lib',
