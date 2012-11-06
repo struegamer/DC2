@@ -23,7 +23,7 @@ import logging
 import os
 import os.path
 
-# 
+#
 # MongoDB Server and Database Collections
 #
 
@@ -54,34 +54,34 @@ MONGOS = {
              }
 }
 
-#LIBVIRT_SERVER= {
+# LIBVIRT_SERVER= {
 #        "xenserver01": {
 #            "host":"xenserver01",
 #            "method":"tls",
 #            "conn":None
 #        }
-#}
+# }
 
 
 #
 # HTTP Access Headers
 #
-ACCESS_CONTROL_ALLOW_ORIGIN="*"
-ACCESS_CONTROL_ALLOW_METHODS="GET,POST,OPTIONS,PUT,DELETE"
+ACCESS_CONTROL_ALLOW_ORIGIN = "*"
+ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 
 #
 # HTTP Access Headers
 #
-ACCESS_CONTROL_ALLOW_ORIGIN="*"
-ACCESS_CONTROL_ALLOW_METHODS="GET,POST,OPTIONS,PUT,DELETE"
+ACCESS_CONTROL_ALLOW_ORIGIN = "*"
+ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 
 #
 # RPC Modules for RPCDispatcher
 #
-CS2_ENABLED=False
-XEN_ENABLED=False
-FREEIPA_ENABLED=False
-KERBEROS_AUTH_ENABLED=False
+CS2_ENABLED = False
+XEN_ENABLED = False
+FREEIPA_ENABLED = False
+KERBEROS_AUTH_ENABLED = False
 
 RPCMODULES = ['dc2.appserver.rpcmethods']
 if CS2_ENABLED:
@@ -89,14 +89,24 @@ if CS2_ENABLED:
 if XEN_ENABLED:
     RPCMODULES.append("xenrpcmethods")
 
-# 
+#
+# FAI Boot Settings
+#
+# ROOTFS_TYPE is the type of rootfile system to be mounted
+# ROOTFS_TYPE='squashfs' ==> load rootfs as squashfs image from http
+# ROOTFS_TYPE='nfs' ==> root=nfs://...
+
+# ROOTFS_TYPE = 'squashfs'
+# ROOTFS_LOCATION = 'http://archivehost.domain.tld/rootfs.img'
+
+#
 # DC² Settings for PXE Boot
 #
-DOWNLOAD_SERVER_URL="http://172.20.0.101/"
-XMLRPC_BACKEND_SERVER_URL="http://dc2db.net/RPC"
-XMLRPC_BACKEND_SERVER_IP="172.20.0.100"
-TEMPLATE_DIR="%s/templates" % os.path.dirname(__file__)
-FREEIPA_SERVER_URL=''
+DOWNLOAD_SERVER_URL = "http://172.20.0.101/"
+XMLRPC_BACKEND_SERVER_URL = "http://dc2db.net/RPC"
+XMLRPC_BACKEND_SERVER_IP = "172.20.0.100"
+TEMPLATE_DIR = "%s/templates" % os.path.dirname(__file__)
+FREEIPA_SERVER_URL = ''
 
 #
 # LOGFILE settings
@@ -104,7 +114,7 @@ FREEIPA_SERVER_URL=''
 if os.path.exists("/var/log/dc2"):
     LOGFILE = "/var/log/dc2/dc2.log"
 else:
-    LOGFILE = "dc2.log"    
+    LOGFILE = "dc2.log"
 LOGLEVEL = logging.DEBUG
 
 
