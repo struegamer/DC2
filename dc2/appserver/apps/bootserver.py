@@ -95,14 +95,20 @@ class BootServer:
                             else:
                                 return self.write_pxefile(mac_addr, "localboot")
                         if installstate.has_key("status") and installstate["status"] == "deploy":
-                            return self.write_pxefile(mac_addr, "deploy", env_variables["LINUX_KERNEL_NAME"], env_variables["LINUX_INITRD_NAME"], env_variables["FAI_NFSROOT"], env_variables["DC2_BACKEND_URL"])
+                            result = self.write_pxefile(mac_addr, 'deploy', env_variables)
+                            if result is None:
+                                raise web.notfound()
+                            return result
                         if installstate.has_key("status") and installstate["status"] == "xenserver":
                             pass
             else:
                 environ_rec = s.dc2.configuration.environments.list({"name":"INVENTORY"})[0]
                 env_variables = self.convert_to_dict(environ_rec["variables"])
                 # return self.write_pxefile(mac_addr, "inventory", env_variables["LINUX_KERNEL_NAME"], env_variables["LINUX_INITRD_NAME"], env_variables["FAI_NFSROOT"], env_variables["DC2_BACKEND_URL"])
-                return self.write_pxefile(mac_addr, 'inventory', env_variables)
+                result = self.write_pxefile(mac_addr, 'inventory', env_variables)
+                if result is None:
+                    raise web.notfound()
+                return result
         else:
             return web.notfound()
 
