@@ -1,3 +1,4 @@
 /usr/share/dc2-appserver
 /usr/bin/dc2-prepare_initial_data
+/usr/bin/dc2-squashfs
 /etc/apache2/sites-available/dc2db.hosts
