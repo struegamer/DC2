@@ -51,7 +51,9 @@ try:
     from settings import DOWNLOAD_SERVER_URL
     from settings import XMLRPC_BACKEND_SERVER_URL
     from settings import XMLRPC_BACKEND_SERVER_IP
-    print "Settings %s" % XMLRPC_BACKEND_SERVER_URL
+    from settings import ROOTFS_TYPE
+    from settings import ROOTFS_LOCATION
+
 except ImportError:
     print "You don't have a settings file in your Python path"
     sys.exit(1)
@@ -99,11 +101,15 @@ class BootServer:
             else:
                 environ_rec = s.dc2.configuration.environments.list({"name":"INVENTORY"})[0]
                 env_variables = self.convert_to_dict(environ_rec["variables"])
-                return self.write_pxefile(mac_addr, "inventory", env_variables["LINUX_KERNEL_NAME"], env_variables["LINUX_INITRD_NAME"], env_variables["FAI_NFSROOT"], env_variables["DC2_BACKEND_URL"])
+                # return self.write_pxefile(mac_addr, "inventory", env_variables["LINUX_KERNEL_NAME"], env_variables["LINUX_INITRD_NAME"], env_variables["FAI_NFSROOT"], env_variables["DC2_BACKEND_URL"])
+                return self.write_pxefile(mac_addr, 'inventory', env_variables)
         else:
             return web.notfound()
 
-    def write_pxefile(self, filename, action=None, kernel_name=None, initrd_name=None, nfs_root=None, backend_url=None, bootmethod=None):
+    # def write_pxefile(self, filename, action=None, kernel_name=None, initrd_name=None, nfs_root=None, backend_url=None, bootmethod=None):
+    def write_pxefile(self, filename, action=None, env_variables=None, bootmethod=None):
+        if env_variables is None:
+            return None
         if action is not None:
             if action == "localboot":
                 result = "DEFAULT chain.c32 hd0 0\n"
@@ -125,16 +131,22 @@ class BootServer:
                 result = "DEFAULT generated\n"
                 result += "LABEL generated\n"
                 result += "IPAPPEND 2\n"
-                result += "KERNEL %s/%s\n" % (DOWNLOAD_SERVER_URL, kernel_name)
-                result += 'APPEND initrd=%s/%s ip=dhcp root=/dev/nfs nomodeset nfsroot=%s  DEBUG=1  boot=live nofb FAI_ACTION=%s FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="%s"\n' % (DOWNLOAD_SERVER_URL, initrd_name, nfs_root, action, backend_url)
+                result += "KERNEL {0}/{1}\n".format(DOWNLOAD_SERVER_URL, env_variables['LINUX_KERNEL_NAME'])
+                if env_variables['DC2_ROOTFS_TYPE'] == 'squashfs':
+                    result += 'APPEND initrd={0}/{1} ip=dhcp nomodeset fetch={0}/{2}  DEBUG=1  boot=live nofb FAI_ACTION={3} FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(DOWNLOAD_SERVER_URL, initrd_name, env_variables['DC2_ROOTFS_IMAGE'], action, backend_url)
+                if env_variables['DC2_ROOTFS_TYPE'] == 'nfs':
+                    result += 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs nomodeset nfsroot={2}  DEBUG=1  boot=live nofb FAI_ACTION={3} FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(DOWNLOAD_SERVER_URL, initrd_name, nfs_root, action, backend_url)
                 return result
             if action == "deploy":
                 action = "install"
                 result = "DEFAULT generated\n"
                 result += "LABEL generated\n"
                 result += "IPAPPEND 2\n"
-                result += "KERNEL %s/%s\n" % (DOWNLOAD_SERVER_URL, kernel_name)
-                result += 'APPEND initrd=%s/%s ip=dhcp root=/dev/nfs nomodeset nfsroot=%s  DEBUG=1  boot=live nofb FAI_ACTION=%s FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="%s"\n' % (DOWNLOAD_SERVER_URL, initrd_name, nfs_root, action, backend_url)
+                result += "KERNEL {0}/{1}\n".format(DOWNLOAD_SERVER_URL, env_variables['LINUX_KERNEL_NAME'])
+                if env_variables['DC2_ROOTFS_TYPE'] == 'squashfs':
+                    result += 'APPEND initrd={0}/{1} ip=dhcp nomodeset fetch={0}/{2}  DEBUG=1  boot=live nofb FAI_ACTION={3} FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(DOWNLOAD_SERVER_URL, initrd_name, env_variables['DC2_ROOTFS_IMAGE'], action, backend_url)
+                if env_variables['DC2_ROOTFS_TYPE'] == 'nfs':
+                    result += 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs nomodeset nfsroot={2}  DEBUG=1  boot=live nofb FAI_ACTION={3} FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(DOWNLOAD_SERVER_URL, initrd_name, nfs_root, action, backend_url)
                 return result
 
     def convert_to_dict(self, list_of_vars=None):
