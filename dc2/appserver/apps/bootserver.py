@@ -51,8 +51,6 @@ try:
     from settings import DOWNLOAD_SERVER_URL
     from settings import XMLRPC_BACKEND_SERVER_URL
     from settings import XMLRPC_BACKEND_SERVER_IP
-    from settings import ROOTFS_TYPE
-    from settings import ROOTFS_LOCATION
 
 except ImportError:
     print "You don't have a settings file in your Python path"
