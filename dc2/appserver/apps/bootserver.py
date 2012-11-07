@@ -112,8 +112,6 @@ class BootServer:
 
     # def write_pxefile(self, filename, action=None, kernel_name=None, initrd_name=None, nfs_root=None, backend_url=None, bootmethod=None):
     def write_pxefile(self, filename, action=None, env_variables=None, bootmethod=None):
-        if env_variables is None:
-            return None
         if action is not None:
             if action == "localboot":
                 result = "DEFAULT chain.c32 hd0 0\n"
