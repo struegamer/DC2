@@ -41,4 +41,4 @@ class IPAConnection(object):
         return self._ipa_proxy
 
     def methods(self):
-        self._ipa_proxy.system.listMetods()
+        self._ipa_proxy.system.listMethods()
