@@ -23,10 +23,12 @@ import xmlrpclib
 import types
 
 try:
-    from dc2.lib.auth.kerberos import KerberosServerProxy
+    from dc2.lib.auth.kerberos.xmlrpc import KerberosServerProxy
+    from dc2.lib.freeipa.lib import IPAHosts
 except ImportError, e:
     print "Your DC2 installation is not correct"
     sys.exit(1)
+
 
 class IPAConnection(object):
     def __init__(self, ipa_server_url, ipa_kerberos_service):
@@ -35,10 +37,16 @@ class IPAConnection(object):
         self._ipa_proxy = KerberosServerProxy(ipa_server_url,
                                               ipa_kerberos_service,
                                               allow_none=True)
+        self._init_objects()
 
     @property
     def ipa_proxy(self):
         return self._ipa_proxy
 
-    def methods(self):
-        self._ipa_proxy.system.listMethods()
+    @property
+    def hosts(self):
+        return self._hosts
+
+    def _init_objects(self):
+        self._hosts = IPAHosts(self.ipa_proxy)
+

@@ -20,3 +20,4 @@
 
 
 from connection import IPAConnection
+from objects import IPAHosts
