@@ -22,10 +22,23 @@
 import sys
 
 from ipa_base import IPABase
+from ..records import RecordHost
+
 
 class IPAHosts(IPABase):
     def get(self, fqdn):
-        result = self._ipa_proxy.find([fqdn])
+        result = self._ipa_proxy.host_find([fqdn])
+        if 'count' in result and result['count'] == 1 and 'result' in result:
+            a = RecordHost(result['result'][0])
+            return a
+        return None
 
-
+    def find(self, search):
+        result = self._ipa_proxy.host_find([search])
+        if 'count' in result and result['count'] > 0 and 'result' in result:
+            a = []
+            for i in result['result']:
+                a.append(RecordHost(i))
+            return a
+        return []
 

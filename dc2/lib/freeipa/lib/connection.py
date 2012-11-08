@@ -24,7 +24,7 @@ import types
 
 try:
     from dc2.lib.auth.kerberos.xmlrpc import KerberosServerProxy
-    from dc2.lib.freeipa.lib import IPAHosts
+    from dc2.lib.freeipa.lib.objects import IPAHosts
 except ImportError, e:
     print "Your DC2 installation is not correct"
     sys.exit(1)
