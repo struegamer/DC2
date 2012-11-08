@@ -115,7 +115,8 @@ setup(name='dc2.lib',
             'dc2.lib.decorators.logging',
             'dc2.lib.transports',
             'dc2.lib.logging',
-            'dc2.lib.freeipa'
+            'dc2.lib.freeipa',
+            'dc2.lib.freeipa.lib'
         ]
     )
 
