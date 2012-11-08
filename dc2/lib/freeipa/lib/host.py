@@ -27,13 +27,13 @@ try:
     from settings import KERBEROS_AUTH_ENABLED
     from settings import FREEIPA_SERVER_URL
     from settings import FREEIPA_KERBEROS_SERVICE
-except ImportError,e:
+except ImportError, e:
     print "You don't have a settings file"
     sys.exit(1)
 
 try:
     from dc2.lib.auth.kerberos import KerberosServerProxy
-except ImportError,e:
+except ImportError, e:
     print "Your DC2 installation is not correct"
     sys.exit(1)
 
@@ -44,7 +44,9 @@ if not KERBEROS_AUTH_ENABLED:
     print "You need to enable KERBEROS Authentication"
     sys.exit(1)
 
-iparpc=KerberosServerProxy(FREEIPA_SERVER_URL,FREEIPA_KERBEROS_SERVICE,allow_none=True)
+iparpc = KerberosServerProxy(FREEIPA_SERVER_URL, FREEIPA_KERBEROS_SERVICE, allow_none=True)
+
+
 
 def host_add(host_dict=None):
     """Needed input keys:
