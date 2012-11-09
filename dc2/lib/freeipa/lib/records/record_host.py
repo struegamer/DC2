@@ -22,7 +22,7 @@
 import sys
 import types
 
-from dc2.lib.freeipa.records import RecordBase
+from record_base import RecordBase
 
 class RecordHost(RecordBase):
     pass
