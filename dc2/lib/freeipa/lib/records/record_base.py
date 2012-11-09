@@ -21,11 +21,11 @@
 
 import sys
 import types
-import xmlrpclib
 
 class RecordBase(object):
-    def __init__(self, raw_data=None):
+    def __init__(self, func, raw_data=None):
         self._raw_data = raw_data
+        self._func = func
 
     def __getattr__(self, name):
         if name not in self.__dict__:
@@ -34,4 +34,7 @@ class RecordBase(object):
                 if data is not None:
                     return data
                 return self._raw_data[name]
+
+    def _return_special_data(self, name):
+        return None
 
