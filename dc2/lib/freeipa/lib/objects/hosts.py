@@ -27,7 +27,7 @@ from ..records import RecordHost
 
 class IPAHosts(IPABase):
     def get(self, fqdn):
-        result = self._ipa_proxy.host_find([fqdn])
+        result = self._ipa_proxy.host_show([fqdn])
         if 'count' in result and result['count'] == 1 and 'result' in result:
             a = RecordHost(result['result'][0])
             return a
@@ -42,3 +42,5 @@ class IPAHosts(IPABase):
             return a
         return []
 
+    def add(self, fqdn, add_infos):
+        pass
