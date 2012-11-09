@@ -87,6 +87,8 @@ setup(name="dc2.appserver",
             'dc2.appserver.helpers',
             'dc2.appserver.rpc',
             'dc2.appserver.rpcmethods',
+            'dc2.appserver.addons',
+            'dc2.appserver.addons.freeipa'
         ],
         scripts=["scripts/dc2-prepare_initial_data", "scripts/dc2-squashfs"]
 )
