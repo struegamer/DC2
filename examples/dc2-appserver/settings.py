@@ -89,6 +89,9 @@ if CS2_ENABLED:
 if XEN_ENABLED:
     RPCMODULES.append("xenrpcmethods")
 
+if FREEIPA_ENABLED:
+    RPCMODULES.append('dc2.appserver.addons.freeipa')
+
 #
 # FAI Boot Settings
 #
