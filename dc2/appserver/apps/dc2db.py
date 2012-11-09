@@ -80,6 +80,7 @@ class DC2DB:
         web.header("Content-Type", return_data[0])
         web.header("Access-Control-Allow-Origin", ACCESS_CONTROL_ALLOW_ORIGIN)
         web.header("Access-Control-Allow-Methods", ACCESS_CONTROL_ALLOW_METHODS)
+        web.debug(web.ctx.env)
         return return_data[1]
     def OPTIONS(self):
         web.header("Content-Type", "text/plain")
