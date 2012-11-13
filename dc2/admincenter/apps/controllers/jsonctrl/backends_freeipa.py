@@ -50,10 +50,52 @@ except ImportError, e:
     sys.exit(1)
 
 try:
-    from dc2.api.dc2.inventory import Servers
+    from dc2.api.dc2.addons.freeipa import Hosts as FreeIPAHosts
     from dc2.api.dc2.inventory import Hosts
-    from dc2.api.dc2.deployment import InstallState
 except ImportError, e:
     print 'you didn\'t have dc2.api installed'
     print e
     sys.exit(1)
+
+class JSONFreeipaHostController(JSONController):
+    def __init__(self, *args, **kwargs):
+        super(JSONFreeipaHostController, self).__init__(*args, **kwargs)
+        self._prepare_urls()
+
+    def _prepare_urls(self):
+        self.add_url_handler_to_verb('GET', 'check', 'freeipa_host_check')
+        self.add_process_method('freeipa_host_check', self._freeipa_host_check)
+
+    @needs_auth
+    @Logger(logger=logger)
+    def _freeipa_host_check(self, *args, **kwargs):
+        verb = kwargs.get('verb', None)
+        if verb is not None:
+            params = web.input()
+            backend_id = params.get('backend_id', None)
+            host_id = params.get('host_id', None)
+            if backend_id is not None:
+                backend = backends.backend_get({'_id':backend_id})
+                if backend is not None:
+                    transport = get_xmlrpc_transport(backend['backend_url'],
+                                                     backend['is_kerberos'])
+                    fhosts = FreeIPAHosts(transport)
+                    hosts = Hosts(transport)
+                    if host_id is not None:
+                        h = hosts.get(id=host_id)
+                        if h is not None:
+                            result = fhosts.check('{0}.{1}'.format(h['hostname'], h['domainname']))
+                            if result is not None:
+                                output = self._prepare_output(result=
+                                                  {'backend_id':backend_id,
+                                                   'in_freeipa':True})
+                                return output
+                                output = self._prepare_output(result=
+                                                  {'backend_id':backend_id,
+                                                   'in_freeipa':False})
+
+
+
+
+
+
