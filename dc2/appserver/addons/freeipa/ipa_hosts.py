@@ -38,6 +38,7 @@ try:
     from dc2.lib.db.mongo import Database
     from dc2.lib.db.mongo import Table
     from dc2.lib.freeipa import IPAConnection
+    from dc2.lib.freeipa import IPAHostNotFound
 except ImportError:
     print "You don't have DC² correctly installed"
     sys.exit(1)
@@ -52,6 +53,10 @@ except ImportError, e:
 
 try:
     from settings import MONGOS
+    from settings import FREEIPA_ENABLED
+    from settings import KERBEROS_AUTH_ENABLED
+    from settings import FREEIPA_URL
+    from settings import FREEIPA_SERVICE
 except ImportError:
     print "You don't have a settings file"
     sys.exit(1)
@@ -67,10 +72,21 @@ IPA_RECORD = {
               'otp':True
 }
 
-
+freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
 
 @rpcmethod(name="dc2.freeipa.hosts.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_get(fqdn=None):
     if fqdn is None:
         return xmlrpclib.Fault(-32501, "FQDN is None")
+    if freeipa is not None:
+        try:
+            result = freeipa.hosts.get(fqdn)
+            return result._to_dict()
+        except IPAHostNotFound, e:
+            return None
+
+@rpcmethod(name='dc2.freeipa.hosts.check', params={}, returns=[], is_xmlrpc=True, is_jsonrpc=True)
+def dc2_freeipa_hosts_check(fqdn=None):
+    return dc2_freeipa_hosts_get(fqdn)
+
 
