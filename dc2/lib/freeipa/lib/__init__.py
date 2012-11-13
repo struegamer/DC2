@@ -19,5 +19,5 @@
 #################################################################################
 
 
-from connection import IPAConnection
-from objects import IPAHostNotFound
+from .connection import IPAConnection
+from .objects import IPAHostNotFound

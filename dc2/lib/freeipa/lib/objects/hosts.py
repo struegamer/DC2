@@ -22,7 +22,7 @@
 import sys
 import xmlrpclib
 
-from ipa_base import IPABase
+from .ipa_base import IPABase
 from ..records import RecordHost
 from .exceptions import IPAHostNotFound
 
