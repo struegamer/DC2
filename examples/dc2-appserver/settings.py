@@ -93,6 +93,18 @@ if FREEIPA_ENABLED:
     RPCMODULES.append('dc2.appserver.addons.freeipa')
 
 #
+# FREEIPA_URL should be 'https://your.freeipa.tld/ipa/xml
+#
+
+FREEIPA_URL = None
+
+#
+# FREEIPA_SERVICE should be 'HTTP@your.freeipa.tld
+#
+
+FREEIPA_SERVICE = None
+
+#
 # FAI Boot Settings
 #
 # ROOTFS_TYPE is the type of rootfile system to be mounted
