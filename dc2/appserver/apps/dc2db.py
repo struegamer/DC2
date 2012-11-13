@@ -24,6 +24,8 @@
 #
 import sys
 import os
+import os.path
+import shutil
 import xmlrpclib
 
 #
@@ -79,7 +81,14 @@ class DC2DB:
         if content_type.find("application/x-www-form-urlencoded") != -1:
             content_type = "jsonrpc"
         if FREEIPA_ENABLED and KERBEROS_AUTH_ENABLED:
-            os.environ['KRB5CCNAME'] = web.ctx.env['KRB5CCNAME']
+            if 'KRB5CCNAME' in web.ctx.env:
+                filename = web.ctx.env['KRB5CCNAME']
+                filename = filename.split(':')[1]
+                shutil.copyfile('{0}'.format(filename), '/tmp/krb5ccname-{0}'.format(web.ctx.env['REMOTE_USER']))
+                os.environ['KRB5CCNAME'] = web.ctx.env['KRB5CCNAME']
+            else:
+                if 'REMOTE_USER' in web.ctx.env:
+                    os.environ['KRB5CCNAME'] = 'FILE:/tmp/krb5ccname-{0}'.format(web.ctx.env['REMOTE_USER'])
         return_data = requestdispatcher.handle_request(content_type, web.data())
         web.header("Content-Type", return_data[0])
         web.header("Access-Control-Allow-Origin", ACCESS_CONTROL_ALLOW_ORIGIN)
