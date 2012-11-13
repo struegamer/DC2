@@ -39,8 +39,9 @@ try:
     from dc2.lib.db.mongo import Table
     from dc2.lib.freeipa import IPAConnection
     from dc2.lib.freeipa import IPAHostNotFound
-except ImportError:
-    print "You don't have DC² correctly installed"
+except ImportError, e:
+    print("You don't have DC² correctly installed")
+    print(e)
     sys.exit(1)
 
 try:
@@ -72,10 +73,10 @@ IPA_RECORD = {
               'otp':True
 }
 
-freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
 
 @rpcmethod(name="dc2.freeipa.hosts.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_get(fqdn=None):
+    freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
     if fqdn is None:
         return xmlrpclib.Fault(-32501, "FQDN is None")
     if freeipa is not None:
