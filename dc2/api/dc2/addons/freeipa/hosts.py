@@ -24,5 +24,9 @@ class Hosts(RPCClient):
     def check(self, fqdn=None):
         if fqdn is None:
             return None
-        pass
+        result = self._proxy.dc2.freeipa.hosts.check(fqdn)
+        if result is not None:
+            return True
+        return False
+
 
