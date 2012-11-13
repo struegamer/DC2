@@ -29,14 +29,18 @@ from record_base import RecordBase
 class RecordHost(RecordBase):
     def _make_pem(self, cert_data):
         """
-        Convert a raw base64-encoded blob into something that looks like a PE
+        Convert a raw base64-encoded blob into something that looks like a PEM
         file with lines split to 64 characters and proper headers.
+        
+        Taken from FreeIPA/ipalib/x509.py
+        Adjusted to python3 format
         
         Copyright (C) 2010 RedHat 
         Authors:  Rob Crittenden <rcritten@redhat.com>
         License: GPLv3
+        
         """
-        pemcert = '\n'.join([data[x:x + 64] for x in range(0, len(data), 64)])
+        pemcert = '\n'.join([cert_data[x:x + 64] for x in range(0, len(cert_data), 64)])
         return '-----BEGIN CERTIFICATE-----\n{0}\n-----END CERTIFICATE-----'.format(pemcert)
 
 
@@ -46,9 +50,7 @@ class RecordHost(RecordBase):
             pemcerts = []
             for cert in usercert:
                 if isistance(cert, xmlrpclib.Binary):
-                    dercert = base64.b64decode(cert.data)
-                    pemcert = _make_pem(base64.b64encode(dercert))
+                    pemcert = _make_pem(base64.b64encode(cert.data))
                     pemcerts.append(pemcert)
             return pemcerts
         return None
-
