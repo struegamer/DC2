@@ -20,18 +20,22 @@
 
 
 import sys
+import xmlrpclib
 
 from ipa_base import IPABase
 from ..records import RecordHost
-
+from .exceptions import IPAHostNotFound
 
 class IPAHosts(IPABase):
     def get(self, fqdn):
-        result = self._ipa_proxy.host_show([fqdn])
-        if 'result' in result:
-            a = RecordHost(result['result'])
-            return a
-        return None
+        try:
+            result = self._ipa_proxy.host_show([fqdn])
+            if 'result' in result:
+                a = RecordHost(result['result'])
+                return a
+            raise IPAHostNotFound(e.faultCode, e.faultString)
+        except xmlrpclib.Fault, e:
+            raise IPAHostNotFound(e.faultCode, e.faultString)
 
     def find(self, search):
         result = self._ipa_proxy.host_find([search])

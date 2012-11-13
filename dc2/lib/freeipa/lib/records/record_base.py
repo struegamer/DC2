@@ -39,3 +39,8 @@ class RecordBase(object):
     def _return_special_data(self, name):
         return None
 
+    def _to_dict(self):
+        a = {}
+        for key in self._raw_data.keys():
+            a[key] = eval('self.{0}'.format(key))
+        return a

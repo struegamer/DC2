@@ -21,9 +21,34 @@
 
 import sys
 import types
+import base64
+import xmlrpclib
 
 from record_base import RecordBase
 
 class RecordHost(RecordBase):
-    pass
+    def _make_pem(self, cert_data):
+        """
+        Convert a raw base64-encoded blob into something that looks like a PE
+        file with lines split to 64 characters and proper headers.
+        
+        Copyright (C) 2010 RedHat 
+        Authors:  Rob Crittenden <rcritten@redhat.com>
+        License: GPLv3
+        """
+        pemcert = '\n'.join([data[x:x + 64] for x in range(0, len(data), 64)])
+        return '-----BEGIN CERTIFICATE-----\n{0}\n-----END CERTIFICATE-----'.format(pemcert)
+
+
+    def _return_special_data(self, name):
+        if name == 'usercertificate':
+            usercert = self._raw_data[name]
+            pemcerts = []
+            for cert in usercert:
+                if isistance(cert, xmlrpclib.Binary):
+                    dercert = base64.b64decode(cert.data)
+                    pemcert = _make_pem(base64.b64encode(dercert))
+                    pemcerts.append(pemcert)
+            return pemcerts
+        return None
 

@@ -19,5 +19,13 @@
 #################################################################################
 
 
-from connection import IPAConnection
-from objects import IPAHostNotFound
+class IPAHostNotFound(Exception):
+    def __init__(self, error_code, error_message):
+        self._error_code = error_code
+        self._error_message = error_message
+    def __str__(self):
+        return 'IPAHostNotFound: {0} - {1}'.format(self._error_code,
+                                                   self._error_message)
+
+
+
