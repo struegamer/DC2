@@ -50,7 +50,7 @@ class RecordHost(RecordBase):
             pemcerts = []
             for cert in usercert:
                 if isinstance(cert, xmlrpclib.Binary):
-                    pemcert = _make_pem(base64.b64encode(cert.data))
+                    pemcert = self._make_pem(base64.b64encode(cert.data))
                     pemcerts.append(pemcert)
             return pemcerts
         return None
