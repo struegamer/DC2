@@ -81,7 +81,7 @@ def dc2_freeipa_hosts_get(fqdn=None):
     if freeipa is not None:
         try:
             result = freeipa.hosts.get(fqdn)
-            return result._to_dict()
+            return result.to_dict
         except IPAHostNotFound, e:
             return None
 
