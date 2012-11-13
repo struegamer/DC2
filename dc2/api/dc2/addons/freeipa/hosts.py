@@ -24,3 +24,5 @@ class Hosts(RPCClient):
     def check(self, fqdn=None):
         if fqdn is None:
             return None
+        pass
+
