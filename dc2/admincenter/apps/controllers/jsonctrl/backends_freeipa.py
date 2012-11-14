@@ -87,14 +87,13 @@ class JSONFreeipaHostController(JSONController):
                         h = hosts.get(id=host_id)
                         if h is not None:
                             result = fhosts.check('{0}.{1}'.format(h['hostname'], h['domainname']))
-                            if result is not None:
+                            if result is not None and result is not False:
                                 output = self._prepare_output(result=
                                                   {'backend_id':backend_id,
                                                    'in_freeipa':True})
                                 return output
-                                output = self._prepare_output(result=
-                                                  {'backend_id':backend_id,
-                                                   'in_freeipa':False})
+            output = self._prepare_output(result={'backend_id':backend_id, 'in_freeipa':False})
+            return output
 
 
 
