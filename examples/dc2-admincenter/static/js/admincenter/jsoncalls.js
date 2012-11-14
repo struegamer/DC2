@@ -111,7 +111,7 @@ DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) 
 
 DC2.JSONCalls.Freeipa = function(selector) {
 	this.container=selector;
-	this.freeipa_container=this.container.find('.freeipa')
+	this.freeipa_container=this.container.find('.freeipa')	
 	this.type=this.freeipa_container.attr('data-type');
 	this.backend_id=this.freeipa_container.attr('data-backend-id')
 	this.data_id=null;
@@ -139,10 +139,24 @@ DC2.JSONCalls.Freeipa.prototype.do_remote = function(url) {
 	return(a);
 };
 
+DC2.JSONCalls.Freeipa.prototype.do_add=function(event) {
+	console.log(this.backend_id);
+}
+
 DC2.JSONCalls.Freeipa.prototype.do_host_check=function(event) {
 	console.log(this.backend_id)
 	var a=this.do_remote('/json/freeipa/hosts/check?backend_id='+this.backend_id+'&host_id='+this.data_id);
+	var _this=this;
 	a.done(function(data) {
-		console.log(data);
+		if (data.in_freeipa==true) {
+			_this.freeipa_container.addClass('label label-success');
+			_this.freeipa_container.html('True');
+		} else {
+			_this.freeipa_container.addClass('label label-important');
+			_this.freeipa_container.html('False');
+			_this.freeipa_container.addHTML('<button class="freeipa-action-add btn btn-small">Add to IPA</button>')
+			button=_this.container.find('.freeipa-action-add');
+			button.on('click',_this.container,_this.do_add.bind(_this));
+		}
 	});
 };
