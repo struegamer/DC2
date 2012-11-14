@@ -108,3 +108,41 @@ DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) 
   return(false);
 };
 
+
+DC2.JSONCalls.Freeipa = function(selector) {
+	this.container=selector;
+	this.freeipa_container=this.container.find('.freeipa')
+	this.type=this.freeipa_container.attr('data-type');
+	this.backend_id=this.freeipa_container.attr('data-backend-id')
+	this.data_id=null;
+	this.action=this.freeipa_container.attr('data-action')
+	if (this.type=='host') {
+		this.data_id=this.freeipa_container.attr('data-host-id');		
+	}
+	
+	if (this.action=='check') {
+		console.log(this.freeipa_container);
+		this.freeipa_container.on('freeipa_check.'+this.type+'.update',this.freeipa_container,this.do_host_check.bind(this));
+	}
+	this.freeipa_container.trigger('freeipa_check.'+this.type+'.update');
+
+};
+
+DC2.JSONCalls.Freeipa.prototype.do_remote = function(url) {
+	var a=$.ajax({
+		url:url,
+		type:'GET',
+		contentType:'application/json; charset=utf-8',
+		dataType:'json',
+		context:this,
+	});
+	return(a);
+};
+
+DC2.JSONCalls.Freeipa.prototype.do_host_check=function(event) {
+	console.log(this.backend_id)
+	var a=this.do_remote('/json/freeipa/hosts/check?backend_id='+this.backend_id+'&host_id='+this.data_id);
+	a.done(function(data) {
+		console.log(data);
+	});
+};

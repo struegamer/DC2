@@ -25,4 +25,4 @@ from backends_deployment import JSONDeploymentBackendController
 from backends_macs import JSONMacBackendController
 from backends_ribs import JSONRibBackendController
 from backends_classtemplates import JSONBackendClassTemplatesController
-
+from backends_freeipa import JSONFreeipaHostController
