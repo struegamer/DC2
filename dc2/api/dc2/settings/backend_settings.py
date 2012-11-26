@@ -22,7 +22,16 @@ from dc2.api import RPCClient
 
 class BackendSettings(RPCClient):
     def get(self):
-        result = self._proxy.dc2.backend.settings.get()
-        return result
+        result = {'IS_FREEIPA_ENABLED':False,
+                  'IS_CS2_ENABLED':False,
+                  'IS_XEN_ENABLED':False,
+                  'IS_KERBEROS_AUTH_ENABLED':False
+                  }        
+        try:
+            result = self._proxy.dc2.backend.settings.get()
+            return result
+        except Exception,e:
+            return result
+        return result            
 
 
