@@ -73,7 +73,6 @@ IPA_RECORD = {
               'otp':True
 }
 
-
 @rpcmethod(name="dc2.freeipa.hosts.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_get(fqdn=None):
     freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
@@ -86,8 +85,19 @@ def dc2_freeipa_hosts_get(fqdn=None):
         except IPAHostNotFound, e:
             return None
 
-@rpcmethod(name='dc2.freeipa.hosts.check', params={}, returns=[], is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(name='dc2.freeipa.hosts.check', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_check(fqdn=None):
     return dc2_freeipa_hosts_get(fqdn)
 
+@rpcmethod(name='dc2.freeipa.hosts.add', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+def dc2_freeipa_hosts_add(fqdn=None, infos=None):
+    freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
+    if fqdn is None:
+        return xmlrpclib.Fault(-32501, "FQDN is None")
+    if freeipa is not None:
+        try:
+            result = freeipa.hosts.add(fqdn, infos)
+            return result.to_dict
+        except IPAHostAddError, e:
+            return None
 
