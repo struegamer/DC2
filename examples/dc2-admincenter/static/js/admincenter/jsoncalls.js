@@ -129,12 +129,17 @@ DC2.JSONCalls.Freeipa = function(selector) {
 };
 
 DC2.JSONCalls.Freeipa.prototype.do_remote = function(url) {
+	var spinnerIMG=$('<img class="spinner" src="/static/img/ajax/kit-spinner.gif"></img>');
+	var _this=this;
 	var a=$.ajax({
 		url:url,
 		type:'GET',
 		contentType:'application/json; charset=utf-8',
 		dataType:'json',
 		context:this,
+		beforeSend:function(xhr,settings) {
+			_this.freeipa_container.addHTML(spinnerIMG.html());
+		}
 	});
 	return(a);
 };
@@ -149,9 +154,11 @@ DC2.JSONCalls.Freeipa.prototype.do_host_check=function(event) {
 	var _this=this;
 	a.done(function(data) {
 		if (data.in_freeipa==true) {
+			_this.freeipa_container.remove('.spinner');			
 			_this.freeipa_container.addClass('label label-success');
 			_this.freeipa_container.html('True');
 		} else {
+			_this.freeipa_container.remove('.spinner');
 			_this.freeipa_container.addClass('label label-important');
 			_this.freeipa_container.html('False');
 			_this.freeipa_container.addHTML('<button class="freeipa-action-add btn btn-small">Add to IPA</button>')
