@@ -25,8 +25,25 @@ import xmlrpclib
 from .ipa_base import IPABase
 from ..records import RecordHost
 from .exceptions import IPAHostNotFound
+from .exceptions import IPAHostAddError
 
 class IPAHosts(IPABase):
+    CHECK_INFOS = {'host_add': ['fqdn', 'description', 'locality', 'nshostlocation',
+                                'nshardwareplatform', 'nsosversion', 'userpassword',
+                                'random', 'randompassword''usercertificate', 'krbprincipalname',
+                                'macaddress', 'ipasshpubkey', 'sshpubkeyfp']
+                 }
+
+    def _check_infos(self, command=None, infos=None):
+        if command is None or infos is None:
+            return False
+        if command not in CHECK_INFOS:
+            return False
+        for i in infos.keys():
+            if i not in self.CHECK_INFOS[command].keys():
+                return False
+        return True
+
     def get(self, fqdn):
         try:
             result = self._ipa_proxy.host_show([fqdn])
@@ -47,4 +64,13 @@ class IPAHosts(IPABase):
         return []
 
     def add(self, fqdn, add_infos):
-        pass
+        if not self._check_infos('host_add', infos):
+            raise IPAHostAddError(66666, 'keywords in host_add infos are not correct')
+        try:
+            result = self._ipa_proxy.host_add([fqdn], add_infos)
+            if 'result' in result:
+                a = RecordHost(result['result'])
+                return a
+            raise IPAHostAddError(66667, 'Something went wrong')
+        except xmlrpclib.Fault, e:
+            raise IPAHostAddError(e.faultCode, e.faultString)
