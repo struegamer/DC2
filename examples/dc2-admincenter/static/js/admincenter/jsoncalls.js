@@ -139,7 +139,7 @@ DC2.JSONCalls.Freeipa.prototype.do_remote = function(url) {
 		context:this,
 		beforeSend:function(xhr,settings) {
 			console.log('Before Send');
-			_this.freeipa_container.add(spinnerIMG.html());
+			_this.freeipa_container.html(spinnerIMG.html());
 			console.log(_this.freeipa_container);
 		}
 	});
