@@ -21,6 +21,7 @@
 from dc2.api import RPCClient
 
 class Hosts(RPCClient):
+
     def check(self, fqdn=None):
         if fqdn is None:
             return None
@@ -29,12 +30,19 @@ class Hosts(RPCClient):
             return True
         return False
 
-    def get(self,fqdn=None):
+    def get(self, fqdn=None):
         if fqdn is None:
             return None
-        result=self._proxy.dc2.freeipa.hosts.get(fqdn)
+        result = self._proxy.dc2.freeipa.hosts.get(fqdn)
         if result is not None:
             return result
         return False
-    
+
+    def add(self, fqdn=None, infos=None):
+        if fqdn is None or infos is None:
+            return None
+        result = self._proxy.dc2.freeipa.hosts.add(fqdn, infos)
+        if result is not None:
+            return result
+        return False
 
