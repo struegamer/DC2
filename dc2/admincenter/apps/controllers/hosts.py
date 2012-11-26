@@ -87,6 +87,7 @@ try:
     from dc2.api.dc2.configuration import Environments
     from dc2.api.dc2.configuration import DefaultClasses
     from dc2.api.dc2.configuration import ClassTemplates
+    from dc2.api.dc2.settings import BackendSettings
 except ImportError, e:
     print 'You did not install dc2.api'
     print e
@@ -127,6 +128,7 @@ class HostController(RESTController):
         self._macs = Macs(self._transport)
         self._ribs = Ribs(self._transport)
         self._hosts = Hosts(self._transport)
+        self._backend_settings=BackendSettings(self._transport)
         self._environments = Environments(self._transport)
         self._defaultclasses = DefaultClasses(self._transport)
         self._classtemplates = ClassTemplates(self._transport)
@@ -151,6 +153,7 @@ class HostController(RESTController):
                 server = self._servers.get(id=host['server_id'])
                 server_macs = self._macs.get(server_id=host['server_id'])
                 classtemplates = self._classtemplates.list()
+                backendsettings=self._backend_settings.get()
                 self._page.set_title('Host %s.%s' % (host['hostname'], host['domainname']))
                 self._page.add_page_data({
                     'classtemplates':classtemplates,
@@ -158,7 +161,8 @@ class HostController(RESTController):
                     'inetlist':self._inet_list,
                     'server':server,
                     'server_macs':server_macs,
-                    'host':host
+                    'host':host,
+                    'backend_settings':backendsettings
                     })
                 result = self._prepare_output(verb['request_type'], verb['request_content_type'],
                         output={'content':self._page.render()})
