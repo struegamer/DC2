@@ -88,7 +88,8 @@ setup(name="dc2.appserver",
             'dc2.appserver.rpc',
             'dc2.appserver.rpcmethods',
             'dc2.appserver.addons',
-            'dc2.appserver.addons.freeipa'
+            'dc2.appserver.addons.freeipa',
+            'dc2.appserver.addons.dns',
         ],
         scripts=["scripts/dc2-prepare_initial_data", "scripts/dc2-squashfs"]
 )
@@ -141,7 +142,8 @@ setup(name='dc2.api',
             'dc2.api.dc2.configuration',
             'dc2.api.dc2.settings',
             'dc2.api.dc2.addons',
-            'dc2.api.dc2.addons.freeipa'
+            'dc2.api.dc2.addons.freeipa',
+            'dc2.api.dc2.addons.dns',
             ]
         )
 
