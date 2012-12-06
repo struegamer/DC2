@@ -75,14 +75,13 @@ def write_host_network_configuration(host=None, rpcurl=None):
                         print "\tbond-slaves none"
                         print "\tbond-miimon 100"
                         if interface.has_key("slaves"):
-                            slave_ints = interface["slaves"].strip()
-                            slave_int_arr = slave_ints.split(" ")
-                            for slave in slave_int_arr:
+                            # slave_ints = interface["slaves"].strip()
+                            for slave in interface['slaves']:
                                 print
                                 print "auto %s" % slave
                                 print "iface %s inet manual" % slave
                                 print "\tbond-master %s" % interface["name"]
-                                print "\tbond-primary %s" % interface["slaves"].strip()
+                                print "\tbond-primary %s" % ' '.join(interface["slaves"])
                     if interface["type"] == "vlan":
                         # TODO: Implement
                         pass
