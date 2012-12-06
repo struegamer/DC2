@@ -41,7 +41,7 @@ def create_squashfs(args):
         nfsroot_path = '{0}/live/filesystem.dir'.format(args.nfsroot)
     if not os.path.exists(nfsroot_path):
         return False
-    call_params = ['/usr/bin/mksquashfs', nfsroot_path, args.livefs_filename]
+    call_params = ['/usr/bin/mksquashfs', '-noappend', nfsroot_path, args.livefs_filename]
     call_params.extend(params.split(' '))
     result = subprocess.call(call_params)
     if result != 0:
