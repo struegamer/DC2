@@ -123,6 +123,13 @@ class InstallStateController(RESTController):
         self._installstate = InstallState(self._transport)
         self._backend_settings = BackendSettings(self._transport)
         self._hosts = Hosts(self._transport)
+        if backend_settings['IS_FREEIPA_ENABLED']:
+            try:
+                from dc2.api.dc2.addons.freeipa import Hosts as FreeIPA_Hosts
+            except ImportError as e:
+                print('You did not install dc2.api')
+                print(e)
+                sys.exit(1)        
         self._freeipa = None
         if FREEIPA_ENABLED:
             self._freeipa = FreeIPA_Hosts(self._transport)
@@ -194,13 +201,7 @@ class InstallStateController(RESTController):
         installstate_rec['status'] = installstate['status']
         self._installstate.update(rec=installstate_rec)
         backend_settings = self._backend_settings.get()
-        if backend_settings['IS_FREEIPA_ENABLED']:
-            try:
-                from dc2.api.dc2.addons.freeipa import Hosts as FreeIPA_Hosts
-            except ImportError as e:
-                print('You did not install dc2.api')
-                print(e)
-                sys.exit(1)
+        
 
             if installstate['status'] == 'deploy':
                 host = self._hosts.get({'_id':installstate_rec['host_id']})
