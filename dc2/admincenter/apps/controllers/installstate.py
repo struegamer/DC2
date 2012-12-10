@@ -123,7 +123,8 @@ class InstallStateController(RESTController):
         self._installstate = InstallState(self._transport)
         self._backend_settings = BackendSettings(self._transport)
         self._hosts = Hosts(self._transport)
-        if backend_settings['IS_FREEIPA_ENABLED']:
+        backendsettings = self._backend_settings.get()
+        if backendsettings['IS_FREEIPA_ENABLED']:
             try:
                 from dc2.api.dc2.addons.freeipa import Hosts as FreeIPA_Hosts
             except ImportError as e:
