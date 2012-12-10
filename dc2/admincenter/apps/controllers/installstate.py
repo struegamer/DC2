@@ -178,10 +178,12 @@ class InstallStateController(RESTController):
             installstate = self._installstate.get(id=installstate_id)
             self._page.set_title('Deployment State of %s' % installstate['hostname'])
             install_methods = installmethods.installmethod_list()
+            backendsettings = self._backend_settings.get()
             self._page.add_page_data({
                 'entry_id':request_data['id'],
                 'installstate':installstate,
-                'installmethods':install_methods
+                'installmethods':install_methods,
+                'backend_settings':backendsettings
             })
             result = self._prepare_output(verb['request_type'], verb['request_content_type'],
                 output={'content':self._page.render()})
