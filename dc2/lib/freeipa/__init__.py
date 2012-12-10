@@ -19,3 +19,4 @@
 #################################################################################
 
 from lib import IPAConnection
+from lib import IPAHostNotFound
