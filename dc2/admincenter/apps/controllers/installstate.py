@@ -79,6 +79,7 @@ except ImportError, e:
 
 try:
     from dc2.api.dc2.deployment import InstallState
+    from dc2.api.dc2.settings import BackendSettings
 except ImportError, e:
     print 'You did not install dc2.api'
     print e
