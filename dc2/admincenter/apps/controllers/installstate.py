@@ -123,6 +123,7 @@ class InstallStateController(RESTController):
         self._installstate = InstallState(self._transport)
         self._backend_settings = BackendSettings(self._transport)
         self._hosts = Hosts(self._transport)
+        self._freeipa = None
         backendsettings = self._backend_settings.get()
         if backendsettings['IS_FREEIPA_ENABLED']:
             try:
@@ -131,8 +132,6 @@ class InstallStateController(RESTController):
                 print('You did not install dc2.api')
                 print(e)
                 sys.exit(1)
-        self._freeipa = None
-        if FREEIPA_ENABLED:
             self._freeipa = FreeIPA_Hosts(self._transport)
 
     @needs_auth
