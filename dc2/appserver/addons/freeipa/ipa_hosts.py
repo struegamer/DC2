@@ -97,6 +97,7 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
     if freeipa is not None:
         try:
             result = freeipa.hosts.add(fqdn, infos)
+            web.debug(result.to_dict)
             return result.to_dict
         except IPAHostAddError, e:
             return None

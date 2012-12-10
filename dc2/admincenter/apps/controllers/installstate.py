@@ -60,6 +60,7 @@ except ImportError, e:
 try:
     from settings import TEMPLATE_DIR
     from settings import KERBEROS_AUTH_ENABLED
+    from settings import FREEIPA_ENABLED
     from settings import GRP_NAME_DC2ADMINS
 except ImportError, e:
     print "You don't have a settings file"
@@ -80,10 +81,21 @@ except ImportError, e:
 try:
     from dc2.api.dc2.deployment import InstallState
     from dc2.api.dc2.settings import BackendSettings
+    from dc2.api.dc2.inventory import Hosts
 except ImportError, e:
     print 'You did not install dc2.api'
     print e
     sys.exit(1)
+
+if FREEIPA_ENABLED:
+    try:
+        from dc2.api.dc2.addons.freeipa import Hosts as FreeIPA_Hosts
+    except ImportError as e:
+        print('You did not install dc2.api')
+        print(e)
+        sys.exit(1)
+
+
 
 tmpl_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
@@ -118,7 +130,10 @@ class InstallStateController(RESTController):
         self._transport = get_xmlrpc_transport(self._backend['backend_url'], self._backend['is_kerberos'])
         self._installstate = InstallState(self._transport)
         self._backend_settings = BackendSettings(self._transport)
-
+        self._hosts = Hosts(self._transport)
+        self._freeipa = None
+        if FREEIPA_ENABLED:
+            self._freeipa = FreeIPA_Hosts(self._transport)
 
     @needs_auth
     @Logger(logger=logger)
@@ -186,6 +201,13 @@ class InstallStateController(RESTController):
         installstate_rec = self._installstate.get(id=installstate['_id'])
         installstate_rec['status'] = installstate['status']
         self._installstate.update(rec=installstate_rec)
+        if FREEIPA_ENABLED:
+            if installstate['status'] == 'deploy':
+                host = self._hosts.get({'_id':installstate_rec['host_id']})
+                ipa_info = {'fqdn':'{0}.{1}'.format(host['hostname'], host['domainname']),
+                            'description':'Auto-Added from DC2',
+                            'random':True}
+                ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostnmae'], host['domainname']), ipa_info)
         result = self._prepare_output('json', verb['request_content_type'], 'json', {'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path, installstate['_id'], self._backend_id), 'absolute':'true'}})
         return result
 
