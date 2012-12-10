@@ -201,12 +201,14 @@ class InstallStateController(RESTController):
         installstate_rec['status'] = installstate['status']
         self._installstate.update(rec=installstate_rec)
         backend_settings = self._backend_settings.get()
-        if installstate['status'] == 'deploy':
-            host = self._hosts.get({'_id':installstate_rec['host_id']})
-            ipa_info = {'fqdn':'{0}.{1}'.format(host['hostname'], host['domainname']),
-                        'description':'Auto-Added from DC2',
-                        'random':True}
-            ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostnmae'], host['domainname']), ipa_info)
+        if backend_settings['IS_FREEIPA_ENABLED']:
+            if installstate['status'] == 'deploy':
+                host = self._hosts.get({'_id':installstate_rec['host_id']})
+                ipa_info = {'fqdn':'{0}.{1}'.format(host['hostname'], host['domainname']),
+                            'description':'Auto-Added from DC2',
+                            'random':True}
+                ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostnmae'], host['domainname']), ipa_info)
+                print(ipa_result)
         result = self._prepare_output('json', verb['request_content_type'], 'json', {'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path, installstate['_id'], self._backend_id), 'absolute':'true'}})
         return result
 
