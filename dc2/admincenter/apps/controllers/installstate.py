@@ -116,6 +116,8 @@ class InstallStateController(RESTController):
         self._backend = backends.backend_get({'_id':self._backend_id})
         self._transport = get_xmlrpc_transport(self._backend['backend_url'], self._backend['is_kerberos'])
         self._installstate = InstallState(self._transport)
+        self._backend_settings = BackendSettings(self._transport)
+
 
     @needs_auth
     @Logger(logger=logger)
@@ -132,11 +134,14 @@ class InstallStateController(RESTController):
         if installstate_id is not None:
             installstate = self._installstate.get(id=installstate_id)
             install_methods = installmethods.installmethod_list()
+            backendsettings = self._backend_settings.get()
+
             self._page.set_title('Deployment State of %s' % installstate['hostname'])
             self._page.add_page_data({
                 'entry_id':request_data['id'],
                 'installstate':installstate,
-                'installmethods':install_methods
+                'installmethods':install_methods,
+                'backend_settings':backendsettings
             })
             result = self._prepare_output(verb['request_type'], verb['request_content_type'],
                 output={'content':self._page.render()})
