@@ -19,5 +19,5 @@
 #################################################################################
 
 
-from .hosts import IPAHosts
-from .exceptions import IPAHostNotFound
+from hosts import IPAHosts
+from exceptions import IPAHostNotFound
