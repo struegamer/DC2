@@ -103,6 +103,7 @@ setup(name='dc2.lib',
         namespace_packages=['dc2'],
         packages=[
             'dc2.lib',
+            'dc2.lib.exceptions',
             'dc2.lib.auth',
             'dc2.lib.auth.helpers',
             'dc2.lib.auth.kerberos',
