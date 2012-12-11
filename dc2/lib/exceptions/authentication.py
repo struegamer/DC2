@@ -21,3 +21,6 @@
 
 class KerberosError(Exception):
     pass
+
+class KerberosTicketExpired(KerberosError):
+    pass
