@@ -33,7 +33,11 @@ DC2.JSONCalls.BackendStats.prototype.backendstats=function(event) {
 DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backend_id) {
   a=this.do_remote('backend_servers_stats',{'backend_id':backend_id});
   a.done(function(data) {
-    this.container.html(data.server_count);
+	  if ('error' in data && data.error==true) {
+		  this.container.removeClass('label-success').addClass('label-important').html('Error: '+data.error_type+' ('+data.error_msg+')');
+		  return(false);
+	  }	  
+	  this.container.html(data.server_count);
   });
   return(false);
 };
@@ -41,6 +45,10 @@ DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backen
 DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_id) {
   a=this.do_remote('backend_hosts_stats',{'backend_id':backend_id});
   a.done(function(data) {
+	  if ('error' in data && data.error==true) {
+		  this.container.removeClass('label-success').addClass('label-important').html('Error: '+data.error_type+' ('+data.error_msg+')');
+		  return(false);
+	  }	  	  
     this.container.html(data.host_count);
   });
   return(false);
@@ -49,6 +57,10 @@ DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_
 DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,backend_id,what) {
   a=this.do_remote('backend_deployment_stats',{'backend_id':backend_id,'status':what});
   a.done(function(data) {
+	  if ('error' in data && data.error==true) {
+		  this.container.removeClass('label-success').addClass('label-important').html('Error: '+data.error_type+' ('+data.error_msg+')');
+		  return(false);
+	  }	  	  	  
     if ('status' in data) {
       switch(data.status) {
         case 'all':
@@ -56,7 +68,7 @@ DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,bac
         case 'deploy':
           this.container.html(data.count);
           break;
-        case 'localboot':
+        case 'localboot':        	
           this.container.html(data.count);
           break;
       }
