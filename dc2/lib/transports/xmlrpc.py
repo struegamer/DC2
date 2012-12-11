@@ -31,7 +31,6 @@ except ImportError, e:
     print e
     sys.exit(1)
 
-
 def get_xmlrpc_transport(url, kerberos_enabled):
     parsed_url = urlparse.urlparse(url)
     proxy = None

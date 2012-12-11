@@ -19,7 +19,7 @@
 ###############################################################################
 
 import kerberos
-from dc2.lib.exceptions import KerberosError
+from dc2.lib.exceptions.authentication import KerberosError
 
 class KerberosTicket:
     def __init__(self, service):
