@@ -39,6 +39,7 @@ try:
     from dc2.lib.db.mongo import Table
     from dc2.lib.freeipa import IPAConnection
     from dc2.lib.freeipa import IPAHostNotFound
+    from dc2.lib.freeipa import IPAHostAddError
 except ImportError, e:
     print("You don't have DC² correctly installed")
     print(e)
