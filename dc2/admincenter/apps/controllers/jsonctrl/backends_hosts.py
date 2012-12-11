@@ -78,16 +78,26 @@ class JSONHostBackendController(JSONController):
     def _backend_host_list(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'],
-                                                 backend['is_kerberos'])
-                s = Hosts(transport)
-                hostlist = s.list()
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    transport = get_xmlrpc_transport(backend['backend_url'],
+                                                     backend['is_kerberos'])
+                    s = Hosts(transport)
+                    hostlist = s.list()
+                    result = self._prepare_output(result={'backend_id':backend_id,
+                                                          'datalist':hostlist})
+                    return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
                 result = self._prepare_output(result={'backend_id':backend_id,
-                                                      'datalist':hostlist})
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
                 return result
         result = self._prepare_output(result={'backend_id':backend_id,
                                               'datalist':[]})
@@ -98,20 +108,30 @@ class JSONHostBackendController(JSONController):
     def _backend_host_get_server_info(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                server_id = params.get('server_id', None)
-                if server_id is not None:
-                    transport = get_xmlrpc_transport(backend['backend_url'],
-                                                     backend['is_kerberos'])
-                    s = Servers(transport)
-                    server = s.get(id=server_id)
-                    result = self._prepare_output(result=
-                                                  {'backend_id':backend_id,
-                                                   'server':server})
-                    return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    server_id = params.get('server_id', None)
+                    if server_id is not None:
+                        transport = get_xmlrpc_transport(backend['backend_url'],
+                                                         backend['is_kerberos'])
+                        s = Servers(transport)
+                        server = s.get(id=server_id)
+                        result = self._prepare_output(result=
+                                                      {'backend_id':backend_id,
+                                                       'server':server})
+                        return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
+                return result
             result = self._prepare_output(result={'backend_id':backend_id,
                                                   'server':None})
             return result

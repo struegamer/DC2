@@ -74,24 +74,34 @@ class JSONFreeipaHostController(JSONController):
             params = web.input()
             backend_id = params.get('backend_id', None)
             host_id = params.get('host_id', None)
-            web.debug('_freeipa_host_check: backendID: %s, host_id: %s' % (backend_id,host_id))
-            
+            web.debug('_freeipa_host_check: backendID: %s, host_id: %s' % (backend_id, host_id))
+
             if backend_id is not None:
                 backend = backends.backend_get({'_id':backend_id})
                 if backend is not None:
-                    transport = get_xmlrpc_transport(backend['backend_url'],
-                                                     backend['is_kerberos'])
-                    fhosts = FreeIPAHosts(transport)
-                    hosts = Hosts(transport)
-                    if host_id is not None:
-                        h = hosts.get(id=host_id)
-                        if h is not None:
-                            result = fhosts.check('{0}.{1}'.format(h['hostname'], h['domainname']))
-                            if result is not None and result is not False:
-                                output = self._prepare_output(result=
-                                                  {'backend_id':backend_id,
-                                                   'in_freeipa':True})
-                                return output
+                    try:
+                        transport = get_xmlrpc_transport(backend['backend_url'],
+                                                         backend['is_kerberos'])
+                        fhosts = FreeIPAHosts(transport)
+                        hosts = Hosts(transport)
+                        if host_id is not None:
+                            h = hosts.get(id=host_id)
+                            if h is not None:
+                                result = fhosts.check('{0}.{1}'.format(h['hostname'], h['domainname']))
+                                if result is not None and result is not False:
+                                    output = self._prepare_output(result=
+                                                      {'backend_id':backend_id,
+                                                       'in_freeipa':True})
+                                    return output
+                    except KerberosError as e:
+                        (first, last) = e.message
+                        (message, error_no) = last
+                        result = self._prepare_output(result={'backend_id':backend_id,
+                                                            'error':True,
+                                                            'error_type':'Kerberos',
+                                                            'error_msg':message,
+                                                            'error_no':error_no})
+                        return result
             output = self._prepare_output(result={'backend_id':backend_id, 'in_freeipa':False})
             return output
 

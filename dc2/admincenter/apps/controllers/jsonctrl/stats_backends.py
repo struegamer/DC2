@@ -92,24 +92,35 @@ class JSONBackendController(JSONController):
             result = self._prepare_output(result={'backend_count':
                                                 len(backendlist)})
             return result
+
     @needs_auth
     @Logger(logger=logger)
     def _backend_servers_stats(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                if backend is not None:
-                    transport = get_xmlrpc_transport(backend['backend_url'],
-                                                     backend['is_kerberos'])
-                    s = Servers(transport)
-                    count_servers = s.count()
-                    result = self._prepare_output(result=
-                                                  {'backend_id':backend_id,
-                                                   'server_count':count_servers})
-                    return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    if backend is not None:
+                        transport = get_xmlrpc_transport(backend['backend_url'],
+                                                         backend['is_kerberos'])
+                        s = Servers(transport)
+                        count_servers = s.count()
+                        result = self._prepare_output(result=
+                                                      {'backend_id':backend_id,
+                                                       'server_count':count_servers})
+                        return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
+                return result
             result = self._prepare_output(result={'backend_id':backend_id,
                                                   'server_count':0})
             return result
@@ -119,19 +130,29 @@ class JSONBackendController(JSONController):
     def _backend_hosts_stats(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                if backend is not None:
-                    transport = get_xmlrpc_transport(backend['backend_url'],
-                                                     backend['is_kerberos'])
-                    s = Hosts(transport)
-                    count_hosts = s.count()
-                    result = self._prepare_output(result=
-                                                  {'backend_id':backend_id,
-                                                   'host_count':count_hosts})
-                    return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    if backend is not None:
+                        transport = get_xmlrpc_transport(backend['backend_url'],
+                                                         backend['is_kerberos'])
+                        s = Hosts(transport)
+                        count_hosts = s.count()
+                        result = self._prepare_output(result=
+                                                      {'backend_id':backend_id,
+                                                       'host_count':count_hosts})
+                        return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
+                return result
             result = self._prepare_output(result={'backend_id':backend_id,
                                                   'host_count':0})
             return result
@@ -141,30 +162,40 @@ class JSONBackendController(JSONController):
     def _backend_deployment_stats(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            what = params.get('status', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                if backend is not None:
-                    transport = get_xmlrpc_transport(backend['backend_url'],
-                                                     backend['is_kerberos'])
-                    s = InstallState(transport)
-                    if what is not None and what == 'all':
-                        count_deploy = s.count('deploy')
-                        count_localboot = s.count('localboot')
-                        result = self._prepare_output(result={
-                            'backend_id':backend_id,
-                            'status':'all',
-                            'count_localboot':count_localbooti,
-                            'count_deploy':count_deploy})
-                    elif what is not None and what in ('deploy', 'localboot'):
-                        count = s.count(what)
-                        result = self._prepare_output(result={
-                            'backend_id':backend_id,
-                            'status':what,
-                            'count':count})
-                    return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                what = params.get('status', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    if backend is not None:
+                        transport = get_xmlrpc_transport(backend['backend_url'],
+                                                         backend['is_kerberos'])
+                        s = InstallState(transport)
+                        if what is not None and what == 'all':
+                            count_deploy = s.count('deploy')
+                            count_localboot = s.count('localboot')
+                            result = self._prepare_output(result={
+                                'backend_id':backend_id,
+                                'status':'all',
+                                'count_localboot':count_localbooti,
+                                'count_deploy':count_deploy})
+                        elif what is not None and what in ('deploy', 'localboot'):
+                            count = s.count(what)
+                            result = self._prepare_output(result={
+                                'backend_id':backend_id,
+                                'status':what,
+                                'count':count})
+                        return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
+                return result
             if what is None:
                 result = self._prepare_output(result={'backend_id':backend_id,
                                                       'status':'all',
