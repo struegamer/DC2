@@ -34,6 +34,7 @@ except ImportError, e:
 try:
     from dc2.lib.decorators import Logger
     from dc2.lib.transports import get_xmlrpc_transport
+    from dc2.lib.transports import KerberosError
 except ImportError, e:
     print 'you do not have dc2.lib installed'
     print e
@@ -79,17 +80,20 @@ class JSONServerBackendController(JSONController):
     def _backend_server_list(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'],
-                                                 backend['is_kerberos'])
-                s = Servers(transport)
-                serverlist = s.list()
-                result = self._prepare_output(result={'backend_id':backend_id,
-                                                      'datalist':serverlist})
-                return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    transport = get_xmlrpc_transport(backend['backend_url'],
+                                                     backend['is_kerberos'])
+                    s = Servers(transport)
+                    serverlist = s.list()
+                    result = self._prepare_output(result={'backend_id':backend_id,
+                                                          'datalist':serverlist})
+                    return result
+            except KerberosError as e:
+                print(e)
         result = self._prepare_output(result={'backend_id':backend_id,
                                               'datalist':[]})
         return result
