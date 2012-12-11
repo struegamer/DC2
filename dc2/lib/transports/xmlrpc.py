@@ -25,18 +25,23 @@ import xmlrpclib
 
 try:
     from dc2.lib.auth.kerberos.xmlrpc import KerberosServerProxy
+    from dc2.lib.exceptions.authentications import KerberosError
 except ImportError, e:
     print 'not installed KerberosServerProxy'
     print e
     sys.exit(1)
 
+
 def get_xmlrpc_transport(url, kerberos_enabled):
     parsed_url = urlparse.urlparse(url)
     proxy = None
-    if kerberos_enabled:
-        kerberos_service = 'HTTP@%s' % parsed_url.hostname
-        proxy = KerberosServerProxy(url, service=kerberos_service, allow_none=True)
-    else:
-        proxy = xmlrpclib.ServerProxy(url, allow_none=True)
-    return proxy
+    try:
+        if kerberos_enabled:
+            kerberos_service = 'HTTP@%s' % parsed_url.hostname
+            proxy = KerberosServerProxy(url, service=kerberos_service, allow_none=True)
+        else:
+            proxy = xmlrpclib.ServerProxy(url, allow_none=True)
+        return proxy
+    except Exception as e:
+        raise KerberosError(e)
 
