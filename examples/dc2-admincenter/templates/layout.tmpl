@@ -8,6 +8,17 @@
         {%- block menubar %}
             {%- include 'site/menubar.inc.tmpl' with context %}
         {%- endblock %}
+		 <div class='container'>
+			<div class='row'>
+				<div class='span12'>
+					<div id='erroralert' class='alert' style='display:none'>
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<h4 id='error_type'></h4>
+						<span id='errortext'></span>
+					</div>
+				</div>
+			</div>
+        </div>        
         {%- if page.context.session.error %}
         {% include 'site/errors.inc.tmpl' with context %}
         {%- endif %}
