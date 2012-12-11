@@ -34,7 +34,7 @@ except ImportError, e:
 try:
     from dc2.lib.decorators import Logger
     from dc2.lib.transports import get_xmlrpc_transport
-    from dc2.lib.transports import KerberosError
+    from dc2.lib.exceptions.authentication import KerberosError
 except ImportError, e:
     print 'you do not have dc2.lib installed'
     print e
