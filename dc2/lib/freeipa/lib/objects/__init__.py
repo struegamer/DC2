@@ -21,3 +21,4 @@
 
 from hosts import IPAHosts
 from exceptions import IPAHostNotFound
+from exceptions import IPAHostAddError

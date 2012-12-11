@@ -20,3 +20,4 @@
 
 from lib import IPAConnection
 from lib import IPAHostNotFound
+from lib import IPAHostAddError
