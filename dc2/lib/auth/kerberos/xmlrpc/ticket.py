@@ -30,7 +30,7 @@ class KerberosTicket:
             self.auth_header = ("Negotiate " +
                                 kerberos.authGSSClientResponse(krb_context))
         except Exception as e:
-            raise KerberosError(e)
+            raise KerberosError(e.args)
 
     def verify_response(self, auth_header):
         # Handle comma-separated lists of authentication fields

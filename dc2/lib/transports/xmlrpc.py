@@ -42,5 +42,5 @@ def get_xmlrpc_transport(url, kerberos_enabled):
             proxy = xmlrpclib.ServerProxy(url, allow_none=True)
         return proxy
     except Exception as e:
-        raise KerberosError(e)
+        raise KerberosError(e.message)
 
