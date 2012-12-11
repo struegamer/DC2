@@ -209,7 +209,7 @@ class InstallStateController(RESTController):
                 ipa_info = {'fqdn':'{0}.{1}'.format(host['hostname'], host['domainname']),
                             'description':'Auto-Added from DC2',
                             'random':True}
-                ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostnmae'], host['domainname']), ipa_info)
+                ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostname'], host['domainname']), ipa_info)
                 print(ipa_result)
         result = self._prepare_output('json', verb['request_content_type'], 'json', {'redirect':{'url':'%s/%s?backend_id=%s' % (self._controller_path, installstate['_id'], self._backend_id), 'absolute':'true'}})
         return result
