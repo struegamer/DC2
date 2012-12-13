@@ -207,8 +207,7 @@ class InstallStateController(RESTController):
             if installstate['status'] == 'deploy':
                 host = self._hosts.get(id=installstate_rec['host_id'])
                 print(host)
-                ipa_info = {'fqdn':'{0}.{1}'.format(host['hostname'], host['domainname']),
-                            'description':'Auto-Added from DC2',
+                ipa_info = {'description':'Auto-Added from DC2',
                             'random':True}
                 ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostname'], host['domainname']), ipa_info)
                 print(ipa_result)
