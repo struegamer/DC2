@@ -46,7 +46,7 @@ class Hosts(RPCClient):
             return result
         return False
     def delete(self, fqdn=None):
-        if fqdn is None or infos is None:
+        if fqdn is None:
             return None
         result = self._proxy.dc2.freeipa.hosts.delete(fqdn, infos)
         if result is not None:
