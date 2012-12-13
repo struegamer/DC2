@@ -206,7 +206,8 @@ class InstallStateController(RESTController):
         if backend_settings['IS_FREEIPA_ENABLED']:
             if installstate['status'] == 'deploy':
                 host = self._hosts.get(id=installstate_rec['host_id'])
-                print(host)
+                if self._freeipa.check('{0}.{1}'.format(host['hostname'], host['domainname'])):
+                    ipa_result = self._freeipa.delete('{0}.{1}'.format(host['hostname'], host['domainname']))
                 ipa_info = {'description':'Auto-Added from DC2',
                             'random':True}
                 ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostname'], host['domainname']), ipa_info)

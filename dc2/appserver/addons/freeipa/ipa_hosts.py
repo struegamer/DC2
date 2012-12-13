@@ -40,6 +40,7 @@ try:
     from dc2.lib.freeipa import IPAConnection
     from dc2.lib.freeipa import IPAHostNotFound
     from dc2.lib.freeipa import IPAHostAddError
+    from dc2.lib.freeipa import IPAHostDeleteError
 except ImportError, e:
     print("You don't have DC² correctly installed")
     print(e)
@@ -103,3 +104,14 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
         except IPAHostAddError, e:
             return None
 
+def dc2_freeipa_hosts_delete(fqdn=None):
+    freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
+    if fqdn is None:
+        return xmlrpclib.Fault(-32501, "FQDN is None")
+    if freeipa is not None:
+        try:
+            result = freeipa.hosts.del(fqdn)
+            web.debug(result.to_dict)
+            return result.to_dict
+        except IPAHostDeleteError as e:
+            return None
