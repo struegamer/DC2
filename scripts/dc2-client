@@ -400,7 +400,7 @@ def main():
         (options.is_host and options.is_environment) or \
         (options.is_host and options.do_inventory) or \
         (options.is_host and options.do_utils) or \
-        (options.is_host and options_is_freeipa) or \
+        (options.is_host and options.is_freeipa) or \
         (options.is_server and options.is_installstate) or \
         (options.is_server and options.is_environment) or \
         (options.is_server and options.do_inventory) or \
