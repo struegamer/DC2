@@ -37,10 +37,10 @@ class IPAHosts(IPABase):
     def _check_infos(self, command=None, infos=None):
         if command is None or infos is None:
             return False
-        if command not in CHECK_INFOS:
+        if command not in self.CHECK_INFOS.keys():
             return False
         for i in infos.keys():
-            if i not in self.CHECK_INFOS[command].keys():
+            if i not in self.CHECK_INFOS[command]:
                 return False
         return True
 
