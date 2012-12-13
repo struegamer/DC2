@@ -20,8 +20,6 @@
 
 import xmlrpclib
 
-from servers import Servers
-from hosts import Hosts
 
 class FreeIPA(object):
     def __init__(self, rpcurl=None):
