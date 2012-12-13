@@ -103,13 +103,9 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
             web.debug(result.to_dict)
             rec = {}
             host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainname':'.'.join(fqdn.split('.')[1:])})
-            rec['server_id'] = host['server_id']
-            rec['host_id'] = host['_id']
-            rec['otp'] = result.to_dict['randompassword']
-            old_rec = tbl_ipa.find_one({'host_id':host['_id']})
-            if old_rec is not None:
-                tbl_ipa.remove(old_rec)
-            tbl_ipa.save(rec)
+            if host is not None:
+                host['ipa_otp'] = result.to_dict['randompassword']
+                tbl_hosts.save(host)
             return result.to_dict
         except IPAHostAddError, e:
             return None
@@ -126,3 +122,15 @@ def dc2_freeipa_hosts_delete(fqdn=None):
             return result.to_dict
         except IPAHostDeleteError as e:
             return None
+
+@rpcmethod(name='dc2.freeipa.hosts.delete_ipa_otp', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+def dc2_freeipa_hosts_delete_ipa_otp(fqdn=None):
+    if fqdn is None:
+        return xmlrpclib.Fault(-32501, "FQDN is None")
+    host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainname':'.'.join(fqdn.split('.')[1:])})
+    if host is not None:
+        if 'ipa_otp' in host:
+            host['ipa_otp'] = ''
+            tbl_hosts.save(host)
+            return True
+    return False
