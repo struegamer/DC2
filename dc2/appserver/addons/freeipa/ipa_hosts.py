@@ -66,6 +66,7 @@ except ImportError:
 
 
 tbl_servers = Table(MONGOS["dc2db"]["database"].get_table("servers"))
+tbl_hosts = Table(MONGOS["dc2db"]["database"].get_table("hosts"))
 tbl_ipa = Table(MONGOS['dc2db']['database'].get_table('ipa'))
 
 
@@ -100,6 +101,15 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
         try:
             result = freeipa.hosts.add(fqdn, infos)
             web.debug(result.to_dict)
+            rec = {}
+            host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainame':fqdn.split('.')[1:]})
+            rec['server_id'] = host['server_id']
+            rec['host_id'] = host['_id']
+            rec['otp'] = result.to_dict['randompassword']
+            old_rec = tbl_ipa.find_one({'host_id':'_id'})
+            if old_rec is not None:
+                tbl_ipa.remove(old_rec)
+            tbl_ipa.save(rec)
             return result.to_dict
         except IPAHostAddError, e:
             return None
