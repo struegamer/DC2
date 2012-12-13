@@ -67,7 +67,7 @@ def do_server_find(options):
 
 def do_host_find(options):
     if options.host_find_argument is not None and options.host_find_value is not None and options.host_output_value is not None:
-        if options.host_output_value in ("_id", "server_id", "hostname", "domainname", "hostclasses", "environments"):
+        if options.host_output_value in ("_id", "server_id", "hostname", "domainname", "hostclasses", "environments", 'ipa_otp'):
             if options.host_find_argument in ('mac', 'serial', "hostname+domainname"):
                 h = Hosts(options.dc2_backend_url)
                 host = None
