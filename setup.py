@@ -63,6 +63,8 @@ setup(name="dc2.client",
             'dc2.client.api.helpers',
             'dc2.client.api.dc2.objects',
             'dc2.client.api.dc2.objects.interfaces',
+            'dc2.client.api.dc2.addons',
+            'dc2.client.api.dc2.addons.freeipa',
             'dc2.client.api.cs2',
             'dc2.client.api.cs2.objects'],
         scripts=[
