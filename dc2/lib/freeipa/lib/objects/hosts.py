@@ -26,6 +26,7 @@ from .ipa_base import IPABase
 from ..records import RecordHost
 from .exceptions import IPAHostNotFound
 from .exceptions import IPAHostAddError
+from .exceptions import IPAHostDeleteError
 
 class IPAHosts(IPABase):
     CHECK_INFOS = {'host_add': ['fqdn', 'description', 'locality', 'nshostlocation',
@@ -51,7 +52,7 @@ class IPAHosts(IPABase):
                 a = RecordHost(result['result'])
                 return a
             raise IPAHostNotFound(e.faultCode, e.faultString)
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             raise IPAHostNotFound(e.faultCode, e.faultString)
 
     def find(self, search):
@@ -72,5 +73,19 @@ class IPAHosts(IPABase):
                 a = RecordHost(result['result'])
                 return a
             raise IPAHostAddError(66667, 'Something went wrong')
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             raise IPAHostAddError(e.faultCode, e.faultString)
+    def delete(self, fqdn):
+        if fqdn is None or fqdn == '':
+            raise IPAHostDeleteError(66668, 'Can\'t delete the host from FreeIPA')
+        try:
+            result = self._ipa_proxy.host_del([fqdn])
+            if 'result' in result:
+                a = RecordHost(result['result'])
+                return a
+            raise IPAHostDeleteError(66667, 'Something went wrong')
+        except xmlrpclib.Fault as e:
+            raise IPAHostDeleteError(66667, 'Something went wrong')
+
+
+
