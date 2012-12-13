@@ -64,7 +64,7 @@ class IPAHosts(IPABase):
         return []
 
     def add(self, fqdn, add_infos):
-        if not self._check_infos('host_add', infos):
+        if not self._check_infos('host_add', add_infos):
             raise IPAHostAddError(66666, 'keywords in host_add infos are not correct')
         try:
             result = self._ipa_proxy.host_add([fqdn], add_infos)
