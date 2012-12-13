@@ -104,13 +104,14 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
         except IPAHostAddError, e:
             return None
 
+@rpcmethod(name='dc2.freeipa.hosts.delete', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_delete(fqdn=None):
     freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
     if fqdn is None:
         return xmlrpclib.Fault(-32501, "FQDN is None")
     if freeipa is not None:
         try:
-            result = freeipa.hosts.del(fqdn)
+            result = freeipa.hosts.delete(fqdn)
             web.debug(result.to_dict)
             return result.to_dict
         except IPAHostDeleteError as e:
