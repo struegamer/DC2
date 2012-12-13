@@ -102,7 +102,7 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
             result = freeipa.hosts.add(fqdn, infos)
             web.debug(result.to_dict)
             rec = {}
-            host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainame':fqdn.split('.')[1:]})
+            host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainame':'.'.join(fqdn.split('.')[1:])})
             rec['server_id'] = host['server_id']
             rec['host_id'] = host['_id']
             rec['otp'] = result.to_dict['randompassword']
