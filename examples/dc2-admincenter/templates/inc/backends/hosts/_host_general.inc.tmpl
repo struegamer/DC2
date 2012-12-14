@@ -15,4 +15,14 @@
         <div class='span2'>Environment</div>
         <div class='span6'>{{host.environments}}</div>
     </div>
+    {%- if backend_settings.IS_FREEIPA_ENABLED==True %}
+	<div class='row'>
+		<div class='span3'>Host in FreeIPA:</div>
+		<div class='span3'>
+			<div id='freeipa_host_check'>
+				<span class='freeipa' data-action='check' data-type='host' data-backend-id='{{backend_id}}' data-host-id='{{host._id}}'></span>
+			</div>
+		</div>            
+	</div>    
+	{%- endif %}
 </div>

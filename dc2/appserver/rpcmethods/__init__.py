@@ -32,5 +32,6 @@ from defaultsystemusers import *
 from defaultsystemgroups import *
 from xenanswerfile import *
 from defaultbootmethods import *
+from configuration import *
 
 

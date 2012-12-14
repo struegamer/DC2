@@ -89,6 +89,21 @@ if CS2_ENABLED:
 if XEN_ENABLED:
     RPCMODULES.append("xenrpcmethods")
 
+if FREEIPA_ENABLED:
+    RPCMODULES.append('dc2.appserver.addons.freeipa')
+
+#
+# FREEIPA_URL should be 'https://your.freeipa.tld/ipa/xml
+#
+
+FREEIPA_URL = None
+
+#
+# FREEIPA_SERVICE should be 'HTTP@your.freeipa.tld
+#
+
+FREEIPA_SERVICE = None
+
 #
 # FAI Boot Settings
 #

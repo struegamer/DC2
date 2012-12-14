@@ -19,3 +19,10 @@
 #################################################################################
 
 
+import sys
+
+class IPABase(object):
+    def __init__(self, proxy):
+        self._ipa_proxy = proxy
+
+

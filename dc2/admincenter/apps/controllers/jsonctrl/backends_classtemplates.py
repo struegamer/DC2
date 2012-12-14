@@ -34,6 +34,7 @@ except ImportError, e:
 try:
     from dc2.lib.decorators import Logger
     from dc2.lib.transports import get_xmlrpc_transport
+    from dc2.lib.exceptions.authentication import KerberosError
 except ImportError, e:
     print 'you do not have dc2.lib installed'
     print e
@@ -48,7 +49,7 @@ except ImportError, e:
     print 'you have a problem with dc2.admincenter'
     print e
     sys.exit(1)
-    
+
 try:
     from dc2.api.dc2.configuration import ClassTemplates
 except ImportError, e:
@@ -61,31 +62,41 @@ class JSONBackendClassTemplatesController(JSONController):
         super(JSONBackendClassTemplatesController, self).__init__(*args,
                                                                   **kwargs)
         self._prepare_urls()
-    
+
     def _prepare_urls(self):
         self.add_url_handler_to_verb('GET', 'backend_classtemplate_get',
                                      'backend_classtemplate_get')
         self.add_process_method('backend_classtemplate_get',
                                 self._backend_classtemplate_get)
-        
+
     def _backend_classtemplate_get(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            template_id = params.get('template_id', None)
-            if backend_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'],
-                                                 backend['is_kerberos'])
-                s = ClassTemplates(transport)
-                template_list = s.get(id=template_id)
-                if template_list is not None:
-                    result = self._prepare_output(result={
-                                                'backend_id':backend_id,
-                                                'datalist':template_list
-                                                })
-                    return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                template_id = params.get('template_id', None)
+                if backend_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    transport = get_xmlrpc_transport(backend['backend_url'],
+                                                     backend['is_kerberos'])
+                    s = ClassTemplates(transport)
+                    template_list = s.get(id=template_id)
+                    if template_list is not None:
+                        result = self._prepare_output(result={
+                                                    'backend_id':backend_id,
+                                                    'datalist':template_list
+                                                    })
+                        return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
+                return result
         result = self._prepare_output(result={'backend_id':backend_id,
                                               'datalist':[]})
         return result

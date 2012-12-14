@@ -98,6 +98,7 @@ CONTROLLER_MAPPINGS = {
     '/json/backends/macs':'jsonctrl.JSONMacBackendController',
     '/json/backends/ribs':'jsonctrl.JSONRibBackendController',
     '/json/backends/classtemplates':'jsonctrl.JSONBackendClassTemplatesController',
+    '/json/freeipa/hosts':'jsonctrl.JSONFreeipaHostController',
 }
 
 #

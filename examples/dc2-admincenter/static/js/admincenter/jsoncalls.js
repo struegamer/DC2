@@ -33,7 +33,11 @@ DC2.JSONCalls.BackendStats.prototype.backendstats=function(event) {
 DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backend_id) {
   a=this.do_remote('backend_servers_stats',{'backend_id':backend_id});
   a.done(function(data) {
-    this.container.html(data.server_count);
+	  if ('error' in data && data.error==true) {
+		  this.container.removeClass('label-success').addClass('label-important').html('Error: '+data.error_type+' ('+data.error_msg+')');
+		  return(false);
+	  }	  
+	  this.container.html(data.server_count);
   });
   return(false);
 };
@@ -41,6 +45,10 @@ DC2.JSONCalls.BackendStats.prototype.backend_servers_stats=function(event,backen
 DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_id) {
   a=this.do_remote('backend_hosts_stats',{'backend_id':backend_id});
   a.done(function(data) {
+	  if ('error' in data && data.error==true) {
+		  this.container.removeClass('label-success').addClass('label-important').html('Error: '+data.error_type+' ('+data.error_msg+')');
+		  return(false);
+	  }	  	  
     this.container.html(data.host_count);
   });
   return(false);
@@ -49,6 +57,10 @@ DC2.JSONCalls.BackendStats.prototype.backend_hosts_stats=function(event,backend_
 DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,backend_id,what) {
   a=this.do_remote('backend_deployment_stats',{'backend_id':backend_id,'status':what});
   a.done(function(data) {
+	  if ('error' in data && data.error==true) {
+		  this.container.removeClass('label-success').addClass('label-important').html('Error: '+data.error_type+' ('+data.error_msg+')');
+		  return(false);
+	  }	  	  	  
     if ('status' in data) {
       switch(data.status) {
         case 'all':
@@ -56,7 +68,7 @@ DC2.JSONCalls.BackendStats.prototype.backend_deployment_stats=function(event,bac
         case 'deploy':
           this.container.html(data.count);
           break;
-        case 'localboot':
+        case 'localboot':        	
           this.container.html(data.count);
           break;
       }
@@ -108,3 +120,60 @@ DC2.JSONCalls.Servers.prototype.get_host = function(event,backend_id,server_id) 
   return(false);
 };
 
+
+DC2.JSONCalls.Freeipa = function(selector) {
+	this.container=selector;
+	this.freeipa_container=this.container.find('.freeipa')	
+	this.type=this.freeipa_container.attr('data-type');
+	this.backend_id=this.freeipa_container.attr('data-backend-id')
+	this.data_id=null;
+	this.action=this.freeipa_container.attr('data-action')
+	if (this.type=='host') {
+		this.data_id=this.freeipa_container.attr('data-host-id');		
+	}
+	
+	if (this.action=='check') {
+		console.log(this.freeipa_container);
+		this.freeipa_container.on('freeipa_check.'+this.type+'.update',this.freeipa_container,this.do_host_check.bind(this));
+	}
+	this.freeipa_container.trigger('freeipa_check.'+this.type+'.update');
+
+};
+
+DC2.JSONCalls.Freeipa.prototype.do_remote = function(url) {
+	var spinnerIMG=$('<img class="spinner" src="/static/img/ajax/kit-spinner.gif"></img>');
+	var _this=this;
+	var a=$.ajax({
+		url:url,
+		type:'GET',
+		contentType:'application/json; charset=utf-8',
+		dataType:'json',
+		context:this,
+		beforeSend:function(xhr,settings) {
+			_this.freeipa_container.html(spinnerIMG);
+			console.log(_this.freeipa_container);
+		}
+	});
+	return(a);
+};
+
+DC2.JSONCalls.Freeipa.prototype.do_add=function(event) {
+	console.log(this.backend_id);
+}
+
+DC2.JSONCalls.Freeipa.prototype.do_host_check=function(event) {
+	console.log(this.backend_id)
+	var a=this.do_remote('/json/freeipa/hosts/check?backend_id='+this.backend_id+'&host_id='+this.data_id);
+	var _this=this;
+	a.done(function(data) {
+		if (data.in_freeipa==true) {
+			_this.freeipa_container.remove('.spinner');			
+			_this.freeipa_container.addClass('label label-success');
+			_this.freeipa_container.html('True');
+		} else {
+			_this.freeipa_container.remove('.spinner');
+			_this.freeipa_container.addClass('label label-important');
+			_this.freeipa_container.html('False');
+		}
+	});
+};

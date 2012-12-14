@@ -38,7 +38,9 @@ setup(name="dc2.distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
       url="http://launchpad.net/dc2",
-      packages=['dc2.distrotools', 'dc2.distrotools.config', 'dc2.distrotools.actions'],
+      packages=['dc2.distrotools',
+                'dc2.distrotools.config',
+                'dc2.distrotools.actions'],
       namespace_packages=['dc2'],
       scripts=[
           'scripts/dc2-mirror',
@@ -61,6 +63,8 @@ setup(name="dc2.client",
             'dc2.client.api.helpers',
             'dc2.client.api.dc2.objects',
             'dc2.client.api.dc2.objects.interfaces',
+            'dc2.client.api.dc2.addons',
+            'dc2.client.api.dc2.addons.freeipa',
             'dc2.client.api.cs2',
             'dc2.client.api.cs2.objects'],
         scripts=[
@@ -85,6 +89,9 @@ setup(name="dc2.appserver",
             'dc2.appserver.helpers',
             'dc2.appserver.rpc',
             'dc2.appserver.rpcmethods',
+            'dc2.appserver.addons',
+            'dc2.appserver.addons.freeipa',
+            'dc2.appserver.addons.dns',
         ],
         scripts=["scripts/dc2-prepare_initial_data", "scripts/dc2-squashfs"]
 )
@@ -98,6 +105,7 @@ setup(name='dc2.lib',
         namespace_packages=['dc2'],
         packages=[
             'dc2.lib',
+            'dc2.lib.exceptions',
             'dc2.lib.auth',
             'dc2.lib.auth.helpers',
             'dc2.lib.auth.kerberos',
@@ -115,6 +123,10 @@ setup(name='dc2.lib',
             'dc2.lib.decorators.logging',
             'dc2.lib.transports',
             'dc2.lib.logging',
+            'dc2.lib.freeipa',
+            'dc2.lib.freeipa.lib',
+            'dc2.lib.freeipa.lib.objects',
+            'dc2.lib.freeipa.lib.records'
         ]
     )
 
@@ -131,6 +143,10 @@ setup(name='dc2.api',
             'dc2.api.dc2.inventory',
             'dc2.api.dc2.deployment',
             'dc2.api.dc2.configuration',
+            'dc2.api.dc2.settings',
+            'dc2.api.dc2.addons',
+            'dc2.api.dc2.addons.freeipa',
+            'dc2.api.dc2.addons.dns',
             ]
         )
 

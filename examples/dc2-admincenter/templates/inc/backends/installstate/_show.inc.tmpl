@@ -26,3 +26,13 @@
         {{installstate.progress}}
     </div>
 </div>
+{%- if backend_settings.IS_FREEIPA_ENABLED==True %}
+<div class='row'>
+	<div class='span3'>Host in FreeIPA:</div>
+	<div class='span6'>
+		<div id='freeipa_host_check'>
+			<span class='freeipa' data-action='check' data-type='host' data-backend-id='{{backend_id}}' data-host-id='{{installstate.host_id}}'></span>
+		</div>
+	</div>            
+</div>    
+{%- endif %}

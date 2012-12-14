@@ -211,7 +211,12 @@ DC2.Widgets.Datatables.prototype.backend_update=function(event) {
     context:this,
   });
   a.done(function(data) {
-    console.log(this._listType);
+    if ('error' in data && data.error==true) {
+    	$('#erroralert h4#error_type').html('Error: '+data.error_type);
+        $('#erroralert span#errortext').html(data.error_msg+' ('+data.error_no+')');
+        $('#erroralert').addClass('alert-error').show();
+        return(false);
+    }
     this.container.dataTable().fnClearTable();
     this.container.dataTable().fnAddData(data.datalist);
   });

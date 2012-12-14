@@ -24,6 +24,8 @@
 #
 import sys
 import os
+import os.path
+import shutil
 import xmlrpclib
 
 #
@@ -54,6 +56,8 @@ try:
     from settings import TEMPLATE_DIR
     from settings import ACCESS_CONTROL_ALLOW_ORIGIN
     from settings import ACCESS_CONTROL_ALLOW_METHODS
+    from settings import FREEIPA_ENABLED
+    from settings import KERBEROS_AUTH_ENABLED
 except ImportError:
     print "You don't have a settings file in your Python path"
     sys.exit(1)
@@ -76,6 +80,15 @@ class DC2DB:
             content_type = "jsonrpc"
         if content_type.find("application/x-www-form-urlencoded") != -1:
             content_type = "jsonrpc"
+        if FREEIPA_ENABLED and KERBEROS_AUTH_ENABLED:
+            if 'KRB5CCNAME' in web.ctx.env:
+                filename = web.ctx.env['KRB5CCNAME']
+                filename = filename.split(':')[1]
+                shutil.copyfile('{0}'.format(filename), '/tmp/krb5ccname-{0}'.format(web.ctx.env['REMOTE_USER']))
+                os.environ['KRB5CCNAME'] = web.ctx.env['KRB5CCNAME']
+            else:
+                if 'REMOTE_USER' in web.ctx.env:
+                    os.environ['KRB5CCNAME'] = 'FILE:/tmp/krb5ccname-{0}'.format(web.ctx.env['REMOTE_USER'])
         return_data = requestdispatcher.handle_request(content_type, web.data())
         web.header("Content-Type", return_data[0])
         web.header("Access-Control-Allow-Origin", ACCESS_CONTROL_ALLOW_ORIGIN)

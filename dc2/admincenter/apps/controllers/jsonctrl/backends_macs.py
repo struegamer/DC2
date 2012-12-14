@@ -34,6 +34,7 @@ except ImportError, e:
 try:
     from dc2.lib.decorators import Logger
     from dc2.lib.transports import get_xmlrpc_transport
+    from dc2.lib.exceptions.authentication import KerberosError
 except ImportError, e:
     print 'you do not have dc2.lib installed'
     print e
@@ -71,22 +72,32 @@ class JSONMacBackendController(JSONController):
     def _backend_mac_delete(self, *args, **kwargs):
         verb = kwargs.get('verb', None)
         if verb is not None:
-            params = web.input()
-            backend_id = params.get('backend_id', None)
-            mac_id = params.get('mac_id', None)
-            if backend_id is not None and mac_id is not None:
-                backend = backends.backend_get({'_id':backend_id})
-                transport = get_xmlrpc_transport(backend['backend_url'],
-                                               backend['is_kerberos'])
-                s = Macs(transport)
-                mac = s.get(id=mac_id)
-                if mac is not None:
-                    result = s.delete(id=mac_id)
-                    result = self._prepare_output(result=
-                                                {'backend_id':backend_id,
-                                                 'entry_type':'boolean',
-                                                 'entry':True})
-                    return result
+            try:
+                params = web.input()
+                backend_id = params.get('backend_id', None)
+                mac_id = params.get('mac_id', None)
+                if backend_id is not None and mac_id is not None:
+                    backend = backends.backend_get({'_id':backend_id})
+                    transport = get_xmlrpc_transport(backend['backend_url'],
+                                                   backend['is_kerberos'])
+                    s = Macs(transport)
+                    mac = s.get(id=mac_id)
+                    if mac is not None:
+                        result = s.delete(id=mac_id)
+                        result = self._prepare_output(result=
+                                                    {'backend_id':backend_id,
+                                                     'entry_type':'boolean',
+                                                     'entry':True})
+                        return result
+            except KerberosError as e:
+                (first, last) = e.message
+                (message, error_no) = last
+                result = self._prepare_output(result={'backend_id':backend_id,
+                                                    'error':True,
+                                                    'error_type':'Kerberos',
+                                                    'error_msg':message,
+                                                    'error_no':error_no})
+                return result
             result = self._prepare_output(result={'backend_id':backend_id,
                                                 'entry_type':'boolean',
                                                 'entry':False})
