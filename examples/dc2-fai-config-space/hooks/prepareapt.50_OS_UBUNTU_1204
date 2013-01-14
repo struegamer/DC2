@@ -1,5 +1,17 @@
 #!/bin/bash
 
-fcopy /etc/apt/sources.list
+set -x
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+
+# check for environments, get the default timezone and set them
+environment=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=environments --dc2-backend-url="${DC2_BACKEND_URL}"`
+archive_host=`dc2-client -e --environment-find="${environment}" --environment-variable="ARCHIVE_HOST" --dc2-backend-url="${DC2_BACKEND_URL}"`
+
+
+cat > $target/etc/apt/sources.list <<EOF
+deb http://$archive_host/precise        precise main restricted universe multiverse
+deb http://$archive_host/precise        precise-security main restricted universe multiverse
+deb http://$archive_host/precise        precise-updates main restricted universe multiverse
+EOF
 
 skiptask prepareapt
