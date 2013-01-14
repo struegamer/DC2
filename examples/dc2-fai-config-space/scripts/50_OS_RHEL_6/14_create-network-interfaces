@@ -1,0 +1,6 @@
+#!/bin/bash
+
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+
+dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-network-configuration=rhel --dc2-backend-url="${DC2_BACKEND_URL}"
+

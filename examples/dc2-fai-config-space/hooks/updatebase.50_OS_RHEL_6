@@ -1,0 +1,10 @@
+#!/bin/bash
+
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+environment=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=environments --dc2-backend-url="${DC2_BACKEND_URL}"`
+
+mount -o bind /dev $target/dev
+
+$ROOTCMD yum update
+
+skiptask updatebase

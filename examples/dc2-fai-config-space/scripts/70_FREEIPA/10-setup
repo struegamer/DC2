@@ -1,0 +1,15 @@
+#!/bin/bash
+set -x
+
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+ipa_otp=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=ipa_otp --dc2-backend-url="${DC2_BACKEND_URL}"`
+print $ipa_otp
+
+mkdir $target/etc/pki/nssdb
+$ROOTCMD ipa-client-install -d --domain=expertcity.com --server=authstage1.ops.expertcity.com --realm=EXPERTCITY.COM -w "${ipa_otp}" -N -U
+
+
+fcopy /etc/pam.d/login
+fcopy /etc/pam.d/sshd
+
+$ROOTCMD ln -s /home /uhome

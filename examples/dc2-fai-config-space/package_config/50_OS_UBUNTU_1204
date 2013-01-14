@@ -1,0 +1,50 @@
+PACKAGES install 10_ARCH_x86_64
+linux-image-server
+linux-restricted-modules-server
+linux-firmware
+linux-headers-server
+memtest86+
+
+PACKAGES install 20_BOOT_GRUB_PC
+grub-pc grub-common
+
+PACKAGES install 50_OS_UBUNTU_1204
+ubuntu-minimal
+ifenslave-2.6
+vlan
+debconf-utils
+xfsprogs
+openssh-server
+openssh-client
+iputils-tracepath
+mtr
+vim-nox
+tcpdump
+netcat
+host
+dnsutils
+wget
+psmisc
+ethtool
+mc
+rsync
+nmap
+snmp
+irqbalance
+
+PACKAGES install 70_FREEIPA
+freeipa-client
+libpam-cracklib
+
+
+PACKAGES install 60_SW_UBUNTU_DESKTOP
+ubuntu-desktop
+
+PACKAGES install 60_SW_KUBUNTU_DESKTOP
+kubuntu-desktop
+
+PACKAGES install 60_SW_LUBUNTU_DESKTOP
+lubuntu-desktop
+
+PACKAGES install 60_SW_XUBUNTU_DESKTOP
+xubuntu-desktop

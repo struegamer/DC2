@@ -1,0 +1,73 @@
+# WARNING this file is maintained by puppet and any changes you make by hand
+# will be overwritten in minutes.  Please contact sysadmins@citrixonline.com
+# if you need this file edited.
+
+# Stage: testing
+[rhel-testing]
+name=RedHat OS
+baseurl=http://booter1/mrepo/$releasever-$basearch/RPMS.testing
+gpgcheck=0
+plugins=0
+enabled=1
+timeout=10
+
+[rhel-i386]
+name=RedHat OS
+baseurl=http://booter1/mrepo/$releasever-i386/RPMS.testing
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10
+
+[citrix]
+name=Citrix Packages
+baseurl=http://booter1/mrepo/citrix-$releasever-noarch/RPMS.citrix/
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10
+
+# citrix-online is the same repo as citrix now (note the same path);
+# leaving it here for compatibility for a while
+[citrix-online]
+name=Citrix Packages
+baseurl=http://booter1/mrepo/citrix-$releasever-noarch/RPMS.citrix/
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10
+
+# citrix-all is the same repo as citrix now (note the same path);
+# leaving it here for compatibility for a while
+[citrix-all]
+name=Citrix Packages
+baseurl=http://booter1/mrepo/citrix-$releasever-noarch/RPMS.citrix/
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10
+
+[epel]
+name=Fedora EPEL packages
+baseurl=http://booter1/mrepo/$releasever-$basearch/RPMS.epel
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10
+
+[epel-i386]
+name=Fedora EPEL packages
+baseurl=http://booter1/mrepo/$releasever-i386/RPMS.epel
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10
+
+
+[optional]
+name=RHEL optional packages
+baseurl=http://booter1/mrepo/$releasever-$basearch/RPMS.optional
+gpgcheck=0
+plugins=0
+enabled=0
+timeout=10

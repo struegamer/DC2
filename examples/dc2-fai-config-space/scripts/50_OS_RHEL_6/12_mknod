@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# (c) Michael Goetze, 2010-2011, mgoetze@mgoetze.net
+
+$ROOTCMD mknod /dev/random c 1 9
+$ROOTCMD mknod /dev/urandom c 1 9
+

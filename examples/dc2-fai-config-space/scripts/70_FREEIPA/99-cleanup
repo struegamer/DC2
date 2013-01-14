@@ -1,0 +1,8 @@
+#!/bin/bash
+
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+
+my_hostname=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=hostname --dc2-backend-url="${DC2_BACKEND_URL}"`
+my_domainname=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=domainname --dc2-backend-url="${DC2_BACKEND_URL}"`
+
+dc2-client -f --reset-otp ${my_hostname}.${my_domainname}

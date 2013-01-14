@@ -1,0 +1,19 @@
+#!/bin/bash
+
+REAL_MAC=`echo $BOOTIF|sed -e "s/^01-//"|sed -e "s/-/\:/g"`
+environment=`dc2-client -h --host-find=mac --host-find-value="${REAL_MAC}" --host-output-value=environments --dc2-backend-url="${DC2_BACKEND_URL}"`
+nameserver=`dc2-client -e --environment-find="${environment}" --environment-variable="DNSSERVERS" --dc2-backend-url="${DC2_BACKEND_URL}"`
+dnssearch=`dc2-client -e --environment-find="${environment}" --environment-variable="DNS_SEARCH" --dc2-backend-url="${DC2_BACKEND_URL}"`
+
+
+rm -f $target/etc/yum.repos.d/* 
+fcopy -c $environment /etc/yum.repos.d/citrix.repo
+
+cat > $target/etc/resolv.conf <<EOF
+nameserver ${nameserver}
+search ${dnssearch}
+EOF
+
+
+
+skiptask prepareapt

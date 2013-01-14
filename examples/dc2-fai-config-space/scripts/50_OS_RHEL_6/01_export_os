@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -x
+
+export OSYSTEM="rhel"
+export RELEASE="6"
+
+exit 0
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+$ROOTCMD yum clean all
+
