@@ -45,6 +45,17 @@ except ImportError, e:
     sys.exit(1)
 
 try:
+    from settings import TEMPLATE_DIR
+    from settings import KERBEROS_AUTH_ENABLED
+    from settings import GRP_NAME_DC2ADMINS
+    from settings import FOREMAN_ENABLED
+except ImportError, e:
+    print "You don't have a settings file"
+    print e
+    sys.exit(1)
+
+
+try:
     from dc2.lib.web.pages import Page
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
@@ -52,19 +63,17 @@ try:
     from dc2.lib.web.controllers import RESTController
     from dc2.lib.transports import get_xmlrpc_transport
     from dc2.lib.decorators import Logger
+    if FOREMAN_ENABLED:
+        from settings import FOREMAN_URL
+        from settings import FOREMAN_API_USER
+        from settings import FOREMAN_API_PASSWORD
+        from dc2.lib.foreman.api import ForemanHosts
+
 except ImportError, e:
     print "You are missing the necessary DC2 modules"
     print e
     sys.exit(1)
 
-try:
-    from settings import TEMPLATE_DIR
-    from settings import KERBEROS_AUTH_ENABLED
-    from settings import GRP_NAME_DC2ADMINS
-except ImportError, e:
-    print "You don't have a settings file"
-    print e
-    sys.exit(1)
 
 try:
     from dc2.admincenter.lib.auth import do_kinit
@@ -128,12 +137,15 @@ class HostController(RESTController):
         self._macs = Macs(self._transport)
         self._ribs = Ribs(self._transport)
         self._hosts = Hosts(self._transport)
-        self._backend_settings=BackendSettings(self._transport)
+        self._backend_settings = BackendSettings(self._transport)
         self._environments = Environments(self._transport)
         self._defaultclasses = DefaultClasses(self._transport)
         self._classtemplates = ClassTemplates(self._transport)
         self._itypes_list = interfacetypes.itype_list()
         self._inet_list = inettypes.inet_list()
+        if FOREMAN_ENABLED:
+            self._foreman_hosts = ForemanHosts(FOREMAN_URL, FOREMAN_API_USER, FOREMAN_API_PASSWORD)
+
 
     @needs_auth
     @Logger(logger=logger)
@@ -153,17 +165,26 @@ class HostController(RESTController):
                 server = self._servers.get(id=host['server_id'])
                 server_macs = self._macs.get(server_id=host['server_id'])
                 classtemplates = self._classtemplates.list()
-                backendsettings=self._backend_settings.get()
+                backendsettings = self._backend_settings.get()
+                foreman_host = None
+                if FOREMAN_ENABLED:
+                    foreman_host = self._foreman_hosts.get('{0}.{1}'.format(host['hostname'], host['domainname']))
                 self._page.set_title('Host %s.%s' % (host['hostname'], host['domainname']))
-                self._page.add_page_data({
+                page_data = {
                     'classtemplates':classtemplates,
                     'itypes':self._itypes_list,
                     'inetlist':self._inet_list,
                     'server':server,
                     'server_macs':server_macs,
                     'host':host,
-                    'backend_settings':backendsettings
-                    })
+                    'backend_settings':backendsettings,
+                    }
+                if FOREMAN_ENABLED:
+                    page_data['foreman_enabled'] = True
+                    if foreman_host is not None:
+                        page_data['foreman_host'] = foreman_host
+
+                self._page.add_page_data(page_data)
                 result = self._prepare_output(verb['request_type'], verb['request_content_type'],
                         output={'content':self._page.render()})
                 return result

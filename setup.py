@@ -126,7 +126,9 @@ setup(name='dc2.lib',
             'dc2.lib.freeipa',
             'dc2.lib.freeipa.lib',
             'dc2.lib.freeipa.lib.objects',
-            'dc2.lib.freeipa.lib.records'
+            'dc2.lib.freeipa.lib.records',
+            'dc2.lib.foreman',
+            'dc2.lib.foreman.api',
         ]
     )
 

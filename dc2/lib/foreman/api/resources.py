@@ -33,7 +33,7 @@ class ForemanResource(Resource):
         super(ForemanResource, self).__init__(url, follow_redirect=True, max_follow_redirect=10, pool=pool_instance, **kwargs)
 
     def request(self, *args, **kwargs):
-        header = {
+        headers = {
                 'Content-Type':'application/json; charset=utf-8',
                 'Accept':'application/json'
         }
