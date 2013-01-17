@@ -176,3 +176,21 @@ setup(name='dc2.admincenter',
             'dc2.admincenter.lib.installmethods',
         ]
 )
+
+setup(name='dc2.puppet',
+        version='0.9',
+        description='DC2 Puppet',
+        author='Stephan Adig',
+        author_email='sh@sourcecode.de',
+        url='http://launchpad.net/dc2/',
+        namespace_packages=['dc2'],
+        packages=[
+            'dc2.puppet',
+            'dc2.puppet.globals',
+            'dc2.puppet.application',
+            'dc2.puppet.db',
+            'dc2.puppet.db.models',
+            'dc2.puppet.bp',
+            'dc2.puppet.bp.puppet_classes'
+        ]
+)
