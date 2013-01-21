@@ -69,4 +69,13 @@ class ForemanHosts(Foreman):
         except ResourceNotFound as e:
             return None
 
+class ForemanHostFacts(Foreman):
+    FOREMAN_RESOURCE = '/hosts/'
+
+    def get(self, fqdn):
+        try:
+            host_facts = self._foreman.get('{0}{1}/facts'.format(self.FOREMAN_RESOURCE, fqdn))
+            return host_facts
+        except ResourceNotFound as e:
+            return None
 

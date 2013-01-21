@@ -20,3 +20,4 @@
 
 from classes import Foreman
 from classes import ForemanHosts
+from classes import ForemanHostFacts
