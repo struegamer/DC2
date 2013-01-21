@@ -63,7 +63,7 @@ ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 KERBEROS_AUTH_ENABLED = False
 GRP_NAME_DC2ADMINS = 'dc2admins'
 FOREMAN_ENABLED = True
-FOREMAN_URL = 'http://dc2-foreman.ops.expertcity.com/'
+FOREMAN_URL = 'http://dc2-foreman.ops.expertcity.com/api/'
 FOREMAN_API_USER = 'api'
 FOREMAN_API_PASSWORD = 'test123'
 
