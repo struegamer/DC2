@@ -68,6 +68,7 @@ try:
         from settings import FOREMAN_API_USER
         from settings import FOREMAN_API_PASSWORD
         from dc2.lib.foreman.api import ForemanHosts
+        from dc2.lib.foreman.api import ForemanHostFacts
 
 except ImportError, e:
     print "You are missing the necessary DC2 modules"
@@ -145,6 +146,7 @@ class HostController(RESTController):
         self._inet_list = inettypes.inet_list()
         if FOREMAN_ENABLED:
             self._foreman_hosts = ForemanHosts(FOREMAN_URL, FOREMAN_API_USER, FOREMAN_API_PASSWORD)
+            self._foreman_host_facts = ForemanHostFacts(FOREMAN_URL, FOREMAN_API_USER, FOREMAN_API_PASSWORD)
 
 
     @needs_auth
@@ -169,6 +171,7 @@ class HostController(RESTController):
                 foreman_host = None
                 if FOREMAN_ENABLED:
                     foreman_host = self._foreman_hosts.get('{0}.{1}'.format(host['hostname'], host['domainname']))
+                    foreman_host_facts = self._foreman_host_facts.get('{0}.{1}'.format(host['hostname'], host['domainname']))
                 self._page.set_title('Host %s.%s' % (host['hostname'], host['domainname']))
                 page_data = {
                     'classtemplates':classtemplates,
@@ -183,6 +186,8 @@ class HostController(RESTController):
                     page_data['foreman_enabled'] = True
                     if foreman_host is not None:
                         page_data['foreman_host'] = foreman_host['host']
+                        page_data['foreman_host_facts'] = foreman_host_facts['{0}.{1}'.format(host['hostname'], host['domainname'])]
+
 
                 self._page.add_page_data(page_data)
                 result = self._prepare_output(verb['request_type'], verb['request_content_type'],
