@@ -5,6 +5,7 @@
                 <LI class='active'><a href='#dc_host_general_{{backend_id}}_{{host._id}}' data-toggle='tab'>General Information</a></li>
                 <LI><a href='#dc_host_classes_{{backend_id}}_{{host._id}}' data-toggle='tab'>Host Classes</a></li>
                 <LI><a href='#dc_host_interfaces_{{backend_id}}_{{host._id}}' data-toggle='tab'>Host Interfaces</a></li>
+                <LI><a href='#dc_host_foreman_{{backend_id}}_{{host._id}}' data-toggle='tab'>Foreman</a></LI>
             </UL>
             {%- if page.action=='edit' %}
             <form method='POST' action='{{page.controller_path}}/{{host._id}}?backend_id={{backend_id}}'>
@@ -34,6 +35,11 @@
                         {%- if page.action=='edit' %}
                         {%- include 'inc/backends/hosts/_edit_host_interfaces.inc.tmpl' %}
                         {%- endif %}
+                    </div>
+                    <div class='tab-pane' id='dc_host_foreman_{{backend_id}}_{{host._id}}'>
+                    	{%- if page.action=='show' %}
+                    	{%- include 'inc/backends/hosts/_host_foreman.inc.tmpl' %}
+                    	{%- endif %}
                     </div>
                 </div>
             {%- if page.action=='edit' %}

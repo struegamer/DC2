@@ -182,7 +182,7 @@ class HostController(RESTController):
                 if FOREMAN_ENABLED:
                     page_data['foreman_enabled'] = True
                     if foreman_host is not None:
-                        page_data['foreman_host'] = foreman_host
+                        page_data['foreman_host'] = foreman_host['host']
 
                 self._page.add_page_data(page_data)
                 result = self._prepare_output(verb['request_type'], verb['request_content_type'],
