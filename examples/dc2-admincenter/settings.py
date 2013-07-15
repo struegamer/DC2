@@ -63,6 +63,15 @@ ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 KERBEROS_AUTH_ENABLED = False
 GRP_NAME_DC2ADMINS = 'dc2admins'
 
+
+#
+# FREEIPA_FORCE_ADD
+# if True: Add host to IPA even when it's not in DNS
+# if False: Add host and fail when hostname is not in DNS
+#
+
+FREEIPA_FORCE_ADD = False
+
 #
 # DC² Settings for PXE Boot
 #

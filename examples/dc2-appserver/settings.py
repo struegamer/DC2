@@ -105,6 +105,14 @@ FREEIPA_URL = None
 FREEIPA_SERVICE = None
 
 #
+# FREEIPA_FORCE_ADD
+# if True: Add host to IPA even when it's not in DNS
+# if False: Add host and fail when hostname is not in DNS
+#
+
+FREEIPA_FORCE_ADD = False
+
+#
 # FAI Boot Settings
 #
 # ROOTFS_TYPE is the type of rootfile system to be mounted

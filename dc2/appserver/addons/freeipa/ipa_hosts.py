@@ -60,6 +60,7 @@ try:
     from settings import KERBEROS_AUTH_ENABLED
     from settings import FREEIPA_URL
     from settings import FREEIPA_SERVICE
+    from settings import FREEIPA_FORCE_ADD
 except ImportError:
     print "You don't have a settings file"
     sys.exit(1)
