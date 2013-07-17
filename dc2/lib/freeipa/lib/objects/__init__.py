@@ -19,7 +19,8 @@
 #################################################################################
 
 
-from hosts import IPAHosts
-from exceptions import IPAHostNotFound
-from exceptions import IPAHostAddError
-from exceptions import IPAHostDeleteError
+from .hosts import IPAHosts
+from .users import IPAUser
+from .exceptions import IPAHostNotFound
+from .exceptions import IPAHostAddError
+from .exceptions import IPAHostDeleteError
