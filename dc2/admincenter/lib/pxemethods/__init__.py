@@ -23,72 +23,73 @@
 #
 import sys
 import types
-import re
-import uuid
 
 try:
-    from dc2.lib.db.mongo import Database
     from dc2.lib.db.mongo import Table
-except ImportError,e:
-    print 'You do not have dc2.lib installed!'
-    print e
+except ImportError as e:
+    print('You do not have dc2.lib installed!')
+    print(e)
     sys.exit(1)
 
 try:
     from settings import MONGOS
-except ImportError,e:
-    print 'You do not have a settings file!'
-    print e
+except ImportError as e:
+    print('You do not have a settings file!')
+    print(e)
     sys.exit(1)
 
 tbl_pxe = Table(MONGOS["admincenter"]["database"].get_table("pxetypes"))
 
 
 def pxe_list():
-    result=tbl_pxe.find(sort_fieldname='type')
+    result = tbl_pxe.find(sort_fieldname='type')
     if result is not None:
         return result
     return []
 
+
 def pxe_new():
-    rec={}
-    rec['type']=''
-    rec['name']=''
+    rec = {}
+    rec['type'] = ''
+    rec['name'] = ''
     return rec
+
 
 def pxe_add(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
     if 'type' not in rec or 'name' not in rec:
         raise ValueError("no 'type' or 'name' in rec")
-    doc_id=tbl_pxe.save(rec)
+    doc_id = tbl_pxe.save(rec)
     return doc_id
+
 
 def pxe_update(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    if tbl_pxe.find_one({'_id':rec['_id']}) is not None:
-        doc_id=tbl_pxe.save(rec)
+    if tbl_pxe.find_one({'_id': rec['_id']}) is not None:
+        doc_id = tbl_pxe.save(rec)
         return doc_id
     return None
+
 
 def pxe_get(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    result=tbl_pxe.find_one(rec)
+    result = tbl_pxe.find_one(rec)
     if result is not None:
         return result
     return None
+
 
 def pxe_delete(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    result=tbl_pxe.remove(rec)
+    result = tbl_pxe.remove(rec)
     return result
-
