@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -64,7 +64,7 @@ INSTALLSTATUS_RECORD={
 }
 
 @rpcmethod(name="dc2.deployment.installstate.find",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
-def dc2_deployment_installstate_find(search=None): 
+def dc2_deployment_installstate_find(search=None):
     if search is not None and type(search) is types.DictType:
         for k in search.keys():
             a = re.compile('%s' % search[k], re.IGNORECASE)
@@ -72,7 +72,7 @@ def dc2_deployment_installstate_find(search=None):
         result = tbl_installstatus.find(search)
     else:
         result = tbl_installstatus.find();
-    return result    
+    return result
 
 @rpcmethod(name='dc2.deployment.installstate.list', params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_deployment_installstate_list():
@@ -103,12 +103,12 @@ def dc2_deployment_installstate_update(record=None):
             doc_id=tbl_installstatus.save(record)
             return doc_id
     return xmlrpclib.Fault(-32501, "Record couldn't be updated ")
-    
-@rpcmethod(name="dc2.deployment.installstate.remove",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)    
+
+@rpcmethod(name="dc2.deployment.installstate.remove",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_deployment_installstate_delete(record=None):
     if record is not None and type(record) is types.DictType:
         if record.has_key("_id") or record.has_key("server_id") or record.has_key("host_id"):
             tbl_installstatus.remove(record)
             return True
     return False
-            
+

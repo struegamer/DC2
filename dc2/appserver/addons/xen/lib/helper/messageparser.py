@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -31,4 +31,4 @@ def parse_output(message=None):
         if message.has_key("Status") and message["Status"]=="Failure":
             if message.has_key("ErrorDescription"):
                 return xmlrpclib.Fault(500,"Error: %s (%s)" % (message["ErrorDescription"][0],message["ErrorDescription"][1]))
-            
+

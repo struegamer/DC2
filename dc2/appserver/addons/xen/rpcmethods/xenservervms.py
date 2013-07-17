@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -54,11 +54,11 @@ def dc2_inventory_xenserver_mgmt_list(xenhost=None,session_id=None,vm_type=None)
     if xenhost is None:
         return None
     if session_id is None:
-        return None    
+        return None
     if vm_type is None:
         return None
     if vm_type != "template" and vm_type != "vms" and vm_type != "both":
-        return None    
+        return None
     vmlist_dict=xenserver_get_vms(xenhost,session_id,vm_type)
     if vmlist_dict is not None and vmlist_dict is not False:
         return vmlist_dict

@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ qx.Class.define("dc2.xen.models.XenServer",
   construct:function(RPCUrl) {
     this.base(arguments,RPCUrl);
     this._tableModel.setColumnIds(["_id","xen_host","xen_username","xen_password"]);
-    this._tableModel.setColumns(["ID","Hostname","Username","Password"]);         
+    this._tableModel.setColumns(["ID","Hostname","Username","Password"]);
   },
   members: {
     getModelName:function() {
@@ -74,7 +74,7 @@ qx.Class.define("dc2.xen.models.XenServer",
           return(true);
         } catch(exc) {
           return(false);
-        }        
+        }
       }
     },
     getAll:function() {
@@ -87,11 +87,11 @@ qx.Class.define("dc2.xen.models.XenServer",
         try {
           var result=this._rpc.callSync("dc2.inventory.xenserver.login",{"xen_host":xenhost});
           console.log("xenserver.js: login() => result: "+result);
-          return(result);          
+          return(result);
         } catch(exc) {
           console.log(exc);
         }
-      }      
+      }
     },
     logout:function(xenhost,session_id) {
       if (xenhost != null && session_id != null && session_id != "" && xenhost != "") {
@@ -101,7 +101,7 @@ qx.Class.define("dc2.xen.models.XenServer",
         } catch(exc) {
           console.log(exc);
         }
-          
+
       }
     },
     getEmptyData:function() {

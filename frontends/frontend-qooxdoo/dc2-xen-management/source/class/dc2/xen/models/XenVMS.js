@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ qx.Class.define("dc2.xen.models.XenVMS",
       construct:function(RPCUrl) {
         this.base(arguments,RPCUrl);
         this._tableModel.setColumnIds(["vm_id","vm_name","vm_description","session_id","xen_host"]);
-        this._tableModel.setColumns(["ID","Name","Description","Session ID","xen_host"]);       
+        this._tableModel.setColumns(["ID","Name","Description","Session ID","xen_host"]);
       },
       members:{
         _session_id:null,
@@ -43,10 +43,10 @@ qx.Class.define("dc2.xen.models.XenVMS",
           } else {
             this._session_id=null;
             this._xenhost=null;
-            this._vmtype=null;            
+            this._vmtype=null;
           }
         },
-        listData:function(search) {       
+        listData:function(search) {
           var _this=this;
           var handler=function(result,ex,id) {
             if (ex!=null) {
@@ -60,7 +60,7 @@ qx.Class.define("dc2.xen.models.XenVMS",
               this._rpc.callAsync(handler,"dc2.inventory.xenvms.list",this._xenhost,this._session_id,this._vmtype);
             } else {
               this._setTableData([]);
-            }            
+            }
           } else {
             this._rpc.callAsync(handler,"dc2.inventory.xenvms.list",this._xenhost,this._session_id,this._vmtype);
           }
@@ -69,7 +69,7 @@ qx.Class.define("dc2.xen.models.XenVMS",
           if (vm_id!=null) {
             try {
               var result=this._rpc.callSync("dc2.inventory.xenvms.get",this._xenhost,this._session_id,vm_id);
-              return(result);              
+              return(result);
             } catch (exc) {
               console.log(exc);
             }
@@ -79,7 +79,7 @@ qx.Class.define("dc2.xen.models.XenVMS",
           var data={};
           data["session_id"]=this._session_id;
           data["xen_host"]=this._xenhost;
-          data["vmtype"]=this._vmtype;          
+          data["vmtype"]=this._vmtype;
           return(data);
         }
       }

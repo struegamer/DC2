@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ qx.Class.define("dc2.dialogs.EditServer",
         //
         // Set defaults for window
         //
-        
+
         this.set({
           modal:false,
           padding:3,
@@ -59,22 +59,22 @@ qx.Class.define("dc2.dialogs.EditServer",
         });
         this.setLayout(new qx.ui.layout.VBox(5));
         this.setResizable(false,true,true,false);
-        
+
         //
         // Initialize Widgets
         //
-        
+
         this._initializeEditWidgets();
         var tabView=this._initializeTabView();
         var buttonBar=this._initializeButtonBar();
-        
-        // 
+
+        //
         // Add widgets to window layout
         //
-        
+
         this.add(tabView,{flex:1});
         this.add(buttonBar);
-        
+
       },
       _initializeEditWidgets:function() {
         this._editServerUUID=new qx.ui.form.TextField();
@@ -82,7 +82,7 @@ qx.Class.define("dc2.dialogs.EditServer",
         this._editServerProductName=new qx.ui.form.TextField();
         this._editServerManufacturer=new qx.ui.form.TextField();
         this._editServerLocation=new qx.ui.form.TextField();
-        this._editServerAssetTags=new qx.ui.form.TextField();       
+        this._editServerAssetTags=new qx.ui.form.TextField();
       },
       _initializeTabView:function() {
         var tabView=new qx.ui.tabview.TabView();
@@ -105,7 +105,7 @@ qx.Class.define("dc2.dialogs.EditServer",
       _createGeneralServerPage:function() {
         var page=new qx.ui.tabview.Page("General");
         var layout=new qx.ui.layout.Grid(5,5);
-        
+
         layout.setColumnFlex(1,1);
         //layout.setRowFlex(0,1);
         //layout.setRowFlex(1,1);
@@ -120,7 +120,7 @@ qx.Class.define("dc2.dialogs.EditServer",
         page.add(new qx.ui.basic.Label("Manufacturer"),{row:3,column:0});
         page.add(new qx.ui.basic.Label("Location"),{row:4,column:0});
         page.add(new qx.ui.basic.Label("Asset Tags"),{row:5,column:0});
-        
+
         page.add(this._editServerUUID,{row:0,column:1});
         page.add(this._editServerSerialNo,{row:1,column:1});
         page.add(this._editServerProductName,{row:2,column:1});
@@ -146,7 +146,7 @@ qx.Class.define("dc2.dialogs.EditServer",
         };
         var tableWidget=new dc2.widgets.TableWidget(mac_table_options);
         tableWidget.showData();
-        page.add(tableWidget);        
+        page.add(tableWidget);
         return(page);
       },
       _createRIBServerPage:function() {
@@ -166,7 +166,7 @@ qx.Class.define("dc2.dialogs.EditServer",
         };
         var tableWidget=new dc2.widgets.TableWidget(rib_table_options);
         tableWidget.showData();
-        page.add(tableWidget);       
+        page.add(tableWidget);
         return(page);
       },
       _clkBtnOk:function(e) {
@@ -179,7 +179,7 @@ qx.Class.define("dc2.dialogs.EditServer",
         data["location"]=this._editServerLocation.getValue();
         data["asset_tags"]=this._editServerAssetTags.getValue();
         if (data["_id"] != "" && data["_id"] != null) {
-          this.fireDataEvent("updateData",data);        
+          this.fireDataEvent("updateData",data);
         } else {
           this.fireDataEvent("addData",data);
         }
@@ -187,7 +187,7 @@ qx.Class.define("dc2.dialogs.EditServer",
       },
       _clkBtnCancel:function(e) {
         this.close();
-      },     
+      },
       setData:function(data) {
         if ('_id' in data) {
           this._editServerId=data["_id"];
@@ -215,14 +215,14 @@ qx.Class.define("dc2.dialogs.EditServer",
         this._checkForUpdate();
       },
       _checkForUpdate:function() {
-        if (this._editServerId != "" && this._editServerId != null) {        
+        if (this._editServerId != "" && this._editServerId != null) {
           this._editServerUUID.setReadOnly(true);
           this._editServerSerialNo.setReadOnly(true);
           this._editServerProductName.setReadOnly(true);
           this._editServerManufacturer.setReadOnly(true);
           this._editServerLocation.setReadOnly(false);
-          this._editServerAssetTags.setReadOnly(false);  
-          
+          this._editServerAssetTags.setReadOnly(false);
+
           this._editServerUUID.setEnabled(false);
           this._editServerSerialNo.setEnabled(false);
           this._editServerProductName.setEnabled(false);
@@ -237,16 +237,16 @@ qx.Class.define("dc2.dialogs.EditServer",
           this._editServerProductName.setReadOnly(false);
           this._editServerManufacturer.setReadOnly(false);
           this._editServerLocation.setReadOnly(false);
-          this._editServerAssetTags.setReadOnly(false);         
-          
+          this._editServerAssetTags.setReadOnly(false);
+
           this._editServerUUID.setEnabled(true);
           this._editServerSerialNo.setEnabled(true);
           this._editServerProductName.setEnabled(true);
           this._editServerManufacturer.setEnabled(true);
           this._editServerLocation.setEnabled(true);
           this._editServerAssetTags.setEnabled(true);
-         
-          
+
+
         }
       }
     }

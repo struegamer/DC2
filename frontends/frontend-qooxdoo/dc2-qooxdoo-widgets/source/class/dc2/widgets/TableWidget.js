@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ qx.Class.define('dc2.widgets.TableWidget',
       extend:qx.ui.container.Composite,
       construct:function(options) {
         qx.Class.include(qx.ui.table.Table,qx.ui.table.MTableContextMenu);
-        this.base(arguments);        
+        this.base(arguments);
         this._options={
           enableAddEntry:false,
           enableEditEntry:false,
@@ -88,7 +88,7 @@ qx.Class.define('dc2.widgets.TableWidget',
         _searchData:null,
         _buttonBar:null,
         _createContent:function() {
-          
+
           this.setLayout(new qx.ui.layout.Dock());
           this._table=new qx.ui.table.Table(this._tablemodel.getTableModel());
           this._table.setShowCellFocusIndicator(false);
@@ -102,7 +102,7 @@ qx.Class.define('dc2.widgets.TableWidget',
                 tcm.setColumnVisible(this._options.columnVisibility[i].column,this._options.columnVisibility[i].visible);
               }
             }
-          }          
+          }
           this.add(this._table,{edge:"center"});
           this._buttonBar=this._createButtonBar();
           if (this._extraButtons != null) {
@@ -112,7 +112,7 @@ qx.Class.define('dc2.widgets.TableWidget',
               this._buttonBar.add(button);
             }
           }
-          this.add(this._buttonBar,{edge:"north"});          
+          this.add(this._buttonBar,{edge:"north"});
           if (this._options.searchFunctions!==null && this._options.searchFunctions.searchDialog!=null) {
             this.getApplicationRoot().add(this._options.searchFunctions.searchDialog);
           }
@@ -184,7 +184,7 @@ qx.Class.define('dc2.widgets.TableWidget',
           this.setEnabled(false);
           this._addDialog.setData(this._tablemodel.getEmptyData());
           this._addDialog.setCaption("Add "+this._tablemodel.getModelCaption());
-          this._addDialog.show();          
+          this._addDialog.show();
         },
         _btnBarDelete:function(e) {
           var row_data=this._table.getTableModel().getRowDataAsMap(this._table.getFocusedRow());
@@ -250,13 +250,13 @@ qx.Class.define('dc2.widgets.TableWidget',
             } else {
               this._tablemodel.listData(null);
             }
-          }          
-        },      
+          }
+        },
         showData:function() {
           this._tablemodel._tableModel.removeRows(this._tablemodel._tableModel.getRowCount());
           this._tablemodel.listData(null);
         },
-        _cellDblClick:function(e) {         
+        _cellDblClick:function(e) {
           this.setEnabled(false);
           this._editDialog.setData(this._table.getTableModel().getRowData(e.getRow()));
           this._editDialog.setCaption("Edit "+this._tablemodel.getModelCaption());

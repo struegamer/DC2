@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -23,15 +23,14 @@ import xmlrpclib
 class Environments(object):
     def __init__(self,rpcurl=None):
         self._rpcurl=rpcurl
-        self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)        
-    
+        self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)
+
     def find_by_name(self,name=None):
         if name is not None:
             environ_list=self._proxy.dc2.configuration.environments.list({"name":name})
             if environ_list is not None and len(environ_list)>0 and environ_list[0] is not None:
                 return environ_list[0]
-    
 
-   
-            
-    
+
+
+

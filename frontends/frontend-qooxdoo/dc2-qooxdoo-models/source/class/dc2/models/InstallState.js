@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,15 +23,15 @@ qx.Class.define("dc2.models.InstallState",
   construct:function(RPCUrl) {
     this.base(arguments,RPCUrl);
     this._tableModel.setColumnIds(["_id","server_id","host_id","hostname","progress","status"]);
-    this._tableModel.setColumns(["ID","Server ID","Host ID","Hostname","progress","status"]);         
+    this._tableModel.setColumns(["ID","Server ID","Host ID","Hostname","progress","status"]);
   },
   members: {
     getModelName:function() {
       return("dc2.models.InstallState");
     },
-    getModelCaption:function() {  
+    getModelCaption:function() {
       return("Installstate");
-    },  
+    },
     listData:function(search) {
       var _this=this;
       var handler=function(result,ex,id) {
@@ -58,7 +58,7 @@ qx.Class.define("dc2.models.InstallState",
       }
     },
     updateData:function(data) {
-      if (data != null) {        
+      if (data != null) {
         try {
           var response=this._rpc.callSync("dc2.deployment.installstate.update",data);
           return(true);
@@ -74,7 +74,7 @@ qx.Class.define("dc2.models.InstallState",
           return(true);
         } catch(exc) {
           return(false);
-        }        
+        }
       }
     },
     getEmptyData:function() {
@@ -84,7 +84,7 @@ qx.Class.define("dc2.models.InstallState",
       data["host_id"]=null;
       data["hostname"]="";
       data["progress"]="";
-      data["status"]="";        
+      data["status"]="";
       return(data);
     }
   }

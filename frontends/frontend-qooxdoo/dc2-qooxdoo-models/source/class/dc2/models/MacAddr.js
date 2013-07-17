@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ qx.Class.define("dc2.models.MacAddr",
       construct:function(RPCUrl) {
         this.base(arguments,RPCUrl);
         this._tableModel.setColumnIds(["_id","server_id","mac_addr","device_name"]);
-        this._tableModel.setColumns(["ID","server_id","MAC Address","Device Name"]);	     
+        this._tableModel.setColumns(["ID","server_id","MAC Address","Device Name"]);
       },
       members:{
         _server_id:null,
@@ -36,7 +36,7 @@ qx.Class.define("dc2.models.MacAddr",
         setServerId:function(data) {
           this._server_id=data;
         },
-        listData:function(search) {       
+        listData:function(search) {
 	        var _this=this;
 	        var handler=function(result,ex,id) {
 	          if (ex!=null) {

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -27,7 +27,7 @@ class InstallState(object):
     def __init__(self,rpcurl=None):
         self._rpcurl=rpcurl
         self._proxy=xmlrpclib.ServerProxy(self._rpcurl,allow_none=True)
-    
+
     def _update_status(self,installstate_record=None,status=None,progress=None):
         if installstate_record is not None:
             if status is not None:
@@ -56,7 +56,7 @@ class InstallState(object):
                 if installstate is not None:
                     return installstate
         return None
-    
+
     def update_status_by_server(self,serial_no=None,status=None,progress=None):
         if serial_no is not None and serial_no != "":
             s=Servers(self._rpcurl)
@@ -67,7 +67,7 @@ class InstallState(object):
                     result=self._update_status(installstate,status,progress)
                     return result
         return None
-    
+
     def update_status_by_host(self,hostname=None,domainname=None,status=None,progress=None):
         if hostname is not None and hostname != "" and domainname is not None and domainname != "":
             h=Hosts(self._rpcurl)

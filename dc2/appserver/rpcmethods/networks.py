@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -75,7 +75,7 @@ def dc2_inventory_networks_list(search=None):
         result = tbl_server.find()
     return result
 
-@rpcmethod(name="dc2.inventory.networks.add", returns={}, params={}, is_xmlrpc=True, is_jsonrpc=True)    
+@rpcmethod(name="dc2.inventory.networks.add", returns={}, params={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_networks_add(record=None):
     if record is not None and type(record) is types.DictType:
         if check_record(record, NETWORK_RECORD):
@@ -91,7 +91,7 @@ def dc2_inventory_networks_update(record=None):
             return doc_id
     return xmlrpclib.Fault(-32504, "Record couldn't be updated")
 
-@rpcmethod(name="dc2.inventory.networks.delete", returns={}, params={}, is_xmlrpc=True, is_jsonrpc=True)            
+@rpcmethod(name="dc2.inventory.networks.delete", returns={}, params={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_inventory_networks_delete(record=None):
     if record is not None and type(record) is types.DictType:
         if record.has_key("_id"):
@@ -100,4 +100,4 @@ def dc2_inventory_networks_delete(record=None):
                 return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
         return True
     return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
-            
+

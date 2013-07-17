@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertRevokeDialog",
       'addData':"qx.event.type.Data",
       'updateData':"qx.event.type.Data"
   },
-*/  
+*/
   members: {
     _commonname:null,
     _revoke_reason:null,
@@ -55,8 +55,8 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertRevokeDialog",
       layout.setColumnFlex(1,1);
       comp.setLayout(layout);
       this._revoke_reason=new qx.ui.form.SelectBox();
-      
-      comp.add(new qx.ui.basic.Label("Revoke Reason"),{row:0,column:0});      
+
+      comp.add(new qx.ui.basic.Label("Revoke Reason"),{row:0,column:0});
       comp.add(this._revoke_reason,{row:0,column:1});
       this._fillRevokeReasons();
       this.add(comp,{flex:1});
@@ -86,7 +86,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertRevokeDialog",
     _revokeCertificate:function(commonname,reason) {
       var cert_tbl=new cs2.models.SSLCerts(dc2.helpers.BrowserCheck.RPCUrl(false));
       cert_tbl.revokeCert({"commonname":commonname,"reason":reason});
-      
+
     },
     _clkBtnOk:function(e) {
       this._revokeCertificate(this._commonname,this._revoke_reason.getSelection()[0].getModel());

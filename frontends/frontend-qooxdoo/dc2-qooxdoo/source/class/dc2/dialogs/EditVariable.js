@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ qx.Class.define("dc2.dialogs.EditVariable",
   events: {
     'addData':"qx.event.type.Data",
     'updateData':"qx.event.type.Data"
-  },    
+  },
   members: {
     _edit_variable_name:null,
     _edit_variable_value:null,
@@ -40,7 +40,7 @@ qx.Class.define("dc2.dialogs.EditVariable",
         showMinimize:false
       });
       this.setLayout(new qx.ui.layout.VBox(5));
-      this.setResizable(false,true,true,false);            
+      this.setResizable(false,true,true,false);
       var comp=new qx.ui.container.Composite();
       var layout=new qx.ui.layout.Grid(5,5);
       layout.setColumnFlex(1,1);
@@ -62,12 +62,12 @@ qx.Class.define("dc2.dialogs.EditVariable",
       btnCancel.addListener("execute",this._clkBtnCancel,this);
       comp.add(btnCancel);
       comp.add(btnOk);
-      return(comp);            
+      return(comp);
     },
     _clkBtnOk:function(e) {
       var data={};
       data["name"]=this._edit_variable_name.getValue();
-      data["value"]=this._edit_variable_value.getValue();      
+      data["value"]=this._edit_variable_value.getValue();
       this.fireDataEvent("updateData",data);
       this.close();
     },
@@ -80,7 +80,7 @@ qx.Class.define("dc2.dialogs.EditVariable",
           this._edit_variable_name.setEnabled(false);
         } else {
           this._edit_variable_name.setEnabled(true);
-        }        
+        }
         this._edit_variable_name.setValue(data["name"]);
         this._edit_variable_value.setValue(data["value"]);
       }

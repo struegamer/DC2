@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       this._edit_templateclasses.setSelectionMode("multi");
       this._edit_templateclasses.setDroppable(true);
       this._edit_templateclasses.setDraggable(true);
-      this._edit_templateclasses.addListener("drop",this._dropTemplateClasses,this);      
+      this._edit_templateclasses.addListener("drop",this._dropTemplateClasses,this);
       this._edit_templateclasses.addListener("dragstart",this._dragstartTemplateClasses,this);
       this._edit_templateclasses.addListener("droprequest",this._droprequestTemplateClasses,this);
       comp.add(new qx.ui.basic.Label("Name"),{row:0,column:0});
@@ -90,7 +90,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       this.add(comp,{flex:1});
       this.add(this._initializeButtonBar());
       this._fillDefaultClasses();
-    }, 
+    },
     /*
      * Private Methods
      */
@@ -108,19 +108,19 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       var comp=new qx.ui.container.Composite();
       var layout=new qx.ui.layout.HBox(5);
       comp.setLayout(layout);
-            
+
       var comp2=new qx.ui.container.Composite();
       var layout2=new qx.ui.layout.VBox(5);
       comp2.setLayout(layout2);
       comp2.add(new qx.ui.basic.Label("Default Classes"));
       comp2.add(this._edit_defaultclasses);
-      
+
       var comp3=new qx.ui.container.Composite();
       var layout3=new qx.ui.layout.VBox(5);
       comp3.setLayout(layout3);
       comp3.add(new qx.ui.basic.Label("Template Classes"));
       comp3.add(this._edit_templateclasses);
-      
+
       comp.add(comp2,{flex:1});
       comp.add(comp3,{flex:1});
       return(comp);
@@ -146,7 +146,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       data["classes"]=[];
       var selection=this._edit_templateclasses.getChildren();
       for (var i=0;i<selection.length;i++) {
-        data["classes"].push(selection[i].getModel());        
+        data["classes"].push(selection[i].getModel());
       }
       if (data["_id"] != "" && data["_id"] != null) {
         this.fireDataEvent("updateData",data);
@@ -162,7 +162,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       if (e.getTarget().classname == "qx.ui.form.TextField") {
         e.getTarget().setTextSelection(0);
       }
-    },    
+    },
     _dragstartDefaultClasses:function(e) {
       e.addType("items");
       e.addAction("copy");
@@ -171,7 +171,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
     _dragstartTemplateClasses:function(e) {
       e.addType("items");
       e.addAction("copy");
-      e.addAction("move");      
+      e.addAction("move");
     },
     _droprequestDefaultClasses:function(e) {
       var action=e.getCurrentAction();
@@ -193,7 +193,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
           }
         }
         e.addData(type,result);
-      }      
+      }
     },
     _droprequestTemplateClasses:function(e) {
       var action=e.getCurrentAction();
@@ -238,7 +238,7 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       }
     },
     _dropTemplateClasses:function(e) {
-      var items=e.getData("items");     
+      var items=e.getData("items");
       for (var i=0;i<items.length;i++) {
         this._edit_templateclasses.add(items[i]);
       }
@@ -255,9 +255,9 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
       this._edit_templateclasses.removeAll();
       for (var i=0;i<items1.length;i++) {
         this._edit_templateclasses.add(items1[i]);
-      }      
+      }
     },
-    /* 
+    /*
      * Public Methods
      */
     setData:function(data) {
@@ -268,11 +268,11 @@ qx.Class.define("dc2.dialogs.EditClassTemplates",
         this._edit_defaultclasses.removeAll();
         this._edit_templateclasses.removeAll();
         this._fillDefaultClasses();
-        
+
         if (this._edit_id != null) {
           this._edit_name.setEnabled(false);
           if (this._tbl_classtemplates==null) {
-            this._tbl_classtemplates=new dc2.models.ClassTemplates(dc2.helpers.BrowserCheck.RPCUrl(false));          
+            this._tbl_classtemplates=new dc2.models.ClassTemplates(dc2.helpers.BrowserCheck.RPCUrl(false));
           }
           var record=this._tbl_classtemplates.getClassTemplateRecord(this._edit_id);
           for (var i=0;i<record["classes"].length;i++) {

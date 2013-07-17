@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -27,13 +27,13 @@ import types
 class RPCDispatcher(object):
     def __init__(self):
         self.rpcs = {}
-    
+
     def register_rpc(self, methodname=None, methodcallback=None):
         if methodname is not None and methodname != "" and methodcallback is not None:
             self.rpcs[methodname] = methodcallback
             return True
         return False
-    
+
     def unregister_rpc(self, methodname=None):
         if methodname is not None and methodname != "":
             if self.rpcs.has_key(methodname):
@@ -85,7 +85,7 @@ class JSONRPCDispatcher(RPCDispatcher):
 
     def content_type(self):
         return "application/json"
-    
+
     def handle_request(self, request_data=None):
         if request_data is not None:
             response = None
@@ -100,7 +100,7 @@ class JSONRPCDispatcher(RPCDispatcher):
                                 response["id"] = json_call["id"]
                                 response["result"] = None
                                 response["error"] = method_response.faultString
-                                return json.dumps(response)                                
+                                return json.dumps(response)
                         else:
                             method_response = self.rpcs[json_call["method"]]()
                             if type(method_response) is xmlrpclib.Fault:
@@ -108,13 +108,13 @@ class JSONRPCDispatcher(RPCDispatcher):
                                 response["id"] = json_call["id"]
                                 response["result"] = None
                                 response["error"] = method_response.faultString
-                                return json.dumps(response)                                                            
+                                return json.dumps(response)
                         response = {}
                         response["id"] = json_call["id"]
                         response["result"] = method_response
                         response["error"] = None
                         return json.dumps(response)
-                    except Exception,e:                        
+                    except Exception,e:
                         response = {}
                         response["id"] = json_call["id"]
                         response["error"] = "Parameter Errors"

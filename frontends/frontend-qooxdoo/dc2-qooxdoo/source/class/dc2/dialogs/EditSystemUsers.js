@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ qx.Class.define("dc2.dialogs.EditSystemUsers",
         showClose:true,
         showMaximize:false,
         showMinimize:false
-      });     
+      });
       this.setLayout(new qx.ui.layout.VBox(5));
       this.setResizable(false,true,true,false);
       var comp=new qx.ui.container.Composite();
@@ -106,7 +106,7 @@ qx.Class.define("dc2.dialogs.EditSystemUsers",
         data["is_admin"]="0";
       }
       if (data["_id"] != "" && data["_id"]!=null) {
-        this.fireDataEvent("updatedata",data);        
+        this.fireDataEvent("updatedata",data);
       } else {
         this.fireDataEvent("addData",data);
       }

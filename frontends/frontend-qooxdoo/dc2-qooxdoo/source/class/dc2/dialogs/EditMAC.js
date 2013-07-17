@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ qx.Class.define("dc2.dialogs.EditMAC",
       this.setLayout(new qx.ui.layout.VBox(5));
       this.setResizable(false,true,true,false);
       var comp=new qx.ui.container.Composite();
-      var layout=new qx.ui.layout.Grid(5,5);     
+      var layout=new qx.ui.layout.Grid(5,5);
       layout.setColumnFlex(1,1);
       comp.setLayout(layout);
       this.__editMAC=new qx.ui.form.TextField();
@@ -64,11 +64,11 @@ qx.Class.define("dc2.dialogs.EditMAC",
       comp.add(this.__editHWDEV,{row:1,column:1,colSpan:4});
       this.add(comp,{flex:1});
       this.add(this._initializeButtonBar());
-    }, 
+    },
     /*
      * Private Methods
      */
-    _initializeButtonBar:function() {      
+    _initializeButtonBar:function() {
       var comp=new qx.ui.container.Composite(new qx.ui.layout.HBox(5).set({alignX:'right'}));
       var btnOk=new qx.ui.form.Button('Ok','icon/16/actions/dialog-ok.png');
       var btnCancel=new qx.ui.form.Button('Cancel','icon/16/actions/dialog-cancel.png');
@@ -102,7 +102,7 @@ qx.Class.define("dc2.dialogs.EditMAC",
         e.getTarget().setTextSelection(0);
       }
     },
-    /* 
+    /*
      * Public Methods
      */
     setData:function(data) {

@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLKeyDialog",
       comp.add(this._edit_key_cipher,{row:4,column:1});
       comp.add(this._edit_key_passphrase,{row:5,column:1});
       if (this._edit_key_cipher.getSelection()[0]==this._dict_key_ciphers["None"]) {
-        this._edit_key_passphrase.setEnabled(false);       
+        this._edit_key_passphrase.setEnabled(false);
       } else {
         this._edit_key_passphrase.setEnabled(true);
       }

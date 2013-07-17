@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ qx.Class.define("dc2.dialogs.EditNetworks",
 {
     extend: qx.ui.window.Window,
     construct:function() {
-        this.base(arguments);    
+        this.base(arguments);
         this._createLayout();
     },
     events: {
@@ -53,9 +53,9 @@ qx.Class.define("dc2.dialogs.EditNetworks",
             this.setResizable(false,true,true,false);
             layout.setColumnFlex(1,1);
             comp.setLayout(layout);
-            
+
             this._edit_network=new qx.ui.form.TextField();
-           
+
             this._edit_name=new qx.ui.form.TextField();
             this._edit_description=new qx.ui.form.TextField();
             this._edit_gateway=new qx.ui.form.TextField();
@@ -63,7 +63,7 @@ qx.Class.define("dc2.dialogs.EditNetworks",
             this._edit_blocked_ips=new qx.ui.form.TextField();
             this._edit_first_ip=new qx.ui.form.TextField();
             this._edit_vlan_no=new qx.ui.form.TextField();
-            
+
             comp.add(new qx.ui.basic.Label('Network'),{row:0,column:0});
             comp.add(new qx.ui.basic.Label('Name'),{row:1,column:0});
             comp.add(new qx.ui.basic.Label('Description'),{row:2,column:0});
@@ -72,7 +72,7 @@ qx.Class.define("dc2.dialogs.EditNetworks",
             comp.add(new qx.ui.basic.Label('Broadcast'),{row:5,column:0});
             comp.add(new qx.ui.basic.Label('First IP'),{row:6,column:0});
             comp.add(new qx.ui.basic.Label('VLAN No.'),{row:7,column:0});
-            
+
             comp.add(this._edit_network,{row:0,column:1});
             comp.add(this._edit_name,{row:1,column:1});
             comp.add(this._edit_description,{row:2,column:1});
@@ -81,11 +81,11 @@ qx.Class.define("dc2.dialogs.EditNetworks",
             comp.add(this._edit_broadcast,{row:5,column:1});
             comp.add(this._edit_first_ip,{row:6,column:1});
             comp.add(this._edit_vlan_no,{row:7,column:1});
-            
-            var btnCalc=new qx.ui.form.Button("Calculate");        
+
+            var btnCalc=new qx.ui.form.Button("Calculate");
             btnCalc.addListener("execute",this._clkCalculateNetworks,this);
             comp.add(btnCalc,{row:0,column:2});
-            
+
             this.add(comp,{flex:1});
             this.add(this._createButtonBar());
         },
@@ -97,7 +97,7 @@ qx.Class.define("dc2.dialogs.EditNetworks",
             btnCancel.addListener("execute",this._clkBtnCancel,this);
             comp.add(btnCancel,{flex:0});
             comp.add(btnOk,{flex:0});
-            return(comp);            
+            return(comp);
         },
         _clkBtnOk:function(e) {
           var data={}
@@ -122,14 +122,14 @@ qx.Class.define("dc2.dialogs.EditNetworks",
         },
         _clkCalculateNetworks:function(e) {
           if (this._model_ipcalc == null) {
-            this._model_ipcalc=new dc2.models.IpCalc(dc2.helpers.BrowserCheck.RPCUrl(false));            
+            this._model_ipcalc=new dc2.models.IpCalc(dc2.helpers.BrowserCheck.RPCUrl(false));
           }
           var result=this._model_ipcalc.calcIpnetwork(this._edit_network.getValue());
-          if (result != null) { 
+          if (result != null) {
             if (this._edit_broadcast.getValue()==""||this._edit_broadcast.getValue()==null) {
               this._edit_broadcast.setValue(result["broadcast"]);
             }
-          
+
             if (this._edit_first_ip.getValue()==""||this._edit_first_ip.getValue()==null) {
               this._edit_first_ip.setValue(result["first_ip"]);
             }

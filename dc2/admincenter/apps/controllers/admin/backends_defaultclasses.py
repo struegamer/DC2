@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -189,14 +189,14 @@ class BackendDefaultClassesController(AdminController):
                                           verb['request_content_type'],
                                           verb['request_output_format'],
                                           {'redirect':
-                                           {'url':'%s?backend_id=%s' % 
+                                           {'url':'%s?backend_id=%s' %
                                             (self._controller_path, backend_id),
                                             'absolute':'true'}})
         else:
             result = self._prepare_output(verb['request_type'],
                                           verb['request_content_type'],
                                           output={'redirect':
-                                                  {'url':'%s?backend_id=%s' % 
+                                                  {'url':'%s?backend_id=%s' %
                                                    (self._controller_path,
                                                     backend_id),
                                                    'absolute':'true'}})
@@ -223,14 +223,14 @@ class BackendDefaultClassesController(AdminController):
                                           verb['request_content_type'],
                                           verb['request_output_format'],
                                           {'redirect':
-                                           {'url':'%s?backend_id=%s' % 
+                                           {'url':'%s?backend_id=%s' %
                                             (self._controller_path, backend_id),
                                             'absolute':'true'}})
         else:
             result = self._prepare_output(verb['request_type'],
                                           verb['request_content_type'],
                                           output={'redirect':
-                                                  {'url':'%s?backend_id=%s' % 
+                                                  {'url':'%s?backend_id=%s' %
                                                    (self._controller_path,
                                                     backend_id),
                                                    'absolute':'true'}})
@@ -255,14 +255,14 @@ class BackendDefaultClassesController(AdminController):
                                           verb['request_content_type'],
                                           verb['request_output_format'],
                                           {'redirect':
-                                           {'url':'%s?backend_id=%s' % 
+                                           {'url':'%s?backend_id=%s' %
                                             (self._controller_path, backend_id),
                                             'absolute':'true'}})
         else:
             result = self._prepare_output(verb['request_type'],
                                           verb['request_content_type'],
                                           output={'redirect':
-                                                  {'url':'%s?backend_id=%s' % 
+                                                  {'url':'%s?backend_id=%s' %
                                                    (self._controller_path,
                                                     backend_id),
                                                    'absolute':'true'}})

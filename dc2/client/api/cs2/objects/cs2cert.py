@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -24,17 +24,16 @@ class Cert(object):
     def __init__(self,rpcurl):
         self._rpcurl=rpcurl
         self._proxy=xmlrpclib.ServerProxy(rpcurl,allow_none=True)
-        
+
     def cert_list(self):
         crt_list=self._proxy.cs2.ssl.certs.list()
         if crt_list is not None and len(crt_list)>0:
             return crt_list
         return None
-        
+
     def cert_get(self,commonname=None):
         if commonname is not None and commonname != "":
             crt=self._proxy.cs2.ssl.certs.retrieve(commonname)
             if crt is not None:
                 return crt
         return None
-        

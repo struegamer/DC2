@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -37,7 +37,7 @@ class Configuration(object):
         self._configfilename=filename
         self._func_check_config=check_config
         self._read_yaml_file()
-        
+
     def _read_yaml_file(self):
         fp=open(filename,'rb')
         yaml_file=fp.read()

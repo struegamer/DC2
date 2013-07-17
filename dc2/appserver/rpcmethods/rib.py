@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -65,15 +65,15 @@ def dc2_servers_rib_list(search):
     else:
         result = tbl_server.find()
     return result
-    
+
 @rpcmethod(name="dc2.inventory.servers.rib.add", returns={"string doc_id":"Document ID of new added record"}, params={"dict rec_rib":"Record Dictionary"}, is_xmlrpc=True, is_jsonrpc=True)
-def dc2_servers_rib_add(rec_rib=None):    
+def dc2_servers_rib_add(rec_rib=None):
     if rec_rib is not None and type(rec_rib) is types.DictType:
         if check_record(rec_rib, RIB_RECORD):
             doc_id = tbl_server.save(rec_rib)
             return doc_id
     return xmlrpclib.Fault(-32501, "Record couldn't be added")
-    
+
 @rpcmethod(name="dc2.inventory.servers.rib.update", returns={"string doc_id":"Document ID of new added record"}, params={"dict rec_rib":"Record Dictionary"}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_servers_rib_update(rec_rib=None):
     if rec_rib is not None and type(rec_rib) is types.DictType:

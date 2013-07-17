@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -65,39 +65,39 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
     _createLayout:function() {
       var layout=new qx.ui.layout.VBox(5);
       this.setLayout(layout);
-      
+
       this._edit_interface_types=new qx.ui.form.SelectBox();
       this._edit_interface_types.addListener("changeSelection",this._evChangeSelInterfaceTypes,this)
-      this._edit_interface_inet_types=new qx.ui.form.SelectBox();  
+      this._edit_interface_inet_types=new qx.ui.form.SelectBox();
       this._edit_interface_inet_types.addListener("changeSelection",this._evChangeSelInterfaceTypes,this)
       this._initializeTypes();
 
       this._edit_interface_name=new qx.ui.form.TextField();
-      this._edit_hw_interface_names=new qx.ui.form.SelectBox();      
+      this._edit_hw_interface_names=new qx.ui.form.SelectBox();
       this._edit_interface_ip=new qx.ui.form.TextField();
       this._edit_interface_netmask=new qx.ui.form.TextField();
       this._edit_interface_gateway=new qx.ui.form.TextField();
-      
+
       this._edit_interface_slaves=new qx.ui.form.List();
       this._edit_interface_slaves.setSelectionMode('multi');
-      
+
       this._edit_interface_vlan_raw_device=new qx.ui.form.SelectBox();
-      
+
       this._edit_interface_pre_up=new qx.ui.form.TextArea();
       this._edit_interface_pre_down=new qx.ui.form.TextArea();
       this._edit_interface_post_up=new qx.ui.form.TextArea();
       this._edit_interface_post_down=new qx.ui.form.TextArea();
       this._compInterfaceIsIpV6=new qx.ui.form.CheckBox();
       this._compInterfaceIsIpV6.setValid(false);
-      
+
       var tabView=new qx.ui.tabview.TabView();
       var interfacePage=new qx.ui.tabview.Page("Interfaces");
-      interfacePage.setLayout(new qx.ui.layout.VBox(5));     
+      interfacePage.setLayout(new qx.ui.layout.VBox(5));
       var advancedPage=new qx.ui.tabview.Page("Advanced");
       advancedPage.setLayout(new qx.ui.layout.VBox(5));
       tabView.add(interfacePage);
       tabView.add(advancedPage);
-      
+
       // this._initializeHWInterfaceNames();
       this._initialize_compInterfaceSettings();
       this._initialize_compInterfaceNames();
@@ -109,26 +109,26 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       interfacePage.add(this._compInterfaceDetails);
       interfacePage.add(this._compInterfaceBondingSlaves);
       interfacePage.add(this._compInterfaceVlanRawDevice);
-      
+
       this._initializeAdvancedPage(advancedPage);
-      
+
       var comp1=new qx.ui.container.Composite(new qx.ui.layout.HBox(5).set({alignX:'right'}));
       this._btnApply=new qx.ui.form.Button("Apply");
       this._btnApply.addListener("execute",this._btnApplyClicked,this);
       this._btnApply.setEnabled(false);
       comp1.add(this._btnApply);
       this.add(tabView,{flex:1});
-      this.add(comp1);      
+      this.add(comp1);
     },
     _initializeAdvancedPage:function(page) {
       var comp1=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       comp1.add(new qx.ui.basic.Label("Pre Up Commands"));
       comp1.add(this._edit_interface_pre_up);
-      
+
       var comp2=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       comp2.add(new qx.ui.basic.Label("Pre Down Commands"));
       comp2.add(this._edit_interface_pre_down);
-      
+
       var comp3=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       comp3.add(new qx.ui.basic.Label("Post Up Commands"));
       comp3.add(this._edit_interface_post_up);
@@ -136,12 +136,12 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       var comp4=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       comp4.add(new qx.ui.basic.Label("Post Down Commands"));
       comp4.add(this._edit_interface_post_down);
-      
+
       page.add(comp1,{flex:1});
       page.add(comp2,{flex:1});
       page.add(comp3,{flex:1});
       page.add(comp4,{flex:1});
-      
+
     },
     _initialize_compInterfaceSettings:function() {
       this._compInterfaceSettings=new qx.ui.groupbox.GroupBox("Interface Details");
@@ -149,7 +149,7 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._compInterfaceSettings_interface_type=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compInterfaceSettings_interface_type.add(new qx.ui.basic.Label("Interface Type"));
       this._compInterfaceSettings_interface_type.add(this._edit_interface_types);
-      
+
       this._compinterfaceSettings_interface_inet_type=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compinterfaceSettings_interface_inet_type.add(new qx.ui.basic.Label("Inet Type"));
       this._compinterfaceSettings_interface_inet_type.add(this._edit_interface_inet_types);
@@ -158,31 +158,31 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._compinterfaceSettings_interface_ipv6_type.add(new qx.ui.basic.Label("IPv6?"));
       this._compinterfaceSettings_interface_ipv6_type.add(this._compInterfaceIsIpV6);
 
-      
+
       this._compInterfaceSettings.add(this._compInterfaceSettings_interface_type,{flex:1});
       this._compInterfaceSettings.add(this._compinterfaceSettings_interface_inet_type,{flex:1});
       this._compInterfaceSettings.add(this._compinterfaceSettings_interface_ipv6_type,{flex:1});
-      
+
     },
     _initialize_compInterfaceNames:function() {
       this._compInterfaceNames=new qx.ui.groupbox.GroupBox("Interface Names");
       this._compInterfaceNames.setLayout(new qx.ui.layout.HBox(5));
-      
+
       this._compInterfaceNames_name=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compInterfaceNames_name.add(new qx.ui.basic.Label("Name"));
       this._compInterfaceNames_name.add(this._edit_interface_name);
-      
+
       this._compInterfaceNames_hwdevices=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compInterfaceNames_hwdevices.add(new qx.ui.basic.Label("HW Device Names"));
       this._compInterfaceNames_hwdevices.add(this._edit_hw_interface_names);
-      
+
       this._compInterfaceNames.add(this._compInterfaceNames_name,{flex:1});
       this._compInterfaceNames.add(this._compInterfaceNames_hwdevices,{flex:1});
     },
     _initialize_compInterfaceDetails:function() {
       this._compInterfaceDetails=new qx.ui.groupbox.GroupBox("IP Details");
       this._compInterfaceDetails.setLayout(new qx.ui.layout.HBox(5));
-      
+
       this._compInterfaceDetails_ip=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compInterfaceDetails_ip.add(new qx.ui.basic.Label("IP"));
       this._compInterfaceDetails_ip.add(this._edit_interface_ip);
@@ -190,15 +190,15 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._compInterfaceDetails_netmask=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compInterfaceDetails_netmask.add(new qx.ui.basic.Label("Netmask"));
       this._compInterfaceDetails_netmask.add(this._edit_interface_netmask);
-      
+
       this._compInterfaceDetails_gateway=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       this._compInterfaceDetails_gateway.add(new qx.ui.basic.Label("Gateway"));
       this._compInterfaceDetails_gateway.add(this._edit_interface_gateway);
-      
+
       this._compInterfaceDetails.add(this._compInterfaceDetails_ip,{flex:1});
       this._compInterfaceDetails.add(this._compInterfaceDetails_netmask,{flex:1});
       this._compInterfaceDetails.add(this._compInterfaceDetails_gateway,{flex:1});
-      
+
     },
     _initialize_compInterfaceBondingSlaves:function() {
       this._compInterfaceBondingSlaves=new qx.ui.groupbox.GroupBox("Bonding Slaves");
@@ -210,8 +210,8 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._compInterfaceVlanRawDevice=new qx.ui.groupbox.GroupBox("VLAN Raw Device");
       this._compInterfaceVlanRawDevice.setLayout(new qx.ui.layout.VBox(5));
       this._compInterfaceVlanRawDevice.add(new qx.ui.basic.Label("Available Devices"));
-      this._compInterfaceVlanRawDevice.add(this._edit_interface_vlan_raw_device,{flex:1});      
-    },       
+      this._compInterfaceVlanRawDevice.add(this._edit_interface_vlan_raw_device,{flex:1});
+    },
     _initializeTypes:function() {
       this._edit_interface_types.removeAll();
       this._edit_interface_types.add(new qx.ui.form.ListItem("Loopback",null,"loopback"));
@@ -219,16 +219,16 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._edit_interface_types.add(new qx.ui.form.ListItem("BOND Type 1",null,"bond_1"));
       this._edit_interface_types.add(new qx.ui.form.ListItem("BOND Type 2",null,"bond_2"));
       this._edit_interface_types.add(new qx.ui.form.ListItem("VLAN Interface",null,"vlan"));
-      
+
       this._edit_interface_inet_types.removeAll();
       this._edit_interface_inet_types.add(new qx.ui.form.ListItem("Loopback",null,"loopback"));
       this._edit_interface_inet_types.add(new qx.ui.form.ListItem("DHCP",null,"dhcp"));
       this._edit_interface_inet_types.add(new qx.ui.form.ListItem("Static",null,"static"));
       this._edit_interface_inet_types.add(new qx.ui.form.ListItem("Manual",null,"manual"));
     },
-    _initializeHWInterfaceNames:function() {      
+    _initializeHWInterfaceNames:function() {
       var tbl_macaddr=new dc2.models.MacAddr(dc2.helpers.BrowserCheck.RPCUrl(false));
-      var hw_names=tbl_macaddr.getMacsByServerId(this._server_id);     
+      var hw_names=tbl_macaddr.getMacsByServerId(this._server_id);
       this._edit_hw_interface_names.removeAll();
       this._edit_interface_slaves.removeAll();
       this._edit_interface_vlan_raw_device.removeAll();
@@ -265,7 +265,7 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       this._server_id=server_id;
       this._initializeHWInterfaceNames();
     },
-    addRawInterface:function(interface_entry) {      
+    addRawInterface:function(interface_entry) {
       if (this._edit_interface_vlan_raw_device!=null) {
         if (this._edit_interface_vlan_raw_device.getChildrenContainer().findItem(interface_entry)==null) {
           this._edit_interface_vlan_raw_device.add(new qx.ui.form.ListItem(interface_entry,null,interface_entry));
@@ -286,11 +286,11 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         if (this._interface_data!=null && this._interface_data["name"]=="NewInterface") {
           if (this._compInterfaceNames!=null) {
             this._compInterfaceNames.setEnabled(true);
-          }  
+          }
          } else {
            if (this._compInterfaceNames!=null) {
              this._compInterfaceNames.setEnabled(false);
-           }  
+           }
          }
         var loopbackItem=this._edit_interface_inet_types.getChildrenContainer().findItem("Loopback");
         if (loopbackItem != null) {
@@ -305,16 +305,16 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="loopback") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.exclude();
-          }          
+          }
         } else if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="dhcp") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.exclude();
-          }        
+          }
         } else {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.show();
-          }                  
-        }   
+          }
+        }
       } else if (!this._edit_interface_types.isSelectionEmpty() && this._edit_interface_types.getSelection()[0].getModel()=="ethernet") {
         if (this._compInterfaceNames_hwdevices!=null) {
           this._compInterfaceNames_hwdevices.show();
@@ -322,15 +322,15 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         if (this._interface_data!=null && this._interface_data["name"]=="NewInterface") {
          if (this._compInterfaceNames!=null) {
            this._compInterfaceNames.setEnabled(true);
-         }  
+         }
         } else {
           if (this._compInterfaceNames!=null) {
             this._compInterfaceNames.setEnabled(false);
-          }  
+          }
         }
         var loopbackItem=this._edit_interface_inet_types.getChildrenContainer().findItem("Loopback");
         if (loopbackItem != null) {
-          loopbackItem.setEnabled(false); 
+          loopbackItem.setEnabled(false);
           if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="loopback") {
             this._edit_interface_inet_types.setModelSelection([this._interface_data["inet"]]);
           }
@@ -341,19 +341,19 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         if (this._compInterfaceVlanRawDevice != null) {
           this._compInterfaceVlanRawDevice.exclude();
         }
-        
+
         if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="dhcp") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.exclude();
-          }                  
+          }
         } else if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="static") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.show();
-          }                            
+          }
         } else if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="manual") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.show();
-          }                  
+          }
         }
       } else if (!this._edit_interface_types.isSelectionEmpty() && ( this._edit_interface_types.getSelection()[0].getModel()=="bond_1" || this._edit_interface_types.getSelection()[0].getModel()=="bond_2")) {
         if (this._compInterfaceNames_hwdevices!=null) {
@@ -366,7 +366,7 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         } else {
           if (this._compInterfaceNames!=null) {
             this._compInterfaceNames.setEnabled(false);
-          }  
+          }
         }
         if (this._compInterfaceBondingSlaves!= null) {
           this._compInterfaceBondingSlaves.show()
@@ -374,10 +374,10 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         if (this._compInterfaceVlanRawDevice != null) {
           this._compInterfaceVlanRawDevice.exclude();
         }
-        
+
         var loopbackItem=this._edit_interface_inet_types.getChildrenContainer().findItem("Loopback");
         if (loopbackItem != null) {
-          loopbackItem.setEnabled(false); 
+          loopbackItem.setEnabled(false);
           if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="loopback") {
             this._edit_interface_inet_types.setModelSelection([this._interface_data["inet"]]);
           }
@@ -400,11 +400,11 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         } else if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="static") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.show();
-          }          
+          }
         } else if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="manual") {
           if (this._compInterfaceDetails != null) {
             this._compInterfaceDetails.show();
-          }                    
+          }
         }
       } else if (!this._edit_interface_types.isSelectionEmpty() && this._edit_interface_types.getSelection()[0].getModel()=="vlan") {
         if (this._compInterfaceNames_hwdevices!=null) {
@@ -417,17 +417,17 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
         } else {
           if (this._compInterfaceNames!=null) {
             this._compInterfaceNames.setEnabled(false);
-          }  
+          }
         }
         if (this._compInterfaceBondingSlaves!= null) {
           this._compInterfaceBondingSlaves.exclude()
         }
         if (this._compInterfaceVlanRawDevice != null) {
           this._compInterfaceVlanRawDevice.show();
-        }        
+        }
         var loopbackItem=this._edit_interface_inet_types.getChildrenContainer().findItem("Loopback");
         if (loopbackItem != null) {
-          loopbackItem.setEnabled(false); 
+          loopbackItem.setEnabled(false);
           if (!this._edit_interface_inet_types.isSelectionEmpty() && this._edit_interface_inet_types.getSelection()[0].getModel()=="loopback") {
             this._edit_interface_inet_types.setModelSelection([this._interface_data["inet"]]);
           }
@@ -450,17 +450,17 @@ qx.Class.define("dc2.dialogs.interfaces.Details",
       } else if (interfaces["inet"]=="dhcp") {
         interfaces["ip"]=null;
         interfaces["netmask"]=null;
-        interfaces["gateway"]=null;        
+        interfaces["gateway"]=null;
       } else {
         interfaces["ip"]=this._edit_interface_ip.getValue();
         interfaces["netmask"]=this._edit_interface_netmask.getValue();
-        interfaces["gateway"]=this._edit_interface_gateway.getValue();        
+        interfaces["gateway"]=this._edit_interface_gateway.getValue();
       }
       if (interfaces["type"]=="vlan") {
         interfaces["vlan_raw_device"]=this._edit_interface_vlan_raw_device.getSelection()[0].getModel();
       } else {
         interfaces["vlan_raw_device"]=null;
-      }     
+      }
       if (interfaces["type"]=="bond_1" || interfaces["type"]=="bond_2") {
         interfaces["slaves"]="";
         var slaves=this._edit_interface_slaves.getSelection();

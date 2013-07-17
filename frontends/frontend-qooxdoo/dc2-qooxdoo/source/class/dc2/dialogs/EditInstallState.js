@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ qx.Class.define("dc2.dialogs.EditInstallState",
       var layout=new qx.ui.layout.Grid(5,5);
       layout.setColumnFlex(1,1);
       comp.setLayout(layout);
-      
+
       this._edit_hostname=new qx.ui.form.TextField();
       this._edit_hostname.setEnabled(false);
       this._edit_status=new qx.ui.form.SelectBox();
@@ -67,9 +67,9 @@ qx.Class.define("dc2.dialogs.EditInstallState",
       comp.add(new qx.ui.basic.Label("Hostname"),{row:0,column:0});
       comp.add(new qx.ui.basic.Label("Deployment Status"),{row:1,column:0});
       comp.add(this._edit_hostname,{row:0,column:1});
-      comp.add(this._edit_status,{row:1,column:1});      
+      comp.add(this._edit_status,{row:1,column:1});
       this.add(comp,{flex:1});
-      this.add(this._initializeButtonBar());      
+      this.add(this._initializeButtonBar());
     },
     _fillStatus:function() {
       this._edit_status.add(new qx.ui.form.ListItem("Localboot",null,"localboot"));
@@ -114,8 +114,8 @@ qx.Class.define("dc2.dialogs.EditInstallState",
       if (e.getTarget().classname == "qx.ui.form.TextField") {
         e.getTarget().setTextSelection(0);
       }
-    },    
-    /* 
+    },
+    /*
      * Public Methods
      */
     setData:function(data) {
@@ -124,7 +124,7 @@ qx.Class.define("dc2.dialogs.EditInstallState",
         this._edit_server_id=data["server_id"];
         this._edit_host_id=data["host_id"];
         this._edit_hostname.setValue(data["hostname"]);
-        this._edit_status.setModelSelection([data["status"]]);        
+        this._edit_status.setModelSelection([data["status"]]);
       }
     }
   }

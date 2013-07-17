@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -36,7 +36,7 @@ def datetime_isoformat():
 
 def rpc_datetime_isoformat(rpc_datetime=None):
     if rpc_datetime is not None:
-        dt=dateutil.parser.parse(rpc_datetime.value)        
+        dt=dateutil.parser.parse(rpc_datetime.value)
         return dt.isoformat()
     return None
-    
+

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -25,7 +25,7 @@ import os.path
 
 class PCIDevices(object):
     LSPCI="/usr/bin/lspci"
-    
+
     def __init__(self):
         if not os.path.exists(self.LSPCI):
             raise FileNotFoundException("%s not found" % LSPCI)
@@ -46,7 +46,7 @@ class PCIDevices(object):
                 (key,value)=line.split(":\t")
                 dev_hash[key.lower()]=value
             self._device_list.append(dev_hash)
-    
+
     def get_pci_devices(self):
         return self._device_list
 

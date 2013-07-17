@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@ qx.Class.define("dc2.dialogs.EditRIB",
     this._initRIBTypes();
     this._createLayout();
   },
-  
+
   events: {
-    'addData':"qx.event.type.Data", 
+    'addData':"qx.event.type.Data",
     'updateData':"qx.event.type.Data"
   },
   members: {
@@ -49,7 +49,7 @@ qx.Class.define("dc2.dialogs.EditRIB",
 
       var comp=new qx.ui.container.Composite();
       var layout=new qx.ui.layout.Grid(5,5);
-      this.setResizable(false,true,true,false);  
+      this.setResizable(false,true,true,false);
       layout.setColumnFlex(1,1);
       comp.setLayout(layout);
       this._editRIBType=new qx.ui.form.SelectBox();
@@ -58,11 +58,11 @@ qx.Class.define("dc2.dialogs.EditRIB",
       comp.add(new qx.ui.basic.Label("RIB Type"),{row:0,column:0});
       comp.add(new qx.ui.basic.Label("RIB IP"),{row:1,column:0});
       comp.add(this._editRIBType,{row:0,column:1});
-      comp.add(this._editRIBIP,{row:1,column:1});      
+      comp.add(this._editRIBIP,{row:1,column:1});
       for (var item in this._ribTypes) {
         this._editRIBType.add(this._ribTypes[item]);
       }
-      
+
       this.add(comp,{flex:1});
       this.add(this._initializeButtonBar());
     },
@@ -99,11 +99,11 @@ qx.Class.define("dc2.dialogs.EditRIB",
     _clkBtnCancel:function(e) {
       this.close();
     },
-    _editFieldFocus:function(e) {  
+    _editFieldFocus:function(e) {
       if (e.getTarget().classname == "qx.ui.form.TextField") {
         e.getTarget().setTextSelection(0);
       }
-    },    
+    },
     setData:function(data) {
       if (data != null) {
         this._rib_id=data["_id"];
@@ -115,8 +115,8 @@ qx.Class.define("dc2.dialogs.EditRIB",
         this._editRIBType.setSelection([this._ribTypes[data["remote_type"]]]);
       }
     }
-    
+
   }
-  
+
 });
 

@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,8 +57,8 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertView",
       this._edit_cert_pem_contents=new qx.ui.form.TextArea().set({width:400,height:300});
       this._edit_cert_pem_contents.setReadOnly(true);
       var btnRevoke=new qx.ui.form.Button("Revoke Certificate");
-      
-      comp.add(new qx.ui.basic.Label("Commonname"),{row:0,column:0});     
+
+      comp.add(new qx.ui.basic.Label("Commonname"),{row:0,column:0});
       comp.add(new qx.ui.basic.Label("PEM File Contents"),{row:1,column:0});
       comp.add(this._edit_cert_commonname,{row:0,column:1});
       comp.add(this._edit_cert_pem_contents,{row:2,column:0,colSpan:2});

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -24,17 +24,16 @@ class CSR(object):
     def __init__(self,rpcurl):
         self._rpcurl=rpcurl
         self._proxy=xmlrpclib.ServerProxy(rpcurl,allow_none=True)
-        
+
     def csr_list(self):
         csr_list=self._proxy.cs2.ssl.csrs.list()
         if csr_list is not None and len(csr_list)>0:
             return csr_list
         return None
-        
+
     def csr_get(self,commonname=None):
         if commonname is not None and commonname != "":
             csr=self._proxy.cs2.ssl.csrs.retrieve(commonname)
             if csr is not None:
                 return csr
         return None
-        

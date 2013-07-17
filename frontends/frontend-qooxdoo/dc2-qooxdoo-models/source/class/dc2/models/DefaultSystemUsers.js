@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,11 +23,11 @@ qx.Class.define("dc2.models.DefaultSystemUsers",
   construct:function(RPCUrl) {
     this.base(arguments,RPCUrl);
     this._tableModel.setColumnIds(['_id','username','realname']);
-    this._tableModel.setColumns(['ID','Username','Realname']);    
+    this._tableModel.setColumns(['ID','Username','Realname']);
   },
   members: {
     getModelName:function() {
-      return("dc2.models.DefaultSystemUsers");      
+      return("dc2.models.DefaultSystemUsers");
     },
     getModelCaption:function() {
       return("Default System Users");
@@ -42,7 +42,7 @@ qx.Class.define("dc2.models.DefaultSystemUsers",
         }
       };
       if (search == null) {
-        this._rpc.callAsync(handler,"dc2.configuration.systemusers.list");      
+        this._rpc.callAsync(handler,"dc2.configuration.systemusers.list");
       } else {
         this._rpc.callAsync(handler,"dc2.configuration.systemusers.list",search);
       }

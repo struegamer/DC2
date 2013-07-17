@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ qx.Class.define("dc2.xen.dialogs.EditXenServer",
         showClose:true,
         showMaximize:false,
         showMinimize:false
-      });     
+      });
       this.setLayout(new qx.ui.layout.VBox(5));
       this.setResizable(false,true,true,false);
       var comp=new qx.ui.container.Composite();
@@ -56,10 +56,10 @@ qx.Class.define("dc2.xen.dialogs.EditXenServer",
       comp.add(new qx.ui.basic.Label("Xen Password"),{row:2,column:0});
       comp.add(this._edit_xen_host,{row:0,column:1});
       comp.add(this._edit_xen_username,{row:1,column:1});
-      comp.add(this._edit_xen_password,{row:2,column:1});      
+      comp.add(this._edit_xen_password,{row:2,column:1});
       this.add(comp,{flex:1});
       this.add(this._initializeButtonBar());
-    }, 
+    },
     /*
      * Private Methods
      */
@@ -92,7 +92,7 @@ qx.Class.define("dc2.xen.dialogs.EditXenServer",
     _clkBtnCancel:function(e) {
       this.close();
     },
-    /* 
+    /*
      * Public Methods
      */
     setData:function(data) {

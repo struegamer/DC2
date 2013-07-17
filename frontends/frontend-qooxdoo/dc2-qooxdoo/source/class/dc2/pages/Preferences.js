@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ qx.Class.define("dc2.pages.Preferences",
       // layout.setColumnFlex(1,1);
       layout.setColumnWidth(1,500);
       this.setLayout(layout);
-      
+
       this._edit_rpc_url=new qx.ui.form.TextField();
       this._edit_username=new qx.ui.form.TextField();
       this._edit_password=new qx.ui.form.PasswordField();
@@ -50,7 +50,7 @@ qx.Class.define("dc2.pages.Preferences",
       btnApply.addListener("execute",this._putLocalStorageValues,this);
       this.add(comp1,{row:3,column:1});
       this._getLocalStorageValues();
-      
+
     },
     _getLocalStorageValues:function() {
       if ('localStorage' in window && window['localStorage']!==null) {

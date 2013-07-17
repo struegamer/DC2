@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ qx.Class.define("dc2.models.Environments",
       construct:function(RPCUrl) {
         this.base(arguments,RPCUrl);
         this._tableModel.setColumnIds(["_id","name","description"]);
-        this._tableModel.setColumns(["ID","Name","Description"]);         
+        this._tableModel.setColumns(["ID","Name","Description"]);
       },
       members:{
         _server_id:null,
@@ -33,7 +33,7 @@ qx.Class.define("dc2.models.Environments",
         getModelName:function() {
           return "dc2.models.Environments";
         },
-        listData:function(search) {       
+        listData:function(search) {
                 var _this=this;
                 var handler=function(result,ex,id) {
                   if (ex!=null) {
@@ -66,7 +66,7 @@ qx.Class.define("dc2.models.Environments",
                 } catch (exc) {
                     return(false);
                 }
-            }            
+            }
         },
         deleteData:function(data) {
             if (data != null) {
@@ -76,7 +76,7 @@ qx.Class.define("dc2.models.Environments",
                 } catch (exc) {
                     return(false);
                 }
-            }                        
+            }
         },
         getAll:function() {
           var result=this._rpc.callSync("dc2.configuration.environments.list",null);

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -40,7 +40,7 @@ class ServerInventory(object):
         # If so, add some String and the uuid to it.
         # Faking Serial numbers
         #
-        
+
         if self._dmi.serial_no == "0" or self._dmi.serial_no == "" or self._dmi.serial_no is None:
             server_rec["serial_no"]="Serial_%s" % self._dmi.uuid
         else:
@@ -65,16 +65,16 @@ class ServerInventory(object):
             host_rec["hostname"]=server_rec["serial_no"]
             host_rec["domainname"]="INVENTORY"
             host_rec["hostclasses"]=[]
-            host_rec["environments"]="INVENTORY"            
+            host_rec["environments"]="INVENTORY"
             host_doc_id=self._proxy.dc2.inventory.hosts.add(host_rec)
             install_rec={}
             install_rec["server_id"]=server_doc_id
             install_rec["host_id"]=host_doc_id
             install_rec["status"]="localboot"
             install_rec["progress"]="None"
-            install_rec["hostname"]="%s.%s" % (server_rec["serial_no"],"INVENTORY")            
-            self._proxy.dc2.deployment.installstate.add(install_rec)            
+            install_rec["hostname"]="%s.%s" % (server_rec["serial_no"],"INVENTORY")
+            self._proxy.dc2.deployment.installstate.add(install_rec)
     def doInventory(self):
         self._add_server()
-            
-                
+
+

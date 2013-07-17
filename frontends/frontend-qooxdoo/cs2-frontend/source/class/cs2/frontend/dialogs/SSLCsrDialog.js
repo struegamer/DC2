@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 */
 
 /*
- * 
+ *
  *     SUBJECTS = (
         'CN',
         'C',
@@ -27,7 +27,7 @@
         'O',
         'OU',
         )
-        
+
         DIGESTS = (
          'md5',
          'md4',
@@ -101,15 +101,15 @@ qx.Class.define("cs2.frontend.dialogs.SSLCsrDialog",
       this._edit_csr_subjects_location=new qx.ui.form.TextField();
       this._edit_csr_subjects_organisation=new qx.ui.form.TextField();
       this._edit_csr_subjects_org_unit=new qx.ui.form.TextField();
-      
+
       var btnRefreshKeys=new qx.ui.form.Button("Refresh");
       btnRefreshKeys.addListener("execute",this._fillKeyNames,this);
-      
+
       this._fillIso3166List();
       this._fillKeyNames();
       this._fillDigestNames();
-      
-      
+
+
       comp.add(new qx.ui.basic.Label("Commonname"),{row:0,column:0});
       comp.add(new qx.ui.basic.Label("Keyname"),{row:1,column:0});
       comp.add(new qx.ui.basic.Label("Key Passphrase"),{row:2,column:0});
@@ -120,19 +120,19 @@ qx.Class.define("cs2.frontend.dialogs.SSLCsrDialog",
       comp.add(new qx.ui.basic.Label("Subjects -> Location"),{row:7,column:0});
       comp.add(new qx.ui.basic.Label("Subjects -> Organisation"),{row:8,column:0});
       comp.add(new qx.ui.basic.Label("Subjects -> Org. Unit"),{row:9,column:0});
-      
+
       comp.add(this._edit_csr_commonname,{row:0,column:1});
       comp.add(this._edit_csr_keyname,{row:1,column:1});
       comp.add(btnRefreshKeys,{row:1,column:2});
       comp.add(this._edit_csr_passphrase,{row:2,column:1});
-      comp.add(this._edit_csr_digest,{row:3,column:1});      
+      comp.add(this._edit_csr_digest,{row:3,column:1});
       comp.add(this._edit_csr_subjects_commonname,{row:4,column:1});
       comp.add(this._edit_csr_subjects_country,{row:5,column:1});
       comp.add(this._edit_csr_subjects_state,{row:6,column:1});
       comp.add(this._edit_csr_subjects_location,{row:7,column:1});
       comp.add(this._edit_csr_subjects_organisation,{row:8,column:1});
       comp.add(this._edit_csr_subjects_org_unit,{row:9,column:1});
-      
+
       this.add(comp,{flex:1});
       this.add(this._initializeButtonBar());
     },
@@ -152,7 +152,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCsrDialog",
       var result=_tbl_ssl_keys.getKeyNames();
       for (var i=0;i<result.length;i++) {
         this._edit_csr_keyname.add(new qx.ui.form.ListItem(result[i]["keyname"],null,result[i]["keyname"]));
-      }      
+      }
     },
     _fillIso3166List:function() {
       var _tbl_iso3166=new cs2.models.SSLIso3166(dc2.helpers.BrowserCheck.RPCUrl(false));
@@ -191,7 +191,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCsrDialog",
     },
     setData:function(data) {
       this._edit_csr_commonname.setValue(null);
-      this._edit_csr_passphrase.setValue(null);     
+      this._edit_csr_passphrase.setValue(null);
       this._edit_csr_subjects_commonname.setValue(null);
       this._edit_csr_subjects_state.setValue(null);
       this._edit_csr_subjects_location.setValue(null);

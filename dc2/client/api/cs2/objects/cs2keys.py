@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -24,18 +24,17 @@ class Keys(object):
     def __init__(self,rpcurl):
         self._rpcurl=rpcurl
         self._proxy=xmlrpclib.ServerProxy(rpcurl,allow_none=True)
-        
+
     def get_key_pem(self,keyname=None):
         if keyname is not None and keyname != "":
             key_pem=self._proxy.cs2.ssl.keys.retrieve(keyname)
             if key_pem is not None:
                 return key_pem
         return None
-    
+
     def key_list(self):
         key_list=self._proxy.cs2.ssl.keys.list()
         if key_list is not None and len(key_list)>0:
             return key_list
         return None
-        
-        
+

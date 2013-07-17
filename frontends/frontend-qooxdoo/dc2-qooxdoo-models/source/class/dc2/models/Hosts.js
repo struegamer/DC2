@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,15 +23,15 @@ qx.Class.define("dc2.models.Hosts",
   construct:function(RPCUrl) {
     this.base(arguments,RPCUrl);
     this._tableModel.setColumnIds(["_id","server_id","hostname","domainname","environments"]);
-    this._tableModel.setColumns(["ID","Server ID","Hostname","Domainname","Environments"]);         
+    this._tableModel.setColumns(["ID","Server ID","Hostname","Domainname","Environments"]);
   },
   members: {
     getModelName:function() {
       return("dc2.models.Hosts");
     },
-    getModelCaption:function() {  
+    getModelCaption:function() {
       return("Hosts");
-    },  
+    },
     listData:function(search) {
       var _this=this;
       var handler=function(result,ex,id) {
@@ -58,7 +58,7 @@ qx.Class.define("dc2.models.Hosts",
       }
     },
     updateData:function(data) {
-      if (data != null) {        
+      if (data != null) {
         try {
           var response=this._rpc.callSync("dc2.inventory.hosts.update",data);
           return(true);
@@ -74,14 +74,14 @@ qx.Class.define("dc2.models.Hosts",
           return(true);
         } catch(exc) {
           return(false);
-        }        
+        }
       }
     },
     getInterfacesFromHosts:function(host_id) {
       if (host_id != null) {
         var result=this._rpc.callSync("dc2.inventory.hosts.get",host_id);
         return(result["interfaces"]);
-      }     
+      }
     },
     getHost:function(host_id) {
       if (host_id != null) {

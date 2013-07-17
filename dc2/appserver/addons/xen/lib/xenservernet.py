@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -35,18 +35,18 @@ def xenserver_network_list(xenhost=None,session_id=None):
                 d=parse_output(s.network.get_record(session_id,network))
                 d["network_id"]=network
                 d["xen_host"]=xenhost
-                d["session_id"]=session_id                
+                d["session_id"]=session_id
                 network_names.append(d)
             return network_names
     return None
 
-    
+
 def xenserver_network_get_record(xenhost=None,session_id=None,network_id=None):
     if xenhost is not None and session_id is not None and network_id is not None and xenhost != "" and session_id != "" and network_id != "":
         s=xmlrpclib.ServerProx("https://%s/" % xenhost,allow_none=True)
         d=parse_output(s.network.get_record(session_id,network_id))
         d["network_id"]=network_id
         d["xen_host"]=xenhost
-        d["session_id"]=session_id                
+        d["session_id"]=session_id
         return d
     return None

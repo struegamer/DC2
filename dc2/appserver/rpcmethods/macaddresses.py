@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -65,7 +65,7 @@ def dc2_servers_macaddr_list(search):
     else:
         result = tbl_server.find()
     return result
-    
+
 @rpcmethod(name="dc2.inventory.servers.macaddr.add", returns={"string doc_id":"Document ID of new added record"}, params={"dict rec_macaddr":"Record Dictionary"}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_servers_macaddr_add(rec_mac=None):
     if rec_mac is not None and type(rec_mac) is types.DictType:
@@ -73,7 +73,7 @@ def dc2_servers_macaddr_add(rec_mac=None):
             doc_id = tbl_server.save(rec_mac)
             return doc_id
     return xmlrpclib.Fault(-32501, "Record couldn't be added")
-    
+
 @rpcmethod(name="dc2.inventory.servers.macaddr.update", returns={"string doc_id":"Document ID of new added record"}, params={"dict rec_macaddr":"Record Dictionary"}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_servers_macaddr_update(rec_mac=None):
     if rec_mac is not None and type(rec_mac) is types.DictType:

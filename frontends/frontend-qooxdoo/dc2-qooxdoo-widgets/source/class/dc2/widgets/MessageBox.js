@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #asset(qx/icon/${qx.icontheme}/32/status/dialog-information.png)
 #asset(qx/icon/${qx.icontheme}/32/status/dialog-warning.png)
 #asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png);
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png); 
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png);
  */
 
 qx.Class.define('dc2.widgets.MessageBox',
@@ -34,7 +34,7 @@ qx.Class.define('dc2.widgets.MessageBox',
     this._dialog_detail_error_text=dialog_detail_error_text;
     this.createContent();
 
-  },  
+  },
   members:{
     _dialog_type:null,
     _dialog_title:null,
@@ -73,7 +73,7 @@ qx.Class.define('dc2.widgets.MessageBox',
       } else if (this._dialog_type="information") {
         icon="icon/32/status/dialog-information.png";
       }
-      comp1.add(new qx.ui.basic.Atom(this._dialog_detail_error_text,icon));   
+      comp1.add(new qx.ui.basic.Atom(this._dialog_detail_error_text,icon));
       return(comp1);
     },
     _btnOk:function(e) {

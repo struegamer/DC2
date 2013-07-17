@@ -3,7 +3,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -36,7 +36,7 @@ except ImportError:
     from dc2.client.api.cs2 import Keys
     from dc2.client.api.cs2 import CSR
     from dc2.client.api.cs2 import Cert
-    
+
 def do_keys(options):
     if options.is_keys:
         k=Keys(options.cs2_backend_url)
@@ -69,7 +69,7 @@ def do_keys(options):
 
 def do_csr(options):
     if options.is_csr:
-        c=CSR(options.cs2_backend_url)        
+        c=CSR(options.cs2_backend_url)
         if options.is_csr_list:
             csr_list=c.csr_list()
             print "{:<50} {:<50} {:<20}".format("Commonname","Keyname","Created")
@@ -96,8 +96,8 @@ def do_csr(options):
                     print "PEM Contents of CSR '{0} was saved to '{1}'".format(options.csr_find_name,options.csr_file)
                     return True
     return None
-            
-            
+
+
 def do_cert(options):
     if options.is_cert:
         c=Cert(options.cs2_backend_url)
@@ -125,15 +125,15 @@ def do_cert(options):
                     fp.close()
                     print "PEM Contents of Cert '{0}' was saved to '{1}'".format(options.cert_find_name,options.cert_file)
                     return True
-    return None 
-            
-                        
+    return None
+
+
 def main():
     parser=OptionParser(add_help_option=False)
     parser.add_option('','--help',
                       action='help',
                       help="Show this help")
-    
+
     parser.add_option('','--key',
                        action="store_true",
                        dest="is_keys",
@@ -160,14 +160,14 @@ def main():
                       default=None,
                       metavar="<URL>",
                       help="CS2 Backend Url")
-    
+
     sslkeyOptionGroup=OptionGroup(parser,"SSL Key Related Options")
     sslkeyOptionGroup.add_option('','--key-list',
                                  action="store_true",
                                  dest="is_key_list",
                                  default=False,
                                  help="List all SSL Keys")
-    
+
     sslkeyOptionGroup.add_option('','--key-find',
                                  action="store",
                                  dest="key_find_name",
@@ -193,8 +193,8 @@ def main():
                                  type="string",
                                  metavar="<JSON Record>",
                                  default=None,
-                                 help="Create a key with the value of <JSON Record>")   
-                                     
+                                 help="Create a key with the value of <JSON Record>")
+
     sslcsrOptionGroup=OptionGroup(parser,"SSL CSR Related Options")
     sslcsrOptionGroup.add_option('','--csr-list',
                                  action="store_true",
@@ -219,14 +219,14 @@ def main():
                                  dest="csr_file",
                                  metavar="FILENAME",
                                  help="Save CSR to FILENAME")
-    
+
     sslcertOptionGroup=OptionGroup(parser,"SSL Cert Related Options")
     sslcertOptionGroup.add_option('','--cert-list',
                                   action="store_true",
                                   dest='is_cert_list',
                                   default=False,
                                   help="List all Certificates")
-    
+
     sslcertOptionGroup.add_option('','--cert-find',
                                   action='store',
                                   dest='cert_find_name',
@@ -244,16 +244,16 @@ def main():
                                   metavar='FILENAME',
                                   default=None,
                                   help='Save Cert to FILENAME')
-    
-    
+
+
     sslcrlOptionGroup=OptionGroup(parser,"SSL CRL Related Options")
     sslcrlOptionGroup.add_option('','--crl-list',
                                  action="store_true",
                                  dest='is_crl_list',
                                  default=False,
                                  help="List all Certificate Revocation List")
-    
-    
+
+
     parser.add_option_group(sslkeyOptionGroup)
     parser.add_option_group(sslcsrOptionGroup)
     parser.add_option_group(sslcertOptionGroup)

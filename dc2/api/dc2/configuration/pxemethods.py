@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -61,7 +61,7 @@ class PXEMethods(RPCClient):
             rec=kwargs.get('pxe',None)
         doc_id=self._proxy.dc2.configuration.bootmethods.add(rec)
         return doc_id
-    
+
     def update(self, *args, **kwargs):
         rec={}
         if 'pxe' in kwargs:

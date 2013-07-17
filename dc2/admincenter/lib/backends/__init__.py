@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -85,7 +85,7 @@ def backend_get(rec=None):
     if result is not None:
         return result
     return None
- 
+
 def backend_delete(rec=None):
     if rec is None or type(rec) is not types.DictType:
         raise ValueError('rec is not a Dict type or rec is None')

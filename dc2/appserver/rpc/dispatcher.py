@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@ class RequestDispatcher(object):
     def __init__(self):
         self._dispatcher = {}
         self._methods = {}
-    
+
     def add_rpcdispatcher(self, dispatcher_content_type=None, dispatcher_instance=None):
         if dispatcher_content_type is not None and \
                 dispatcher_content_type != "" and \
@@ -74,7 +74,7 @@ class RequestDispatcher(object):
             return_data = [self._dispatcher[content_type].content_type(), self._dispatcher[content_type].handle_request(request_data)]
             return return_data
         return None
-        
+
     def add_rpcmodule(self, modulename=None):
         if modulename is not None:
             app = __import__(modulename, globals(), locals(), ['*'], -1)
@@ -93,4 +93,4 @@ class RequestDispatcher(object):
         for methodname in sorted(self._methods.keys()):
             methodlist.append(methodname)
         return methodlist
-        
+

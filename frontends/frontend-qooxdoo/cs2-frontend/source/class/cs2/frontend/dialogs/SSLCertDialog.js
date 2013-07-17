@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertDialog",
     _edit_cert_serial_no:null,
     _edit_cert_digest:null,
     _edit_cert_notBefore:null,
-    _edit_cert_notAfter:null,    
+    _edit_cert_notAfter:null,
     _createLayout:function() {
       this.set({
         modal:true,
@@ -62,22 +62,22 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertDialog",
       this._edit_cert_digest=new qx.ui.form.SelectBox();
       this._edit_cert_notBefore=new qx.ui.form.TextField();
       this._edit_cert_notAfter=new qx.ui.form.SelectBox();
-      
-      
+
+
       var btnRefreshCSR=new qx.ui.form.Button("Refresh");
       btnRefreshCSR.addListener("execute",this._fillCSRNames,this);
-      
+
       var btnGetSerial=new qx.ui.form.Button("Get Serial");
       btnGetSerial.addListener("execute",this._getSerialNumber,this);
       this._fillValidYears();
       this._fillCSRNames();
-      this._fillDigestNames();          
+      this._fillDigestNames();
       comp.add(new qx.ui.basic.Label("Certificate Signging Request"),{row:0,column:0});
       comp.add(new qx.ui.basic.Label("Serial Number"),{row:1,column:0});
       comp.add(new qx.ui.basic.Label("Digest"),{row:2,column:0});
       comp.add(new qx.ui.basic.Label("Valid notBefore"),{row:3,column:0});
       comp.add(new qx.ui.basic.Label("Valid notAfter"),{row:4,column:0});
-      
+
       comp.add(this._edit_cert_csr,{row:0,column:1});
       comp.add(btnRefreshCSR,{row:0,column:2});
       comp.add(this._edit_cert_serial_no,{row:1,column:1});
@@ -85,7 +85,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertDialog",
       comp.add(this._edit_cert_digest,{row:2,column:1});
       comp.add(new qx.ui.basic.Label("Today"),{row:3,column:1});
       comp.add(this._edit_cert_notAfter,{row:4,column:1});
-      
+
       this.add(comp,{flex:1});
       this.add(this._initializeButtonBar());
     },
@@ -107,7 +107,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertDialog",
     _fillValidYears:function() {
       var seconds_one_year=60*60*24*365;
       for (var i=1;i<11;i++) {
-        this._edit_cert_notAfter.add(new qx.ui.form.ListItem(i+" Year(s)",null,seconds_one_year*i))        
+        this._edit_cert_notAfter.add(new qx.ui.form.ListItem(i+" Year(s)",null,seconds_one_year*i))
       }
       this._edit_cert_notAfter.setModelSelection([seconds_one_year*3]);
     },
@@ -117,7 +117,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertDialog",
       var result=_tbl_ssl_csr.getCsrNames();
       for (var i=0;i<result.length;i++) {
         this._edit_cert_csr.add(new qx.ui.form.ListItem(result[i]["commonname"],null,result[i]["commonname"]));
-      }      
+      }
     },
     _fillDigestNames:function() {
       this._edit_cert_digest.add(new qx.ui.form.ListItem("SHA1",null,"sha1"));
@@ -141,7 +141,7 @@ qx.Class.define("cs2.frontend.dialogs.SSLCertDialog",
       this.close();
     },
     setData:function(data) {
-      
+
     }
   }
 });

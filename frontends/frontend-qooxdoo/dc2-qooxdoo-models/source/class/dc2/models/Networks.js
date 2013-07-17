@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,17 +51,17 @@ qx.Class.define("dc2.models.Networks",
           if (data != null) {
             try {
               var result=this._rpc.callSync("dc2.inventory.networks.add",data);
-              return(true);              
+              return(true);
             } catch (exc) {
               return(false);
             }
-          } 
+          }
         },
         updateData:function(data) {
           if (data != null) {
             try {
               var result=this._rpc.callSync("dc2.inventory.networks.update",data);
-              return(true);              
+              return(true);
             } catch (exc) {
               return(false);
             }
@@ -77,7 +77,7 @@ qx.Class.define("dc2.models.Networks",
             }
           }
         }
-        
+
     }
 }
 );

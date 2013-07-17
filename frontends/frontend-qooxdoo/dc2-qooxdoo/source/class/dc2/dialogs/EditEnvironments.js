@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
   events: {
     'addData':"qx.event.type.Data",
     'updateData':"qx.event.type.Data"
-  },  
+  },
   members: {
     _edit_env_id:null,
     _edit_env_name:null,
@@ -49,7 +49,7 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
       //
       // Set defaults for window
       //
-        
+
       this.set({
         modal:false,
         padding:3,
@@ -59,15 +59,15 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
       });
       this.setWidth(600);
       this.setLayout(new qx.ui.layout.VBox(5));
-      this.setResizable(false,true,true,false);      
+      this.setResizable(false,true,true,false);
       this._edit_env_name=new qx.ui.form.TextField();
       this._edit_env_description=new qx.ui.form.TextField();
       this._tbl_variables=new qx.ui.table.Table();
       this._tbl_model_variables=new qx.ui.table.model.Simple();
       this._tbl_model_variables.setColumnIds(["name","value"]);
-      this._tbl_model_variables.setColumns(["Name","Value"]);      
+      this._tbl_model_variables.setColumns(["Name","Value"]);
       this._tbl_variables.setTableModel(this._tbl_model_variables);
-      
+
       var comp=new qx.ui.container.Composite();
       var layout=new qx.ui.layout.Grid(5,5);
       layout.setColumnFlex(1,1);
@@ -85,7 +85,7 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
       this.add(comp,{flex:1});
       this.add(this._createButtonBar());
       this._tbl_variables.addListener("cellDblclick",this._cellDblclick,this);
-      
+
     },
     _createButtonBar:function() {
       var comp=new qx.ui.container.Composite(new qx.ui.layout.HBox(5).set({alignX:'right'}));
@@ -95,7 +95,7 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
       btnCancel.addListener("execute",this._clkBtnCancel,this);
       comp.add(btnCancel);
       comp.add(btnOk);
-      return(comp);      
+      return(comp);
     },
     _createTableButtonBar:function() {
       var comp=new qx.ui.container.Composite(new qx.ui.layout.HBox(5)).set({alignX:'left'});
@@ -119,10 +119,10 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
       editVarDlg.show();
       this.setEnabled(false);
     },
-    _cellDblclick:function(e) {      
+    _cellDblclick:function(e) {
         var rowdata=this._tbl_model_variables.getRowDataAsMap(this._tbl_variables.getFocusedRow());
         var editVarDlg=new dc2.dialogs.EditVariable();
-        editVarDlg.setData(rowdata);        
+        editVarDlg.setData(rowdata);
         editVarDlg.addListener("close",this._closeWindow,this);
         editVarDlg.addListener("updateData",this._updateVariables,this);
         editVarDlg.show();
@@ -133,7 +133,7 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
         var row=this._tbl_variables.getFocusedRow();
         delete this._tbl_model_data[row];
         this._tbl_model_variables.removeRows(row,1);
-        
+
     },
     _clkBtnOk:function(e) {
       var data={};
@@ -171,7 +171,7 @@ qx.Class.define("dc2.dialogs.EditEnvironments",
         this._tbl_model_data=new Array();
         this._tbl_model_data.push({"name":e.getData()["name"],"value":e.getData()["value"]});
         this._tbl_model_variables.setDataAsMapArray(this._tbl_model_data);
-      }      
+      }
     },
     _updateVariables:function(e) {
       if (this._tbl_model_data != null) {

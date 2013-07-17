@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -87,7 +87,7 @@ def dc2_deployment_environments_update(env_rec=None):
             doc_id = tbl_environments.save(env_rec)
             return doc_id
     return xmlrpclib.Fault(-32502, "Record couldn't be updated")
-    
+
 @rpcmethod(name="dc2.configuration.environments.delete", returns={"bool success":"Document ID"}, params={"dict env_rec":"environment record"}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_deployment_environments_delete(env_rec=None):
     if env_rec is not None and type(env_rec) is types.DictType:
@@ -96,7 +96,7 @@ def dc2_deployment_environments_delete(env_rec=None):
             if response is False:
                 return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
             return True
-    return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")                
+    return xmlrpclib.Fault(-32503, "Record(s) couldn't be deleted")
 
 @rpcmethod(name="dc2.configuration.environments.copy",returns={},params={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_deployment_environments_copy(old_env=None,new_env=None):

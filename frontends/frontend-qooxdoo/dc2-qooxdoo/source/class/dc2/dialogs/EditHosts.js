@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
         showClose:true,
         showMaximize:false,
         showMinimize:false
-      });     
+      });
       this.setLayout(new qx.ui.layout.VBox(5));
       this.setResizable(false,true,true,false);
       this.setWidth(800);
@@ -86,16 +86,16 @@ qx.Class.define("dc2.dialogs.EditHosts",
       this._edit_defaultclasses.addListener("droprequest",this._droprequestDefaultClasses,this);
       this._edit_defaultclasses.addListener("drop",this._dropDefaultClasses,this)
       this._edit_defaultclasses.setSelectionMode("multi");
-      this._edit_hostclasses.addListener("drop",this._dropHostClasses,this);      
+      this._edit_hostclasses.addListener("drop",this._dropHostClasses,this);
       this._edit_hostclasses.addListener("dragstart",this._dragstartHostClasses,this);
       this._edit_hostclasses.addListener("droprequest",this._droprequestHostClasses,this);
       this._edit_hostclasses.setSelectionMode("multi");
-      
+
       this._edit_interface_list=new qx.ui.form.List();
       this._edit_interface_list.addListener("changeSelection",this._evChangedInterfaceList,this);
-      
+
       this._edit_environments=new qx.ui.form.SelectBox();
-      
+
       this._tabView=new qx.ui.tabview.TabView();
       this._tabView.setWidth(400);
       this._tabView.add(this._createHostPage());
@@ -109,7 +109,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
       this._fillClassTemplates();
       this._fillDefaultClasses();
       this._fillEnvironments();
-    }, 
+    },
     /*
      * Private Methods
      */
@@ -119,7 +119,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
       layout.setColumnFlex(1,1);
       page.setLayout(layout);
       var btnUseServer=new qx.ui.form.Button("Use");
-      
+
       var btnRefresh=new qx.ui.form.Button("Refresh Server List");
       btnRefresh.addListener("execute",function(e) {this._fillServers();}, this);
       var btnRefreshEnvironments=new qx.ui.form.Button("Refresh Environments");
@@ -143,7 +143,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
       var page=new qx.ui.tabview.Page("Classes");
       var layout=new qx.ui.layout.VBox(5);
       page.setLayout(layout);
-      
+
       var comp1=new qx.ui.container.Composite();
       var layout1=new qx.ui.layout.HBox(5);
       comp1.setLayout(layout1);
@@ -153,61 +153,61 @@ qx.Class.define("dc2.dialogs.EditHosts",
       btnUse.addListener("execute",this._btnUse,this);
       var btnRefresh=new qx.ui.form.Button("Refresh List");
       btnRefresh.addListener("execute",function(e) { this._fillClassTemplates(); },this);
-      
+
       comp1.add(btnUse);
       comp1.add(btnRefresh);
-      
+
       var comp2=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       var btnRefreshDClasses=new qx.ui.form.Button("Refresh Default Classes");
-      
+
       comp2.add(new qx.ui.basic.Label("Default Classes"));
       comp2.add(this._edit_defaultclasses,{flex:1});
       comp2.add(btnRefreshDClasses);
       var comp3=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       var btnClear=new qx.ui.form.Button("Clear Host Classes List");
-      btnClear.addListener("execute",function(e) { this._edit_hostclasses.removeAll(); this._fillDefaultClasses();},this);      
+      btnClear.addListener("execute",function(e) { this._edit_hostclasses.removeAll(); this._fillDefaultClasses();},this);
       comp3.add(new qx.ui.basic.Label("Host Classes"));
       comp3.add(this._edit_hostclasses,{flex:1});
       comp3.add(btnClear);
       var comp4=new qx.ui.container.Composite(new qx.ui.layout.HBox(5));
       comp4.add(comp2,{flex:1});
-      comp4.add(comp3,{flex:1});      
+      comp4.add(comp3,{flex:1});
       page.add(comp1);
-      page.add(comp4);      
+      page.add(comp4);
       return(page);
     },
     _createInterfacePage:function() {
       var page=new qx.ui.tabview.Page("Interfaces");
       var layout=new qx.ui.layout.HBox(5);
-      page.setLayout(layout);      
-      
+      page.setLayout(layout);
+
       page.add(this._createInterfacePage_InterfaceList());
       this._detailPage=new dc2.dialogs.interfaces.Details(this._edit_server_id);
       this._detailPage.addListener("returnData",this._evUpdateDataDetailPage,this)
       page.add(this._detailPage,{flex:1});
       this._detailPage.exclude();
-      
+
       return(page);
     },
-    
+
     _createInterfacePage_InterfaceList:function() {
       // Interfaces List
-      var compInterfaces=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));               
-      
+      var compInterfaces=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+
       compInterfaces.add(new qx.ui.basic.Label("Interfaces"));
-      
+
       var btnAdd=new qx.ui.form.Button("New");
       btnAdd.addListener("execute",this._btnAdd,this);
       var btnDelete=new qx.ui.form.Button("Remove");
       btnDelete.addListener("execute",this._btnDelete,this);
       var btnReload=new qx.ui.form.Button("Reload");
-      
+
       // Buttonbar for Interfaces
       var compButtonBar=new qx.ui.container.Composite(new qx.ui.layout.HBox(5));
       compButtonBar.add(btnAdd);
       compButtonBar.add(btnDelete);
-      compButtonBar.add(btnReload);      
-      compInterfaces.add(compButtonBar);      
+      compButtonBar.add(btnReload);
+      compInterfaces.add(compButtonBar);
       compInterfaces.add(this._edit_interface_list,{flex:1});
       return(compInterfaces);
     },
@@ -231,14 +231,14 @@ qx.Class.define("dc2.dialogs.EditHosts",
     },
     _fillServers:function() {
       if (this._tbl_servers==null) {
-        this._tbl_servers=new dc2.models.Servers(dc2.helpers.BrowserCheck.RPCUrl(false));        
+        this._tbl_servers=new dc2.models.Servers(dc2.helpers.BrowserCheck.RPCUrl(false));
       }
       this._edit_server.removeAll();
-      var serverlist=this._tbl_servers.getAllServers();      
+      var serverlist=this._tbl_servers.getAllServers();
       if (serverlist.length>0) {
         this._edit_server.add(new qx.ui.form.ListItem("Server not set",null,null));
         for (var i=0;i<serverlist.length;i++) {
-          this._edit_server.add(new qx.ui.form.ListItem(serverlist[i]["serial_no"],null,serverlist[i]["_id"]));        
+          this._edit_server.add(new qx.ui.form.ListItem(serverlist[i]["serial_no"],null,serverlist[i]["_id"]));
         }
         if (this._edit_server_id!=null) {
           this._edit_server.setModelSelection([this._edit_server_id]);
@@ -247,23 +247,23 @@ qx.Class.define("dc2.dialogs.EditHosts",
     },
     _fillClassTemplates:function() {
       if (this._tbl_classtemplates==null) {
-        this._tbl_classtemplates=new dc2.models.ClassTemplates(dc2.helpers.BrowserCheck.RPCUrl(false));        
+        this._tbl_classtemplates=new dc2.models.ClassTemplates(dc2.helpers.BrowserCheck.RPCUrl(false));
       }
       this._from_classtemplate.removeAll();
       var classtemplatelist=this._tbl_classtemplates.getAllTemplates();
       for (var i=0;i<classtemplatelist.length;i++) {
         this._from_classtemplate.add(new qx.ui.form.ListItem(classtemplatelist[i]["name"],null,classtemplatelist[i]["_id"]));
-      }      
+      }
     },
     _fillDefaultClasses:function() {
       if (this._tbl_defaultclasses==null) {
-        this._tbl_defaultclasses=new dc2.models.DefaultClasses(dc2.helpers.BrowserCheck.RPCUrl(false));        
+        this._tbl_defaultclasses=new dc2.models.DefaultClasses(dc2.helpers.BrowserCheck.RPCUrl(false));
       }
       this._edit_defaultclasses.removeAll();
       var defaultclasses=this._tbl_defaultclasses.getAll();
       for (var i=0;i<defaultclasses.length;i++) {
         this._edit_defaultclasses.add(new qx.ui.form.ListItem(defaultclasses[i]["classname"],null,defaultclasses[i]["classname"]));
-      }      
+      }
     },
     _fillEnvironments:function() {
       if (this._tbl_environments==null) {
@@ -273,18 +273,18 @@ qx.Class.define("dc2.dialogs.EditHosts",
       var environments=this._tbl_environments.getAll();
       for (var i=0;i<environments.length;i++) {
         this._edit_environments.add(new qx.ui.form.ListItem(environments[i]["name"],null,environments[i]["name"]));
-      }      
+      }
     },
     /*
      * Event Methods
      */
-    _clkBtnOk:function(e) {      
+    _clkBtnOk:function(e) {
       var data={};
-      data["_id"]=this._edit_id;      
+      data["_id"]=this._edit_id;
       data["server_id"]=this._edit_server.getSelection()[0].getModel();
       data["hostname"]=this._edit_hostname.getValue();
       data["domainname"]=this._edit_domainname.getValue();
-      data["hostclasses"]=[]      
+      data["hostclasses"]=[]
       var items=this._edit_hostclasses.getChildren();
       for (var i=0; i<items.length; i++) {
         data["hostclasses"].push(items[i].getModel());
@@ -296,7 +296,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
       }
       data["environments"]=this._edit_environments.getSelection()[0].getModel();
       if (this._edit_id != null && this._edit_id != "") {
-        this.fireDataEvent("updateData",data);        
+        this.fireDataEvent("updateData",data);
       } else {
         // this.fireDataEvent("addData",data);
       }
@@ -315,7 +315,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
         if (found != null) {
           this._edit_defaultclasses.remove(found);
         }
-      }      
+      }
     },
     _dragstartDefaultClasses:function(e) {
       e.addType("items");
@@ -325,7 +325,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
     _dragstartHostClasses:function(e) {
       e.addType("items");
       e.addAction("copy");
-      e.addAction("move");      
+      e.addAction("move");
     },
     _droprequestDefaultClasses:function(e) {
       var action=e.getCurrentAction();
@@ -347,7 +347,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
           }
         }
         e.addData(type,result);
-      }            
+      }
     },
     _droprequestHostClasses:function(e) {
       var action=e.getCurrentAction();
@@ -392,7 +392,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
       }
     },
     _dropHostClasses:function(e) {
-      var items=e.getData("items");     
+      var items=e.getData("items");
       for (var i=0;i<items.length;i++) {
         this._edit_hostclasses.add(items[i]);
       }
@@ -409,8 +409,8 @@ qx.Class.define("dc2.dialogs.EditHosts",
       this._edit_hostclasses.removeAll();
       for (var i=0;i<items1.length;i++) {
         this._edit_hostclasses.add(items1[i]);
-      }      
-    },   
+      }
+    },
     _evChangedInterfaceList:function(e) {
       if (!this._edit_interface_list.isSelectionEmpty()) {
         if (this._edit_interface_list.getChildren().length>0) {
@@ -444,11 +444,11 @@ qx.Class.define("dc2.dialogs.EditHosts",
     },
     _btnDelete:function(e) {
       if (!this._edit_interface_list.isSelectionEmpty()) {
-        this._edit_interface_list.remove(this._edit_interface_list.getSelection()[0]); 
+        this._edit_interface_list.remove(this._edit_interface_list.getSelection()[0]);
         this._edit_interface_list.setSelection([]);
-      }      
+      }
     },
-    _evUpdateDataDetailPage:function(e) {      
+    _evUpdateDataDetailPage:function(e) {
       if (!this._edit_interface_list.isSelectionEmpty()) {
         if (this._edit_interface_list.getSelection()[0].getLabel()=="NewInterface") {
           var item=this._edit_interface_list.getSelection()[0];
@@ -469,9 +469,9 @@ qx.Class.define("dc2.dialogs.EditHosts",
           var item=this._edit_interface_list.findItem(e.getData()["name"]);
           if (item != null) {
             item.setModel(e.getData());
-          } 
+          }
           this._edit_interface_list.setEnabled(true);
-        }      
+        }
       }
     },
     _isXenServerChange:function(e) {
@@ -482,7 +482,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
             this._xenAnswerFilePage.setEnabled(false);
         }
     },
-    /* 
+    /*
      * Public Methods
      */
     setData:function(data) {
@@ -506,20 +506,20 @@ qx.Class.define("dc2.dialogs.EditHosts",
             this._edit_hostname.setValue(hostdata["hostname"]);
             this._edit_domainname.setValue(hostdata["domainname"]);
             this._edit_hostclasses.removeAll();
-            if ("hostclasses" in data && hostdata["hostclasses"].length>0) {          
+            if ("hostclasses" in data && hostdata["hostclasses"].length>0) {
               for (var i=0;i<hostdata["hostclasses"].length;i++) {
                 this._edit_hostclasses.add(new qx.ui.form.ListItem(hostdata["hostclasses"][i],null,hostdata["hostclasses"][i]));
                 var found=this._edit_defaultclasses.findItem(hostdata["hostclasses"][i]);
                 if (found != null) {
                   this._edit_defaultclasses.remove(found);
-                }            
+                }
               }
             } else {
               this._edit_hostclasses.removeAll();
             }
             if ("interfaces" in data && hostdata["interfaces"].length>0) {
               if (this._interface_list==null) {
-                this._interface_list={};            
+                this._interface_list={};
               }
               this._edit_interface_list.removeAll();
               for (var i=0;i<hostdata["interfaces"].length;i++) {
@@ -527,7 +527,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
                 if (hostdata["interfaces"][i]["type"]!="loopback" && hostdata["interfaces"][i]["type"]!="vlan"){
                   this._detailPage.addRawInterface(hostdata["interfaces"][i]["name"]);
                 }
-              }            
+              }
             } else {
               this._edit_interface_list.removeAll();
             }
@@ -543,7 +543,7 @@ qx.Class.define("dc2.dialogs.EditHosts",
             } else {
                 this._xenAnswerFilePage.setEnabled(false);
             }
-          }          
+          }
         }
       }
     }

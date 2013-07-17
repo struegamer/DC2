@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -49,7 +49,7 @@ def write_interface_route_file(interface_name=None, contents=None):
     fp.write('#\n\n')
     fp.write(contents)
     fp.close()
-	
+
 def write_interface_slave_file(interface_name=None,bond_name=None):
     if running_in_fai():
         target_dir=os.environ['target']
@@ -83,7 +83,7 @@ if [ "`basename $0`" = "ifup-local" ]; then
 	fi
 else
 	if [ -e /etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} ]; then
-		/bin/bash /etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE} 
+		/bin/bash /etc/sysconfig/network-scripts/ifcfg-postdown-${DEVICE}
 	fi
 fi
 
@@ -137,7 +137,7 @@ def write_host_network_configuration(host=None,dc2_backend_url=None):
                         iface_mac=macs.find_by_device_name(host['server_id'],interface['name'])
                         contents+='HWADDR=%s\n' % iface_mac['mac_addr']
                     if interface['inet']=='dhcp':
-                        contents+='BOOTPROTO=dhcp'					
+                        contents+='BOOTPROTO=dhcp'
                     write_interface_file(interface['name'],contents)
                 if interface['type']=='bond_1' or interface['type']=='bond_2':
                     contents+='ONBOOT=yes\n'

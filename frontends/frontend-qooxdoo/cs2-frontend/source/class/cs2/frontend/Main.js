@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ qx.Class.define("cs2.frontend.Main", {
           tableModel:sslkey_tbl,
           addDialog:sslkey_dialog,
           viewDialog:sslkey_view
-      };    
+      };
       var sslkey_table=new dc2.widgets.TableWidget(sslkey_table_options);
       sslkey_table.showData();
       return(sslkey_table);
@@ -73,7 +73,7 @@ qx.Class.define("cs2.frontend.Main", {
 		                          visible:false
 		                        }
 		                        ]
-		      
+
 		  };
 		  var sslcsr_table=new dc2.widgets.TableWidget(sslcsr_options);
 		  sslcsr_table.showData();
@@ -90,8 +90,8 @@ qx.Class.define("cs2.frontend.Main", {
 		      var dialog=new cs2.frontend.dialogs.SSLCertRevokeDialog();
 		      dialog.setData({"commonname":rowdata["commonname"]});
 		      dialog.addListener("close",function(e) {sslcert_table.showData(); delete(dialog)},this);
-		      dialog.show();		      
-		      
+		      dialog.show();
+
 		    }
 		  };
 		  var sslcert_options={
@@ -138,7 +138,7 @@ qx.Class.define("cs2.frontend.Main", {
                               column:2,
                               visible:false
                             }
-                            ],		      
+                            ],
 		      tableModel:sslcrl_tbl
 		  };
 		  var sslcrl_table=new dc2.widgets.TableWidget(sslcrl_options);

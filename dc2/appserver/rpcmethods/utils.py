@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation; either version 2 of the License, or
@@ -58,7 +58,7 @@ tbl_macs = Table(MONGOS["dc2db"]["database"].get_table("mac_addresses"))
 @rpcmethod(name="dc2.deployment.utils.udev.persistent_net_rules",params={},returns={},is_xmlrpc=True,is_jsonrpc=True)
 def dc2_deployment_os_udev_network(record=None):
     if record is not None and type(record) is types.DictType:
-        if record.has_key("_id") or record.has_key("serial_no"): 
+        if record.has_key("_id") or record.has_key("serial_no"):
             server_rec=tbl_server.find_one(record)
             if server_rec is not None:
                 mac_list=tbl_macs.find({"server_id":server_rec["_id"]})
@@ -68,7 +68,7 @@ def dc2_deployment_os_udev_network(record=None):
                         line='SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="%s",ATTR{dev_id}="0x0",ATTR{type}=="1",KERNEL=="eth*",NAME="%s"\n' % (mac["mac_addr"],mac["device_name"])
                         udev_rules_file=udev_rules_file+line
                     return udev_rules_file
-                        
-                        
-                        
-                        
+
+
+
+

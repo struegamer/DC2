@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ qx.Class.define("dc2.xen.models.XenNetwork",
       construct:function(RPCUrl) {
         this.base(arguments,RPCUrl);
         this._tableModel.setColumnIds(["network_id","name_label","name_description","default_gateway","default_netmask","xen_host","session_id"]);
-        this._tableModel.setColumns(["ID","Name","Description","Default Gateway","Default Netmask","Xen Host","Session ID"]);       
+        this._tableModel.setColumns(["ID","Name","Description","Default Gateway","Default Netmask","Xen Host","Session ID"]);
       },
       members:{
         _session_id:null,
@@ -40,10 +40,10 @@ qx.Class.define("dc2.xen.models.XenNetwork",
             this._xenhost=data["xen_host"]
           } else {
             this._session_id=null;
-            this._xenhost=null;            
+            this._xenhost=null;
           }
         },
-        listData:function(search) {       
+        listData:function(search) {
           var _this=this;
           var handler=function(result,ex,id) {
             if (ex!=null) {
@@ -57,7 +57,7 @@ qx.Class.define("dc2.xen.models.XenNetwork",
               this._rpc.callAsync(handler,"dc2.inventory.xen.networks.list",this._xenhost,this._session_id);
             } else {
               this._setTableData([]);
-            }            
+            }
           } else {
             this._rpc.callAsync(handler,"dc2.inventory.xen.networks.list",this._xenhost,this._session_id);
           }
@@ -67,7 +67,7 @@ qx.Class.define("dc2.xen.models.XenNetwork",
           if (this._session_id!=null && this._xenhost!=null) {
             var result=this._rpc.callSync("dc2.inventory.xen.networks.list",this._xenhost,this._session_id);
             console.log(result);
-            return(result);              
+            return(result);
           } else {
             return ([]);
           }
@@ -75,7 +75,7 @@ qx.Class.define("dc2.xen.models.XenNetwork",
         getEmptyData:function() {
           var data={};
           data["session_id"]=this._session_id;
-          data["xen_host"]=this._xenhost;          
+          data["xen_host"]=this._xenhost;
           return(data);
         }
       }

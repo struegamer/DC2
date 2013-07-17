@@ -1,6 +1,6 @@
 /*
     (DC)² - DataCenter Deployment Control
-    Copyright (C) 2010, 2011, 2012  Stephan Adig <sh@sourcecode.de>
+    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ qx.Class.define("dc2.xen.Main", {
                               column:3,
                               visible:false
                             }
-                            ]                
+                            ]
       };
       var xenserver_table=new dc2.widgets.TableWidget(xenserver_options);
       xenserver_table.showData();
@@ -77,8 +77,8 @@ qx.Class.define("dc2.xen.Main", {
                               column:4,
                               visible:false
                             }
-                            
-                            ]                          
+
+                            ]
       };
       var xenvms_table=new dc2.widgets.TableWidget(xenvms_table_options);
       if (xenserver_list.length>0) {
@@ -90,19 +90,19 @@ qx.Class.define("dc2.xen.Main", {
         }
         xenserver.setModelSelection(["none"]);
       }
-      
+
       var comp1=new qx.ui.container.Composite(new qx.ui.layout.HBox(5));
       var btnXenHostConnect=new qx.ui.form.Button("Connect");
       btnXenHostConnect.setEnabled(false);
       var btnXenHostDisconnect=new qx.ui.form.Button("Disconnect");
       btnXenHostDisconnect.setEnabled(false);
-      
+
       var comp3=new qx.ui.container.Composite(new qx.ui.layout.HBox(5));
-      var chkVMS=new qx.ui.form.CheckBox("VMs");      
+      var chkVMS=new qx.ui.form.CheckBox("VMs");
       chkVMS.setValue(true);
       var chkTpl=new qx.ui.form.CheckBox("Templates");
       var vmtype="vms";
-      
+
       var chkFunc=function(e) {
         if (chkVMS.getValue() && chkTpl.getValue()) {
           vmtype="both";
@@ -120,16 +120,16 @@ qx.Class.define("dc2.xen.Main", {
         if (xenserver.getSelection()[0].getModel()!=null) {
           xenvms_tbl.setSessionInfos({"session_id":xenserver.getSelection()[0].getModel(),"xen_host":xenserver.getSelection()[0].getLabel(),"vmtype":vmtype});
           xenvms_table.showData();
-        }        
+        }
       };
       chkVMS.addListener("changeValue",chkFunc,this);
       chkTpl.addListener("changeValue",chkFunc,this);
-      
+
       comp3.add(new qx.ui.basic.Label("Show"));
       comp3.add(chkVMS);
       comp3.add(chkTpl);
       comp3.exclude();
-      
+
       btnXenHostConnect.addListener("execute",function(e) {
         btnXenHostDisconnect.setEnabled(true);
         btnXenHostConnect.setEnabled(false);
@@ -142,7 +142,7 @@ qx.Class.define("dc2.xen.Main", {
           comp3.show();
         }
       },this);
-      
+
       btnXenHostDisconnect.addListener("execute",function(e) {
         btnXenHostDisconnect.setEnabled(false);
         btnXenHostConnect.setEnabled(true);
@@ -153,12 +153,12 @@ qx.Class.define("dc2.xen.Main", {
         xenhost_label.setValue("No connected Xen Host");
         comp3.exclude();
       },this);
-      
+
       comp1.add(new qx.ui.basic.Label("Select Xen Host"));
       comp1.add(xenserver,{flex:1});
       comp1.add(btnXenHostConnect);
       comp1.add(btnXenHostDisconnect);
-      
+
       xenserver.addListener("changeSelection",function(e) {
         if (xenserver.getSelection()[0].getModel()=="empty") {
           console.log("not selected");
@@ -180,15 +180,15 @@ qx.Class.define("dc2.xen.Main", {
             xenvms_table.showData();
             xenhost_label.setValue("Virtual Machines on "+xenserver.getSelection()[0].getLabel());
             comp3.show();
-          }                
+          }
         }
       },this);
       var comp2=new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       comp2.add(xenhost_label);
       comp2.add(xenvms_table);
 
-      
-      
+
+
       comp.add(comp1);
       comp.add(comp2);
       comp.add(comp3);
