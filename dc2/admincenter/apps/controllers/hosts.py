@@ -230,4 +230,4 @@ class HostController(RESTController):
     def _fill_backends(self):
         backend_list = backends.backend_list()
         self._page.add_page_data({'backendlist': backend_list})
-        # test
+
