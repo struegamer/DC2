@@ -19,7 +19,6 @@
 #################################################################################
 
 
-import sys
 import xmlrpclib
 
 from .ipa_base import IPABase
@@ -28,12 +27,11 @@ from .exceptions import IPAHostNotFound
 from .exceptions import IPAHostAddError
 from .exceptions import IPAHostDeleteError
 
+
 class IPAHosts(IPABase):
-    CHECK_INFOS = {'host_add': ['fqdn', 'description', 'locality', 'nshostlocation',
-                                'nshardwareplatform', 'nsosversion', 'userpassword',
-                                'random', 'randompassword''usercertificate', 'krbprincipalname',
-                                'macaddress', 'ipasshpubkey', 'sshpubkeyfp']
-                 }
+    CHECK_INFOS = {
+        'host_add': ['fqdn', 'force', 'description', 'locality', 'nshostlocation', 'nshardwareplatform', 'nsosversion', 'userpassword', 'random', 'randompassword''usercertificate', 'krbprincipalname', 'macaddress', 'ipasshpubkey', 'sshpubkeyfp']
+    }
 
     def _check_infos(self, command=None, infos=None):
         if command is None or infos is None:
@@ -51,7 +49,7 @@ class IPAHosts(IPABase):
             if 'result' in result:
                 a = RecordHost(result['result'])
                 return a
-            raise IPAHostNotFound(e.faultCode, e.faultString)
+            raise IPAHostNotFound(66667, 'Something went wrong')
         except xmlrpclib.Fault as e:
             raise IPAHostNotFound(e.faultCode, e.faultString)
 
@@ -75,6 +73,7 @@ class IPAHosts(IPABase):
             raise IPAHostAddError(66667, 'Something went wrong')
         except xmlrpclib.Fault as e:
             raise IPAHostAddError(e.faultCode, e.faultString)
+
     def delete(self, fqdn):
         if fqdn is None or fqdn == '':
             raise IPAHostDeleteError(66668, 'Can\'t delete the host from FreeIPA')
@@ -85,7 +84,4 @@ class IPAHosts(IPABase):
                 return a
             raise IPAHostDeleteError(66667, 'Something went wrong')
         except xmlrpclib.Fault as e:
-            raise IPAHostDeleteError(66667, 'Something went wrong')
-
-
-
+            raise IPAHostDeleteError(e.faultCode, e.faultString)

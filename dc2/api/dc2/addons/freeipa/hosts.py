@@ -20,6 +20,7 @@
 
 from dc2.api import RPCClient
 
+
 class Hosts(RPCClient):
 
     def check(self, fqdn=None):
@@ -45,6 +46,7 @@ class Hosts(RPCClient):
         if result is not None:
             return result
         return False
+
     def delete(self, fqdn=None):
         if fqdn is None:
             return None
@@ -52,4 +54,3 @@ class Hosts(RPCClient):
         if result is not None:
             return result
         return False
-

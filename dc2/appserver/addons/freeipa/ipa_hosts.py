@@ -72,10 +72,11 @@ tbl_ipa = Table(MONGOS['dc2db']['database'].get_table('ipa'))
 
 
 IPA_RECORD = {
-              'server_id':True,
-              'host_id':True,
-              'otp':True
+    'server_id': True,
+    'host_id': True,
+    'otp': True
 }
+
 
 @rpcmethod(name="dc2.freeipa.hosts.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_get(fqdn=None):
@@ -89,9 +90,11 @@ def dc2_freeipa_hosts_get(fqdn=None):
         except IPAHostNotFound, e:
             return None
 
+
 @rpcmethod(name='dc2.freeipa.hosts.check', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_check(fqdn=None):
     return dc2_freeipa_hosts_get(fqdn)
+
 
 @rpcmethod(name='dc2.freeipa.hosts.add', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_add(fqdn=None, infos=None):
@@ -103,13 +106,14 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
             result = freeipa.hosts.add(fqdn, infos)
             web.debug(result.to_dict)
             rec = {}
-            host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainname':'.'.join(fqdn.split('.')[1:])})
+            host = tbl_hosts.find_one({'hostname': fqdn.split('.')[0], 'domainname': '.'.join(fqdn.split('.')[1:])})
             if host is not None:
                 host['ipa_otp'] = result.to_dict['randompassword']
                 tbl_hosts.save(host)
             return result.to_dict
         except IPAHostAddError, e:
             return None
+
 
 @rpcmethod(name='dc2.freeipa.hosts.delete', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_delete(fqdn=None):
@@ -124,11 +128,12 @@ def dc2_freeipa_hosts_delete(fqdn=None):
         except IPAHostDeleteError as e:
             return None
 
+
 @rpcmethod(name='dc2.freeipa.hosts.delete_ipa_otp', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_delete_ipa_otp(fqdn=None):
     if fqdn is None:
         return xmlrpclib.Fault(-32501, "FQDN is None")
-    host = tbl_hosts.find_one({'hostname':fqdn.split('.')[0], 'domainname':'.'.join(fqdn.split('.')[1:])})
+    host = tbl_hosts.find_one({'hostname': fqdn.split('.')[0], 'domainname': '.'.join(fqdn.split('.')[1:])})
     if host is not None:
         if 'ipa_otp' in host:
             host['ipa_otp'] = ''
