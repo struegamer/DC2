@@ -30,7 +30,10 @@ from .exceptions import IPAHostDeleteError
 
 class IPAHosts(IPABase):
     CHECK_INFOS = {
-        'host_add': ['fqdn', 'force', 'description', 'locality', 'nshostlocation', 'nshardwareplatform', 'nsosversion', 'userpassword', 'random', 'randompassword''usercertificate', 'krbprincipalname', 'macaddress', 'ipasshpubkey', 'sshpubkeyfp']
+        'host_add': ['fqdn', 'force', 'description', 'locality',
+        'nshostlocation', 'nshardwareplatform', 'nsosversion', 'userpassword',
+        'random', 'randompassword', 'usercertificate', 'krbprincipalname',
+        'macaddress', 'ipasshpubkey', 'sshpubkeyfp', 'no_reverse']
     }
 
     def _check_infos(self, command=None, infos=None):
