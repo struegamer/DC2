@@ -41,7 +41,8 @@ try:
     from dc2.lib.freeipa import IPAHostNotFound
     from dc2.lib.freeipa import IPAHostAddError
     from dc2.lib.freeipa import IPAHostDeleteError
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print("You don't have DC² correctly installed")
     print(e)
     sys.exit(1)
@@ -49,7 +50,8 @@ except ImportError, e:
 try:
     from dc2.appserver.helpers import check_record
     from dc2.appserver.rpc import rpcmethod
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print('python-dc2.appserver is not correctly installed')
     print(e)
     sys.exit(1)

@@ -27,13 +27,15 @@ import json
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You need to install web.py"
     sys.exit(1)
 
 try:
     from dc2.lib.decorators import Logger
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print 'you do not have dc2.lib installed'
     print e
     sys.exit(1)

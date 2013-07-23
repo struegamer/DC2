@@ -26,14 +26,16 @@ try:
     from settings import LOGFILE
     from settings import LOGLEVEL
     from settings import LOGFORMAT
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print("You don't have a settings file")
     print(e)
     sys.exit(1)
 
 try:
     from dc2.lib.logging import AppLogger
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print('You don\'t have python-dc2.lib installed')
     print(e)
     sys.exit(1)

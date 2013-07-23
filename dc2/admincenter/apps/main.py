@@ -25,7 +25,8 @@ import os.path
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You need to install web.py"
     sys.exit(1)
 
@@ -34,13 +35,15 @@ try:
     from dc2.admincenter.globals import CSS_FILES
     from dc2.admincenter.globals import JS_LIBS
     from dc2.admincenter.globals import logger
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You are missing the necessary DC2 modules"
     sys.exit(1)
 
 try:
     from jinja2 import Environment, FileSystemLoader
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You didn't install jinja2 templating engine"
     sys.exit(1)
 
@@ -49,7 +52,8 @@ try:
     from dc2.lib.web.csrf import csrf_protected
     from dc2.lib.auth.helpers import get_realname
     from dc2.lib.auth.helpers import check_membership_in_group
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You are missing the necessary DC2 modules"
     print e
     sys.exit(1)
@@ -58,7 +62,8 @@ try:
     from settings import TEMPLATE_DIR
     from settings import KERBEROS_AUTH_ENABLED
     from settings import GRP_NAME_DC2ADMINS
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You don't have a settings file"
     print e
     sys.exit(1)
@@ -66,7 +71,8 @@ except ImportError, e:
 try:
     from dc2.admincenter.lib.auth import do_kinit
     from dc2.admincenter.lib.auth import KerberosAuthError
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "There are dc2.admincenter modules missing"
     print e
     sys.exit(1)

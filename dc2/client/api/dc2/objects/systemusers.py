@@ -26,7 +26,8 @@ import subprocess
 try:
     from dc2.client.api.helpers.checkfai import check_for_rootcmd
     from dc2.client.api.helpers.checkfai import get_callargs_rootcmd
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print e
     sys.exit(1)
 

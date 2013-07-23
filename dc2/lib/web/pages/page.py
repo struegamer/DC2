@@ -24,14 +24,16 @@ import types
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You didn't install web.py"
     print e
     sys.exit(1)
 
 try:
     from dc2.lib.web.csrf import csrf_token
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You didn't have dc2.lib installed"
     print e
     sys.exit(1)

@@ -25,7 +25,8 @@ import re
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You need to install web.py"
     sys.exit(1)
 

@@ -22,7 +22,8 @@ import sys
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You didn't install web.py"
     print e
     sys.exit(1)

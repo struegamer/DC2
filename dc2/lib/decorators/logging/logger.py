@@ -24,7 +24,8 @@ import logging
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print('you do not have web.py installed')
     print(e)
     sys.exit(1)

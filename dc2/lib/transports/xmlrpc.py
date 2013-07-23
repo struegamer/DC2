@@ -26,7 +26,8 @@ import xmlrpclib
 try:
     from dc2.lib.auth.kerberos.xmlrpc import KerberosServerProxy
     from dc2.lib.exceptions.authentication import KerberosError
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print 'not installed KerberosServerProxy'
     print e
     sys.exit(1)

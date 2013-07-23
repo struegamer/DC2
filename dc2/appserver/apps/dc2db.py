@@ -44,7 +44,8 @@ except ImportError:
 try:
     from dc2.appserver.globals import connectionpool
     from dc2.appserver.globals import requestdispatcher
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You are missing necessary DC² modules"
     print e
     sys.exit(1)

@@ -23,14 +23,16 @@ import os
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print('you did not install web.py')
     print(e)
     sys.exit(1)
 
 try:
     import krbV
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print('you don\'t have python-krbV installed')
     print(e)
     sys.exit(1)
@@ -39,7 +41,8 @@ try:
     from dc2.lib.auth.kerberos.authentication import run
     from dc2.lib.auth.kerberos.authentication import krb5_format_principal_name
     from dc2.lib.auth.kerberos.authentication import get_ccache_name
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print("You didn't install dc2.lib")
     print(e)
     sys.exit(1)

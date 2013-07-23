@@ -26,7 +26,8 @@ try:
     from ticket import KerberosTicket
     from kerberostransport import KerberosAuthTransport
     from kerberostransport import SafeKerberosAuthTransport
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print 'Your installation of DC2 is not correct'
     sys.exit(1)
 

@@ -27,7 +27,8 @@ import json
 
 try:
     import web
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "You need to install web.py"
     sys.exit(1)
 
@@ -35,7 +36,8 @@ try:
     from dc2.lib.decorators import Logger
     from dc2.lib.transports import get_xmlrpc_transport
     from dc2.lib.exceptions.authentication import KerberosError
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print 'you do not have dc2.lib installed'
     print e
     sys.exit(1)
@@ -45,14 +47,16 @@ try:
     from dc2.admincenter.lib import backends
     from dc2.admincenter.lib.auth import needs_auth
     from dc2.admincenter.globals import logger
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print 'you have a problem with dc2.admincenter'
     print e
     sys.exit(1)
 
 try:
     from dc2.api.dc2.inventory import Ribs
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print 'you didn\'t have dc2.api installed'
     print e
     sys.exit(1)

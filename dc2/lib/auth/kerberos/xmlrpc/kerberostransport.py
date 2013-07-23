@@ -23,7 +23,8 @@ import xmlrpclib
 
 try:
     from ticket import KerberosTicket
-except ImportError, e:
+except ImportError as e:
+    print(e)
     print "Your dc2 installation is not correct"
     sys.exit(1)
 
