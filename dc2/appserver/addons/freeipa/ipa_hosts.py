@@ -29,8 +29,8 @@ import uuid
 
 try:
     import web
-except ImportError:
-    print "You don't have web.py installed"
+except ImportError as e:
+    print(e)
     sys.exit(1)
 
 
@@ -43,16 +43,12 @@ try:
     from dc2.lib.freeipa import IPAHostDeleteError
 except ImportError as e:
     print(e)
-    print("You don't have DC² correctly installed")
-    print(e)
     sys.exit(1)
 
 try:
     from dc2.appserver.helpers import check_record
     from dc2.appserver.rpc import rpcmethod
 except ImportError as e:
-    print(e)
-    print('python-dc2.appserver is not correctly installed')
     print(e)
     sys.exit(1)
 
@@ -62,9 +58,8 @@ try:
     from settings import KERBEROS_AUTH_ENABLED
     from settings import FREEIPA_URL
     from settings import FREEIPA_SERVICE
-    from settings import FREEIPA_FORCE_ADD
-except ImportError:
-    print "You don't have a settings file"
+except ImportError as e:
+    print(e)
     sys.exit(1)
 
 
