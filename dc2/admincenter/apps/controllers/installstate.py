@@ -197,6 +197,7 @@ class InstallStateController(RESTController):
                             'random': True}
                 if FREEIPA_FORCE_ADD:
                     ipa_info['force'] = True
+                    ipa_info['no_reverse'] = True
                 print('IPA Info {0}'.format(ipa_info))
                 ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostname'], host['domainname']), ipa_info)
                 print('IPA Result {0}'.format(ipa_result))

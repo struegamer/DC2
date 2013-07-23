@@ -18,6 +18,6 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #################################################################################
 
-from .record_base import RecordBase
-from .record_host import RecordHost
-from .record_user import RecordUser
+from record_base import RecordBase
+from record_host import RecordHost
+from record_user import RecordUser
