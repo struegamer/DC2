@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,9 +16,11 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
+import types
 from dc2.api import RPCClient
+
 
 class Servers(RPCClient):
 
@@ -63,7 +65,7 @@ class Servers(RPCClient):
         server_rec = kwargs.get('server', None)
         if server_rec is not None:
             return self._proxy.dc2.inventory.servers.update(server_rec)
-        return false
+        return False
 
     def delete(self, *args, **kwargs):
         server_rec = {}

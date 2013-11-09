@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,60 +16,63 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
+import types
 from dc2.api import RPCClient
+
 
 class Ribs(RPCClient):
 
-    def find(self,rec=None):
+    def find(self, rec=None):
         if rec is None:
-            datalist=self._proxy.dc2.inventory.servers.rib.list()
+            datalist = self._proxy.dc2.inventory.servers.rib.list()
             return datalist
         if rec is not None:
             if type(rec) is not types.DictType:
                 # TODO: Add Real Exception
                 raise Exception('The search argument is not a dictionary')
-            datalist=self._proxy.dc2.inventory.servers.rib.find(rec)
+            datalist = self._proxy.dc2.inventory.servers.rib.find(rec)
             return datalist
 
     def list(self):
-        datalist=self.find()
+        datalist = self.find()
         return datalist
 
     def count(self):
         # TODO: Add a rpc call to appserver for counting
-        datalist=self.find()
+        datalist = self.find()
         return len(datalist)
 
-    def get(self,*args,**kwargs):
-        rec={}
+    def get(self, *args, **kwargs):
+        rec = {}
         if 'id' in kwargs:
-            rec['_id']=kwargs.get('id',None)
+            rec['_id'] = kwargs.get('id', None)
         if 'server_id' in kwargs:
-            rec['server_id']=kwargs.get('server_id',None)
-        datalist=self._proxy.dc2.inventory.servers.rib.find(rec)
+            rec['server_id'] = kwargs.get('server_id', None)
+        datalist = self._proxy.dc2.inventory.servers.rib.find(rec)
         return datalist
 
-    def add(self,*args,**kwargs):
-        rib_rec=None
+    def add(self, *args, **kwargs):
+        rib_rec = None
         if 'rib' in kwargs:
-            rib_rec = kwargs.get('rib',None)
+            rib_rec = kwargs.get('rib', None)
         if rib_rec is not None:
             return self._proxy.dc2.inventory.servers.rib.add(rib_rec)
-        return false
-    def update(self,*args,**kwargs):
-        rib_rec=None
+        return False
+
+    def update(self, *args, **kwargs):
+        rib_rec = None
         if 'rib' in kwargs:
-            rib_rec = kwargs.get('rib',None)
+            rib_rec = kwargs.get('rib', None)
         if rib_rec is not None:
             return self._proxy.dc2.inventory.servers.rib.update(rib_rec)
         return False
-    def delete(self,*args,**kwargs):
-        rib_rec={}
+
+    def delete(self, *args, **kwargs):
+        rib_rec = {}
         if 'id' in kwargs:
-            rib_rec['_id'] = kwargs.get('id',None)
-        if len(rib_rec)>0:
+            rib_rec['_id'] = kwargs.get('id', None)
+        if len(rib_rec) > 0:
             return self._proxy.dc2.inventory.servers.rib.delete(rib_rec)
         return False
-

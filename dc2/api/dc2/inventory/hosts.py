@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,49 +16,50 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
+import types
 from dc2.api import RPCClient
+
 
 class Hosts(RPCClient):
 
-    def find(self,rec=None):
-        hostlist=[]
+    def find(self, rec=None):
+        hostlist = []
         if rec is None:
-            hostlist=self._proxy.dc2.inventory.hosts.list()
+            hostlist = self._proxy.dc2.inventory.hosts.list()
             return hostlist
         if rec is not None:
             if type(rec) is not types.DictType:
                 # TODO: Add Real Exception
                 raise Exception('The search argument is not a dictionary')
-            hostlist=self._proxy.dc2.inventory.hosts.find(rec)
+            hostlist = self._proxy.dc2.inventory.hosts.find(rec)
         return hostlist
 
     def list(self):
-        hostlist=self.find()
+        hostlist = self.find()
         return hostlist
 
     def count(self):
         # TODO: Add a rpc call to appserver for counting
-        hostlist=self.find()
+        hostlist = self.find()
         return len(hostlist)
 
-    def get(self,*args,**kwargs):
-        host={}
+    def get(self, *args, **kwargs):
+        host = {}
         if 'id' in kwargs:
-            host['_id']=kwargs.get('id',None)
+            host['_id'] = kwargs.get('id', None)
         if 'server_id' in kwargs:
-            host['server_id']=kwargs.get('server_id',None)
-        if len(host)!=0:
-            host_entries=self._proxy.dc2.inventory.hosts.find(host)
-            if host_entries is not None and len(host_entries)==1:
+            host['server_id'] = kwargs.get('server_id', None)
+        if len(host) != 0:
+            host_entries = self._proxy.dc2.inventory.hosts.find(host)
+            if host_entries is not None and len(host_entries) == 1:
                 return host_entries[0]
         return None
 
     def update(self, *args, **kwargs):
-        host={}
+        host = {}
         if 'host' in kwargs:
-            host=kwargs.get('host',None)
-        doc_id=self._proxy.dc2.inventory.hosts.update(host)
+            host = kwargs.get('host', None)
+        doc_id = self._proxy.dc2.inventory.hosts.update(host)
         return doc_id
-

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,63 +16,66 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
-
+###############################################################################
+import types
 from dc2.api import RPCClient
+
 
 class Macs(RPCClient):
 
-    def find(self,rec=None):
+    def find(self, rec=None):
         if rec is None:
-            datalist=self._proxy.dc2.inventory.servers.macaddr.list()
+            datalist = self._proxy.dc2.inventory.servers.macaddr.list()
             return datalist
         if rec is not None:
             if type(rec) is not types.DictType:
                 # TODO: Add Real Exception
                 raise Exception('The search argument is not a dictionary')
-            datalist=self._proxy.dc2.inventory.servers.macaddr.find(rec)
+            datalist = self._proxy.dc2.inventory.servers.macaddr.find(rec)
             return datalist
 
     def list(self):
-        datalist=self.find()
+        datalist = self.find()
         return datalist
 
     def count(self):
         # TODO: Add a rpc call to appserver for counting
-        datalist=self.find()
+        datalist = self.find()
         return len(datalist)
 
-    def get(self,*args,**kwargs):
-        rec={}
+    def get(self, *args, **kwargs):
+        rec = {}
         if 'id' in kwargs:
-            rec['_id']=kwargs.get('id',None)
+            rec['_id'] = kwargs.get('id', None)
         if 'server_id' in kwargs:
-            rec['server_id']=kwargs.get('server_id',None)
-        macs=self._proxy.dc2.inventory.servers.macaddr.find(rec)
-        if len(macs)>0:
+            rec['server_id'] = kwargs.get('server_id', None)
+        macs = self._proxy.dc2.inventory.servers.macaddr.find(rec)
+        if len(macs) > 0:
             return macs
         return None
-    def add(self,*args,**kwargs):
-        mac_rec=None
+
+    def add(self, *args, **kwargs):
+        mac_rec = None
         if 'mac' in kwargs:
-            mac_rec = kwargs.get('mac',None)
+            mac_rec = kwargs.get('mac', None)
         if mac_rec is not None:
             return self._proxy.dc2.inventory.servers.macaddr.add(mac_rec)
         return False
-    def update(self,*args,**kwargs):
-        mac_rec=None
+
+    def update(self, *args, **kwargs):
+        mac_rec = None
         if 'mac' in kwargs:
-            mac_rec = kwargs.get('mac',None)
+            mac_rec = kwargs.get('mac', None)
         if mac_rec is not None:
             return self._proxy.dc2.inventory.servers.macaddr.update(mac_rec)
         return False
-    def delete(self,*args,**kwargs):
-        mac_rec={}
+
+    def delete(self, *args, **kwargs):
+        mac_rec = {}
         if 'id' in kwargs:
-            mac_rec['_id'] = kwargs.get('id',None)
+            mac_rec['_id'] = kwargs.get('id', None)
         if 'mac_addr' in kwargs:
-            mac_rec['mac_addr'] = kwargs.get('mac_addr',None)
-        if len(mac_rec)>0:
+            mac_rec['mac_addr'] = kwargs.get('mac_addr', None)
+        if len(mac_rec) > 0:
             return self._proxy.dc2.inventory.servers.macaddr.delete(mac_rec)
         return False
-

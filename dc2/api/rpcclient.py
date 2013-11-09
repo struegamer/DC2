@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,14 +16,14 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import xmlrpclib
+
 
 class RPCClient(object):
     def __init__(self, transport=None):
         if transport is None:
             # TODO: Add Real Exception
             raise Exception('No Transport given')
-        self._proxy=transport
-
+        self._proxy = transport
