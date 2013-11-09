@@ -23,6 +23,8 @@ import xmlrpclib
 from dmi import DMI
 from interfaces import Interfaces
 from pci import PCIDevices
+from cpu import CPUInfo
+from meminfo import MemoryInfo
 
 
 class ServerInventory(object):
@@ -31,6 +33,8 @@ class ServerInventory(object):
         self._dmi = DMI()
         self._nics = Interfaces()
         self._pcidevices = PCIDevices()
+        self._meminfo = MemoryInfo()
+        self._cpuinfo = CPUInfo()
         self._proxy = xmlrpclib.ServerProxy(self._rpcurl, allow_none=True)
 
     def _add_server(self):
@@ -53,6 +57,9 @@ class ServerInventory(object):
         server_rec["location"] = "New Server"
         server_rec["asset_tags"] = "New Asset"
         server_rec["pci_devices"] = self._pcidevices.get_pci_devices()
+        server_rec["cpuinfo"] = self._cpuinfo.processors()
+        server_rec['cpucount'] = self._cpuinfo.num_of_processors()
+        server_rec['memoryinfo'] = self._meminfo.meminfo()
         server_doc_id = self._proxy.dc2.inventory.servers.add(server_rec)
         if server_doc_id is not None:
             counter = 0
