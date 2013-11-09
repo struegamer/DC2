@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-###############################################################################
+#############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,23 +16,24 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
-
-import re
-import subprocess
+#############################################################################
 
 
-class Interfaces(object):
+class MemoryInfo(object):
+    _MEMINFO = '/proc/meminfo'
+
     def __init__(self):
-        self._get_nics()
+        self._meminfo = {}
+        self._read_meminfo()
 
-    def _get_nics(self):
-        ipconfig = subprocess.Popen(
-            ["ip", "l"],
-            stdout=subprocess.PIPE)
-        p = re.compile(r"\s+link/ether\s+([a-zA-Z0-9:]+)", re.VERBOSE)
-        self.__dict__["nics"] = []
-        for i in ipconfig.stdout:
-            found = p.search(i)
-            if found is not None:
-                self.__dict__["nics"].append(found.group(1))
+    def _read_meminfo(self):
+        fp = open('/proc/meminfo', 'rb')
+        for line in fp:
+            a = line.split(':')
+            b = {}
+            b[a[0].strip()] = a[1].strip()
+            self._meminfo.update(b)
+        fp.close()
+
+    def meminfo(self):
+        return self._meminfo

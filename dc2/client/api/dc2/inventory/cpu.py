@@ -18,21 +18,34 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ###############################################################################
 
-import re
-import subprocess
+import os
 
 
-class Interfaces(object):
+class CPUInfo(object):
+    _CPUINFO = '/proc/cpuinfo'
+
     def __init__(self):
-        self._get_nics()
+        self._processors = []
+        self._read_cpuinfo()
 
-    def _get_nics(self):
-        ipconfig = subprocess.Popen(
-            ["ip", "l"],
-            stdout=subprocess.PIPE)
-        p = re.compile(r"\s+link/ether\s+([a-zA-Z0-9:]+)", re.VERBOSE)
-        self.__dict__["nics"] = []
-        for i in ipconfig.stdout:
-            found = p.search(i)
-            if found is not None:
-                self.__dict__["nics"].append(found.group(1))
+    def _read_cpuinfo(self):
+        if os.path.exists(self._CPUINFO):
+            fp = open(self._CPUINFO, 'rb')
+            processor = None
+            for line in fp:
+                a = line.split(":")
+                if len(a) != 1:
+                    key = a[0].split()
+                    value = a[1].split()
+                    if key == 'processor':
+                        processor = {}
+                    processor[key] = value
+                else:
+                    self._processors.append(processor)
+            fp.close()
+
+    def num_of_processors(self):
+        return len(self._processors)
+
+    def processors(self):
+        return self._processors

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,36 +16,45 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import os
-import sys
 
-class DMI( object ):
+
+class DMI(object):
     _SYSFS = "/sys/class/dmi/id/"
-    _fields = {"manufacturer":_SYSFS + "sys_vendor",
-            "serial_no":_SYSFS + "product_serial",
-            "uuid":_SYSFS + "product_uuid",
-            "asset_tag":_SYSFS + "chassis_asset_tag",
-            "product":_SYSFS + "product_name"
-            }
+    _fields = {
+        "manufacturer": _SYSFS + "sys_vendor",
+        "serial_no": _SYSFS + "product_serial",
+        "uuid": _SYSFS + "product_uuid",
+        "asset_tag": _SYSFS + "chassis_asset_tag",
+        "product": _SYSFS + "product_name",
+        "bios_date": _SYSFS + "bios_date",
+        "bios_vendor": _SYSFS + "bios_vendor",
+        "bios_version": _SYSFS + "bios_version",
+        "board_name": _SYSFS + "board_name",
+        "board_serial": _SYSFS * "board_serial",
+        "board_vendor": _SYSFS * "board_vendor",
+        "board_version": _SYSFS * "board_version"
+    }
 
-    def __init__( self ):
+    def __init__(self):
         if self._check_sysfs():
             self._get_fields()
-    def _check_sysfs( self ):
-        if os.path.exists( "/sys" ):
-            if os.path.exists( self._SYSFS ):
+
+    def _check_sysfs(self):
+        if os.path.exists("/sys"):
+            if os.path.exists(self._SYSFS):
                 return True
         return False
 
-    def _get_fields( self ):
+    def _get_fields(self):
         for i in self._fields.keys():
-            self.__dict__[i] = self._read_value( i )
+            self.__dict__[i] = self._read_value(i)
 
-    def _read_value( self, key ):
-        if os.path.exists( self._fields[key] ):
-            fp = open( self._fields[key], "rb" )
+    def _read_value(self, key):
+        if os.path.exists(self._fields[key]):
+            fp = open(self._fields[key], "rb")
             value = fp.readline()
             fp.close()
             return value[:-1]
