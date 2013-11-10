@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 import types
 from dc2.api import RPCClient
@@ -24,39 +24,39 @@ from dc2.api import RPCClient
 
 class InstallState(RPCClient):
 
-    def find(self,rec=None):
-        resultlist=[]
+    def find(self, rec=None):
+        resultlist = []
         if rec is None:
-            resultlist=self._proxy.dc2.deployment.installstate.list()
+            resultlist = self._proxy.dc2.deployment.installstate.list()
         if rec is not None:
             if type(rec) is not types.DictType:
                 # TODO: Add Real Exception
                 raise Exception('The search argument is not a dictionary')
-            resultlist=self._proxy.dc2.deployment.installstate.find(rec)
+            resultlist = self._proxy.dc2.deployment.installstate.find(rec)
         return resultlist
 
     def list(self):
-        resultlist=[]
-        resultlist=self.find()
+        resultlist = []
+        resultlist = self.find()
         return resultlist
 
-    def count(self,status='localboot'):
+    def count(self, status='localboot'):
         # TODO: Add a rpc call to appserver for counting
-        resultlist=self.find({'status':status})
+        resultlist = self.find({'status': status})
         return len(resultlist)
+
     def get(self, *args, **kwargs):
-        rec={}
+        rec = {}
         if 'id' in kwargs:
-            rec['_id']=kwargs.get('id')
-            result=self._proxy.dc2.deployment.installstate.get(rec)
+            rec['_id'] = kwargs.get('id')
+            result = self._proxy.dc2.deployment.installstate.get(rec)
             return result
         return None
 
     def update(self, *args, **kwargs):
-        rec={}
+        rec = {}
         if 'rec' in kwargs:
-            rec=kwargs.get('rec',None)
-            result=self._proxy.dc2.deployment.installstate.update(rec)
+            rec = kwargs.get('rec', None)
+            result = self._proxy.dc2.deployment.installstate.update(rec)
             return result
         return None
-
