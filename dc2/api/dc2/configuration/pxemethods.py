@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,30 +16,31 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
+import types
 from dc2.api import RPCClient
-import web
+
 
 class PXEMethods(RPCClient):
     def find(self, rec=None):
         if rec is None:
-            pxelist=self._proxy.dc2.configuration.bootmethods.list()
+            pxelist = self._proxy.dc2.configuration.bootmethods.list()
             return pxelist
         if rec is not None:
             if type(rec) is not types.DictType:
                 raise Exception('The search argument is not a dictionary')
-            pxelist=self._proxy.dc2.configuration.bootmethods.list(rec)
+            pxelist = self._proxy.dc2.configuration.bootmethods.list(rec)
             return pxelist
 
     def list(self):
-        pxelist=self.find()
+        pxelist = self.find()
         return pxelist
 
     def new(self):
-        rec={}
-        rec['hardware_type']=''
-        rec['pxe_bootmethod']=''
+        rec = {}
+        rec['hardware_type'] = ''
+        rec['pxe_bootmethod'] = ''
         return rec
 
     def update_hardware(self):
@@ -47,31 +48,34 @@ class PXEMethods(RPCClient):
         return True
 
     def get(self, *args, **kwargs):
-        rec={}
+        rec = {}
         if 'id' in kwargs:
-            rec['_id']=kwargs.get('id',None)
-        result=self._proxy.dc2.configuration.bootmethods.list({'_id':kwargs.get('id',None)})
-        if len(result)>0:
+            rec['_id'] = kwargs.get('id', None)
+        result = \
+            self._proxy.dc2.configuration.bootmethods.list(
+                {'_id': kwargs.get('id', None)}
+            )
+        if len(result) > 0:
             return result[0]
         return None
 
     def add(self, *args, **kwargs):
-        rec={}
+        rec = {}
         if 'pxe' in kwargs:
-            rec=kwargs.get('pxe',None)
-        doc_id=self._proxy.dc2.configuration.bootmethods.add(rec)
+            rec = kwargs.get('pxe', None)
+        doc_id = self._proxy.dc2.configuration.bootmethods.add(rec)
         return doc_id
 
     def update(self, *args, **kwargs):
-        rec={}
+        rec = {}
         if 'pxe' in kwargs:
-            rec=kwargs.get('pxe',None)
-        doc_id=self._proxy.dc2.configuration.bootmethods.update(rec)
+            rec = kwargs.get('pxe', None)
+        doc_id = self._proxy.dc2.configuration.bootmethods.update(rec)
         return doc_id
-    def delete(self, *args, **kwargs):
-        rec={}
-        if 'id' in kwargs:
-            rec['_id']=kwargs.get('id',None)
-        result=self._proxy.dc2.configuration.bootmethods.delete(rec)
-        return result
 
+    def delete(self, *args, **kwargs):
+        rec = {}
+        if 'id' in kwargs:
+            rec['_id'] = kwargs.get('id', None)
+        result = self._proxy.dc2.configuration.bootmethods.delete(rec)
+        return result
