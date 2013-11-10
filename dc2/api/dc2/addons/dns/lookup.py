@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,9 +16,10 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 from dc2.api import RPCClient
+
 
 class DNS(RPCClient):
     def query(self, fqdn=None, nstype='A'):
@@ -28,6 +29,5 @@ class DNS(RPCClient):
             result = self._proxy.dc2.dns.lookups.query(fqdn)
             if result is not None:
                 return True
-        except Exception as e:
+        except Exception:
             return False
-
