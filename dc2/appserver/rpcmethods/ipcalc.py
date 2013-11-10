@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,39 +16,17 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 #
 # Std. Python Libs
-#
 import sys
-import types
-import xmlrpclib
-import re
-import uuid
-
 
 try:
-    import web
-except ImportError:
-    print "You don't have web.py installed"
-    sys.exit(1)
-
-try:
-    from dc2.lib.db.mongo import Database
-    from dc2.lib.db.mongo import Table
-    from dc2.appserver.helpers import check_record
     from dc2.appserver.rpc import rpcmethod
 except ImportError:
     print "You don't have DC² correctly installed"
     sys.exit(1)
-
-try:
-    from settings import MONGOS
-except ImportError:
-    print "You don't have a settings file"
-    sys.exit(1)
-
 
 try:
     import netaddr
@@ -56,7 +34,10 @@ except ImportError:
     print "You need to have the python-netaddr module installed"
     sys.exit(1)
 
-@rpcmethod(name="dc2.utils.ipcalc.show_ip_info", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+
+@rpcmethod(
+    name="dc2.utils.ipcalc.show_ip_info",
+    params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_ipcalc_show_ip_info(ipaddress=None):
     if ipaddress is None:
         return None
@@ -71,5 +52,3 @@ def dc2_ipcalc_show_ip_info(ipaddress=None):
     result["hostmask"] = ip.hostmask.__str__()
     result["network_size"] = ip.size
     return result
-
-
