@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,35 +16,20 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+###############################################################################
 
 #
 # Std. Python Libs
 #
 import sys
-import types
-import xmlrpclib
-import re
-import uuid
 
 try:
-    import web
-except ImportError:
-    print "You don't have web.py installed"
-    sys.exit(1)
-
-
-try:
-    from dc2.lib.db.mongo import Database
-    from dc2.lib.db.mongo import Table
-    from dc2.appserver.helpers import check_record
     from dc2.appserver.rpc import rpcmethod
 except ImportError:
     print "You don't have DC² correctly installed"
     sys.exit(1)
 
 try:
-    from settings import MONGOS
     from settings import CS2_ENABLED
     from settings import XEN_ENABLED
     from settings import FREEIPA_ENABLED
@@ -55,12 +40,12 @@ except ImportError:
     sys.exit(1)
 
 
-
-@rpcmethod(name="dc2.backend.settings.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(
+    name="dc2.backend.settings.get",
+    params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
 def dc2_backend_settings_get():
-    result = {'IS_FREEIPA_ENABLED':FREEIPA_ENABLED,
-              'IS_CS2_ENABLED':CS2_ENABLED,
-              'IS_XEN_ENABLED':XEN_ENABLED,
-              'IS_KERBEROS_AUTH_ENABLED':KERBEROS_AUTH_ENABLED}
+    result = {'IS_FREEIPA_ENABLED': FREEIPA_ENABLED,
+              'IS_CS2_ENABLED': CS2_ENABLED,
+              'IS_XEN_ENABLED': XEN_ENABLED,
+              'IS_KERBEROS_AUTH_ENABLED': KERBEROS_AUTH_ENABLED}
     return result
-
