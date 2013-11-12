@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+#
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+#
 
 # settings.py
 import logging
@@ -28,30 +28,30 @@ import os.path
 #
 
 MONGOS = {
-            "dc2db": {
-                "host":"localhost",
-                "port":27017,
-        		"dbname":"dc2db",
-                "database":None
-            },
-            "cs2db": {
-                "host":"localhost",
-                "port":27017,
-                "dbname":"cs2db",
-                "database":None
-            },
-            "xendb": {
-                "host":"localhost",
-                "port":27017,
-                "dbname":"xendb",
-                "database":None
-             },
-             "userdb": {
-                "host":"localhost",
-                "port":27017,
-                "dbname":"userdb",
-                "database":None
-             }
+    "dc2db": {
+        "host": "localhost",
+        "port": 27017,
+        "dbname": "dc2db",
+        "database": None
+    },
+    "cs2db": {
+        "host": "localhost",
+        "port": 27017,
+        "dbname": "cs2db",
+        "database": None
+    },
+    "xendb": {
+        "host": "localhost",
+        "port": 27017,
+        "dbname": "xendb",
+        "database": None
+    },
+    "userdb": {
+        "host": "localhost",
+        "port": 27017,
+        "dbname": "userdb",
+        "database": None
+    }
 }
 
 # LIBVIRT_SERVER= {

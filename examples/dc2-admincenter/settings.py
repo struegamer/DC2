@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+#
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+#
 
 # settings.py
 import logging
@@ -28,12 +28,12 @@ import os.path
 #
 
 MONGOS = {
-             "admincenter": {
-                "host":"localhost",
-                "port":27017,
-                "dbname":"admincenter",
-                "database":None
-             }
+    "admincenter": {
+        "host": "localhost",
+        "port": 27017,
+        "dbname": "admincenter",
+        "database": None
+    }
 }
 
 # LIBVIRT_SERVER= {
@@ -61,7 +61,7 @@ ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 # RPC Modules for RPCDispatcher
 #
 KERBEROS_AUTH_ENABLED = False
-GRP_NAME_DC2ADMINS = 'dc2admins'
+GRP_NAME_DC2ADMINS = 'admin'
 
 
 #
@@ -79,35 +79,37 @@ FREEIPA_SERVER_URL = ''
 TEMPLATE_DIR = "%s/templates" % os.path.dirname(__file__)
 
 CONTROLLER_MAPPINGS = {
-    '/':'MainController',
-    '/login':'SessionLoginController',
-    '/logout':'SessionLogoutController',
-    '/backends':'BackendsCtrl',
-    '/backends/servers':'ServerController',
-    '/backends/hosts':'HostController',
-    '/backends/installstate':'InstallStateController',
-    '/admin':'admin.MainAdminController',
-    '/admin/backends':'admin.BackendsController',
-    '/admin/backends/environments':'admin.BackendEnvironmentController',
-    '/admin/backends/defaultclasses':'admin.BackendDefaultClassesController',
-    '/admin/backends/classtemplates':'admin.BackendClassTemplatesController',
-    '/admin/backends/sysgroups':'admin.BackendSysGroupController',
-    '/admin/backends/sysusers':'admin.BackendSysUserController',
-    '/admin/backends/pxemethods':'admin.BackendPXEMethodController',
-    '/admin/json/backends/servers':'admin.jsonctrl.JSONAdminBackendsServerController',
-    '/admin/ribs':'admin.AdminRIBController',
-    '/admin/ifacetypes':'admin.AdminInterfaceTypesController',
-    '/admin/inettypes':'admin.AdminInetTypesController',
-    '/admin/pxe':'admin.AdminPXEController',
-    '/admin/installmethods':'admin.AdminInstallMethodController',
-    '/json/backends':'jsonctrl.JSONBackendController',
-    '/json/backends/servers':'jsonctrl.JSONServerBackendController',
-    '/json/backends/hosts':'jsonctrl.JSONHostBackendController',
-    '/json/backends/deployments':'jsonctrl.JSONDeploymentBackendController',
-    '/json/backends/macs':'jsonctrl.JSONMacBackendController',
-    '/json/backends/ribs':'jsonctrl.JSONRibBackendController',
-    '/json/backends/classtemplates':'jsonctrl.JSONBackendClassTemplatesController',
-    '/json/freeipa/hosts':'jsonctrl.JSONFreeipaHostController',
+    '/': 'MainController',
+    '/login': 'SessionLoginController',
+    '/logout': 'SessionLogoutController',
+    '/backends': 'BackendsCtrl',
+    '/backends/servers': 'ServerController',
+    '/backends/hosts': 'HostController',
+    '/backends/installstate': 'InstallStateController',
+    '/admin': 'admin.MainAdminController',
+    '/admin/backends': 'admin.BackendsController',
+    '/admin/backends/environments': 'admin.BackendEnvironmentController',
+    '/admin/backends/defaultclasses': 'admin.BackendDefaultClassesController',
+    '/admin/backends/classtemplates': 'admin.BackendClassTemplatesController',
+    '/admin/backends/sysgroups': 'admin.BackendSysGroupController',
+    '/admin/backends/sysusers': 'admin.BackendSysUserController',
+    '/admin/backends/pxemethods': 'admin.BackendPXEMethodController',
+    '/admin/json/backends/servers':
+    'admin.jsonctrl.JSONAdminBackendsServerController',
+    '/admin/ribs': 'admin.AdminRIBController',
+    '/admin/ifacetypes': 'admin.AdminInterfaceTypesController',
+    '/admin/inettypes': 'admin.AdminInetTypesController',
+    '/admin/pxe': 'admin.AdminPXEController',
+    '/admin/installmethods': 'admin.AdminInstallMethodController',
+    '/json/backends': 'jsonctrl.JSONBackendController',
+    '/json/backends/servers': 'jsonctrl.JSONServerBackendController',
+    '/json/backends/hosts': 'jsonctrl.JSONHostBackendController',
+    '/json/backends/deployments': 'jsonctrl.JSONDeploymentBackendController',
+    '/json/backends/macs': 'jsonctrl.JSONMacBackendController',
+    '/json/backends/ribs': 'jsonctrl.JSONRibBackendController',
+    '/json/backends/classtemplates':
+    'jsonctrl.JSONBackendClassTemplatesController',
+    '/json/freeipa/hosts': 'jsonctrl.JSONFreeipaHostController',
 }
 
 #
@@ -123,4 +125,3 @@ LOGFORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 
 APPNAME = "dc2-admincenter"
-
