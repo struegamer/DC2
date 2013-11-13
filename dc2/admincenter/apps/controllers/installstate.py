@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+#
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+#
 
 import sys
 import json
@@ -82,6 +82,7 @@ tmpl_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
 class InstallStateController(RESTController):
+
     @Logger(logger=logger)
     def __init__(self, *args, **kwargs):
         super(InstallStateController, self).__init__(*args, **kwargs)
@@ -92,11 +93,13 @@ class InstallStateController(RESTController):
         self._page = Page(None, tmpl_env, self._request_context)
         self._page.set_cssfiles(CSS_FILES)
         self._page.set_jslibs(JS_LIBS)
-        if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
+        if ('authenticated' in self._request_context.session and
+                self._request_context.session.authenticated):
             user_info = {}
             user_info['username'] = self._request_context.session.username
             user_info['realname'] = self._request_context.session.realname
-            user_info['is_dc2admin'] = self._request_context.session.is_dc2admin
+            user_info[
+                'is_dc2admin'] = self._request_context.session.is_dc2admin
             self._page.add_page_data({'user': user_info})
             self._page.add_page_data({'admin_is_link': True})
             self._fill_backends()
@@ -108,7 +111,8 @@ class InstallStateController(RESTController):
         self._backend_id = params.get('backend_id', None)
         self._page.add_page_data({'backend_id': self._backend_id})
         self._backend = backends.backend_get({'_id': self._backend_id})
-        self._transport = get_xmlrpc_transport(self._backend['backend_url'], self._backend['is_kerberos'])
+        self._transport = get_xmlrpc_transport(
+            self._backend['backend_url'], self._backend['is_kerberos'])
         self._installstate = InstallState(self._transport)
         self._backend_settings = BackendSettings(self._transport)
         self._hosts = Hosts(self._transport)
@@ -140,14 +144,17 @@ class InstallStateController(RESTController):
             install_methods = installmethods.installmethod_list()
             backendsettings = self._backend_settings.get()
 
-            self._page.set_title('Deployment State of %s' % installstate['hostname'])
+            self._page.set_title(
+                'Deployment State of %s' % installstate['hostname'])
             self._page.add_page_data({
                 'entry_id': request_data['id'],
                 'installstate': installstate,
                 'installmethods': install_methods,
                 'backend_settings': backendsettings
             })
-            result = self._prepare_output(verb['request_type'], verb['request_content_type'], output={'content': self._page.render()})
+            result = self._prepare_output(verb['request_type'], verb[
+                                          'request_content_type'], output={
+                                          'content': self._page.render()})
             return result
 
     @needs_auth
@@ -164,7 +171,8 @@ class InstallStateController(RESTController):
             installstate_id = request_data.get('id', None)
         if installstate_id is not None:
             installstate = self._installstate.get(id=installstate_id)
-            self._page.set_title('Deployment State of %s' % installstate['hostname'])
+            self._page.set_title(
+                'Deployment State of %s' % installstate['hostname'])
             install_methods = installmethods.installmethod_list()
             backendsettings = self._backend_settings.get()
             self._page.add_page_data({
@@ -173,7 +181,9 @@ class InstallStateController(RESTController):
                 'installmethods': install_methods,
                 'backend_settings': backendsettings
             })
-            result = self._prepare_output(verb['request_type'], verb['request_content_type'], output={'content': self._page.render()})
+            result = self._prepare_output(verb['request_type'], verb[
+                                          'request_content_type'], output={
+                                          'content': self._page.render()})
             return result
 
     @needs_auth
@@ -191,17 +201,28 @@ class InstallStateController(RESTController):
         if backend_settings['IS_FREEIPA_ENABLED'] and KERBEROS_AUTH_ENABLED:
             if installstate['status'] == 'deploy':
                 host = self._hosts.get(id=installstate_rec['host_id'])
-                if self._freeipa.check('{0}.{1}'.format(host['hostname'], host['domainname'])):
-                    ipa_result = self._freeipa.delete('{0}.{1}'.format(host['hostname'], host['domainname']))
+                if self._freeipa.check('{0}.{1}'.format(
+                    host['hostname'],
+                        host['domainname'])):
+                    ipa_result = self._freeipa.delete(
+                        '{0}.{1}'.format(host['hostname'], host['domainname']))
                 ipa_info = {'description': 'Auto-Added from DC2',
                             'random': True}
                 if FREEIPA_FORCE_ADD:
                     ipa_info['force'] = True
                     ipa_info['no_reverse'] = True
                 print('IPA Info {0}'.format(ipa_info))
-                ipa_result = self._freeipa.add('{0}.{1}'.format(host['hostname'], host['domainname']), ipa_info)
+                ipa_result = self._freeipa.add(
+                    '{0}.{1}'.format(
+                        host['hostname'], host['domainname']), ipa_info)
                 print('IPA Result {0}'.format(ipa_result))
-        result = self._prepare_output('json', verb['request_content_type'], 'json', {'redirect': {'url': '%s/%s?backend_id=%s' % (self._controller_path, installstate['_id'], self._backend_id), 'absolute': 'true'}})
+        result = self._prepare_output(
+            'json',
+            verb['request_content_type'],
+            'json', {
+                'redirect': {'url': '{0}/{1}?backend_id={2}'.format(
+                    self._controller_path, installstate['_id'],
+                    self._backend_id), 'absolute': 'true'}})
         return result
 
     @Logger(logger=logger)

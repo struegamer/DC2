@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+#
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+#
 
 import sys
 import json
@@ -86,6 +86,7 @@ tmpl_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
 
 class HostController(RESTController):
+
     @Logger(logger=logger)
     def __init__(self, *args, **kwargs):
         super(HostController, self).__init__(*args, **kwargs)
@@ -96,11 +97,13 @@ class HostController(RESTController):
         self._page = Page(None, tmpl_env, self._request_context)
         self._page.set_cssfiles(CSS_FILES)
         self._page.set_jslibs(JS_LIBS)
-        if 'authenticated' in self._request_context.session and self._request_context.session.authenticated:
+        if ('authenticated' in self._request_context.session and
+                self._request_context.session.authenticated):
             user_info = {}
             user_info['username'] = self._request_context.session.username
             user_info['realname'] = self._request_context.session.realname
-            user_info['is_dc2admin'] = self._request_context.session.is_dc2admin
+            user_info[
+                'is_dc2admin'] = self._request_context.session.is_dc2admin
             self._page.add_page_data({'user': user_info})
             self._page.add_page_data({'admin_is_link': True})
             self._fill_backends()
@@ -112,7 +115,8 @@ class HostController(RESTController):
         self._backend_id = params.get('backend_id', None)
         self._page.add_page_data({'backend_id': self._backend_id})
         self._backend = backends.backend_get({'_id': self._backend_id})
-        self._transport = get_xmlrpc_transport(self._backend['backend_url'], self._backend['is_kerberos'])
+        self._transport = get_xmlrpc_transport(
+            self._backend['backend_url'], self._backend['is_kerberos'])
         self._servers = Servers(self._transport)
         self._macs = Macs(self._transport)
         self._ribs = Ribs(self._transport)
@@ -143,7 +147,8 @@ class HostController(RESTController):
                 server_macs = self._macs.get(server_id=host['server_id'])
                 classtemplates = self._classtemplates.list()
                 backendsettings = self._backend_settings.get()
-                self._page.set_title('Host %s.%s' % (host['hostname'], host['domainname']))
+                self._page.set_title(
+                    'Host %s.%s' % (host['hostname'], host['domainname']))
                 self._page.add_page_data({
                     'classtemplates': classtemplates,
                     'itypes': self._itypes_list,
@@ -153,7 +158,9 @@ class HostController(RESTController):
                     'host': host,
                     'backend_settings': backendsettings
                 })
-                result = self._prepare_output(verb['request_type'], verb['request_content_type'], output={'content': self._page.render()})
+                result = self._prepare_output(verb['request_type'], verb[
+                                              'request_content_type'], output={
+                                              'content': self._page.render()})
                 return result
 
     @needs_auth
@@ -176,7 +183,8 @@ class HostController(RESTController):
             defaultclasses = self._defaultclasses.list()
             classtemplates = self._classtemplates.list()
             server_macs = self._macs.get(server_id=host['server_id'])
-            self._page.set_title('Edit Host %s.%s' % (host['hostname'], host['domainname']))
+            self._page.set_title('Edit Host %s.%s' %
+                                 (host['hostname'], host['domainname']))
             self._page.add_page_data({
                 'classtemplates': classtemplates,
                 'itypes': self._itypes_list,
@@ -188,7 +196,9 @@ class HostController(RESTController):
                 'defaultclasses': defaultclasses,
                 'host': host,
             })
-            result = self._prepare_output(verb['request_type'], verb['request_content_type'], output={'content': self._page.render()})
+            result = self._prepare_output(verb['request_type'], verb[
+                                          'request_content_type'], output=
+                                          {'content': self._page.render()})
             return result
 
     @needs_auth
@@ -221,13 +231,24 @@ class HostController(RESTController):
         self._hosts.update(host=host)
         output_format = verb.get('request_output_format', None)
         if output_format.lower() == 'json':
-            result = self._prepare_output('json', verb['request_content_type'], verb['request_output_format'], {'redirect': {'url': '%s/%s?backend_id=%s' % (self._controller_path, host_id, backend_id), 'absolute': 'true'}})
+            result = self._prepare_output(
+                'json',
+                verb['request_content_type'],
+                verb['request_output_format'],
+                {'redirect':
+                    {'url': '{0}/{1}?backend_id={2}'.format(
+                        self._controller_path,
+                        host_id, backend_id), 'absolute': 'true'}})
         else:
-            result = self._prepare_output(verb['request_type'], verb['request_content_type'], output={'redirect': {'url': '%s/%s?backend_id=%s' % (self._controller_path, host_id, backend_id), 'absolute': 'true'}})
+            result = self._prepare_output(
+                verb['request_type'],
+                verb['request_content_type'], output={
+                    'redirect': {'url': '{0}/{1}?backend_id={2}'.format(
+                        self._controller_path, host_id, backend_id),
+                        'absolute': 'true'}})
         return result
 
     @Logger(logger=logger)
     def _fill_backends(self):
         backend_list = backends.backend_list()
         self._page.add_page_data({'backendlist': backend_list})
-
