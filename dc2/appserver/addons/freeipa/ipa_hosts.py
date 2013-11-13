@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+#
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,16 +16,13 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+#
 
 #
 # Std. Python Libs
 #
 import sys
-import types
 import xmlrpclib
-import re
-import uuid
 
 try:
     import web
@@ -35,7 +32,6 @@ except ImportError as e:
 
 
 try:
-    from dc2.lib.db.mongo import Database
     from dc2.lib.db.mongo import Table
     from dc2.lib.freeipa import IPAConnection
     from dc2.lib.freeipa import IPAHostNotFound
@@ -46,7 +42,6 @@ except ImportError as e:
     sys.exit(1)
 
 try:
-    from dc2.appserver.helpers import check_record
     from dc2.appserver.rpc import rpcmethod
 except ImportError as e:
     print(e)
@@ -54,8 +49,6 @@ except ImportError as e:
 
 try:
     from settings import MONGOS
-    from settings import FREEIPA_ENABLED
-    from settings import KERBEROS_AUTH_ENABLED
     from settings import FREEIPA_URL
     from settings import FREEIPA_SERVICE
 except ImportError as e:
@@ -75,7 +68,10 @@ IPA_RECORD = {
 }
 
 
-@rpcmethod(name="dc2.freeipa.hosts.get", params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(
+    name="dc2.freeipa.hosts.get",
+    params={}, returns={},
+    is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_get(fqdn=None):
     freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
     if fqdn is None:
@@ -84,16 +80,22 @@ def dc2_freeipa_hosts_get(fqdn=None):
         try:
             result = freeipa.hosts.get(fqdn)
             return result.to_dict
-        except IPAHostNotFound, e:
+        except IPAHostNotFound:
             return None
 
 
-@rpcmethod(name='dc2.freeipa.hosts.check', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(
+    name='dc2.freeipa.hosts.check',
+    params={}, returns={},
+    is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_check(fqdn=None):
     return dc2_freeipa_hosts_get(fqdn)
 
 
-@rpcmethod(name='dc2.freeipa.hosts.add', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(
+    name='dc2.freeipa.hosts.add',
+    params={}, returns={},
+    is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_add(fqdn=None, infos=None):
     freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
     if fqdn is None:
@@ -102,17 +104,21 @@ def dc2_freeipa_hosts_add(fqdn=None, infos=None):
         try:
             result = freeipa.hosts.add(fqdn, infos)
             web.debug(result.to_dict)
-            rec = {}
-            host = tbl_hosts.find_one({'hostname': fqdn.split('.')[0], 'domainname': '.'.join(fqdn.split('.')[1:])})
+            host = tbl_hosts.find_one(
+                {'hostname': fqdn.split('.')[0], 'domainname': '.'.join(
+                    fqdn.split('.')[1:])})
             if host is not None:
                 host['ipa_otp'] = result.to_dict['randompassword']
                 tbl_hosts.save(host)
             return result.to_dict
-        except IPAHostAddError, e:
+        except IPAHostAddError:
             return None
 
 
-@rpcmethod(name='dc2.freeipa.hosts.delete', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(
+    name='dc2.freeipa.hosts.delete',
+    params={}, returns={},
+    is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_delete(fqdn=None):
     freeipa = IPAConnection(FREEIPA_URL, FREEIPA_SERVICE)
     if fqdn is None:
@@ -122,15 +128,20 @@ def dc2_freeipa_hosts_delete(fqdn=None):
             result = freeipa.hosts.delete(fqdn)
             web.debug(result.to_dict)
             return result.to_dict
-        except IPAHostDeleteError as e:
+        except IPAHostDeleteError:
             return None
 
 
-@rpcmethod(name='dc2.freeipa.hosts.delete_ipa_otp', params={}, returns={}, is_xmlrpc=True, is_jsonrpc=True)
+@rpcmethod(
+    name='dc2.freeipa.hosts.delete_ipa_otp',
+    params={}, returns={},
+    is_xmlrpc=True, is_jsonrpc=True)
 def dc2_freeipa_hosts_delete_ipa_otp(fqdn=None):
     if fqdn is None:
         return xmlrpclib.Fault(-32501, "FQDN is None")
-    host = tbl_hosts.find_one({'hostname': fqdn.split('.')[0], 'domainname': '.'.join(fqdn.split('.')[1:])})
+    host = tbl_hosts.find_one(
+        {'hostname': fqdn.split('.')[0], 'domainname': '.'.join(
+            fqdn.split('.')[1:])})
     if host is not None:
         if 'ipa_otp' in host:
             host['ipa_otp'] = ''

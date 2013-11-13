@@ -149,7 +149,8 @@ class RESTController(object):
             if found is not None:
                 verb['request_data'] = found.groupdict()
                 verb['request_type'] = 'html'
-                if (self._request_context.env.get('X-Request-With', None) is not
+                if (self._request_context.env.get(
+                    'X-Request-With', None) is not
                         None):
                     if (self._request_context.env['X-Request-With'] ==
                             'XMLHttpRequest'):
