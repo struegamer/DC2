@@ -1,0 +1,5 @@
+jinja2
+web.py
+pymongo
+python-krbV
+kerberos
