@@ -82,7 +82,7 @@ class BackendsCtrl(RESTController):
         self._page = Page(None, tmpl_env, self._request_context)
         self._page.set_cssfiles(CSS_FILES)
         self._page.set_jslibs(JS_LIBS)
-        if ('authenticated' in self._request_context.sessionp and
+        if ('authenticated' in self._request_context.session and
                 self._request_context.session.authenticated):
             user_info = {}
             user_info['username'] = self._request_context.session.username

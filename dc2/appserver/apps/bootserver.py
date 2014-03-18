@@ -33,7 +33,7 @@ import re
 try:
     import web
 except ImportError:
-    print "You need to install web.py"
+    print("You need to install web.py")
     sys.exit(1)
 
 
@@ -41,7 +41,7 @@ try:
     from settings import DOWNLOAD_SERVER_URL
     from settings import XMLRPC_BACKEND_SERVER_URL
 except ImportError:
-    print "You don't have a settings file in your Python path"
+    print("You don't have a settings file in your Python path")
     sys.exit(1)
 
 
@@ -178,22 +178,24 @@ class BootServer(object):
                 result += "KERNEL {0}/{1}\n".format(
                     DOWNLOAD_SERVER_URL, env_variables['LINUX_KERNEL_NAME'])
                 if env_variables['DC2_ROOTFS_TYPE'] == 'squashfs':
-                    result += 'APPEND initrd={0}/{1} ip=dhcp nomodeset '
-                    'fetch={0}/{2}  DEBUG=1  boot=live nofb FAI_ACTION={3} '
+                    result1 = 'APPEND initrd={0}/{1} ip=dhcp nomodeset '\
+                    'fetch={0}/{2}  DEBUG=1  boot=live nofb FAI_ACTION={3} '\
                     'FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(
                         DOWNLOAD_SERVER_URL,
                         env_variables['LINUX_INITRD_NAME'],
                         env_variables['DC2_ROOTFS_IMAGE'], action,
                         env_variables["DC2_BACKEND_URL"])
+                    result += result1
                 if env_variables['DC2_ROOTFS_TYPE'] == 'nfs':
-                    result += 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs '
-                    'nomodeset nfsroot={2}  DEBUG=1  boot=live nofb '
-                    'FAI_ACTION={3} FAI_FLAGS="createvt,sshd" '
+                    result1 = 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs '\
+                    'nomodeset nfsroot={2}  DEBUG=1  boot=live nofb '\
+                    'FAI_ACTION={3} FAI_FLAGS="createvt,sshd" '\
                     'DC2_BACKEND_URL="{4}"\n'.format(
                         DOWNLOAD_SERVER_URL,
                         env_variables['LINUX_INITRD_NAME'],
                         env_variables['FAI_NFSROOT'],
                         action, env_variables["DC2_BACKEND_URL"])
+                    result += result1
                 return result
 
     def convert_to_dict(self, list_of_vars=None):

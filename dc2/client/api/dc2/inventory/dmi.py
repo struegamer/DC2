@@ -22,20 +22,20 @@ import os
 
 
 class DMI(object):
-    _SYSFS = "/sys/class/dmi/id/"
+    _SYSFS = "/sys/class/dmi/id"
     _fields = {
-        "manufacturer": _SYSFS + "sys_vendor",
-        "serial_no": _SYSFS + "product_serial",
-        "uuid": _SYSFS + "product_uuid",
-        "asset_tag": _SYSFS + "chassis_asset_tag",
-        "product": _SYSFS + "product_name",
-        "bios_date": _SYSFS + "bios_date",
-        "bios_vendor": _SYSFS + "bios_vendor",
-        "bios_version": _SYSFS + "bios_version",
-        "board_name": _SYSFS + "board_name",
-        "board_serial": _SYSFS * "board_serial",
-        "board_vendor": _SYSFS * "board_vendor",
-        "board_version": _SYSFS * "board_version"
+        "manufacturer": '{0}/{1}'.format(_SYSFS,"sys_vendor"),
+        "serial_no": '{0}/{1}'.format(_SYSFS, "product_serial"),
+        "uuid": '{0}/{1}'.format(_SYSFS, "product_uuid"),
+        "asset_tag": '{0}/{1}'.format(_SYSFS, "chassis_asset_tag"),
+        "product": '{0}/{1}'.format(_SYSFS, "product_name"),
+        "bios_date": '{0}/{1}'.format(_SYSFS, "bios_date"),
+        "bios_vendor": '{0}/{1}'.format(_SYSFS, "bios_vendor"),
+        "bios_version": '{0}/{1}'.format(_SYSFS, "bios_version"),
+        "board_name": '{0}/{1}'.format(_SYSFS, "board_name"),
+        "board_serial": '{0}/{1}'.format(_SYSFS, "board_serial"),
+        "board_vendor": '{0}/{1}'.format(_SYSFS, "board_vendor"),
+        "board_version": '{0}/{1}'.format(_SYSFS, "board_version")
     }
 
     def __init__(self):

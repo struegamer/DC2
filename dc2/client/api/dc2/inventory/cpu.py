@@ -31,12 +31,14 @@ class CPUInfo(object):
     def _read_cpuinfo(self):
         if os.path.exists(self._CPUINFO):
             fp = open(self._CPUINFO, 'rb')
-            processor = None
+            processor = {}
             for line in fp:
+                if len(processor)<=0:
+                    processor = {}
                 a = line.split(":")
                 if len(a) != 1:
-                    key = a[0].split()
-                    value = a[1].split()
+                    key = a[0].strip()
+                    value = a[1].strip()
                     if key == 'processor':
                         processor = {}
                     processor[key] = value
