@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-###############################################################################
+#
 #
 #    (DC)² - DataCenter Deployment Control
 #    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+#
 
 import os
 
@@ -24,7 +24,7 @@ import os
 class DMI(object):
     _SYSFS = "/sys/class/dmi/id"
     _fields = {
-        "manufacturer": '{0}/{1}'.format(_SYSFS,"sys_vendor"),
+        "manufacturer": '{0}/{1}'.format(_SYSFS, "sys_vendor"),
         "serial_no": '{0}/{1}'.format(_SYSFS, "product_serial"),
         "uuid": '{0}/{1}'.format(_SYSFS, "product_uuid"),
         "asset_tag": '{0}/{1}'.format(_SYSFS, "chassis_asset_tag"),
