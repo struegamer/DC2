@@ -3,3 +3,4 @@ web.py
 pymongo
 python-krbV
 kerberos
+lxml
