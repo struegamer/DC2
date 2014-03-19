@@ -18,4 +18,4 @@
 #
 
 from lshw_base import LSHWBase # noqa
-from lshw_nics import lshw_nics # noqa
+from lshw_nics import LSHWNics # noqa
