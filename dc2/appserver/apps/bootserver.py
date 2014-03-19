@@ -153,22 +153,24 @@ class BootServer(object):
                 result += "KERNEL {0}/{1}\n".format(
                     DOWNLOAD_SERVER_URL, env_variables['LINUX_KERNEL_NAME'])
                 if env_variables['DC2_ROOTFS_TYPE'] == 'squashfs':
-                    result += 'APPEND initrd={0}/{1} ip=dhcp nomodeset '
-                    'fetch={0}/{2}  DEBUG=1  boot=live nofb FAI_ACTION={3} '
-                    'FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(
-                        DOWNLOAD_SERVER_URL,
-                        env_variables['LINUX_INITRD_NAME'],
-                        env_variables['DC2_ROOTFS_IMAGE'], action,
-                        env_variables["DC2_BACKEND_URL"])
+                    result += 'APPEND initrd={0}/{1} ip=dhcp nomodeset '\
+                        'fetch={0}/{2}  DEBUG=1  boot=live '\
+                        'nofb FAI_ACTION={3} '\
+                        'FAI_FLAGS="createvt,sshd" '\
+                        'DC2_BACKEND_URL="{4}"\n'.format(
+                            DOWNLOAD_SERVER_URL,
+                            env_variables['LINUX_INITRD_NAME'],
+                            env_variables['DC2_ROOTFS_IMAGE'], action,
+                            env_variables["DC2_BACKEND_URL"])
                 if env_variables['DC2_ROOTFS_TYPE'] == 'nfs':
-                    result += 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs '
-                    'nomodeset nfsroot={2}  DEBUG=1  boot=live nofb '
-                    'FAI_ACTION={3} FAI_FLAGS="createvt,sshd" '
-                    'DC2_BACKEND_URL="{4}"\n'.format(
-                        DOWNLOAD_SERVER_URL,
-                        env_variables['LINUX_INITRD_NAME'],
-                        env_variables['FAI_NFSROOT'], action,
-                        env_variables["DC2_BACKEND_URL"])
+                    result += 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs '\
+                        'nomodeset nfsroot={2}  DEBUG=1  boot=live nofb '\
+                        'FAI_ACTION={3} FAI_FLAGS="createvt,sshd" '\
+                        'DC2_BACKEND_URL="{4}"\n'.format(
+                            DOWNLOAD_SERVER_URL,
+                            env_variables['LINUX_INITRD_NAME'],
+                            env_variables['FAI_NFSROOT'], action,
+                            env_variables["DC2_BACKEND_URL"])
                 return result
             if action == "deploy":
                 action = "install"
@@ -179,22 +181,24 @@ class BootServer(object):
                     DOWNLOAD_SERVER_URL, env_variables['LINUX_KERNEL_NAME'])
                 if env_variables['DC2_ROOTFS_TYPE'] == 'squashfs':
                     result1 = 'APPEND initrd={0}/{1} ip=dhcp nomodeset '\
-                    'fetch={0}/{2}  DEBUG=1  boot=live nofb FAI_ACTION={3} '\
-                    'FAI_FLAGS="createvt,sshd" DC2_BACKEND_URL="{4}"\n'.format(
-                        DOWNLOAD_SERVER_URL,
-                        env_variables['LINUX_INITRD_NAME'],
-                        env_variables['DC2_ROOTFS_IMAGE'], action,
-                        env_variables["DC2_BACKEND_URL"])
+                        'fetch={0}/{2}  DEBUG=1  boot=live '\
+                        'nofb FAI_ACTION={3} '\
+                        'FAI_FLAGS="createvt,sshd" '\
+                        'DC2_BACKEND_URL="{4}"\n'.format(
+                            DOWNLOAD_SERVER_URL,
+                            env_variables['LINUX_INITRD_NAME'],
+                            env_variables['DC2_ROOTFS_IMAGE'], action,
+                            env_variables["DC2_BACKEND_URL"])
                     result += result1
                 if env_variables['DC2_ROOTFS_TYPE'] == 'nfs':
                     result1 = 'APPEND initrd={0}/{1} ip=dhcp root=/dev/nfs '\
-                    'nomodeset nfsroot={2}  DEBUG=1  boot=live nofb '\
-                    'FAI_ACTION={3} FAI_FLAGS="createvt,sshd" '\
-                    'DC2_BACKEND_URL="{4}"\n'.format(
-                        DOWNLOAD_SERVER_URL,
-                        env_variables['LINUX_INITRD_NAME'],
-                        env_variables['FAI_NFSROOT'],
-                        action, env_variables["DC2_BACKEND_URL"])
+                        'nomodeset nfsroot={2}  DEBUG=1  boot=live nofb '\
+                        'FAI_ACTION={3} FAI_FLAGS="createvt,sshd" '\
+                        'DC2_BACKEND_URL="{4}"\n'.format(
+                            DOWNLOAD_SERVER_URL,
+                            env_variables['LINUX_INITRD_NAME'],
+                            env_variables['FAI_NFSROOT'],
+                            action, env_variables["DC2_BACKEND_URL"])
                     result += result1
                 return result
 
