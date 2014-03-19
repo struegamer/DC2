@@ -97,7 +97,7 @@ Package: python-dc2.client
 Section: python
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends},
-	python-dc2
+	python-dc2, python-bitmath, python-lxml
 Conflicts: python-dc2.appserver, fai
 Description: DC² is a bookkeeping tool for automatic deployments
  DC² uses FAI as automatic deployment framework.
