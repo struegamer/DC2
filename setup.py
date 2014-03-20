@@ -23,7 +23,7 @@ import setuptools
 from distutils.core import setup
 
 setup(name='dc2',
-      version='0.9',
+      version='0.10',
       description='DC² Namespace Package',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
@@ -32,7 +32,7 @@ setup(name='dc2',
       )
 
 setup(name="dc2.distrotools",
-      version="0.9'",
+      version='0.10',
       description="DC² Distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -48,7 +48,7 @@ setup(name="dc2.distrotools",
       )
 
 setup(name="dc2.client",
-      version="0.9'",
+      version='0.10',
       description="DC² Client",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -58,6 +58,7 @@ setup(name="dc2.client",
                 'dc2.client.api',
                 'dc2.client.api.dc2.inventory',
                 'dc2.client.api.dc2.inventory.lshw',
+                'dc2.client.api.dc2.cliparsers',
                 'dc2.client.api.dc2',
                 'dc2.client.api.helpers',
                 'dc2.client.api.dc2.objects',
@@ -67,10 +68,14 @@ setup(name="dc2.client",
                 'dc2.client.api.cs2',
                 'dc2.client.api.cs2.objects'
                 ],
-      scripts=['scripts/dc2-client', 'scripts/dc2-ssl-client'])
+      scripts=[
+          'scripts/dc2-client',
+          'scripts/dc2-ssl-client',
+          'scripts/dc2-client-ng'
+      ])
 
 setup(name="dc2.appserver",
-      version="0.9'",
+      version='0.10',
       description="DC² Application Server",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -90,7 +95,7 @@ setup(name="dc2.appserver",
       scripts=["scripts/dc2-prepare_initial_data", "scripts/dc2-squashfs"])
 
 setup(name='dc2.lib',
-      version='0.9',
+      version='0.10',
       description='DC2 General Library',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
@@ -122,7 +127,7 @@ setup(name='dc2.lib',
       )
 
 setup(name='dc2.api',
-      version='0.9',
+      version='0.10',
       description='DC2 API',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
@@ -142,7 +147,7 @@ setup(name='dc2.api',
       )
 
 setup(name='dc2.admincenter',
-      version='0.9',
+      version='0.10',
       description='DC2 AdminCenter',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
