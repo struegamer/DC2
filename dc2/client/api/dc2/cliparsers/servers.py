@@ -33,7 +33,10 @@ except ImportError as e:
 
 
 def create_subparser():
-    server_parser = SUBPARSERS.add_parser('servers')
+    server_parser = SUBPARSERS.add_parser(
+        'servers',
+        description='Server related functions',
+        help='Server related functions')
     server_parser_search_group = server_parser.add_mutually_exclusive_group()
     server_parser_search_group.add_argument(
         '--find-mac',
