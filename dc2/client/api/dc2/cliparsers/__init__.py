@@ -31,3 +31,4 @@ def _output(result, message):
         print(message)
 
 from . import servers # noqa
+from . import hosts # noqa
