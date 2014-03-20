@@ -1,6 +1,0 @@
-{
-	title:string
-	backend_url:string
-	location:string
-}
-
