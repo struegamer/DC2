@@ -19,20 +19,20 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import setuptools
-from distutils.core import setup
+from setuptools import setup
+# from distutils.core import setup
 
-setup(name='dc2',
-      version='0.10',
-      description='DC² Namespace Package',
-      author='Stephan Adig',
-      author_email='sh@sourcecode.de',
-      url='http://launchpad.net/dc2',
-      packages=['dc2']
-      )
+# setup(name='dc2',
+#       version='0.11',
+#       description='DC² Namespace Package',
+#       author='Stephan Adig',
+#       author_email='sh@sourcecode.de',
+#       url='http://launchpad.net/dc2',
+#       packages=['dc2']
+#       )
 
-setup(name="dc2.distrotools",
-      version='0.10',
+setup(name="dc2-distrotools",
+      version='0.11',
       description="DC² Distrotools",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -47,8 +47,8 @@ setup(name="dc2.distrotools",
       ]
       )
 
-setup(name="dc2.client",
-      version='0.10',
+setup(name="dc2-client",
+      version='0.11',
       description="DC² Client",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -74,8 +74,8 @@ setup(name="dc2.client",
           'scripts/dc2-client-ng'
       ])
 
-setup(name="dc2.appserver",
-      version='0.10',
+setup(name="dc2-appserver",
+      version='0.11',
       description="DC² Application Server",
       author="Stephan Adig",
       author_email="sh@sourcecode.de",
@@ -94,8 +94,8 @@ setup(name="dc2.appserver",
                 'dc2.appserver.addons.dns'],
       scripts=["scripts/dc2-prepare_initial_data", "scripts/dc2-squashfs"])
 
-setup(name='dc2.lib',
-      version='0.10',
+setup(name='dc2-lib',
+      version='0.11',
       description='DC2 General Library',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
@@ -126,8 +126,8 @@ setup(name='dc2.lib',
           'dc2.lib.freeipa.lib.records']
       )
 
-setup(name='dc2.api',
-      version='0.10',
+setup(name='dc2-api',
+      version='0.11',
       description='DC2 API',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
@@ -146,8 +146,8 @@ setup(name='dc2.api',
       ]
       )
 
-setup(name='dc2.admincenter',
-      version='0.10',
+setup(name='dc2-admincenter',
+      version='0.11',
       description='DC2 AdminCenter',
       author='Stephan Adig',
       author_email='sh@sourcecode.de',
