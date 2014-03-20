@@ -1,0 +1,285 @@
+#!/usr/binenv python
+# -*- coding: utf-8 -*-
+#################################################################################
+#
+#    (DC)² - DataCenter Deployment Control
+#    Copyright (C) 2010, 2011, 2012, 2013  Stephan Adig <sh@sourcecode.de>
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#################################################################################
+
+import sys
+import os
+import os.path
+import types
+from optparse import OptionParser, OptionGroup
+try:
+    from dc2.client.api.cs2 import Keys
+    from dc2.client.api.cs2 import CSR
+    from dc2.client.api.cs2 import Cert
+except ImportError:
+    a=sys.path
+    b=[]
+    b.append("../")
+    sys.path=b+a
+    from dc2.client.api.cs2 import Keys
+    from dc2.client.api.cs2 import CSR
+    from dc2.client.api.cs2 import Cert
+
+def do_keys(options):
+    if options.is_keys:
+        k=Keys(options.cs2_backend_url)
+        if options.is_key_list:
+            key_list=k.key_list()
+            print "{:<50} {:<50} {:<20}".format("Keyname","Description","Created")
+            print "{:-^150}".format("")
+            for key in key_list:
+                print "{:<50} {:<50} {:<10} {:<15}".format(key["keyname"],key["description"],key["date_created"],key["time_created"])
+            return True
+        if not options.is_key_list and not options.key_json_create:
+            key=None
+            if options.key_find_name is not None and options.key_find_name!="":
+                key=k.get_key_pem(options.key_find_name)
+            if options.key_print_pem and options.key_filename is None:
+                if key is not None:
+                    print key["key_pem"]
+                    return True
+                else:
+                    print "You need to specify a key name to find via --key-find option"
+                    return None
+            if options.key_filename is not None and options.key_filename != "" and options.key_print_pem is False:
+                if key is not None:
+                    fp=open(options.key_filename,"wb")
+                    fp.write(key["key_pem"])
+                    fp.close()
+                    print "PEM Contents of Key '{0}' was saved to '{1}".format(options.key_find_name,options.key_filename)
+                    return True
+    return None
+
+def do_csr(options):
+    if options.is_csr:
+        c=CSR(options.cs2_backend_url)
+        if options.is_csr_list:
+            csr_list=c.csr_list()
+            print "{:<50} {:<50} {:<20}".format("Commonname","Keyname","Created")
+            print "{:-^150}".format("")
+            for csr in csr_list:
+                print "{:<50} {:<50} {:<10} {:<15}".format(csr["commonname"],csr["csr_with_key"],csr["date_created"],csr["time_created"])
+            return True
+        if not options.is_csr_list:
+            csr=None
+            if options.csr_find_name is not None and options.csr_find_name != "":
+                csr=c.csr_get(options.csr_find_name)
+            if options.csr_print_pem:
+                if csr is not None:
+                    print csr["csr_pem"]
+                    return True
+                else:
+                    print "You need to specify a CSR name to find via --csr-find option"
+                    return None
+            if options.csr_file is not None and options.csr_file != "" and options.csr_print_pem is False:
+                if csr is not None:
+                    fp=open(options.csr_file,"wb")
+                    fp.write(csr["csr_pem"])
+                    fp.close()
+                    print "PEM Contents of CSR '{0} was saved to '{1}'".format(options.csr_find_name,options.csr_file)
+                    return True
+    return None
+
+
+def do_cert(options):
+    if options.is_cert:
+        c=Cert(options.cs2_backend_url)
+        if options.is_cert_list:
+            crt_list=c.cert_list()
+            print "{:<50} {:<20}".format("Commonname","Created")
+            print "{:-^150}".format("")
+            for cert in crt_list:
+                print "{:<50} {:<10} {:<15}".format(cert["commonname"],cert["date_created"],cert["time_created"])
+            return True
+        if not options.is_cert_list:
+            if options.cert_find_name is not None and options.cert_find_name != "":
+                cert=c.cert_get(options.cert_find_name)
+            if options.cert_print_pem:
+                if cert is not None:
+                    print cert["cert_pem"]
+                    return True
+                else:
+                    print "You need to specify a Cert name to find via --cert-find option"
+                    return none
+            if options.cert_file is not None and options.cert_file != "" and options.cert_print_pem is False:
+                if cert is not None:
+                    fp=open(options.cert_file,"wb")
+                    fp.write(cert["cert_pem"])
+                    fp.close()
+                    print "PEM Contents of Cert '{0}' was saved to '{1}'".format(options.cert_find_name,options.cert_file)
+                    return True
+    return None
+
+
+def main():
+    parser=OptionParser(add_help_option=False)
+    parser.add_option('','--help',
+                      action='help',
+                      help="Show this help")
+
+    parser.add_option('','--key',
+                       action="store_true",
+                       dest="is_keys",
+                       default=False,
+                       help="All following options are SSL Key related")
+    parser.add_option('','--csr',
+                      action="store_true",
+                      dest="is_csr",
+                      default=False,
+                      help="All following options are SSL CSR related")
+    parser.add_option('','--cert',
+                      action="store_true",
+                      dest="is_cert",
+                      default=False,
+                      help="All following options are SSL Cert related")
+    parser.add_option('','--crl',
+                      action="store_true",
+                      dest="is_crl",
+                      default=False,
+                      help="All following options are SSL CRL Related")
+    parser.add_option('','--cs2-backend-url',
+                      action="store",
+                      dest="cs2_backend_url",
+                      default=None,
+                      metavar="<URL>",
+                      help="CS2 Backend Url")
+
+    sslkeyOptionGroup=OptionGroup(parser,"SSL Key Related Options")
+    sslkeyOptionGroup.add_option('','--key-list',
+                                 action="store_true",
+                                 dest="is_key_list",
+                                 default=False,
+                                 help="List all SSL Keys")
+
+    sslkeyOptionGroup.add_option('','--key-find',
+                                 action="store",
+                                 dest="key_find_name",
+                                 type="string",
+                                 metavar="NAME",
+                                 help="Name of key to find",
+                                 default=None)
+    sslkeyOptionGroup.add_option('','--key-print-pem',
+                                 action="store_true",
+                                 dest="key_print_pem",
+                                 default=False,
+                                 help="Print PEM Contents of Key")
+    sslkeyOptionGroup.add_option('','--key-save',
+                                 action="store",
+                                 type="string",
+                                 dest="key_filename",
+                                 metavar="FILENAME",
+                                 default=None,
+                                 help="Save PEM Contents of Key to FILENAME")
+    sslkeyOptionGroup.add_option('','--key-create',
+                                 action="store",
+                                 dest="key_json_create",
+                                 type="string",
+                                 metavar="<JSON Record>",
+                                 default=None,
+                                 help="Create a key with the value of <JSON Record>")
+
+    sslcsrOptionGroup=OptionGroup(parser,"SSL CSR Related Options")
+    sslcsrOptionGroup.add_option('','--csr-list',
+                                 action="store_true",
+                                 dest="is_csr_list",
+                                 default=False,
+                                 help="List all CSR Records")
+    sslcsrOptionGroup.add_option('','--csr-find',
+                                 action="store",
+                                 dest="csr_find_name",
+                                 type="string",
+                                 metavar="COMMONNAME",
+                                 default=None,
+                                 help="Commonname of CSR to find")
+    sslcsrOptionGroup.add_option('','--csr-print-pem',
+                                 action="store_true",
+                                 dest='csr_print_pem',
+                                 default=False,
+                                 help="Print PEM Contents of CSR")
+    sslcsrOptionGroup.add_option('','--csr-save',
+                                 action="store",
+                                 type="string",
+                                 dest="csr_file",
+                                 metavar="FILENAME",
+                                 help="Save CSR to FILENAME")
+
+    sslcertOptionGroup=OptionGroup(parser,"SSL Cert Related Options")
+    sslcertOptionGroup.add_option('','--cert-list',
+                                  action="store_true",
+                                  dest='is_cert_list',
+                                  default=False,
+                                  help="List all Certificates")
+
+    sslcertOptionGroup.add_option('','--cert-find',
+                                  action='store',
+                                  dest='cert_find_name',
+                                  default=None,
+                                  metavar="COMMONNAME",
+                                  help="Commonname of Cert to find")
+    sslcertOptionGroup.add_option('','--cert-print-pem',
+                                  action='store_true',
+                                  dest='cert_print_pem',
+                                  default=False,
+                                  help="Print PEM Contents of Cert")
+    sslcertOptionGroup.add_option('','--cert-save',
+                                  action="store",
+                                  dest='cert_file',
+                                  metavar='FILENAME',
+                                  default=None,
+                                  help='Save Cert to FILENAME')
+
+
+    sslcrlOptionGroup=OptionGroup(parser,"SSL CRL Related Options")
+    sslcrlOptionGroup.add_option('','--crl-list',
+                                 action="store_true",
+                                 dest='is_crl_list',
+                                 default=False,
+                                 help="List all Certificate Revocation List")
+
+
+    parser.add_option_group(sslkeyOptionGroup)
+    parser.add_option_group(sslcsrOptionGroup)
+    parser.add_option_group(sslcertOptionGroup)
+    parser.add_option_group(sslcrlOptionGroup)
+    (options,args)=parser.parse_args()
+    if (options.is_keys and options.is_csr) or \
+        (options.is_keys and options.is_cert) or \
+        (options.is_keys and options.is_crl) or \
+        (options.is_csr and options.is_cert) or \
+        (options.is_csr and options.is_crl) or \
+        (options.is_cert and options.is_crl):
+            print "You can only select one of key, csr, cert or crl related commands"
+            sys.exit(1)
+    if options.cs2_backend_url is None:
+        print "You need to set the CS² backend url"
+        sys.exit(1)
+    result=None
+    if options.is_keys:
+        result=do_keys(options)
+    if options.is_csr:
+        result=do_csr(options)
+    if options.is_cert:
+        result=do_cert(options)
+    if result is not None:
+        sys.exit(0)
+    sys.exit(1)
+
+if __name__=="__main__":
+    main()
