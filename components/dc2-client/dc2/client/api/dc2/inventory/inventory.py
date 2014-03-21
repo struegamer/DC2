@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
-###############################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
-import xmlrpclib
-
+from base_inventory import BaseInventory
 from dmi import DMI
 from interfaces import Interfaces
 from pci import PCIDevices
@@ -27,17 +26,18 @@ from cpu import CPUInfo
 from meminfo import MemoryInfo
 
 
-class ServerInventory(object):
+class ServerInventory(BaseInventory):
     def __init__(self, rpcurl):
+        super(ServerInventory, self).__init__(rpcurl)
         self._rpcurl = rpcurl
         self._dmi = DMI()
         self._nics = Interfaces()
         self._pcidevices = PCIDevices()
         self._meminfo = MemoryInfo()
         self._cpuinfo = CPUInfo()
-        self._proxy = xmlrpclib.ServerProxy(self._rpcurl, allow_none=True)
 
     def _add_server(self):
+        super(ServerInventory, self)._add_server()
         server_rec = {}
         server_rec["uuid"] = self._dmi.uuid
         #
@@ -85,6 +85,3 @@ class ServerInventory(object):
             install_rec["hostname"] = "{0}.{1}".format(
                 server_rec["serial_no"], "INVENTORY")
             self._proxy.dc2.deployment.installstate.add(install_rec)
-
-    def doInventory(self):
-        self._add_server()
