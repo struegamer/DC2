@@ -18,11 +18,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import sys
-import imp
-
 from . import SUBPARSERS
-from . import _output  # noqa
+from . import _output
 
 
 def create_subparser():
@@ -56,15 +53,26 @@ def process_discovery(args):
     result = False
     if args.discovery_module is None:
         try:
-            from dc2.client.api.dc2 import ServerInventory
-            s = ServerInventory(args.dc2_backend_url)  # noqa
+            discovery_module = __import__(
+                'dc2.client.api.dc2',
+                globals(),
+                locals(),
+                ['ServerInventory'])
+            s = discovery_module.ServerInventory(args.dc2_backend_url)  # noqa
             s.doInventory()
         except Exception as e:
-            print(e)
-            sys.exit(1)
+            _output(False, e)
+            return False
     else:
-        pass
-        # from dc2.gaikai.client.inventory import ServerInventory
-        # s = ServerInventory(args.dc2_backend_url)
-        # s.doInventory()
+        try:
+            discovery_module = __import__(
+                args.discovery_module,
+                globals(),
+                locals(),
+                ['ServerInventory'])
+            s = discovery_module.ServerInventory(args.dc2_backend_url)
+            s.doInventory()
+        except Exception as e:
+            _output(False, e)
+            return False
 create_subparser()
