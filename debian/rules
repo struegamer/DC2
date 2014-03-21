@@ -1,14 +1,14 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@ --with python2 --buildsystem=python_distutils
+	dh $@ 
 
 override_dh_auto_build:
-	#cd $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/ ; \
-	#QOOXDOO_PATH=/usr/share/qooxdoo-framework1.5/ ./generate.py -m QOOXDOO_PATH:/usr/share/qooxdoo-framework1.5/ build
 	dh_auto_build
 
 override_dh_auto_install:
+	cd $(CURDIR)/components/dc2-lib/
+	python2 ./setup.py install
 	#
 	# dc2-distrotools config examples
 	# 
@@ -39,14 +39,7 @@ override_dh_auto_install:
 	#
 	mkdir -p $(CURDIR)/debian/tmp/srv/fai/dc2-config/
 	cp -r $(CURDIR)/examples/dc2-fai-config-space/* $(CURDIR)/debian/tmp/srv/fai/dc2-config/
-	#
-	# dc2-frontend-qooxdoo
-	#
-	#mkdir -p $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo
-	#cp -r $(CURDIR)/frontends/frontend-qooxdoo/dc2-qooxdoo/build/* $(CURDIR)/debian/tmp/usr/share/webapp/dc2-frontend-qooxdoo/
-	#
-	# auto install everything
-	#
+
 	dh_auto_install 
 
 	
