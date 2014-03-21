@@ -22,7 +22,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='dc2-lib',
+    name='dc2.lib',
     version='0.11',
     description='DC2 General Library',
     author='Stephan Adig',

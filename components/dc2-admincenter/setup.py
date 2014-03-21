@@ -22,7 +22,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='dc2-admincenter',
+    name='dc2.admincenter',
     version='0.11',
     description='DC2 AdminCenter',
     author='Stephan Adig',

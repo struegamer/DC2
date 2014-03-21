@@ -22,7 +22,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="dc2-appserver",
+    name="dc2.appserver",
     version='0.11',
     description="DC² Application Server",
     author="Stephan Adig",

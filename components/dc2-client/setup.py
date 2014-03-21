@@ -21,7 +21,7 @@
 
 from setuptools import setup, find_packages
 
-setup(name="dc2-client",
+setup(name="dc2.client",
       version='0.11',
       description="DC² Client",
       author="Stephan Adig",
