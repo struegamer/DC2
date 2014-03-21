@@ -22,7 +22,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="dc2.client",
+    name="dc2.distrotools",
     version='0.11',
     description="DC² Client",
     author="Stephan Adig",
@@ -31,8 +31,7 @@ setup(
     namespace_packages=['dc2'],
     packages=find_packages(),
     scripts=[
-        'scripts/dc2-client',
-        'scripts/dc2-ssl-client',
-        'scripts/dc2-client-ng'
+        'scripts/dc2-mirror',
+        'scripts/dc2-create-chroot'
     ]
 )
