@@ -33,14 +33,14 @@ class LSHWGenerics(LSHWBase):
 
     def __init__(self):
         super(LSHWGenerics, self).__init__()
-        self._generics = []
+        self._data = []
         self._find_data()
 
     def _find_data(self):
         find_generics = etree.XPath(".//node[@class='{0}']".format(
             self._NODE_CLASS_NAME))
-        _generics = {}
         for generic in find_generics(self._inventory):
+            _generics = {}
             for generic_tag in generic:
                 if generic_tag.tag == 'configuration':
                     _generics['configuration'] = {}
@@ -61,9 +61,8 @@ class LSHWGenerics(LSHWBase):
                             resource_data['value']
                 else:
                     _generics[generic_tag.tag] = generic_tag.text
+            self._data.append(_generics)
 
-            self._generics.append(_generics)
-
-    def _get_generics(self):
-        return self._generics
-    generics = property(_get_generics)
+    def _get_data(self):
+        return self._data
+    data = property(_get_data)

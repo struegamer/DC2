@@ -33,14 +33,14 @@ class LSHWNics(LSHWBase):
 
     def __init__(self):
         super(LSHWNics, self).__init__()
-        self._nics = []
+        self._data = []
         self._find_nics()
 
     def _find_nics(self):
         find_nics = etree.XPath(".//node[@class='{0}']".format(
             self._NODE_CLASS_NAME))
-        _nics = {}
         for nic in find_nics(self._inventory):
+            _nics = {}
             for nic_tag in nic:
                 if nic_tag.tag == 'configuration':
                     _nics['configuration'] = {}
@@ -61,9 +61,8 @@ class LSHWNics(LSHWBase):
                             resource_data['value']
                 else:
                     _nics[nic_tag.tag] = nic_tag.text
+            self._data.append(_nics)
 
-            self._nics.append(_nics)
-
-    def _get_nics(self):
-        return self._nics
-    nics = property(_get_nics)
+    def _get_data(self):
+        return self._data
+    data = property(_get_data)
