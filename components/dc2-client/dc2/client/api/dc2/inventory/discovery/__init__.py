@@ -24,3 +24,4 @@ from .interfaces import NICInterfaces # noqa
 from .meminfo import MemoryInfo # noqa
 from .pci import PCIDevices # noqa
 from .lshw import LSHWNics # noqa
+from .lshw import LSHWGenerics # noqa
