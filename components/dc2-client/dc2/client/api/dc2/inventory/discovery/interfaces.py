@@ -18,12 +18,21 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from inventory import ServerInventory # noqa
-from objects import Servers # noqa
-from objects import Hosts # noqa
-from objects import MACs # noqa
-from objects import InstallState # noqa
-from objects import Environments # noqa
-from objects import Utilities # noqa
-from objects import SystemUser # noqa
-from objects import SystemGroups # noqa
+import re
+import subprocess
+
+
+class NICInterfaces(object):
+    def __init__(self):
+        self._get_nics()
+
+    def _get_nics(self):
+        ipconfig = subprocess.Popen(
+            ["ip", "l"],
+            stdout=subprocess.PIPE)
+        p = re.compile(r"\s+link/ether\s+([a-zA-Z0-9:]+)", re.VERBOSE)
+        self.__dict__["nics"] = []
+        for i in ipconfig.stdout:
+            found = p.search(i)
+            if found is not None:
+                self.__dict__["nics"].append(found.group(1))

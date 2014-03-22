@@ -18,12 +18,22 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from inventory import ServerInventory # noqa
-from objects import Servers # noqa
-from objects import Hosts # noqa
-from objects import MACs # noqa
-from objects import InstallState # noqa
-from objects import Environments # noqa
-from objects import Utilities # noqa
-from objects import SystemUser # noqa
-from objects import SystemGroups # noqa
+
+class MemoryInfo(object):
+    _MEMINFO = '/proc/meminfo'
+
+    def __init__(self):
+        self._meminfo = {}
+        self._read_meminfo()
+
+    def _read_meminfo(self):
+        fp = open('/proc/meminfo', 'rb')
+        for line in fp:
+            a = line.split(':')
+            b = {}
+            b[a[0].strip()] = a[1].strip()
+            self._meminfo.update(b)
+        fp.close()
+
+    def meminfo(self):
+        return self._meminfo

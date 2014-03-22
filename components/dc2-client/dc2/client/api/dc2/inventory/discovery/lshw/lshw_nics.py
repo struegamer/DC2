@@ -25,7 +25,7 @@ except ImportError:
     print('You didn\'t install lxml')
     sys.exit(1)
 
-from lshw_base import LSHWBase
+from .lshw_base import LSHWBase
 
 
 class LSHWNics(LSHWBase):

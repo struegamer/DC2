@@ -18,12 +18,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from inventory import ServerInventory # noqa
-from objects import Servers # noqa
-from objects import Hosts # noqa
-from objects import MACs # noqa
-from objects import InstallState # noqa
-from objects import Environments # noqa
-from objects import Utilities # noqa
-from objects import SystemUser # noqa
-from objects import SystemGroups # noqa
+from .cpu import CPUInfo # noqa
+from .dmi import DMI # noqa
+from .interfaces import NICInterfaces # noqa
+from .meminfo import MemoryInfo # noqa
+from .pci import PCIDevices # noqa
+from .lshw import LSHWNics # noqa

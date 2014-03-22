@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
-#################################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+
 import xmlrpclib
 import sys
 import os
@@ -30,6 +31,7 @@ except ImportError as e:
     print(e)
     print e
     sys.exit(1)
+
 
 class SystemGroups(object):
     def __init__(self, rpcurl=None):
@@ -45,7 +47,7 @@ class SystemGroups(object):
 
             call_args.append("/usr/bin/getent")
             call_args.append("group")
-            if group.has_key("groupname"):
+            if "groupname" in group:
                 call_args.append(group["groupname"])
             return_code = subprocess.call(call_args, stdout=None)
             if return_code > 0:
@@ -61,7 +63,7 @@ class SystemGroups(object):
                 call_args = get_callargs_rootcmd(call_args)
             call_args.append("/usr/bin/getent")
             call_args.append("group")
-            if group.has_key("gid"):
+            if "gid" in group:
                 call_args.append(group["gid"])
                 return_code = subprocess.call(call_args, stdout=None)
                 if return_code > 0:
@@ -69,23 +71,26 @@ class SystemGroups(object):
                 else:
                     return False
         return None
+
     def create_all_groups(self):
         grouplist = self._proxy.dc2.configuration.systemgroups.list()
         if len(grouplist) > 0:
             for i in grouplist:
-                if i.has_key("groupname"):
+                if 'groupname' in i:
                     if self._check_groupname(i):
                         call_args = []
                         if self._has_rootcmd:
                             call_args = get_callargs_rootcmd(call_args)
                         call_args.append("/usr/sbin/addgroup")
-                        if i.has_key("is_system_group") and i["is_system_group"] == "1":
+                        if ('is_system_group' in i and
+                                i["is_system_group"] == "1"):
                             call_args.append("--system")
-                        if i.has_key("gid") and i["gid"] != "-1":
+                        if 'gid' in i and i["gid"] != "-1":
                             call_args.append("--gid")
                             call_args.append(i["gid"])
                         call_args.append(i["groupname"])
                         subprocess.call(call_args)
+
 
 class SystemUser(object):
     def __init__(self, rpcurl=None):
@@ -100,7 +105,7 @@ class SystemUser(object):
                 call_args = get_callargs_rootcmd(call_args)
 
             call_args.append("id")
-            if user.has_key("username"):
+            if 'username' in user:
                 call_args.append(user["username"])
             if subprocess.call(call_args) == 0:
                 return True
@@ -115,7 +120,7 @@ class SystemUser(object):
                 call_args = get_callargs_rootcmd(call_args)
             if os.path.exists("/usr/sbin/usermod"):
                 call_args.append("/usr/sbin/usermod")
-                if user.has_key("cryptpw") and user.has_key("username"):
+                if 'cryptpw' in user and 'username' in user:
                     call_args.append("-p")
                     call_args.append(user["cryptpw"])
                     call_args.append(user["username"])
@@ -124,7 +129,6 @@ class SystemUser(object):
                     else:
                         return False
         return None
-
 
     def create_all_users(self):
         userlist = []
@@ -144,34 +148,40 @@ class SystemUser(object):
                 call_args = get_callargs_rootcmd(call_args)
             if os.path.exists("/usr/sbin/useradd"):
                 call_args.append("/usr/sbin/useradd")
-                if user.has_key("username"):
+                if 'username' in user:
                     call_args.append("-m")
                     call_args.append("--home")
                     call_args.append("/home/%s" % user["username"])
                     call_args.append("--shell")
                     call_args.append("/bin/bash")
-                    if user.has_key("uid") and str(user["uid"]) != "-1":
+                    if 'uid' in user and str(user["uid"]) != "-1":
                         call_args.append("-u")
                         call_args.append("%s" % user["uid"])
-                    if user.has_key("gid") and str(user["gid"]) != "-1":
+                    if 'gid' in user and str(user["gid"]) != "-1":
                         call_args.append("-g")
                         call_args.append("%s" % user["gid"])
-                    if user.has_key("realname") and user["realname"] != "" and user["realname"] is not None:
+                    if ('realname' in user and
+                            user["realname"] != "" and
+                            user["realname"] is not None):
                         call_args.append("-c")
                         call_args.append("%s" % user["realname"])
-                    if user.has_key("cryptpw") and user["cryptpw"] != "" and user["cryptpw"] is not None:
+                    if ('cryptpw' in user and
+                            user["cryptpw"] != "" and
+                            user["cryptpw"] is not None):
                         call_args.append("-p")
                         call_args.append('%s' % user["cryptpw"])
                     call_args.append('%s' % user["username"])
                     subprocess.call(call_args)
-                    if user.has_key("is_admin") and user["is_admin"] == "1":
-                        admingroups = self._proxy.dc2.configuration.systemgroups.list({"is_admin_group":"1"})
-                        admingroupstr = ""
+                    if 'is_admin' in user and user["is_admin"] == "1":
+                        admingroups =\
+                            self._proxy.dc2.configuration.systemgroups.list(
+                                {"is_admin_group": "1"})
                         if len(admingroups) > 0:
                             for i in admingroups:
                                 call_args = []
                                 if self._has_rootcmd:
-                                    call_args = get_callargs_rootcmd(call_args)
+                                    call_args = get_callargs_rootcmd(
+                                        call_args)
                                 call_args.append("/usr/sbin/adduser")
                                 call_args.append(user["username"])
                                 call_args.append(i["groupname"])

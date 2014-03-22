@@ -17,4 +17,5 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
+from base_inventory import BaseInventory # noqa
 from inventory import ServerInventory # noqa

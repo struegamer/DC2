@@ -18,20 +18,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from base_inventory import BaseInventory
-from dmi import DMI
-from interfaces import Interfaces
-from pci import PCIDevices
-from cpu import CPUInfo
-from meminfo import MemoryInfo
+from .base_inventory import BaseInventory
+from .discovery import DMI
+from .discovery import NICInterfaces
+from .discovery import PCIDevices
+from .discovery import CPUInfo
+from .discovery import MemoryInfo
 
 
 class ServerInventory(BaseInventory):
     def __init__(self, rpcurl):
         super(ServerInventory, self).__init__(rpcurl)
-        self._rpcurl = rpcurl
         self._dmi = DMI()
-        self._nics = Interfaces()
+        self._nics = NICInterfaces()
         self._pcidevices = PCIDevices()
         self._meminfo = MemoryInfo()
         self._cpuinfo = CPUInfo()
