@@ -1,0 +1,49 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2 -v
+
+override_dh_auto_build:
+#	for i in dc2-lib dc2-api dc2-client dc2-distrotools dc2-appserver dc2-admincenter; do \
+#		a=$$(echo $$i|sed -e 's/\-/./') ;\
+#		cd $(CURDIR)/components/$$i/ ; python2 ./setup.py install --root $(CURDIR)/debian/python-$$a/ --prefix /usr --install-layout deb --install-scripts=/usr/share/$$i ; \
+#	done
+
+
+override_dh_auto_install:
+	for i in dc2-lib dc2-api dc2-client dc2-distrotools dc2-appserver dc2-admincenter; do \
+		cd $(CURDIR)/components/$$i/ ; python2 ./setup.py install --root $(CURDIR)/debian/tmp/ --prefix /usr --install-layout deb ; \
+	done
+	#
+	# dc2-distrotools config examples
+	# 
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/
+	cp $(CURDIR)/examples/dc2-distrotools/mirror-config.yaml $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/mirror-config.yaml
+	cp $(CURDIR)/examples/dc2-distrotools/nfsroot-config.yaml $(CURDIR)/debian/tmp/usr/share/doc/dc2-distrotools/nfsroot-config.yaml
+	# 
+	# dc2-appserver
+	#
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	cp $(CURDIR)/examples/dc2-appserver/dc2db_new.py $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	cp $(CURDIR)/examples/dc2-appserver/settings.py $(CURDIR)/debian/tmp/usr/share/dc2-appserver/settings.py.dist
+	cp -r $(CURDIR)/examples/dc2-appserver/templates $(CURDIR)/debian/tmp/usr/share/dc2-appserver/
+	mkdir -p $(CURDIR)/debian/tmp/etc/apache2/sites-available
+	cp $(CURDIR)/debian/apache2.vhost/dc2db.hosts $(CURDIR)/debian/tmp/etc/apache2/sites-available/
+	#
+	# dc2-admincenter
+	#
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp $(CURDIR)/examples/dc2-admincenter/dc2-admincenter.py $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp $(CURDIR)/examples/dc2-admincenter/settings.py $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/settings.py.dist
+	cp -r $(CURDIR)/examples/dc2-admincenter/static $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp -r $(CURDIR)/examples/dc2-admincenter/templates $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+	cp -r $(CURDIR)/examples/dc2-admincenter/first-time $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
+
+	#
+	# dc2-fai-config-space
+	#
+	mkdir -p $(CURDIR)/debian/tmp/srv/fai/dc2-config/
+	cp -r $(CURDIR)/examples/dc2-fai-config-space/* $(CURDIR)/debian/tmp/srv/fai/dc2-config/
+	dh_auto_install
+	dh_python2 
+	

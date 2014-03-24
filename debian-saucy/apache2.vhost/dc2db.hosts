@@ -1,0 +1,13 @@
+<VirtualHost _default_:80>
+	ServerAdmin root@localhost
+	ServerName dc2db
+	WSGIScriptAlias / /usr/share/dc2-appserver/dc2db_new.py
+	WSGIDaemonProcess dc2-ng user=www-data group=www-data processes=5 threads=10 display-name=dc2-ng
+	WSGIProcessGroup dc2-ng
+</VirtualHost>
+
+<VirtualHost _default_:80>
+	ServerAdmin root@localhost
+	DocumentRoot /srv/tftp/fai/
+</VirtualHost>
+

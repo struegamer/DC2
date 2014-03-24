@@ -1,0 +1,214 @@
+Source: dc2
+Section: admin
+Priority: extra
+Maintainer: Stephan Adig <sh@sourcecode.de>
+Standards-Version: 3.9.2
+X-Python-Version: >= 2.6
+Build-Depends: debhelper (>= 8), python-all (>= 2.6), python-setuptools
+Homepage: http://launchpad.net/dc2
+
+Package: python-dc2.lib
+Section: python
+Architecture: all
+Depends: ${python:Depends},${misc:Depends},
+	python-kerberos
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² general library modules
+
+Package: python-dc2.api
+Section: python
+Architecture: all
+Depends: ${python:Depends},${misc:Depends},
+	python-dc2.lib
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² general library modules
+
+
+
+Package: python-dc2.appserver
+Section: python
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+	python-netaddr (>= 0.7.5), 
+	python-webpy (>= 1:0.34), 
+	python-pymongo (>= 1.11), 
+	python-openssl (>= 0.12),
+	python-dateutil (>= 1.4.1-4),
+	python-dc2.lib
+Conflicts: fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² backend framework.
+
+Package: python-dc2.admincenter
+Section: python
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+	python-webpy (>= 1:0.34), 
+	python-pymongo (>= 1.11), 
+	python-dateutil (>= 1.4.1-4),
+	python-dc2.lib,
+	python-dc2.api,
+	python-kerberos,
+	python-krbv,
+	python-jinja2
+Conflicts: fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² admincenter framework
+
+
+
+Package: python-dc2.client
+Section: python
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+	python-bitmath, python-lxml
+Conflicts: python-dc2.appserver, fai
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² client library.
+
+Package: python-dc2.distrotools
+Section: python
+Architecture: all
+Depends: ${python:Depends},${misc:Depends}, python-yaml
+Conflicts: python-dc2.client, fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² distrotools library
+
+Package: dc2-distrotools
+Section: admin
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, debmirror, python-dc2.distrotools
+Conflicts: python-dc2.client, fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² distrotools 
+
+Package: dc2-client
+Section: admin
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},python-dc2.client
+Conflicts: python-dc2.appserver, fai
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² client tools.
+
+Package: dc2-appserver
+Section: admin
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+	python-dc2.appserver (>= 0.1),
+	mongodb-server (>= 1:1.8.2), 
+	apache2,
+	libapache2-mod-wsgi
+Recommends: mongodb-clients
+Conflicts: fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² webapplication and the virtual host config
+ for apache2.
+
+Package: dc2-admincenter
+Section: admin
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends},
+	python-dc2.lib,
+	python-dc2.admincenter (>= 0.1),
+	mongodb-server (>= 1:1.8.2), 
+	apache2,
+	libapache2-mod-wsgi
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² admincenter
+
+
+Package: dc2-server
+Architecture: all
+Section: admin
+Depends: ${misc:Depends},
+	dc2-appserver,
+	fai-quickstart,
+	ipxe
+Conflicts: fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package is a meta package with all necessary dependencies for
+ installing the DC² backend.
+
+Package: dc2-fai-config-space
+Architecture: all
+Section: admin
+Depends: ${misc:Depends}
+Suggests: dc2-server
+Conflicts: fai-nfsroot
+Description: DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package comprises the FAI config space adjusted for DC².
+
+
+#Package: dc2-frontend-qooxdoo
+#Architecture: all
+#Section: web
+#Depends: ${misc:Depends}
+#Description: DC² is a bookkeeping tool for automatic deployments
+# DC² uses FAI as automatic deployment framework.
+# It helps System Administrators to have a clean way of deployment of
+# Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+# SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+# .
+# This package comprises the DC² Qooxdoo Web-Frontend
+
+
