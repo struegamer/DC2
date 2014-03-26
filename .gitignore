@@ -1,4 +1,11 @@
 *~
 *.swp
 *.pyc
+build
+*egg-info*
+dist
+*.log
+.project
+.pydevproject
+.settings/
 
