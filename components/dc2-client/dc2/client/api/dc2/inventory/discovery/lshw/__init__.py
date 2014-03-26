@@ -17,5 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from lshw_nics import LSHWNics # noqa
-from lshw_generics import LSHWGenerics # noqa
+from .lshw_nics import LSHWNics # noqa
+from .lshw_generics import LSHWGenerics # noqa
+from .lshw_disks import LSHWDisks # noqa
+from .lshw_storage import LSHWStorage # noqa

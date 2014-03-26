@@ -33,8 +33,6 @@ class LSHWGenerics(LSHWBase):
 
     def __init__(self):
         super(LSHWGenerics, self).__init__()
-        self._data = []
-        self._find_data()
 
     def _find_data(self):
         find_generics = etree.XPath(".//node[@class='{0}']".format(
@@ -62,7 +60,3 @@ class LSHWGenerics(LSHWBase):
                 else:
                     _generics[generic_tag.tag] = generic_tag.text
             self._data.append(_generics)
-
-    def _get_data(self):
-        return self._data
-    data = property(_get_data)
