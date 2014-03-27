@@ -29,12 +29,14 @@ from web.session import Store
 
 valid_key_types = set((str, unicode))
 atomic_types = set((bool, int, long, float, str, unicode, type(None),
-    _pattern_type, datetime))
+                    _pattern_type, datetime))
+
 
 def needs_encode(obj):
     '''
     >>> from re import compile
-    >>> atomics = (True, 1, 1L, 1.0, '', u'', None, compile(''), datetime.now())
+    >>> atomics = (True, 1, 1L, 1.0, '', u'', None, compile(''), \
+        datetime.now())
     >>> any(needs_encode(i) for i in atomics)
     False
     >>> needs_encode([1, 2, 3])
@@ -49,7 +51,7 @@ def needs_encode(obj):
     False
     >>> needs_encode({'1': [2]})
     False
-    
+
     Objects that don't round trip need encoding::
 
     >>> needs_encode(tuple())
@@ -74,8 +76,8 @@ def needs_encode(obj):
     if obtype is list:
         return any(needs_encode(i) for i in obj)
     if obtype is dict:
-        return any(type(k) not in valid_key_types or needs_encode(v)
-            for (k, v) in obj.iteritems())
+        return any((type(k) not in valid_key_types or
+                    needs_encode(v)) for (k, v) in obj.iteritems())
     return True
 
 
@@ -86,18 +88,19 @@ _atime = 'atime'
 # : field name used for data
 _data = 'data'
 
+
 class MongoStore(Store):
     def __init__(self, db, collection_name='sessions'):
         self.collection = db[collection_name]
         self.collection.ensure_index(_atime)
 
     def encode(self, sessiondict):
-        return dict((k, Binary(Store.encode(self, v)) if needs_encode(v) else v)
-            for (k, v) in sessiondict.iteritems())
+        return dict((k, Binary(Store.encode(self, v)) if needs_encode(v) else
+                    v) for (k, v) in sessiondict.iteritems())
 
     def decode(self, sessiondict):
-        return dict((k, Store.decode(self, v) if type(v) is Binary else v)
-            for (k, v) in sessiondict.iteritems())
+        return dict((k, Store.decode(self, v) if type(v) is Binary else
+                    v)for (k, v) in sessiondict.iteritems())
 
     def __contains__(self, sessionid):
         return bool(self.collection.find_one({_id: sessionid}))
