@@ -1,36 +1,30 @@
 # -*- coding: utf-8 -*-
-###############################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
-import sys
-import types
-import re
 
 def convert_values(rec=None):
-    if rec is None and type(rec) is not types.DictType:
+    if rec is None and isinstance(rec, dict):
         raise ValueError("rec can't be none")
     for field in rec.keys():
-        if type(rec[field]) is types.BooleanType:
+        if isinstance(rec[field], bool):
             if rec[field] is True:
                 rec[field] = 'True'
             if rec[field] is False:
                 rec[field] = ''
     return rec
-
-

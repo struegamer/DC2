@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
-###############################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
 import sys
-import os
-import types
 
 try:
     import web
@@ -38,6 +35,7 @@ except ImportError as e:
     print e
     sys.exit(1)
 
+
 class Page(object):
     def __init__(self, filename=None, environ=None, context=None):
         self._template_name = filename
@@ -52,35 +50,41 @@ class Page(object):
 
     def _get_template_filename(self):
         return self._template_name
+
     def _set_template_filename(self, template_filename):
         self._template_name = template_filename
+
     def _del_template_filename(self):
         del self._template_name
-    template_name = property(_get_template_filename, _set_template_filename, _del_template_filename, 'Property: template_name')
-
-
+    template_name = property(
+        _get_template_filename,
+        _set_template_filename,
+        _del_template_filename,
+        'Property: template_name')
     #
     # public methods
     #
+
     def add_page_data(self, data=None):
-        if data is not None and type(data) is types.DictType:
-            if data.has_key('context') or data.has_key('page'):
+        if data is not None and isinstance(data, dict):
+            if 'context' in data or 'page' in data:
                 raise ValueError('page_data can\'t have another "context" key')
             self._pagedata.update(data)
             return True
         raise ValueError('Data is None or Data is not a dictionary')
 
     def set_jslibs(self, js_array=None):
-        if js_array is not None and type(js_array) is types.ListType:
-            self._page.update({'js_libs':js_array})
+        if js_array is not None and isinstance(js_array, list):
+            self._page.update({'js_libs': js_array})
             return True
         raise ValueError('js_array is None or not an array')
 
     def set_cssfiles(self, css_array=None):
-        if css_array is not None and type(css_array) is types.ListType:
-            self._page.update({'css_files':css_array})
+        if css_array is not None and isinstance(css_array, list):
+            self._page.update({'css_files': css_array})
             return True
         raise ValueError('css_array is None or not an array')
+
     def set_page_value(self, key, value):
         if key in self._page:
             raise ValueError('key "%s" already in self._page')
@@ -88,54 +92,53 @@ class Page(object):
 
     def set_title(self, title=''):
         self._page['title'] = title
+
     def set_action(self, action=''):
         self._page['action'] = action
+
     def set_index(self, index=''):
         self._page['index'] = index
+
     def create_controller_url(self, action='', id=None, query_string=None):
         path_info = self._context.environ['PATH_INFO']
         if path_info[-1] == '/':
             path_info = path_info[:-1]
         query = None
-        if query_string is not None and type(query_string) is types.ListType:
+        if query_string is not None and isinstance(query_string, list):
             query = ''
             for item in query_string:
-                if type(item) is types.DictType:
+                if isinstance(item, dict):
                     for (key, value) in item.iteritems():
                         if query != '':
                             query += '&'
-                        query += '%s=%s' % (key, value)
+                        query += '{0}={1}'.format(key, value)
 
         if action == 'index':
             if query is not None and query != '':
-                return '%s?%s' % (path_info, query)
+                return '{0}?{1}'.format(path_info, query)
             return path_info
         if action == 'new':
             if query is not None and query != '':
-                return '%s/new?%s' % (path_info, query)
-            return '%s/new' % path_info
+                return '{0}/new?{1}'.format(path_info, query)
+            return '{0}/new' % path_info
         if action == 'show':
             if id is not None:
-                path = '%s/%s' % (path_info, id)
-                return '%s/%s' % (path_info, kwargs['id'])
+                return '{0}/{1}'.format(path_info, id)
             else:
                 return path_info
         if action == 'edit':
-            if 'id' in kwargs:
-                return '%s/%s/edit' % (path_info, kwargs['id'])
+            if id is not None:
+                return '{0}/{1}/edit'.format(path_info, id)
             else:
-                return '%s/edit' % path_info
+                return '{0}/edit'.format(path_info)
 
     def render(self):
         tmpl = self._tmpl_environ.get_template(self._template_name)
-        self._page.update({'context':self._context})
-        self._page.update({'sectoken':csrf_token})
-        self._pagedata.update({'page':self._page})
+        self._page.update({'context': self._context})
+        self._page.update({'sectoken': csrf_token})
+        self._pagedata.update({'page': self._page})
         funcs = {}
         funcs['create_controller_url'] = self.create_controller_url
-        self._pagedata.update({'controller':funcs})
+        self._pagedata.update({'controller': funcs})
         web.header('Content-Type', 'text/html; charset=utf-8')
-        return  tmpl.render(self._pagedata)
-
-
-
+        return tmpl.render(self._pagedata)
