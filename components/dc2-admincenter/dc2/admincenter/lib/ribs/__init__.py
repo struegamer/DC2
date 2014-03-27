@@ -21,7 +21,6 @@
 # Std. Python Libs
 #
 import sys
-import types
 
 try:
     from dc2.lib.db.mongo import Table
@@ -39,52 +38,56 @@ except ImportError as e:
 
 tbl_ribs = Table(MONGOS["admincenter"]["database"].get_table("ribtypes"))
 
+
 def rib_list():
-    result=tbl_ribs.find(sort_fieldname='remote_type')
+    result = tbl_ribs.find(sort_fieldname='remote_type')
     if result is not None:
         return result
     return []
 
+
 def rib_new():
-    rec={}
-    rec['remote_type']=''
-    rec['name']=''
+    rec = {}
+    rec['remote_type'] = ''
+    rec['name'] = ''
     return rec
 
 
 def rib_add(rec=None):
-    if rec is None or type(rec) is not types.DictType:
+    if rec is None or isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if 'remote_type' not in rec or 'name' not in rec:
         raise ValueError("no 'title' or 'backend_url' in rec")
-    doc_id=tbl_ribs.save(rec)
+    doc_id = tbl_ribs.save(rec)
     return doc_id
 
+
 def rib_update(rec=None):
-    if rec is None or type(rec) is not types.DictType:
+    if rec is None or isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    if tbl_ribs.find_one({'_id':rec['_id']}) is not None:
-        doc_id=tbl_ribs.save(rec)
+    if tbl_ribs.find_one({'_id': rec['_id']}) is not None:
+        doc_id = tbl_ribs.save(rec)
         return doc_id
     return None
 
+
 def rib_get(rec=None):
-    if rec is None or type(rec) is not types.DictType:
+    if rec is None or isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    result=tbl_ribs.find_one(rec)
+    result = tbl_ribs.find_one(rec)
     if result is not None:
         return result
     return None
 
+
 def rib_delete(rec=None):
-    if rec is None or type(rec) is not types.DictType:
+    if rec is None or isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
-    result=tbl_ribs.remove(rec)
+    result = tbl_ribs.remove(rec)
     return result
-
