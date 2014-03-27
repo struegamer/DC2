@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
-#################################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#################################################################################
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
 
 class IPAHostNotFound(Exception):
+
     def __init__(self, error_code, error_message):
         self._error_code = error_code
         self._error_message = error_message
-    def __str__(self):
-        return 'IPAHostNotFound: {0} - {1}'.format(self._error_code,
-                                                   self._error_message)
 
+    def __str__(self):
+        return 'IPAHostNotFound: {0} - {1}'.format(
+            self._error_code,
+            self._error_message)
 
 
 class IPAHostAddError(Exception):
@@ -35,13 +36,17 @@ class IPAHostAddError(Exception):
         self._error_message = error_message
 
     def __str__(self):
-        return 'IPAHostAddError: {0} - {1}'.format(self._error_code,
-                                                   self._error_message)
+        return 'IPAHostAddError: {0} - {1}'.format(
+            self._error_code,
+            self._error_message)
+
+
 class IPAHostDeleteError(Exception):
     def __init__(self, error_code, error_message):
         self._error_code = error_code
         self._error_message = error_message
 
     def __str__(self):
-        return 'IPAHostDeleteError: {0} - {1}'.format(self._error_code,
-                                                   self._error_message)
+        return 'IPAHostDeleteError: {0} - {1}'.format(
+            self._error_code,
+            self._error_message)
