@@ -1,29 +1,23 @@
 # -*- coding: utf-8 -*-
-###############################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
 import sys
-import os
-import os.path
-import re
-import types
-import json
 
 try:
     import web
@@ -38,8 +32,7 @@ try:
     from dc2.lib.exceptions.authentication import KerberosError
 except ImportError as e:
     print(e)
-    print 'you do not have dc2.lib installed'
-    print e
+    print('you do not have dc2.lib installed')
     sys.exit(1)
 
 try:
@@ -49,21 +42,20 @@ try:
     from dc2.admincenter.globals import logger
 except ImportError as e:
     print(e)
-    print 'you have a problem with dc2.admincenter'
-    print e
+    print('you have a problem with dc2.admincenter')
     sys.exit(1)
 
 try:
     from dc2.api.dc2.inventory import Servers
     from dc2.api.dc2.inventory import Hosts
-    from dc2.api.dc2.deployment import InstallState
 except ImportError as e:
     print(e)
-    print 'you didn\'t have dc2.api installed'
-    print e
+    print('you didn\'t have dc2.api installed')
     sys.exit(1)
 
+
 class JSONServerBackendController(JSONController):
+
     def __init__(self, *args, **kwargs):
         super(JSONServerBackendController, self).__init__(*args, **kwargs)
         self._prepare_urls()
@@ -88,25 +80,26 @@ class JSONServerBackendController(JSONController):
                 params = web.input()
                 backend_id = params.get('backend_id', None)
                 if backend_id is not None:
-                    backend = backends.backend_get({'_id':backend_id})
+                    backend = backends.backend_get({'_id': backend_id})
                     transport = get_xmlrpc_transport(backend['backend_url'],
                                                      backend['is_kerberos'])
                     s = Servers(transport)
                     serverlist = s.list()
-                    result = self._prepare_output(result={'backend_id':backend_id,
-                                                          'datalist':serverlist})
+                    result = self._prepare_output(
+                        result={'backend_id': backend_id,
+                                'datalist': serverlist})
                     return result
             except KerberosError as e:
                 (first, last) = e.message
                 (message, error_no) = last
-                result = self._prepare_output(result={'backend_id':backend_id,
-                                                    'error':True,
-                                                    'error_type':'Kerberos',
-                                                    'error_msg':message,
-                                                    'error_no':error_no})
+                result = self._prepare_output(result={'backend_id': backend_id,
+                                                      'error': True,
+                                                      'error_type': 'Kerberos',
+                                                      'error_msg': message,
+                                                      'error_no': error_no})
                 return result
-        result = self._prepare_output(result={'backend_id':backend_id,
-                                              'datalist':[]})
+        result = self._prepare_output(result={'backend_id': backend_id,
+                                              'datalist': []})
         return result
 
     @needs_auth
@@ -119,25 +112,26 @@ class JSONServerBackendController(JSONController):
                 backend_id = params.get('backend_id', None)
                 server_id = params.get('server_id', None)
                 if backend_id is not None and server_id is not None:
-                    backend = backends.backend_get({'_id':backend_id})
+                    backend = backends.backend_get({'_id': backend_id})
                     transport = get_xmlrpc_transport(backend['backend_url'],
                                                      backend['is_kerberos'])
                     s = Hosts(transport)
                     h = s.get(server_id=server_id)
-                    result = self._prepare_output(result={'backend_id':backend_id,
-                                                          'entry_type':'host',
-                                                          'entry':h})
+                    result = self._prepare_output(
+                        result={'backend_id': backend_id,
+                                'entry_type': 'host',
+                                'entry': h})
                     return result
             except KerberosError as e:
                 (first, last) = e.message
                 (message, error_no) = last
-                result = self._prepare_output(result={'backend_id':backend_id,
-                                                    'error':True,
-                                                    'error_type':'Kerberos',
-                                                    'error_msg':message,
-                                                    'error_no':error_no})
+                result = self._prepare_output(result={'backend_id': backend_id,
+                                                      'error': True,
+                                                      'error_type': 'Kerberos',
+                                                      'error_msg': message,
+                                                      'error_no': error_no})
                 return result
-        result = self._prepare_output(result={'backend_id':backend_id,
-                                              'entry_type':'host',
-                                              'entry':None})
+        result = self._prepare_output(result={'backend_id': backend_id,
+                                              'entry_type': 'host',
+                                              'entry': None})
         return result
