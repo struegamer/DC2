@@ -1,29 +1,32 @@
 # -*- coding: utf-8 -*-
-###############################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
 import kerberos
 from dc2.lib.exceptions.authentication import KerberosError
 
+
 class KerberosTicket:
     def __init__(self, service):
-        __, krb_context = kerberos.authGSSClientInit(service, kerberos.GSS_C_DELEG_FLAG | kerberos.GSS_C_MUTUAL_FLAG | kerberos.GSS_C_SEQUENCE_FLAG)
+        __, krb_context = kerberos.authGSSClientInit(
+            service,
+            kerberos.GSS_C_DELEG_FLAG |
+            kerberos.GSS_C_MUTUAL_FLAG | kerberos.GSS_C_SEQUENCE_FLAG)
         try:
             kerberos.authGSSClientStep(krb_context, "")
             self._krb_context = krb_context
@@ -48,5 +51,3 @@ class KerberosTicket:
             self._krb_context = None
             kerberos.authGSSClientStep(krb_context, auth_details)
             kerberos.authGSSClientClean(krb_context)
-
-

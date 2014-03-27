@@ -1,25 +1,22 @@
 # -*- coding: utf-8 -*-
-###############################################################################
 #
-#    (DC)² - DataCenter Deployment Control
-#    Copyright (C) 2010, 2011, 2012, 2013, 2014  Stephan Adig <sh@sourcecode.de>
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
+# (DC)² - DataCenter Deployment Control
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Stephan Adig <sh@sourcecode.de>
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-###############################################################################
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
 
-
-import sys
 import os
 
 try:
@@ -33,16 +30,18 @@ except ImportError:
         def __init__(self, returncode, cmd):
             self.returncode = returncode
             self.cmd = cmd
+
         def __str__(self):
-            return "Command '%s' returned non-zero exit status %d" % (self.cmd, self.returncode)
+            return "Command '{0}' returned non-zero exit status {1}".format(
+                self.cmd, self.returncode)
 
 import subprocess
-import os
 import urllib2
 
 
 def shell_quote(string):
     return "'" + string.replace("'", "'\\''") + "'"
+
 
 def run(args, stdin=None, raiseonerr=True,
         nolog=(), env=None, capture_output=True):
@@ -54,7 +53,8 @@ def run(args, stdin=None, raiseonerr=True,
     nolog is a tuple of strings that shouldn't be logged, like passwords.
     Each tuple consists of a string to be replaced by XXXXXXXX.
 
-    For example, the command ['/usr/bin/setpasswd', '--password', 'Secret123', 'someuser']
+    For example, the command ['/usr/bin/setpasswd', '--password',
+        'Secret123', 'someuser']
 
     We don't want to log the password so nolog would be set to:
     ('Secret123',)
@@ -80,14 +80,15 @@ def run(args, stdin=None, raiseonerr=True,
 
     if env is None:
         # copy default env
+        # FIXME: NOW
         env = copy.deepcopy(os.environ)
-        env["PATH"] = "/bin:/sbin:/usr/kerberos/bin:/usr/kerberos/sbin:/usr/bin:/usr/sbin"
+        env["PATH"] = '/bin:/sbin:/usr/kerberos/bin:/usr/kerberos/sbin:'\
+            '/usr/bin:/usr/sbin'
     if stdin:
         p_in = subprocess.PIPE
     if capture_output:
         p_out = subprocess.PIPE
         p_err = subprocess.PIPE
-
     try:
         p = subprocess.Popen(args, stdin=p_in, stdout=p_out, stderr=p_err,
                              close_fds=True, env=env)
@@ -103,7 +104,6 @@ def run(args, stdin=None, raiseonerr=True,
     for value in nolog:
         if not isinstance(value, basestring):
             continue
-
         quoted = urllib2.quote(value)
         shquoted = shell_quote(value)
         for nolog_value in (shquoted, value, quoted):
@@ -111,8 +111,6 @@ def run(args, stdin=None, raiseonerr=True,
                 stdout = stdout.replace(nolog_value, 'XXXXXXXX')
                 stderr = stderr.replace(nolog_value, 'XXXXXXXX')
             args = args.replace(nolog_value, 'XXXXXXXX')
-
-
     if p.returncode != 0 and raiseonerr:
         raise CalledProcessError(p.returncode, args)
 
