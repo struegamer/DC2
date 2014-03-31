@@ -33,8 +33,17 @@ class LSHWBase(object):
 
     def __init__(self):
         self._inventory = None
+        self._data = []
         self._get_lshw_data()
+        self._find_data()
 
     def _get_lshw_data(self):
         lshw_output = subprocess.check_output([self._LSHW_BIN, '-xml'])
         self._inventory = etree.XML(lshw_output.decode('utf-8'))
+
+    def _find_data(self):
+        pass
+
+    def _get_data(self):
+        return self._data
+    data = property(_get_data)
