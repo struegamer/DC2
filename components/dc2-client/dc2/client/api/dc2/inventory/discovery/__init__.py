@@ -25,3 +25,5 @@ from .meminfo import MemoryInfo # noqa
 from .pci import PCIDevices # noqa
 from .lshw import LSHWNics # noqa
 from .lshw import LSHWGenerics # noqa
+from .lshw import LSHWDisks # noqa
+from .lshw import LSHWStorage # noqa
