@@ -37,7 +37,7 @@ class LSHWDisks(LSHWBase):
         super(LSHWDisks, self).__init__()
 
     def _find_data(self):
-        find_disks = etree.XPath(".//[@class='{0}']".format(
+        find_disks = etree.XPath(".//node[@class='{0}']".format(
             self._NODE_CLASS_NAME))
 
         for disk in find_disks(self._inventory):
