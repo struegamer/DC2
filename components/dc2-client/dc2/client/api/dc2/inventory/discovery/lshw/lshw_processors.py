@@ -37,7 +37,7 @@ class LSHWProcessors(LSHWBase):
         super(LSHWProcessors, self).__init__()
 
     def _find_data(self):
-        find_cpus = etree.XPath(".//node[@class='{0}]".format(
+        find_cpus = etree.XPath(".//node[@class='{0}']".format(
             self._NODE_CLASS_NAME))
 
         for cpu in find_cpus(self._inventory):
