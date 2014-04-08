@@ -21,5 +21,5 @@ from .lshw_nics import LSHWNics # noqa
 from .lshw_generics import LSHWGenerics # noqa
 from .lshw_disks import LSHWDisks # noqa
 from .lshw_storage import LSHWStorage # noqa
-from .lshw_processors import LSHWProcessor # noqa
+from .lshw_processors import LSHWProcessors # noqa
 from .lshw_memory import LSHWMemory # noqa
