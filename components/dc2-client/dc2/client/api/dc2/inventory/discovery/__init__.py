@@ -27,3 +27,5 @@ from .lshw import LSHWNics # noqa
 from .lshw import LSHWGenerics # noqa
 from .lshw import LSHWDisks # noqa
 from .lshw import LSHWStorage # noqa
+from .lshw import LSHWMemory # noqa
+from .lshw import LSHWProcessors # noqa
