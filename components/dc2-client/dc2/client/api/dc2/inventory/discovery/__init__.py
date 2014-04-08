@@ -29,3 +29,4 @@ from .lshw import LSHWDisks # noqa
 from .lshw import LSHWStorage # noqa
 from .lshw import LSHWMemory # noqa
 from .lshw import LSHWProcessors # noqa
+from .ipmi import IPMI # noqa
