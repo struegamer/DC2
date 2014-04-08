@@ -47,18 +47,21 @@ class LSHWDisks(LSHWBase):
                     _disks['configuration'] = {}
                     for config in disk_tag:
                         config_settings = config.attrib
-                        _disks['configuration'][config_settings['id']] =\
+                        _disks['configuration'][self._adjust_keys(
+                            config_settings['id'])] =\
                             config_settings['value']
                 elif disk_tag.tag == 'capabilities':
                     _disks['capabilities'] = {}
                     for cap in disk_tag:
                         cap_data = cap.attrib
-                        _disks['capabilities'][cap_data['id']] = cap.text
+                        _disks['capabilities'][self._adjust_keys(
+                            cap_data['id'])] = cap.text
                 elif disk_tag.tag == 'resources':
                     _disks['resources'] = {}
                     for resource in disk_tag:
                         resource_data = resource.attrib
-                        _disks['resources'][resource_data['type']] =\
+                        _disks['resources'][self._adjust_keys(
+                            resource_data['type'])] =\
                             resource_data['value']
                 else:
                     _disks[disk_tag.tag] = disk_tag.text

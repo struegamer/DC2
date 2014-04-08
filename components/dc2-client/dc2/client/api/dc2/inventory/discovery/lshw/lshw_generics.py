@@ -44,18 +44,21 @@ class LSHWGenerics(LSHWBase):
                     _generics['configuration'] = {}
                     for config in generic_tag:
                         config_settings = config.attrib
-                        _generics['configuration'][config_settings['id']] =\
+                        _generics['configuration'][self._adjust_keys(
+                            config_settings['id'])] =\
                             config_settings['value']
                 elif generic_tag.tag == 'capabilities':
                     _generics['capabilities'] = {}
                     for cap in generic_tag:
                         cap_data = cap.attrib
-                        _generics['capabilities'][cap_data['id']] = cap.text
+                        _generics['capabilities'][self._adjust_keys(
+                            cap_data['id'])] = cap.text
                 elif generic_tag.tag == 'resources':
                     _generics['resources'] = {}
                     for resource in generic_tag:
                         resource_data = resource.attrib
-                        _generics['resources'][resource_data['type']] =\
+                        _generics['resources'][self._adjust_keys(
+                            resource_data['type'])] =\
                             resource_data['value']
                 else:
                     _generics[generic_tag.tag] = generic_tag.text

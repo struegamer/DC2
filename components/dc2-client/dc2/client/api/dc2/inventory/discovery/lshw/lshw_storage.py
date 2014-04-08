@@ -47,18 +47,21 @@ class LSHWStorage(LSHWBase):
                     _storages['configuration'] = {}
                     for config in storage_tag:
                         config_settings = config.attrib
-                        _storages['configuration'][config_settings['id']] =\
+                        _storages['configuration'][self._adjust_keys(
+                            config_settings['id'])] =\
                             config_settings['value']
                 elif storage_tag.tag == 'capabilities':
                     _storages['capabilities'] = {}
                     for cap in storage_tag:
                         cap_data = cap.attrib
-                        _storages['capabilities'][cap_data['id']] = cap.text
+                        _storages['capabilities'][self._adjust_keys(
+                            cap_data['id'])] = cap.text
                 elif storage_tag.tag == 'resources':
                     _storages['resources'] = {}
                     for resource in storage_tag:
                         resource_data = resource.attrib
-                        _storages['resources'][resource_data['type']] =\
+                        _storages['resources'][self._adjust_keys(
+                            resource_data['type'])] =\
                             resource_data['value']
                 else:
                     _storages[storage_tag.tag] = storage_tag.text

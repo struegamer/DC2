@@ -44,18 +44,21 @@ class LSHWNics(LSHWBase):
                     _nics['configuration'] = {}
                     for config in nic_tag:
                         config_settings = config.attrib
-                        _nics['configuration'][config_settings['id']] =\
+                        _nics['configuration'][self._adjust_keys(
+                            config_settings['id'])] =\
                             config_settings['value']
                 elif nic_tag.tag == 'capabilities':
                     _nics['capabilities'] = {}
                     for cap in nic_tag:
                         cap_data = cap.attrib
-                        _nics['capabilities'][cap_data['id']] = cap.text
+                        _nics['capabilities'][self._adjust_keys(
+                            cap_data['id'])] = cap.text
                 elif nic_tag.tag == 'resources':
                     _nics['resources'] = {}
                     for resource in nic_tag:
                         resource_data = resource.attrib
-                        _nics['resources'][resource_data['type']] =\
+                        _nics['resources'][self._adjust_keys(
+                            resource_data['type'])] =\
                             resource_data['value']
                 else:
                     _nics[nic_tag.tag] = nic_tag.text
