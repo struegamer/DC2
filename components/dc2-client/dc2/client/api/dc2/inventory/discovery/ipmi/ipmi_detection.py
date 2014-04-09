@@ -34,7 +34,7 @@ class IPMI(object):
             ipmi_output = subprocess.check_output(
                 [self._IPMI_TOOL, 'lan', 'print'])
         except subprocess.CalledProcesserror:
-            return False
+            return None
         return ipmi_output
 
     def _get_ipmi_mac(self, lines):
@@ -44,9 +44,10 @@ class IPMI(object):
             for line in lines:
                 found = _ipmi_mac_re.match(line)
                 if found is not None and len(found.groups()) == 1:
-                    return found.groups(0)
+                    return found.group(1)
         return None
 
     def _ipmi_mac(self):
         return self._ipmi_mac
+
     ipmi_mac = property(_ipmi_mac)
