@@ -211,7 +211,7 @@ Description: DC² is a bookkeeping tool for automatic deployments
 # .
 # This package comprises the DC² Qooxdoo Web-Frontend
 
-Package: python.dc2.dhcp.appserver
+Package: python-dc2.dhcp.appserver
 Architecture: all
 Section: admin
 Depends: ${python:Depends}, ${misc:Depends},
