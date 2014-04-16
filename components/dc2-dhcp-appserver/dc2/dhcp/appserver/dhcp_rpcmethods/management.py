@@ -81,7 +81,9 @@ def dc2_dhcp_mgmt_list():
 )
 def dc2_dhcp_mgmt_add(record=None):
     if record is not None and isinstance(record, dict):
-        if check_record(record, DHCP_RECORD):
+        if (check_record(record, DHCP_RECORD) and
+                tbl_dhcp_mgmt.find_one({
+                    'ipspace': record['ipspace']}) is not None):
             doc_id = tbl_dhcp_mgmt.save(record)
             return doc_id
     return xmlrpclib.Fault(-32501, 'Record was not added')
@@ -97,7 +99,9 @@ def dc2_dhcp_mgmt_update(record=None):
     if record is not None and isinstance(record, dict):
         if ('_id' in record and
                 check_record(record, DHCP_RECORD) and
-                tbl_dhcp_mgmt.find_one({'_id': record['_id']}) is not None):
+                tbl_dhcp_mgmt.find_one({'_id': record['_id']}) is not None and
+                tbl_dhcp_mgmt.find_one({
+                    'ipspace': record['ipspace']}) is not None):
             doc_id = tbl_dhcp_mgmt.save(record)
             return doc_id
     return xmlrpclib.Fault(-32504, 'Record was not updated')
