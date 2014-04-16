@@ -12,5 +12,5 @@ DC² Database Structure
    DC² Environment Table Structure <dc2-environments>
    DC² Hosts Table Structure <dc2-hosts>
    DC² Default System Users Table Structure <dc2-systemusers>
-   
+   DC² DHCP Mgmt Table Strucuture <dc2-dhcp-mgmt>
    
