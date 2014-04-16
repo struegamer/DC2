@@ -89,7 +89,7 @@ def dc2_dhcp_mgmt_add(record=None):
     if record is not None and isinstance(record, dict):
         if (check_record(record, DHCP_RECORD) and
                 tbl_dhcp_mgmt.find_one({
-                    'ipspace': record['ipspace']}) is not None):
+                    'ipspace': record['ipspace']}) is None):
             try:
                 ip = netaddr.IPNetwork(record['ipspace'])
                 if ip.size == 256:
@@ -112,7 +112,7 @@ def dc2_dhcp_mgmt_update(record=None):
                 check_record(record, DHCP_RECORD) and
                 tbl_dhcp_mgmt.find_one({'_id': record['_id']}) is not None and
                 tbl_dhcp_mgmt.find_one({
-                    'ipspace': record['ipspace']}) is not None):
+                    'ipspace': record['ipspace']}) is None):
             try:
                 ip = netaddr.IPNetwork(record['ipspace'])
                 if ip.size == 256:
