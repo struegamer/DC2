@@ -78,6 +78,7 @@ ACCESS_CONTROL_ALLOW_METHODS = "GET,POST,OPTIONS,PUT,DELETE"
 #
 # RPC Modules for RPCDispatcher
 #
+DHCP_MANAGEMENT = False
 CS2_ENABLED = False
 XEN_ENABLED = False
 FREEIPA_ENABLED = False
@@ -91,6 +92,8 @@ if XEN_ENABLED:
 if FREEIPA_ENABLED:
     RPCMODULES.append('dc2.appserver.addons.freeipa')
 
+if DHCP_MANAGEMENT:
+    RPCMODULES.append('dc2.dhcp.appserver.dhcp_rpcmethods')
 #
 # FREEIPA_URL should be 'https://your.freeipa.tld/ipa/xml
 #
