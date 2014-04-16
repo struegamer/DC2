@@ -30,6 +30,12 @@ except ImportError as e:
     sys.exit(1)
 
 try:
+    import netaddr
+except ImportError:
+    print "You need to have the python-netaddr module installed"
+    sys.exit(1)
+
+try:
     from settings import MONGOS
 except ImportError as e:
     print(e)
@@ -84,8 +90,13 @@ def dc2_dhcp_mgmt_add(record=None):
         if (check_record(record, DHCP_RECORD) and
                 tbl_dhcp_mgmt.find_one({
                     'ipspace': record['ipspace']}) is not None):
-            doc_id = tbl_dhcp_mgmt.save(record)
-            return doc_id
+            try:
+                ip = netaddr.IPNetwork(record['ipspace'])
+                if ip.size == 256:
+                    doc_id = tbl_dhcp_mgmt.save(record)
+                    return doc_id
+            except netaddr.core.AddrFormatError as e:
+                return xmlrpclib.Fault(-32501, e)
     return xmlrpclib.Fault(-32501, 'Record was not added')
 
 
@@ -102,8 +113,13 @@ def dc2_dhcp_mgmt_update(record=None):
                 tbl_dhcp_mgmt.find_one({'_id': record['_id']}) is not None and
                 tbl_dhcp_mgmt.find_one({
                     'ipspace': record['ipspace']}) is not None):
-            doc_id = tbl_dhcp_mgmt.save(record)
-            return doc_id
+            try:
+                ip = netaddr.IPNetwork(record['ipspace'])
+                if ip.size == 256:
+                    doc_id = tbl_dhcp_mgmt.save(record)
+                    return doc_id
+            except netaddr.core.AddrFormatError as e:
+                return xmlrpclib.Fault(-32501, e)
     return xmlrpclib.Fault(-32504, 'Record was not updated')
 
 
