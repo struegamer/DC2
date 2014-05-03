@@ -32,6 +32,7 @@ except ImportError as e:
 @socketio.on('connect', namespace='/commands')
 def on_commands_connect():
     print('connected')
+    print(dir(socketio))
     pass
 
 
@@ -42,5 +43,4 @@ def on_commands_disconnect():
 
 @socketio.on('discovered', namespace='/commands')
 def on_commands_discovered(message):
-    print(message)
-    emit('discovered', message, namespace="/commands")
+    emit('discovered_device', message, namespace='/updates')

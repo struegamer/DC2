@@ -17,3 +17,26 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+import sys
+
+try:
+    from dc2.web.live.startup import socketio
+except ImportError as e:
+    print(e)
+    print(__file__)
+    sys.exit(1)
+
+
+@socketio.on('connect', namespace='/updates')
+def on_updates_connect():
+    pass
+
+
+@socketio.on('disconnect', namespace='/updates')
+def on_updates_disconnect():
+    pass
+
+
+@socketio.on('discovered_device', namespace='/updates')
+def on_updates_discovered_device(message):
+    pass
