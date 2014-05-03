@@ -21,9 +21,10 @@
 import sys
 
 try:
-    from dc2.web.live.globals import socketio
+    from dc2.web.live.startup import socketio
 except ImportError as e:
     print(e)
+    print(__file__)
     sys.exit(1)
 
 

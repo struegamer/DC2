@@ -21,14 +21,17 @@
 import sys
 
 try:
-    from dc2.web.live.globals import socketio
+    from dc2.web.live.startup import socketio
+    from flask.ext.socketio import emit
 except ImportError as e:
     print(e)
+    print(__file__)
     sys.exit(1)
 
 
 @socketio.on('connect', namespace='/commands')
 def on_commands_connect():
+    print('connected')
     pass
 
 
@@ -39,4 +42,5 @@ def on_commands_disconnect():
 
 @socketio.on('discovered', namespace='/commands')
 def on_commands_discovered(message):
-    pass
+    print(message)
+    emit('discovered', message, namespace="/commands")
