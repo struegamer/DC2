@@ -101,6 +101,11 @@ if DHCP_MANAGEMENT:
     EXT_CONFIG['dhcpd']['template'] = None
     EXT_CONFIG['dhcpd']['range_start'] = 100
     EXT_CONFIG['dhcpd']['range_end'] = 150
+    EXT_CONFIG['dhcpd']['dhcp_next_server'] = '127.0.0.1'
+    EXT_CONFIG['dhcpd']['dc2db_ipxe_url'] = 'http://dc2db.net/ipxe'
+    EXT_CONFIG['dhcpd']['option_domain_name_servers'] = '127.0.0.1'
+    EXT_CONFIG['dhcpd']['option_routers'] = '127.0.0.1'
+
 #
 # FREEIPA_URL should be 'https://your.freeipa.tld/ipa/xml
 #

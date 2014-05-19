@@ -19,7 +19,6 @@
 #
 
 import sys
-import xmlrpclib
 
 try:
     import jinja2
@@ -29,8 +28,6 @@ except ImportError as e:
 
 try:
     from dc2.lib.db.mongo import Table
-    from dc2.appserver.helpers import check_record
-    from dc2.appserver.rpc import rpcmethod
 except ImportError as e:
     print(e)
     sys.exit(1)
@@ -66,6 +63,14 @@ else:
     DHCP_MGMT_CONFIG['template'] =\
     """subnet {{ip.network}} netmask {{ip.netmask}} {
     range {{ip.range_start}} {{ip.range_end}};
+    next-server {ip.next_server};
+    option routers {ip.option_routers};
+    option domain-name-servers {ip.option_domain_name_servers};
+    if exists user-class and option user-class = "iPXE" {
+        filename "{ip.dc2db_ipxe_url}";
+    } else {
+        filename "undionly.kpxe";
+    }
 }""" # noqa
     DHCP_MGMT_CONFIG['range_start'] = 100
     DHCP_MGMT_CONFIG['range_end'] = 150
@@ -88,6 +93,12 @@ def dc2_dhcp_mgmt_write_config(ipspace=None):
                         'range_start']]
                     data['ip']['range_end'] = ip[DHCP_MGMT_CONFIG[
                         'range_end']]
-
-        except netaddr.core.AddrFormatError as e:
-            pass
+                    data['ip']['dc2db_ipxe_url'] = DHCP_MGMT_CONFIG[
+                        'dc2db_ipxe_url']
+                    data['ip']['option_routers'] = DHCP_MGMT_CONFIG[
+                        'option_routers']
+                    data['ip']['option_domain_name_servers'] =\
+                        DHCP_MGMT_CONFIG['option_domain)name_servers']
+                    
+        except netaddr.core.AddrFormatError:
+            return False
