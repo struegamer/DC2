@@ -81,10 +81,13 @@ def dc2_dhcp_mgmt_write_config(ipspace=None):
         try:
             ip = netaddr.IPNetwork(ipspace)
             if ip.size == 256:
+                template = jinja2.Template(DHCP_MGMT_CONFIG['template'])
                 if DHCP_MGMT_CONFIG['template_file'] is not None:
                     template_env = jinja2.Environment(
                         loader=jinja2.FileSystemLoader(
-                            DHCP_MGMT_CONFIG['template_file']))
+                            DHCP_MGMT_CONFIG['template_dir']))
+                    template - template_env.get_template(
+                        DHCP_MGMT_CONFIG['template_file'])
                     data = {}
                     data['ip'] = {}
                     data['ip']['network'] = str(ip.network)
@@ -99,6 +102,13 @@ def dc2_dhcp_mgmt_write_config(ipspace=None):
                         'option_routers']
                     data['ip']['option_domain_name_servers'] =\
                         DHCP_MGMT_CONFIG['option_domain)name_servers']
-                    
+                    rendered_template = template.render(data)
+                    fp = open(
+                        '{0}/{1}'.format(
+                            DHCP_MGMT_CONFIG['store_directory'],
+                            '{0}.conf'.format(str(ip.network))),
+                        'wb')
+                    fp.write(rendered_template)
+                    fp.close()
         except netaddr.core.AddrFormatError:
             return False

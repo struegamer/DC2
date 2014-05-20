@@ -96,7 +96,8 @@ if FREEIPA_ENABLED:
 if DHCP_MANAGEMENT:
     RPCMODULES.append('dc2.dhcp.appserver.dhcp_rpcmethods')
     EXT_CONFIG['dhcpd'] = {}
-    EXT_CONFIG['dhcpd']['template_file'] = '/etc/dc2/dhcpd/dhcpd_subnet.tmpl'
+    EXT_CONFIG['dhcpd']['template_file'] = 'dhcpd_subnet.tmpl'
+    EXT_CONFIG['dhcpd']['template_dir'] = '/etc/dc2/dhcpd/templates/'
     EXT_CONFIG['dhcpd']['store_directory'] = '/etc/dhcpd/auto.gen.includes/'
     EXT_CONFIG['dhcpd']['template'] = None
     EXT_CONFIG['dhcpd']['range_start'] = 100

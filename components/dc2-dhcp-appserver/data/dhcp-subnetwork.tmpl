@@ -57,5 +57,13 @@ class "RMC" {
 }
 
 subnet {{ip.network}} netmask {{ip.netmask}} {
-	range {{ip.range_start}} {{ip.range_end}};
+    range {{ip.range_start}} {{ip.range_end}};
+    next-server {ip.next_server};
+    option routers {ip.option_routers};
+    option domain-name-servers {ip.option_domain_name_servers};
+    if exists user-class and option user-class = "iPXE" {
+        filename "{ip.dc2db_ipxe_url}";
+    } else {
+        filename "undionly.kpxe";
+    }
 }
