@@ -71,7 +71,7 @@ else:
     } else {
         filename "undionly.kpxe";
     }
-}""" # noqa
+}"""  # noqa
     DHCP_MGMT_CONFIG['range_start'] = 100
     DHCP_MGMT_CONFIG['range_end'] = 150
 
