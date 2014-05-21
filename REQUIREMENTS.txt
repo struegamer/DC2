@@ -4,3 +4,5 @@ pymongo
 python-krbV
 kerberos
 lxml
+python-dateutil
+netaddr
