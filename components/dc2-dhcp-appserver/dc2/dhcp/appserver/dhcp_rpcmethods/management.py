@@ -41,6 +41,14 @@ except ImportError as e:
     print(e)
     sys.exit(1)
 
+try:
+    from dc2.dhcp.appserver.dhcp_server_config import\
+        dc2_dhcp_mgmt_write_config
+except ImportError as e:
+    print(e)
+    sys.exit(1)
+
+
 tbl_dhcp_mgmt = Table(MONGOS['dc2db']['database'].get_table('dhcp_mgmt'))
 
 DHCP_RECORD = {
@@ -153,3 +161,22 @@ def dc2_dhcp_mgmt_delete(record=None):
                 return xmlrpclib.Fault(-32503, 'Record was not removed')
             return True
     return xmlrpclib.Fault(-32503, 'Record was not removed')
+
+
+@rpcmethod(
+    name='dc2.dhcp.mgmt.writeconfig',
+    returns={},
+    params={},
+    is_xmlrpc=True,
+    is_jsonrpc=True)
+def dc2_dhcp_mgmt_writeconfig(record=None):
+    if record is not None and isinstance(record, dict):
+        rec = None
+        if '_id' in record:
+            rec = tbl_dhcp_mgmt.find_one({'_id': record['_id']})
+        elif 'ipspace' in record:
+            rec = tbl_dhcp_mgmt.find_one({'ipspace': record['ipspace']})
+        if rec is not None:
+            if dc2_dhcp_mgmt_write_config(rec['ipspace']) is not False:
+                return True
+    return False

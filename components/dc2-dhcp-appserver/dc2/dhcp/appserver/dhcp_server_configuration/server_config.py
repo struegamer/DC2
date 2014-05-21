@@ -114,8 +114,8 @@ def dc2_dhcp_mgmt_write_config(ipspace=None):
                     'wb')
                 fp.write(rendered_template)
                 fp.close()
+                return True
         except netaddr.core.AddrFormatError:
-            print('IP Error')
             return False
     else:
-        print('Error')
+        return False
