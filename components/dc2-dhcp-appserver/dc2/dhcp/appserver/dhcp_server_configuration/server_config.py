@@ -26,11 +26,11 @@ except ImportError as e:
     print(e)
     sys.exit(1)
 
-try:
-    from dc2.lib.db.mongo import Table
-except ImportError as e:
-    print(e)
-    sys.exit(1)
+# try:
+#     from dc2.lib.db.mongo import Table
+# except ImportError as e:
+#     print(e)
+#     sys.exit(1)
 
 try:
     import netaddr
@@ -39,13 +39,12 @@ except ImportError:
     sys.exit(1)
 
 try:
-    from settings import MONGOS
     from settings import EXT_CONFIG
 except ImportError as e:
-    print(e)
-    sys.exit(1)
+    EXT_CONFIG = {}
 
-tbl_dhcp_mgmt = Table(MONGOS['dc2db']['database'].get_table('dhcp_mgmt'))
+
+# tbl_dhcp_mgmt = Table(MONGOS['dc2db']['database'].get_table('dhcp_mgmt'))
 
 DHCP_RECORD = {
     'dcname': True,
@@ -63,21 +62,25 @@ else:
     DHCP_MGMT_CONFIG['template'] =\
     """subnet {{ip.network}} netmask {{ip.netmask}} {
     range {{ip.range_start}} {{ip.range_end}};
-    next-server {ip.next_server};
-    option routers {ip.option_routers};
-    option domain-name-servers {ip.option_domain_name_servers};
+    next-server {{ip.next_server}};
+    option routers {{ip.option_routers}};
+    option domain-name-servers {{ip.option_domain_name_servers}};
     if exists user-class and option user-class = "iPXE" {
-        filename "{ip.dc2db_ipxe_url}";
+        filename "{{ip.dc2db_ipxe_url}}";
     } else {
         filename "undionly.kpxe";
     }
 }"""  # noqa
     DHCP_MGMT_CONFIG['range_start'] = 100
     DHCP_MGMT_CONFIG['range_end'] = 150
+    DHCP_MGMT_CONFIG['dc2db_ipxe_url'] = 'http://localhost/ipxe'
+    DHCP_MGMT_CONFIG['option_domain_name_servers'] = '127.0.0.1'
+    DHCP_MGMT_CONFIG['next_server'] = '127.0.0.1'
 
 
 def dc2_dhcp_mgmt_write_config(ipspace=None):
     if ipspace is not None:
+        print('hello')
         try:
             ip = netaddr.IPNetwork(ipspace)
             if ip.size == 256:
@@ -86,29 +89,33 @@ def dc2_dhcp_mgmt_write_config(ipspace=None):
                     template_env = jinja2.Environment(
                         loader=jinja2.FileSystemLoader(
                             DHCP_MGMT_CONFIG['template_dir']))
-                    template - template_env.get_template(
+                    template = template_env.get_template(
                         DHCP_MGMT_CONFIG['template_file'])
-                    data = {}
-                    data['ip'] = {}
-                    data['ip']['network'] = str(ip.network)
-                    data['ip']['netmask'] = str(ip.netmask)
-                    data['ip']['range_start'] = ip[DHCP_MGMT_CONFIG[
-                        'range_start']]
-                    data['ip']['range_end'] = ip[DHCP_MGMT_CONFIG[
-                        'range_end']]
-                    data['ip']['dc2db_ipxe_url'] = DHCP_MGMT_CONFIG[
-                        'dc2db_ipxe_url']
-                    data['ip']['option_routers'] = DHCP_MGMT_CONFIG[
-                        'option_routers']
-                    data['ip']['option_domain_name_servers'] =\
-                        DHCP_MGMT_CONFIG['option_domain)name_servers']
-                    rendered_template = template.render(data)
-                    fp = open(
-                        '{0}/{1}'.format(
-                            DHCP_MGMT_CONFIG['store_directory'],
-                            '{0}.conf'.format(str(ip.network))),
-                        'wb')
-                    fp.write(rendered_template)
-                    fp.close()
+                data = {}
+                data['ip'] = {}
+                data['ip']['network'] = str(ip.network)
+                data['ip']['netmask'] = str(ip.netmask)
+                data['ip']['range_start'] = ip[DHCP_MGMT_CONFIG[
+                    'range_start']]
+                data['ip']['range_end'] = ip[DHCP_MGMT_CONFIG[
+                    'range_end']]
+                data['ip']['dc2db_ipxe_url'] = DHCP_MGMT_CONFIG[
+                    'dc2db_ipxe_url']
+                data['ip']['option_routers'] = ip[1]
+                data['ip']['option_domain_name_servers'] =\
+                    DHCP_MGMT_CONFIG['option_domain_name_servers']
+                data['ip']['next_server'] = DHCP_MGMT_CONFIG['next_server']
+                rendered_template = template.render(data)
+                print(template)
+                fp = open(
+                    '{0}/{1}'.format(
+                        DHCP_MGMT_CONFIG['store_directory'],
+                        '{0}.conf'.format(str(ip.network))),
+                    'wb')
+                fp.write(rendered_template)
+                fp.close()
         except netaddr.core.AddrFormatError:
+            print('IP Error')
             return False
+    else:
+        print('Error')
