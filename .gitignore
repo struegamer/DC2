@@ -8,4 +8,4 @@ dist
 .project
 .pydevproject
 .settings/
-
+*/bower_components/*
