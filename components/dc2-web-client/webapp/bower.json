@@ -1,0 +1,22 @@
+{
+  "name": "dc2-websocket-client",
+  "version": "0.0.1",
+  "description": "A DC2 WebSocket Client",
+  "authors": [
+    "Stephan Adig"
+  ],
+  "license": "GPL",
+  "homepage": "http://dc2.sourcecode.de/",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+	  "socket.io-client": ">=0.9.16",
+	  "bootstrap": ">=3.1.1"
+  }
+}
