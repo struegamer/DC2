@@ -42,7 +42,7 @@ except ImportError as e:
     sys.exit(1)
 
 try:
-    from dc2.dhcp.appserver.dhcp_server_config import\
+    from dc2.dhcp.appserver.dhcp_server_configuration import\
         dc2_dhcp_mgmt_write_config
 except ImportError as e:
     print(e)
