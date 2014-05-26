@@ -2,3 +2,6 @@ body {
 	padding-top: 70px;
 }
 
+.mouse-pointer {
+	cursor: pointer;
+}

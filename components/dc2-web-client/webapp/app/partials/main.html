@@ -10,14 +10,33 @@
             </ul>
           </div>
         </div>
-      </div>
-      <div class="col-lg-9">
-        <div class="panel panel-primary">
-          <div class="panel-heading">Latest Discoveries</div>
+        <div class="panel panel-info" ng-controller="DHCPController">
+          <div class="panel-heading">Known DHCP Networks<div class="pull-right"><span class="glyphicon glyphicon-refresh mouse-pointer" ng-click="refreshDHCPNetworks()"></span></div></div>
           <div class="panel-body">
+            <ul class="nav nav-stacked nav-inverse">
+              <li ng-repeat="network in dhcp_networks">
+                {{network.rack_no}}.{{network.cluster_no}}.{{network.dcname}}.gaikai.net ({{network.ipspace}})
+              </li>
+            </ul>
+          </div>
+        </div>        
+        <div class="panel panel-info" ng-class="{false: 'panel-info', true: 'panel-success'}[isConnected]" ng-controller="SocketController">
+          <div class="panel-heading">Socket Console <div class="pull-right" ng-if="isConnected">(Connected)</div><div class="pull-right" ng-if="isConnected==false">(Disconnected)</div>)</div>
+          <div class="panel-body">
+            <ul class="nav nav-stacked nav-inverse">
+              <li></li>
+            </ul>
+          </div>
+        </div>        
+
+      </div>
+      <div ng-controller="MainController" ng-class="{true: 'col-lg-3', false: 'col-lg-9'}[isCollapsed]">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Latest Discoveries<div class='pull-right'><span class="glyphicon mouse-pointer" ng-class="{true: 'glyphicon-chevron-right', false: 'glyphicon-chevron-left'}[isCollapsed]" ng-click="collapseLeft()"></span></div></div>
+          <div class="panel-body clearfix">
             <div class="row">
               <div class="col-lg-4">
-                <div class="rack panel panel-info">            
+                <div class="rack panel panel-info">
                   <div class="panel-heading">Rack r1.01.orda.gaikai.net</div>
                   <div class="panel-body">
                     <table class="table table-bordered">
@@ -40,15 +59,15 @@
                         </tr>
                         <tr>
                           <th>43</th>
-                          <td>konan2</td>                          
+                          <td>konan2</td>
                         </tr>
                         <tr>
                           <th>42</th>
-                          <td>konan3</td>                          
+                          <td>konan3</td>
                         </tr>
                         <tr>
                           <th>41</th>
-                          <td>konan4</td>                          
+                          <td>konan4</td>
                         </tr>
                         <tr>
                           <th>40</th>
@@ -95,7 +114,7 @@
                 </div>
               </div>
               <div class="col-lg-4">
-                <div class="rack panel panel-info">            
+                <div class="rack panel panel-info">
                   <div class="panel-heading">Rack r2.01.orda.gaikai.net</div>
                   <div class="panel-body">
                     <table class="table table-bordered">
@@ -118,15 +137,15 @@
                         </tr>
                         <tr>
                           <th>43</th>
-                          <td>konan2</td>                          
+                          <td>konan2</td>
                         </tr>
                         <tr>
                           <th>42</th>
-                          <td>konan3</td>                          
+                          <td>konan3</td>
                         </tr>
                         <tr>
                           <th>41</th>
-                          <td>konan4</td>                          
+                          <td>konan4</td>
                         </tr>
                         <tr>
                           <th>40</th>
@@ -173,7 +192,7 @@
                 </div>
               </div>
               <div class="col-lg-4">
-                <div class="rack panel panel-info">            
+                <div class="rack panel panel-info">
                   <div class="panel-heading">Rack r3.01.orda.gaikai.net</div>
                   <div class="panel-body">
                     <table class="table table-bordered">
@@ -196,15 +215,15 @@
                         </tr>
                         <tr>
                           <th>43</th>
-                          <td>konan2</td>                          
+                          <td>konan2</td>
                         </tr>
                         <tr>
                           <th>42</th>
-                          <td>konan3</td>                          
+                          <td>konan3</td>
                         </tr>
                         <tr>
                           <th>41</th>
-                          <td>konan4</td>                          
+                          <td>konan4</td>
                         </tr>
                         <tr>
                           <th>40</th>
@@ -254,7 +273,7 @@
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <div class="rack panel panel-info">            
+                <div class="rack panel panel-info">
                   <div class="panel-heading">Rack r1.02.orda.gaikai.net</div>
                   <div class="panel-body">
                     <table class="table table-bordered">
@@ -277,15 +296,15 @@
                         </tr>
                         <tr>
                           <th>43</th>
-                          <td>konan2</td>                          
+                          <td>konan2</td>
                         </tr>
                         <tr>
                           <th>42</th>
-                          <td>konan3</td>                          
+                          <td>konan3</td>
                         </tr>
                         <tr>
                           <th>41</th>
-                          <td>konan4</td>                          
+                          <td>konan4</td>
                         </tr>
                         <tr>
                           <th>40</th>
@@ -332,7 +351,7 @@
                 </div>
               </div>
               <div class="col-lg-4">
-                <div class="rack panel panel-info">            
+                <div class="rack panel panel-info">
                   <div class="panel-heading">Rack r2.02.orda.gaikai.net</div>
                   <div class="panel-body">
                     <table class="table table-bordered">
@@ -355,15 +374,15 @@
                         </tr>
                         <tr>
                           <th>43</th>
-                          <td>konan2</td>                          
+                          <td>konan2</td>
                         </tr>
                         <tr>
                           <th>42</th>
-                          <td>konan3</td>                          
+                          <td>konan3</td>
                         </tr>
                         <tr>
                           <th>41</th>
-                          <td>konan4</td>                          
+                          <td>konan4</td>
                         </tr>
                         <tr>
                           <th>40</th>
@@ -410,7 +429,7 @@
                 </div>
               </div>
               <div class="col-lg-4">
-                <div class="rack panel panel-info">            
+                <div class="rack panel panel-info">
                   <div class="panel-heading">Rack r3.02.orda.gaikai.net</div>
                   <div class="panel-body">
                     <table class="table table-bordered">
@@ -433,15 +452,15 @@
                         </tr>
                         <tr>
                           <th>43</th>
-                          <td>konan2</td>                          
+                          <td>konan2</td>
                         </tr>
                         <tr>
                           <th>42</th>
-                          <td>konan3</td>                          
+                          <td>konan3</td>
                         </tr>
                         <tr>
                           <th>41</th>
-                          <td>konan4</td>                          
+                          <td>konan4</td>
                         </tr>
                         <tr>
                           <th>40</th>

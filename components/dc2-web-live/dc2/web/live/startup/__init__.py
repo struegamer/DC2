@@ -19,6 +19,5 @@
 #
 
 from .globals import app # noqa
+from .globals import api  # noqa
 from .globals import socketio # noqa
-
-socketio.init_app(app)

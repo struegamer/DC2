@@ -43,4 +43,5 @@ def on_commands_disconnect():
 
 @socketio.on('discovered', namespace='/commands')
 def on_commands_discovered(message):
-    emit('discovered_device', message, namespace='/updates')
+    print(message)
+    emit('discovered_device', message, namespace='/updates', broadcast=True)

@@ -28,3 +28,4 @@ except ImportError as e:
     sys.exit(1)
 
 app = Flask(__name__)
+app.debug = True

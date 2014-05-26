@@ -1,7 +1,10 @@
 'use strict';
 
 var gkautodiscovery = angular.module('gkautodiscovery', [
-  'ngRoute'
+  'ngRoute',
+  'btford.socket-io',
+  'gkautodiscovery.controllers',
+  'gkautodiscovery.services'
 ]);
 
 gkautodiscovery.config(['$routeProvider',

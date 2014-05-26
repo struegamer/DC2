@@ -18,5 +18,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from .global_app import app # noqa
-from .global_socketio import socketio # noqa
+from .global_app import app  # noqa
+from .global_socketio import socketio  # noqa
+from .global_rest_api import api  # noqa

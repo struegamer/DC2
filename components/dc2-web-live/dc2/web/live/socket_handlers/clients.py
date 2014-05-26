@@ -29,14 +29,14 @@ except ImportError as e:
 
 @socketio.on('connect', namespace='/updates')
 def on_updates_connect():
-    pass
+    print('updates connected')
 
 
-@socketio.on('disconnect', namespace='/updates')
+@socketio.on('disconnect', namespace='/socket-io/updates')
 def on_updates_disconnect():
     pass
 
 
 @socketio.on('discovered_device', namespace='/updates')
 def on_updates_discovered_device(message):
-    pass
+    return message
