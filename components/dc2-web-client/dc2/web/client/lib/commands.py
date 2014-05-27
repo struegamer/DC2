@@ -37,7 +37,13 @@ class Commands(object):
         self._client = client
         self._ns = self._client.socketio.define(CommandNamespace, '/commands')
 
-    def send_discovered(self, data):
-        self._ns.emit('discovered', data)
+    def send_discovered(self, data=None):
+        if data is not None:
+            if isinstance(data, dict):
+                self._ns.emit('discovered', data)
+            elif isinstance(data, list):
+                for date in data:
+                    if isinstance(date, dict):
+                        self._ns.emit('discovered', date)
         self._client.socketio.wait(seconds=2)
         return True

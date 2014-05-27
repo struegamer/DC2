@@ -7,8 +7,8 @@ from dc2.web.client.lib.commands import Commands
 
 if __name__ == '__main__':
     foo = Commands(DC2SocketClient())
-    foo.send_discovered({
+    foo.send_discovered([{
         'cluster_no': '01',
-        'rack_no': 'r1',
+        'rack_no': 'r{0}'.format(i+1),
         'dcname': 'laxa'
-    })
+    } for i in range(0,49)])
