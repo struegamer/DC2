@@ -22,6 +22,4 @@ if __name__ == '__main__':
         automatic_options=True)]
 
     socketio.init_app(app)
-    print(app.config)
-    print(app.url_map)
-    socketio.run(app)
+    socketio.run(app, heartbeat_interval=2, heartbeat_timeout=5)

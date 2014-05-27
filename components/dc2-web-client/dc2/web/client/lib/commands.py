@@ -18,14 +18,26 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-
 import sys
 
 try:
-    from flask import Flask
+    from socketIO_client import BaseNamespace
 except ImportError as e:
-    print(e)
+    print(1)
     sys.exit(1)
 
-app = Flask(__name__)
-#app.debug = True
+
+class CommandNamespace(BaseNamespace):
+    pass
+
+
+class Commands(object):
+
+    def __init__(self, client):
+        self._client = client
+        self._ns = self._client.socketio.define(CommandNamespace, '/commands')
+
+    def send_discovered(self, data):
+        self._ns.emit('discovered', data)
+        self._client.socketio.wait(seconds=2)
+        return True

@@ -12,6 +12,9 @@ gkad_services.factory('SockClient', function(socketFactory) {
   console.log(myConnection)
   var mySocket = socketFactory({
     prefix:'',
+    heartbeatTimeout:10,
+    heartbeatInterval:5,
+    timeout:100,
     ioSocket: myConnection
   });
   return mySocket;

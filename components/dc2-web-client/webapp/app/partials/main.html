@@ -20,11 +20,11 @@
             </ul>
           </div>
         </div>        
-        <div class="panel panel-info" ng-class="{false: 'panel-info', true: 'panel-success'}[isConnected]" ng-controller="SocketController">
+        <div class="panel" ng-class="{false: 'panel-danger', true: 'panel-success'}[isConnected]" ng-controller="SocketController">
           <div class="panel-heading">Socket Console <div class="pull-right" ng-if="isConnected">(Connected)</div><div class="pull-right" ng-if="isConnected==false">(Disconnected)</div>)</div>
           <div class="panel-body">
-            <ul class="nav nav-stacked nav-inverse">
-              <li></li>
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="message in messages track by $index">{{message}}</li>
             </ul>
           </div>
         </div>        

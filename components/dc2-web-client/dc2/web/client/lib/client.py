@@ -17,15 +17,25 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-
-
 import sys
 
 try:
-    from flask import Flask
+    from socketIO_client import SocketIO
+    from socketIO_client import BaseNamespace
 except ImportError as e:
     print(e)
     sys.exit(1)
 
-app = Flask(__name__)
-#app.debug = True
+
+def str_to_class(module_name, str_classname):
+    return reduce(getattr, str_classname.split('.'), sys.modules[module_name])
+
+
+class DC2SocketClient(object):
+
+    def __init__(self, host='localhost', port=5000):
+        self._socketio = SocketIO(host, port)
+
+    def _get_socketio(self):
+        return self._socketio
+    socketio = property(_get_socketio)

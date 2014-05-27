@@ -28,17 +28,25 @@ gkad_controllers.controller('DHCPController', ['$scope', 'DHCPNetworks', functio
 
 gkad_controllers.controller('SocketController', ['$scope', 'SockClient', function($scope, SockClient) {
   $scope.isConnected = false;
-  console.log(SockClient);
   SockClient.on('connect', function(ev) {
     console.log('connected');
     $scope.isConnected=true;
   });
   SockClient.on('discovered_device', function(ev, data) {
-    console.log(ev)
-    console.log(data);
+    if ($scope.messages == undefined) {
+        $scope.messages = [];
+    }
+    if ($scope.messages.length > 5) {
+      $scope.messages.shift();
+    }
+    $scope.messages.push("New discovery: "+ev.rack_no+ev.cluster_no+ev.dcname);
   });
   SockClient.on('disconnect', function(ev) {
     console.log('disconnected');
-    $scope.isConnected=true;
+    $scope.isConnected=false;
+  });
+  SockClient.on('heartbeat', function(ev) {
+    console.log('Heartbeat');
+    console.log(ev);
   });
 }]);

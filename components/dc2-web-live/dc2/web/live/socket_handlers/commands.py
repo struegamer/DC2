@@ -43,5 +43,19 @@ def on_commands_disconnect():
 
 @socketio.on('discovered', namespace='/commands')
 def on_commands_discovered(message):
-    print(message)
-    emit('discovered_device', message, namespace='/updates', broadcast=True)
+    if isinstance(message, dict):
+        print('hello')
+        if ('cluster_no' in message and
+            'rack_no' in message and
+                'dcname' in message):
+
+            emit(
+                'discovered_device',
+                message,
+                namespace='/updates',
+                broadcast=True)
+        else:
+            emit('command_error', {
+                'command': 'discovered',
+                'error': 'Message malformed'
+            }, namespace="/commands")
