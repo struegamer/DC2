@@ -24,7 +24,7 @@
           <div class="panel-heading">Socket Console <div class="pull-right" ng-if="isConnected">(Connected)</div><div class="pull-right" ng-if="isConnected==false">(Disconnected)</div>)</div>
           <div class="panel-body">
             <ul class="list-group">
-              <li class="list-group-item" ng-repeat="message in messages track by $index">{{message}}</li>
+              <li class="list-group-item" ng-class="{'list-group-item-success':$index+1 == messages.length}" ng-repeat="message in messages track by $index">{{message}} {{$index+1}} {{messages.length}}</li>
             </ul>
           </div>
         </div>        
@@ -34,82 +34,20 @@
         <div class="panel panel-primary">
           <div class="panel-heading">Latest Discoveries<div class='pull-right'><span class="glyphicon mouse-pointer" ng-class="{true: 'glyphicon-chevron-right', false: 'glyphicon-chevron-left'}[isCollapsed]" ng-click="collapseLeft()"></span></div></div>
           <div class="panel-body clearfix">
-            <div class="row" ng-repeat="rack in discovered_racks">
-              <div class="col-lg-4">
-                <div class="rack panel panel-info">
-                  <div class="panel-heading">Rack {{rack.rackname}}</div>
-                  <div class="panel-body">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <th>47</th>
-                          <td>rsw01</td>
-                        </tr>
-                        <tr>
-                          <th>46</th>
-                          <td>kura1</td>
-                        </tr>
-                        <tr>
-                          <th>45</th>
-                          <td>rmc1</td>
-                        </tr>
-                        <tr>
-                          <th>44</th>
-                          <td>konan1</td>
-                        </tr>
-                        <tr>
-                          <th>43</th>
-                          <td>konan2</td>
-                        </tr>
-                        <tr>
-                          <th>42</th>
-                          <td>konan3</td>
-                        </tr>
-                        <tr>
-                          <th>41</th>
-                          <td>konan4</td>
-                        </tr>
-                        <tr>
-                          <th>40</th>
-                        </tr>
-                        <tr>
-                          <th>39</th>
-                        </tr>
-                        <tr>
-                          <th>38</th>
-                        </tr>
-                        <tr>
-                          <th>37</th>
-                        </tr>
-                        <tr>
-                          <th>36</th>
-                        </tr>
-                        <tr>
-                          <th>35</th>
-                        </tr>
-                        <tr>
-                          <th>34</th>
-                        </tr>
-                        <tr>
-                          <th>33</th>
-                        </tr>
-                        <tr>
-                          <th>32</th>
-                        </tr>
-                        <tr>
-                          <th>31</th>
-                        </tr>
-                        <tr>
-                          <th>30</th>
-                        </tr>
-                        <tr>
-                          <th>29</th>
-                        </tr>
-                        <tr>
-                          <th>28</th>
-                        </tr>
-                      </tbody>
-                    </table>
+            <div ng-repeat="rackoon in discovered_racks track by $index">
+              <div ng-class="{'row': ($index+1 % 3 == 0)}">
+                <div class="col-lg-4">
+                  <div class="rack panel panel-info" ng-controller="RackController" ng-model="rackoon">
+                    <div class="panel-heading">Rack {{rack.rack}}<div class="pull-right"><span class="glyphicon" ng-class="{true: 'glyphicon-chevron-up', 'glyphicon-chevron-down':false}[rack_collapsed]" ng-click="rackCollapse()"></span></div></div>
+                    <div class="panel-body" collapse="rack_collapsed">
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr ng-repeat="devices in rack.devices">
+                            <td>{{devices}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>

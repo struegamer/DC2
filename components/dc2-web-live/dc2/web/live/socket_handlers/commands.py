@@ -41,16 +41,15 @@ def on_commands_disconnect():
     pass
 
 
-@socketio.on('discovered', namespace='/commands')
+@socketio.on('discovered_rack', namespace='/commands')
 def on_commands_discovered(message):
     if isinstance(message, dict):
-        print('hello')
         if ('cluster_no' in message and
             'rack_no' in message and
                 'dcname' in message):
 
             emit(
-                'discovered_device',
+                'discovered_rack',
                 message,
                 namespace='/updates',
                 broadcast=True)
@@ -58,4 +57,25 @@ def on_commands_discovered(message):
             emit('command_error', {
                 'command': 'discovered',
                 'error': 'Message malformed'
+            }, namespace="/commands")
+
+
+@socketio.on('discovered_device', namespace='/commands')
+def on_commands_discovered_device(message):
+    print(message)
+    if isinstance(message, dict):
+        if ('device_type' in message and
+            'rack_no' in message and
+            'cluster_no' in message and
+                'dcname' in message):
+            print('hello')
+            emit(
+                'discovered_device',
+                message,
+                namespace='/updates',
+                broadcast=True)
+        else:
+            emit('command_error', {
+                'command': 'discovered_device',
+                'error': 'Message malformed',
             }, namespace="/commands")

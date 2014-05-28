@@ -19,6 +19,7 @@
 #
 
 import sys
+import time
 
 try:
     from socketIO_client import BaseNamespace
@@ -37,13 +38,27 @@ class Commands(object):
         self._client = client
         self._ns = self._client.socketio.define(CommandNamespace, '/commands')
 
-    def send_discovered(self, data=None):
+    def send_discovered_rack(self, data=None, wait=0):
         if data is not None:
             if isinstance(data, dict):
-                self._ns.emit('discovered', data)
+                self._ns.emit('discovered_rack', data)
             elif isinstance(data, list):
                 for date in data:
                     if isinstance(date, dict):
-                        self._ns.emit('discovered', date)
+                        self._ns.emit('discovered_rack', date)
+                    if wait > 0:
+                        time.sleep(wait)
+        self._client.socketio.wait(seconds=2)
+        return True
+
+    def send_discovered_device(self, data=None, wait=0):
+        if data is not None and isinstance(data, dict):
+            self._ns.emit('discovered_device', data)
+        elif data is not None and isinstance(data, list):
+            for date in data:
+                if isinstance(date, dict):
+                    self._ns.emit('discovered_device', date)
+                if wait > 0:
+                    time.sleep(wait)
         self._client.socketio.wait(seconds=2)
         return True

@@ -3,6 +3,7 @@
 var gkautodiscovery = angular.module('gkautodiscovery', [
   'ngRoute',
   'btford.socket-io',
+  'ui.bootstrap',
   'gkautodiscovery.controllers',
   'gkautodiscovery.services'
 ]);

@@ -37,6 +37,11 @@ def on_updates_disconnect():
     pass
 
 
-@socketio.on('discovered_device', namespace='/updates')
+@socketio.on('discovered_rack', namespace='/updates')
+def on_updates_discovered_rack(message):
+    return message
+
+
+@socketio.on('discovered_device', namespace="/updates")
 def on_updates_discovered_device(message):
     return message
