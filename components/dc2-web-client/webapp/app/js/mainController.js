@@ -53,7 +53,6 @@ gkad_controllers.controller('DHCPController', ['$scope', 'DHCPNetworks', functio
 gkad_controllers.controller('SocketController', ['$rootScope','$scope', 'SockClient', function($rootScope,$scope, SockClient) {
   $scope.isConnected = false;
   SockClient.on('connect', function(ev) {
-    console.log('connected');
     $scope.isConnected=true;
   });
   SockClient.on('discovered_rack', function(ev, data) {
@@ -78,13 +77,8 @@ gkad_controllers.controller('SocketController', ['$rootScope','$scope', 'SockCli
     $rootScope.$broadcast('SocketController:discovered_device', ev);
   })
   SockClient.on('disconnect', function(ev) {
-    console.log('disconnected');
     $scope.isConnected=false;
 
-  });
-  SockClient.on('heartbeat', function(ev) {
-    console.log('Heartbeat');
-    console.log(ev);
   });
 }]);
 
@@ -98,6 +92,5 @@ gkad_controllers.controller('RackController', ['$rootScope', '$scope', function(
     } else {
       $scope.rack_collapsed=true;
     }
-    console.log('clicked');
   };
 }]);
