@@ -38,7 +38,12 @@ override_dh_auto_install:
 	cp -r $(CURDIR)/examples/dc2-admincenter/static $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
 	cp -r $(CURDIR)/examples/dc2-admincenter/templates $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
 	cp -r $(CURDIR)/examples/dc2-admincenter/first-time $(CURDIR)/debian/tmp/usr/share/dc2-admincenter/
-
+	#
+	# dc2-web-live-client
+	#
+	#
+	mkdir -p $(CURDIR)/debian/tmp/usr/share/dc2-webapp-live-client/
+	cp -r $(CURDIR)/components/dc2-web-client/webapp/* $(CURDIR)/debian/tmp/user/share/dc2-webapp-live-client/
 	#
 	# dc2-fai-config-space
 	#
