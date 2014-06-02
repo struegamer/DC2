@@ -224,3 +224,42 @@ Description: DC² is a bookkeeping tool for automatic deployments
  .
  This package includes the DC² backend support for DHCP Management
 
+
+Package: python-dc2.web.live
+Architecture: all
+Section: admin
+Depends: ${python:Depends}, ${misc:Depends}
+Description:  DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² backend support for Auto-Discovery Live Events
+
+Package: python-dc2.web.client
+Architecture: all
+Section: admin
+Depends: ${python:Depends}, ${misc:Depends}
+Description:  DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² frontend/library support for Auto-Discovery Live Events
+
+Package: dc2-webapp-live-client
+Architecture: all
+Section: admin
+Depends: python-dc2.web.client, ${misc:Depends}
+Description:  DC² is a bookkeeping tool for automatic deployments
+ DC² uses FAI as automatic deployment framework.
+ It helps System Administrators to have a clean way of deployment of
+ Operating Systems like Debian, Ubuntu, Red hat Enterprise Server, 
+ SuSE Linux Enterprise, CentOS, Fedora, OpenSuSE, Scientific Linux etc.
+ .
+ This package includes the DC² frontend web application for Auto-Discovery Live Events
+
+
+
