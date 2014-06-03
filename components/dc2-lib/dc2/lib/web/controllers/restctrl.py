@@ -164,7 +164,7 @@ class RESTController(object):
     def _prepare_output(self, format='html',
                         content_type='text/html; charset=utf-8',
                         output_format='html', output=None):
-        if output is None or isinstance(output, dict):
+        if output is None or not isinstance(output, dict):
             output = {'output': 'No Output'}
         result = {}
         result['format'] = format
