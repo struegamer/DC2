@@ -17,6 +17,5 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-from .lib import EVENTS  # noqa
-from .lib import DC2SocketClient  # noqa
-from .lib import Commands  # noqa
+
+EVENTS = {}

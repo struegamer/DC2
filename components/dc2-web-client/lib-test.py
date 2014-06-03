@@ -6,7 +6,7 @@ from dc2.web.client.lib.commands import Commands
 
 
 if __name__ == '__main__':
-    foo = Commands(DC2SocketClient())
+    foo = Commands(DC2SocketClient(host="auto-discovery1.r3.05.laxa.gaikai.net", port=80))
     foo.send_discovered_rack([{
         'cluster_no': '01',
         'rack_no': 'r{0}'.format(i+1),
