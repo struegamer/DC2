@@ -79,42 +79,50 @@ else:
 
 
 def dc2_dhcp_mgmt_write_config(ipspace=None):
+    template = None
     if ipspace is not None:
         print('hello')
         try:
             ip = netaddr.IPNetwork(ipspace)
             if ip.size == 256:
-                template = jinja2.Template(DHCP_MGMT_CONFIG['template'])
-                if DHCP_MGMT_CONFIG['template_file'] is not None:
+                if (DHCP_MGMT_CONFIG['template'] is not None and
+                        DHCP_MGMT_CONFIG['template_file'] is None):
+                    template = jinja2.Template(DHCP_MGMT_CONFIG['template'])
+                elif (DHCP_MGMT_CONFIG['template_file'] is not None and
+                        DHCP_MGMT_CONFIG['template'] is None):
                     template_env = jinja2.Environment(
                         loader=jinja2.FileSystemLoader(
                             DHCP_MGMT_CONFIG['template_dir']))
                     template = template_env.get_template(
                         DHCP_MGMT_CONFIG['template_file'])
-                data = {}
-                data['ip'] = {}
-                data['ip']['network'] = str(ip.network)
-                data['ip']['netmask'] = str(ip.netmask)
-                data['ip']['range_start'] = ip[DHCP_MGMT_CONFIG[
-                    'range_start']]
-                data['ip']['range_end'] = ip[DHCP_MGMT_CONFIG[
-                    'range_end']]
-                data['ip']['dc2db_ipxe_url'] = DHCP_MGMT_CONFIG[
-                    'dc2db_ipxe_url']
-                data['ip']['option_routers'] = ip[1]
-                data['ip']['option_domain_name_servers'] =\
-                    DHCP_MGMT_CONFIG['option_domain_name_servers']
-                data['ip']['next_server'] = DHCP_MGMT_CONFIG['next_server']
-                rendered_template = template.render(data)
-                print(template)
-                fp = open(
-                    '{0}/{1}'.format(
-                        DHCP_MGMT_CONFIG['store_directory'],
-                        '{0}.conf'.format(str(ip.network))),
-                    'wb')
-                fp.write(rendered_template)
-                fp.close()
-                return True
+                if template is not None:
+                    data = {}
+                    data['ip'] = {}
+                    data['ip']['network'] = str(ip.network)
+                    data['ip']['netmask'] = str(ip.netmask)
+                    data['ip']['range_start'] = ip[DHCP_MGMT_CONFIG[
+                        'range_start']]
+                    data['ip']['range_end'] = ip[DHCP_MGMT_CONFIG[
+                        'range_end']]
+                    data['ip']['dc2db_ipxe_url'] = DHCP_MGMT_CONFIG[
+                        'dc2db_ipxe_url']
+                    data['ip']['option_routers'] = ip[1]
+                    data['ip']['option_domain_name_servers'] =\
+                        DHCP_MGMT_CONFIG['option_domain_name_servers']
+                    data['ip']['next_server'] =\
+                        DHCP_MGMT_CONFIG['next_server']
+                    rendered_template = template.render(data)
+                    print(template)
+                    fp = open(
+                        '{0}/{1}'.format(
+                            DHCP_MGMT_CONFIG['store_directory'],
+                            '{0}.conf'.format(str(ip.network))),
+                        'wb')
+                    fp.write(rendered_template)
+                    fp.close()
+                    return True
+                else:
+                    return False
         except netaddr.core.AddrFormatError:
             return False
     else:
