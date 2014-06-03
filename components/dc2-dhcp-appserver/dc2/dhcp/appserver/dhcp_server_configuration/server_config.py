@@ -121,7 +121,7 @@ def dc2_dhcp_mgmt_write_config(ipspace=None):
                     fp.write(rendered_template)
                     fp.close()
                     dc2_dhcp_mgmt_manage_include_file(
-                        'add', '{0}'.format(str(ip.network)))
+                        'add', '{0}.conf'.format(str(ip.network)))
                     return True
                 else:
                     return False
@@ -140,7 +140,7 @@ def dc2_dhcp_mgmt_manage_include_file(action='add', filename_to_add=None):
         contents = fp.readlines()
         found = False
         for line in contents:
-            if line.find('include "{0}/{1}";'.format(
+            if line.find('include "{0}{1}";'.format(
                 dhcp_store_directory,
                     filename_to_add)) == -1:
                 found = False
@@ -148,7 +148,7 @@ def dc2_dhcp_mgmt_manage_include_file(action='add', filename_to_add=None):
                 found = True
                 break
         if found is False:
-            fp.write('include "{0}/{1}";'.format(
+            fp.write('include "{0}{1}";'.format(
                 dhcp_store_directory, filename_to_add))
         fp.close()
     elif action.lower() == 'delete':
