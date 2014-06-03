@@ -18,3 +18,4 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 from .server_config import dc2_dhcp_mgmt_write_config  # noqa
+from .server_config import dc2_dhcp_mgmt_manage_include_file  # noqa
