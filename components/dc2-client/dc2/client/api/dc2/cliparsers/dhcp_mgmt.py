@@ -59,3 +59,5 @@ def process_dhcp_mgmt(args):
             result = True
             _output(True, json.dumps(network))
     return result
+
+create_subparser()
