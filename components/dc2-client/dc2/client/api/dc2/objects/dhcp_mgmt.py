@@ -42,6 +42,10 @@ class DHCPMgmt(object):
                 return False
         network_list = self._proxy.dc2.dhcp.mgmt.list()
         for network in network_list:
-            if ip in network:
+            try:
+                ipnetwork = netaddr.IPNetwork(network['ipspace'])
+            except Exception:
+                return False
+            if ip in ipnetwork:
                 return network
         return False
