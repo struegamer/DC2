@@ -27,3 +27,4 @@ from objects import Environments # noqa
 from objects import Utilities # noqa
 from objects import SystemUser # noqa
 from objects import SystemGroups # noqa
+from objects import DHCPMgmt  # noqa
