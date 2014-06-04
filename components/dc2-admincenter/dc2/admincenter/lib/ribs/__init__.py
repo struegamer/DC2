@@ -54,7 +54,7 @@ def rib_new():
 
 
 def rib_add(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if 'remote_type' not in rec or 'name' not in rec:
         raise ValueError("no 'title' or 'backend_url' in rec")
@@ -63,7 +63,7 @@ def rib_add(rec=None):
 
 
 def rib_update(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
@@ -74,7 +74,7 @@ def rib_update(rec=None):
 
 
 def rib_get(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
@@ -85,7 +85,7 @@ def rib_get(rec=None):
 
 
 def rib_delete(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")

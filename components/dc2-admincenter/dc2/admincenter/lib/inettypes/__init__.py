@@ -53,7 +53,7 @@ def inet_new():
 
 
 def inet_add(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if 'type' not in rec or 'desc' not in rec:
         raise ValueError("no 'type' or 'desc' in rec")
@@ -62,7 +62,7 @@ def inet_add(rec=None):
 
 
 def inet_update(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
@@ -73,7 +73,7 @@ def inet_update(rec=None):
 
 
 def inet_get(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
@@ -84,7 +84,7 @@ def inet_get(rec=None):
 
 
 def inet_delete(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")

@@ -53,7 +53,7 @@ def installmethod_new():
 
 
 def installmethod_add(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if 'type' not in rec or 'name' not in rec:
         raise ValueError("no 'type' or 'name' in rec")
@@ -62,7 +62,7 @@ def installmethod_add(rec=None):
 
 
 def installmethod_update(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
@@ -73,7 +73,7 @@ def installmethod_update(rec=None):
 
 
 def installmethod_get(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
@@ -84,7 +84,7 @@ def installmethod_get(rec=None):
 
 
 def installmethod_delete(rec=None):
-    if rec is None or isinstance(rec, dict):
+    if rec is None or not isinstance(rec, dict):
         raise ValueError('rec is not a Dict type or rec is None')
     if '_id' not in rec:
         raise ValueError("no '_id'")
