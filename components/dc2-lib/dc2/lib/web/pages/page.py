@@ -68,7 +68,8 @@ class Page(object):
     def add_page_data(self, data=None):
         if data is not None and isinstance(data, dict):
             if 'context' in data or 'page' in data:
-                raise ValueError('page_data can\'t have another "context" key')
+                raise ValueError(
+                    'page_data can\'t have another "context" key')
             self._pagedata.update(data)
             return True
         raise ValueError('Data is None or Data is not a dictionary')
@@ -120,7 +121,7 @@ class Page(object):
         if action == 'new':
             if query is not None and query != '':
                 return '{0}/new?{1}'.format(path_info, query)
-            return '{0}/new' % path_info
+            return '{0}/new'.format(path_info)
         if action == 'show':
             if id is not None:
                 return '{0}/{1}'.format(path_info, id)
