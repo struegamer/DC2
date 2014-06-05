@@ -38,16 +38,25 @@ def create_subparser():
         description="IP Management Functions",
         help="IP Management Functions")
 
-    ip_parser.add_argument(
+    ip_selection_group = ip_parser.add_mutually_exclusive_group(
+        required=True)
+
+    ip_selection_group.add_argument(
         '--get-ip',
         action='store_true',
         dest='ip_get_ip',
+        default=True,
+        help='Get IP by interface name')
+    ip_selection_group.add_argument(
+        '--get-ip-by-mac',
+        action='store_true',
+        dest='ip_get_ip_by_mac',
         default=False,
-        help='Get IP')
-
+        help='Get IP by MAC Address'
+    )
     ip_parser.add_argument(
-        'ip_device_name',
-        default='lo',
+        'ip_arg',
+        default=None,
         help="Device Name")
 
     ip_parser.set_defaults(
@@ -58,10 +67,10 @@ def create_subparser():
 def process_ip(args):
     result = False
     if args.ip_get_ip:
-        if args.ip_device_name:
-            if args.ip_device_name in netifaces.interfaces():
+        if args.ip_device_name is not None:
+            if args.ip_arg in netifaces.interfaces():
                 result = True
-                addrs = netifaces.ifaddresses(args.ip_device_name)
+                addrs = netifaces.ifaddresses(args.ip_arg)
                 for i in addrs:
                     if 'addr' not in i:
                         result = False
@@ -73,10 +82,21 @@ def process_ip(args):
                             '!L', inet_aton(ip['addr']))[0])
                     for i in addrs_sorted:
                         _output(result, i['addr'])
+                    return result
             else:
                 result = False
                 _output(False, 'Network Interface {0} does not exist'.format(
                     args.ip_device_name))
+        elif args.ip_get_ip_by_mac:
+            if args.ip_arg is not None:
+                for intf in netifaces.interfaces():
+                    addrs = netifaces.ifaddresses(intf)
+                    if addrs[netifaces.AF_LINK]['addr'] == args.ip_arg:
+                        result = True
+                        _output(
+                            result,
+                            addrs[netifaces.AF_INET]['addr'])
+                        return result
     return False
 
 create_subparser()
