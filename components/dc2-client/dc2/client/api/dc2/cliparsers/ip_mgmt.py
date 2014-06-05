@@ -17,12 +17,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-import json
+import sys
+from socket import inet_aton
+import struct
 
 from . import SUBPARSERS
 from . import _output
 
 # from dc2.client.api.dc2.objects import DHCPMgmt
+try:
+    import netifaces
+except ImportError as e:
+    print('{0}: {1}'.format(__file__, e))
+    sys.exit(1)
 
 
 def create_subparser():
@@ -45,8 +52,25 @@ def create_subparser():
 
     ip_parser.set_defaults(
         func=process_ip,
-        parser_nmae='ip')
+        parser_name='ip')
 
 
 def process_ip(args):
-    pass
+    result = False
+    if args.ip_get_ip:
+        if args.ip_device_name:
+            if args.ip_device_name in netifaces.interfaces():
+                result = True
+                addrs = netifaces.ifaddresses(args.ip_device_name)
+                addrs_sorted = sorted(
+                    addrs[netifaces.AF_INET], key=lambda ip: struct.unpack(
+                        '!L', inet_aton(ip['addr']))[0])
+                for i in addrs_sorted:
+                    _output(result, i['addr'])
+            else:
+                result = False
+                _output(False, 'Network Interface {0} does not exist'.format(
+                    args.ip_device_name))
+    return False
+
+create_subparser()

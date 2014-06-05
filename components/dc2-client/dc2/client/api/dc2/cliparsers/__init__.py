@@ -35,3 +35,4 @@ from . import hosts # noqa
 from . import discovery # noqa
 from . import state  # noqa
 from . import dhcp_mgmt  # noqa
+from . import ip_mgmt  # noqa
