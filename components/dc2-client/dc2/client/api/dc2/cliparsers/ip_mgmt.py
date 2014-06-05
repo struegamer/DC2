@@ -62,11 +62,17 @@ def process_ip(args):
             if args.ip_device_name in netifaces.interfaces():
                 result = True
                 addrs = netifaces.ifaddresses(args.ip_device_name)
-                addrs_sorted = sorted(
-                    addrs[netifaces.AF_INET], key=lambda ip: struct.unpack(
-                        '!L', inet_aton(ip['addr']))[0])
-                for i in addrs_sorted:
-                    _output(result, i['addr'])
+                for i in addrs:
+                    if 'addr' not in i:
+                        result = False
+                        break
+                if result:
+                    addrs_sorted = sorted(
+                        addrs[netifaces.AF_INET],
+                        key=lambda ip: struct.unpack(
+                            '!L', inet_aton(ip['addr']))[0])
+                    for i in addrs_sorted:
+                        _output(result, i['addr'])
             else:
                 result = False
                 _output(False, 'Network Interface {0} does not exist'.format(
