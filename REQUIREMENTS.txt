@@ -6,3 +6,4 @@ kerberos
 lxml
 python-dateutil
 netaddr
+netifaces
