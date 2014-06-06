@@ -45,7 +45,7 @@ def create_subparser():
         '--get-ip',
         action='store_true',
         dest='ip_get_ip',
-        default=True,
+        default=False,
         help='Get IP by interface name')
     ip_selection_group.add_argument(
         '--get-ip-by-mac',
@@ -67,7 +67,7 @@ def create_subparser():
 def process_ip(args):
     result = False
     if args.ip_get_ip:
-        if args.ip_device_name is not None:
+        if args.ip_arg is not None:
             if args.ip_arg in netifaces.interfaces():
                 result = True
                 addrs = netifaces.ifaddresses(args.ip_arg)
@@ -86,16 +86,18 @@ def process_ip(args):
             else:
                 result = False
                 _output(False, 'Network Interface {0} does not exist'.format(
-                    args.ip_device_name))
-        elif args.ip_get_ip_by_mac:
-            if args.ip_arg is not None:
-                for intf in netifaces.interfaces():
-                    addrs = netifaces.ifaddresses(intf)
-                    if addrs[netifaces.AF_LINK]['addr'] == args.ip_arg:
+                    args.ip_arg))
+    elif args.ip_get_ip_by_mac:
+        if args.ip_arg is not None:
+            for intf in netifaces.interfaces():
+                addrs = netifaces.ifaddresses(intf)
+                for i in addrs[netifaces.AF_LINK]:
+                    if i['addr'] == args.ip_arg:
+                        index = addrs[netifaces.AF_LINK].index(i)
                         result = True
                         _output(
                             result,
-                            addrs[netifaces.AF_INET]['addr'])
+                            addrs[netifaces.AF_INET][index]['addr'])
                         return result
     return False
 
