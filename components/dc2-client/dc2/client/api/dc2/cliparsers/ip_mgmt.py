@@ -71,7 +71,7 @@ def process_ip(args):
             if args.ip_arg in netifaces.interfaces():
                 result = True
                 addrs = netifaces.ifaddresses(args.ip_arg)
-                for i in addrs:
+                for i in addrs[netifaces.AF_INET]:
                     if 'addr' not in i:
                         result = False
                         break
