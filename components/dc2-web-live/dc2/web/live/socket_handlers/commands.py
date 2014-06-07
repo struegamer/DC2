@@ -68,7 +68,6 @@ def on_commands_discovered_device(message):
             'rack_no' in message and
             'cluster_no' in message and
                 'dcname' in message):
-            print('hello')
             emit(
                 'discovered_device',
                 message,
