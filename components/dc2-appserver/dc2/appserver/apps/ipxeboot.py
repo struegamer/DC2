@@ -50,8 +50,8 @@ class IPXEBoot:
                 result += ":retry_dhcp\n"
                 result += "dhcp || goto retry_dhcp\n"
                 result +=\
-                    "set 209:string http://{0}/boot/pxelinux.cfg/'\
-                    '01-${{mac:hexhyp}}\n".\
+                    'set 209:string http://{0}/boot/pxelinux.cfg/'\
+                    '01-${{mac:hexhyp}}\n'.\
                     format(XMLRPC_BACKEND_SERVER_IP)
                 result += "set 210:string {0}/\n".format(DOWNLOAD_SERVER_URL)
                 result += "chain pxelinux.0\n"
