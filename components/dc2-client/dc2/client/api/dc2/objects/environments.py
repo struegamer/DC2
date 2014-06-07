@@ -42,7 +42,7 @@ class Environments(object):
                 {'name': env_name})
             if len(environment) > 0:
                 envi = environment[0]
-                for i in envi:
+                for i in envi['variables']:
                     if i['name'].upper() == env_variable.upper():
                         return i['value']
         return None

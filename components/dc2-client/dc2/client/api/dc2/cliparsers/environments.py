@@ -69,3 +69,5 @@ def process_environment(args):
                 result,
                 'Environment or Environment Variable was not found')
     return result
+
+create_subparser()
