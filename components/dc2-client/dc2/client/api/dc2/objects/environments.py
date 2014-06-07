@@ -35,3 +35,14 @@ class Environments(object):
                     len(environ_list) > 0 and
                     environ_list[0] is not None):
                 return environ_list[0]
+
+    def get_environment_variable(self, env_name=None, env_variable=None):
+        if env_name is not None and env_variable is not None:
+            environment = self._proxy.dc2.configuration.environments.find(
+                {'name': env_name})
+            if len(environment) > 0:
+                envi = environment[0]
+                for i in envi:
+                    if i['name'].upper() == env_variable.upper():
+                        return i['value']
+        return None
