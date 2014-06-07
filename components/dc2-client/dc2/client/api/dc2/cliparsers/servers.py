@@ -62,17 +62,7 @@ def create_subparser():
         '--output-value',
         action='store',
         dest='output_value',
-        metavar='<manufacturer|product_name|uuid|serial_no|asset_tags|'
-                'cpucount|location>',
-        choices=[
-            'manufacturer',
-            'product_name',
-            'uuid',
-            'serial_no',
-            'asset_tags',
-            'cpucount',
-            'location',
-            'all'],
+        metavar='<key from server record or all>',
         required=True)
     server_parser.add_argument(
         'value',
