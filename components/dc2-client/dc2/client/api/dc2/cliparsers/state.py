@@ -52,8 +52,7 @@ def create_subparsers():
         '--event-port',
         action='store',
         dest='event_port',
-        default=80,
-        type=int,
+        default='80',
         help='Event WebApp Port',
         required=True)
 
@@ -84,7 +83,7 @@ def process_state(args):
     if args.event_host is not None and args.event_port != 0:
         dc2_socket_client = DC2SocketClient(
             host=args.event_host,
-            port=args.event_port)
+            port=int(args.event_port))
         commands = Commands(dc2_socket_client)
         if args.event_code is not None:
             if args.event_json_data is not None:
