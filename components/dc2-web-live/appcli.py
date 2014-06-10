@@ -8,6 +8,7 @@ from flask.ext.restful.utils import cors
 
 
 from dc2.web.live.api.v1.rest_dhcp import *  # noqa
+from dc2.web.live.api.v1.rest_events import *  # noqa
 from dc2.web.live.socket_handlers.clients import *  # noqa
 from dc2.web.live.socket_handlers.commands import *  # noqa
 
